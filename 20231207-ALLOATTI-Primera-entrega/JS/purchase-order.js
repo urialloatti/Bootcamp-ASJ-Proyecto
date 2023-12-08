@@ -66,11 +66,15 @@ function loadSelectProduct() {
 function getProductPrice() {
     let prodCode;
     productList.addEventListener("change", (e) => {
+        productPrice.setAttribute("disabled", "disabled")
         prodCode = e.target.value;
         if (prodCode != -1) {
             const prodDTO = productsArray.find(obj => obj.pCode == prodCode);
             productPrice.value = prodDTO.pPrice;
-        } 
+        } else {
+            productPrice.value = 0
+            productPrice.removeAttribute("disabled");
+        }
     })
 
 }
@@ -81,6 +85,7 @@ function loadButtonAddProduct() {
         e.preventDefault();
         purchaseArray.push(addProduct());
         completeCurrentOrder();
+        productQuantity.value = 1;
     })
 }
 
@@ -90,10 +95,16 @@ const addProduct = () => {
     let productId = productList.value;
     const currProduct = {
         productSuplier: productSupliers.options[suplierId].text,
-        productName: productList.options[productId].text,
         productPrice: productPrice.value,
         productQuantity: productQuantity.value
     }
+
+    if (productId != -1) {
+        currProduct.productName = productList.options[productId].text;
+    } else {
+        currProduct.productName = "Otro";
+    }
+    
     return currProduct;
 };
 
@@ -120,6 +131,9 @@ const loadButtonSubmit = () => {
     buttonSubmit.addEventListener("click", (e) => {
         e.preventDefault();
         window.localStorage.setItem("purchase", JSON.stringify(generatePurchase()));
+        alert("Orden de compra realizada con éxito.")
+        purchaseArray = [];
+        completeCurrentOrder();
     })
 };
 

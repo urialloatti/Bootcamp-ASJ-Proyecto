@@ -59,6 +59,7 @@ const loadButton = () => {
         e.preventDefault();
         supliersArray.push(createSuplier());
         window.localStorage.setItem("supliers", JSON.stringify(supliersArray));
+        alert("Proveedor cargado con éxito.")
     })
 };
 
