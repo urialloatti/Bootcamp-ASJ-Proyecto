@@ -85,7 +85,7 @@ function loadDatabase() {
         },
         {
             pSuplier: "Arena Pharmaceuticals, Inc.",
-            pCode: 1,
+            pCode: 2,
             pCategory: "Medicamentos",
             pName: "Paracetamol",
             pDescription: "Lorem ipsum dolor sit amet.",
@@ -93,7 +93,7 @@ function loadDatabase() {
         },
         {
             pSuplier: "BB&T Corporation",
-            pCode: 1,
+            pCode: 3,
             pCategory: "Botánicos",
             pName: "Girasol",
             pDescription: "Lorem ipsum dolor sit amet.",
@@ -101,7 +101,7 @@ function loadDatabase() {
         },
         {
             pSuplier: "Arena Pharmaceuticals, Inc.",
-            pCode: 1,
+            pCode: 4,
             pCategory: "Medicamentos",
             pName: "Betametasona",
             pDescription: "Lorem ipsum dolor sit amet.",

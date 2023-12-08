@@ -11,7 +11,6 @@ function loadPage() {
     productsNotFound.style.display = "none";
     productsTable.style.display = "none";
     productsArray = JSON.parse(localStorage.getItem("products")) || [];
-    console.log(productsArray)
 
     if (productsArray.length > 0) {
         productsTable.style.display = "block";
@@ -27,7 +26,6 @@ function loadPage() {
 
 
 function addProduct(productDTO) {
-    console.log(productDTO)
     let tableRow = document.createElement("tr");
 
     tableRow.innerHTML = 
@@ -78,10 +76,10 @@ function fillTable(products) {
 
 function loadDellBtn(buttons) {
     for (btn of buttons) {
-        let btnId = btn.id.slice(16);
+        let btnId = btn.id.slice(15);
         btn.addEventListener("click", (e) => {
             e.preventDefault();
-            productsArray = productsArray.filter((productDTO) => productDTO.sId != btnId)
+            productsArray = productsArray.filter((productDTO) => productDTO.pCode != btnId)
             window.localStorage.setItem("products", JSON.stringify(productsArray));
             loadPage();
         })

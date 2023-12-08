@@ -62,7 +62,7 @@
     </header>
     <main class="container bg-body-secondary py-4 px-5 mb-4">
       <section class="row">
-        <div class="col"></div>
+        <!-- <div class="col"></div> -->
         <div class="col-6">
           <form action="" class="form-control">
             <fieldset class="px-4">
@@ -92,6 +92,44 @@
                 </div>
               </div>
               <hr>
+              <div class="row">
+                <div class="col"><p>Productos</p></div>
+                <div class="col text-end"><p>Precio</p></div>
+              </div>
+              <div class="row">
+                <div class="col" id="current-order">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <div class="row">
+                    <div class="col"><p>Total</p></div>
+                    <div class="col">
+                      <hr>
+                    </div>
+                    <div class="col text-end" id="purchase-total"><p>$0</p></div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div class="row m-4">
+              <div class="col text-center">
+                <a href="products-list.html">
+                  <button class="btn btn-secondary" id="confirm-purchase">Confirmar compra</button>
+                </a>
+              </div>
+
+            </div>
+          </form>
+        </div>
+        <!-- <div class="col"></div> -->
+        <div class="col-1"></div>
+        <div class="col">
+          <section class="bg-light-subtle rounded p-4">
+            <div class="row">
+              <div class="col-12 text-center">
+                <p class="h3 text-body-secondary">Añadir productos</p>
+              </div>
               <div class="mb-1">
                 <label for="supliers-list" class="form-label">Proveedor</label>
                 <select class="form-select" aria-label="Proveedor" id="supliers-list">
@@ -103,44 +141,27 @@
                 </select>
               </div>
               <div class="mb-3">
-                <label for="product-quantity" class="form-label">Cantidad</label>
-                <input type="text" class="form-control" id="product-quantity">
-              </div>
-            </fieldset>
-            <div class="row m-4">
-              <div class="col text-center">
-                <a href="products-list.html">
-                  <button class="btn btn-secondary" id="confirm-purchase">Confirmar compra</button>
-                </a>
-              </div>
-              <!-- <div class="col text-center">
-                <button class="btn btn-secondary" id="add-product">Cargar Producto</button>
-              </div> -->
-            </div>
-          </form>
-        </div>
-        <div class="col"></div>
-        <!-- <div class="col-1"></div>
-        <div class="col">
-          <section class="bg-light-subtle rounded p-4">
-            <div class="row">
-              <div class="col-12 text-center">
-                <p class="h3 text-body-secondary">Orden actual</p>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col">
-                  <div class="row">
-                    <div class="col">${product}</div>
-                    <div class="col"></div>
+                <div class="row justify-content-around mb-3">
+                  <div class="col-4">
+                    <label for="product-price" class="form-label">Precio</label>
+                    <input type="text" class="form-control" id="product-price" disabled>
+                  </div>
+                  <div class="col-4">
+                    <label for="product-quantity" class="form-label">Cantidad</label>
+                    <input type="text" class="form-control" id="product-quantity">
                   </div>
                 </div>
               </div>
-            </div> -->
+              <hr>
+              <div class="row justify-content-center">
+                <div class="col-6 text-center">
+                  <button class="btn btn-secondary" id="add-product">Cargar Producto</button>
+                </div>
+              </div>
+          </section>
+        </div>
       </section>
-  </div>
-  </section>
-  </main>
+    </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
