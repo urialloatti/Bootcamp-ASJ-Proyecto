@@ -1,0 +1,23 @@
+header {
+    flex: 0 1 auto;
+    background-color: #38374A;
+    color: #DDD;
+}
+
+main {
+    flex: 1 1 auto;
+    background-color: #EBEBEB;
+}
+
+footer {
+    background-color: #207E89;
+    color: #259daf;
+}
+
+#container {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+    padding-left: 0px;
+    padding-right: 0px;
+}

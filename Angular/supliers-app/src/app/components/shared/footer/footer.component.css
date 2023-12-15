@@ -1,0 +1,9 @@
+li {
+    color: #259daf;
+    border: 0px;
+}
+
+li:hover {
+    color: white;
+    transition: 0.3s;
+}
