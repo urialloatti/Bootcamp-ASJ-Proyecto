@@ -1,7 +1,7 @@
 <section class="row">
     <div class="col"></div>
     <div class="col-6">
-        <form action="" class="form-control">
+        <div action="" class="form-control">
             <fieldset class="px-4">
                 <div class="text-center my-4">
                     <p class="h3 text-body-secondary">Cargar nuevo proveedor</p>
@@ -95,12 +95,12 @@
             </fieldset>
             <div class="row m-4">
                 <div class="col text-center">
-                    <a href="supliers-list.html">
-                        <button class="btn btn-secondary" id="confirm-create">Cargar Proveedor</button>
-                    </a>
+                    <button class="btn btn-secondary" (click)="saveNewSuplier()">Cargar Proveedor</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col"></div>
 </section>
+
+<shared-modal-saved *ngIf="flagNewSuplierCreated" [modalData]="{section: 'Proveedor', path: '/supliers'}"></shared-modal-saved>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProductInterface } from '../../../interfaces/productsInterface';
 
 @Component({
   selector: 'products-new',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './products-new.component.css'
 })
 export class ProductsNewComponent {
+  flagNewProductCreated: boolean = false;
+  currentProduct!: ProductInterface;
 
+  saveProduct() {
+    this.flagNewProductCreated = true;
+  }
 }

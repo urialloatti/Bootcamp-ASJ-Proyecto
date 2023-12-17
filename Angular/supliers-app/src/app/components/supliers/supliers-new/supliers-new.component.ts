@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './supliers-new.component.css'
 })
 export class SupliersNewComponent {
+  flagNewSuplierCreated: boolean = false;
 
+  saveNewSuplier():void {
+    this.flagNewSuplierCreated = true;
+  }
 }

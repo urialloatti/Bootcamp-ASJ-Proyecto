@@ -31,10 +31,12 @@
             </fieldset>
             <div class="row m-4">
                 <div class="col text-center">
-                    <button class="btn btn-secondary" id="confirm-create-product">Cargar Producto</button>
+                    <button class="btn btn-secondary" id="confirm-create-product" (click)="saveProduct()">Cargar Producto</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="col"></div>
 </section>
+
+<shared-modal-saved *ngIf="flagNewProductCreated" [modalData]="{section: 'Producto', path: '/products'}"></shared-modal-saved>

@@ -1,0 +1,13 @@
+<div class="modal" tabindex="-1" id="modal-box">
+    <div class="modal-dialog" id="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center text-center">
+                <h1 class="modal-title fs-5">{{modalData.section}} cargado con éxito</h1>
+            </div>
+            <div class="modal-footer d-flex justify-content-center pt-5">
+                <button type="button" class="btn btn-secondary" [routerLink]="modalData.path">Ir a la lista</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" id="modal-backdrop" [routerLink]="modalData.path"></div>

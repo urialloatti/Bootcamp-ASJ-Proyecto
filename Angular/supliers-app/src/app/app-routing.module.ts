@@ -12,7 +12,7 @@ import { PurchaseNewComponent } from './components/purchase-order/purchase-new/p
 const routes: Routes = [
   {
     path: "supliers",
-    component: SupliersListComponent
+    component: SupliersListComponent,
   },
   {
     path: "supliers/new",
@@ -39,10 +39,10 @@ const routes: Routes = [
     path: "404",
     component: NotFoundComponent
   },
-  // {
-  //   path: "**",
-  //   redirectTo: "404"
-  // }
+  {
+    path: "**",
+    redirectTo: "404"
+  }
 ];
 
 @NgModule({

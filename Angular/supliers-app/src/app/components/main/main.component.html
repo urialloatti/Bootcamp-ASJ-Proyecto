@@ -1,1 +1,43 @@
-<p>main works!</p>
+<div class="container-fluid h-100 p-5" id="main">
+    <div class="row my-5">
+        <div class="col text-center">
+            <h2 class="fs-1">Gestioná tus compras de manera eficiente</h2>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col d-none d-sm-block"></div>
+        <div class="col col-sm-10 col-md-8 text-center">
+            <p class="fs-4">Nuestro sistema de gestión de compras es una herramienta eficiente y centralizada que
+                automatiza y simplifica todo el proceso de compra en tu empresa. Desde la solicitud de cotizaciones y la
+                selección de proveedores hasta la generación de órdenes de compra, nuestro sistema optimiza y agiliza
+                cada etapa, asegurando un control completo y una gestión eficaz.</p>
+        </div>
+        <div class="col d-none d-sm-block"></div>
+    </div>
+    <div class="row px-3">
+        <div class="col text-center">
+            <button class="btn bg-transparent main-button" routerLink="/supliers">
+                <div>
+                    <i class="bi bi-truck main-icon"></i>
+                </div>
+                <p class="fs-5">Ver Proveedores</p>
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn bg-transparent main-button" routerLink="/products">
+                <div>
+                    <i class="bi bi-box-seam-fill main-icon"></i>
+                </div>
+                <p class="fs-5">Ver Productos</p>
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn bg-transparent main-button" routerLink="/purchase-orders/new">
+                <div>
+                    <i class="bi bi-card-checklist main-icon"></i>
+                </div>
+                <p class="fs-5">Ver Órdenes de Compra</p>
+            </button>
+        </div>
+    </div>
+</div>

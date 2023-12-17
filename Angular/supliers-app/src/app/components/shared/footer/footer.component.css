@@ -1,9 +1,9 @@
 li {
-    color: #259daf;
+    color: var(--color-accent);
     border: 0px;
 }
 
 li:hover {
-    color: white;
+    color: var(--color-light);
     transition: 0.3s;
 }
