@@ -6,4 +6,5 @@ li {
 li:hover {
     color: var(--color-light);
     transition: 0.3s;
+    cursor: pointer;
 }

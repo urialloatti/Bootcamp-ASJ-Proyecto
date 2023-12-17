@@ -11,6 +11,16 @@
     z-index: 1055;
 }
 
+.modal-header-bg {
+    background-color: var(--bg-accent);
+    color: var(--color-light);
+}
+
+.modal-content-bg {
+    background-color: var(--bg-light);
+    color: var(--color-light);
+}
+
 @media (max-width: 1200px) {
     #modal-box {
         left: 25%;
@@ -22,5 +32,12 @@
     #modal-box {
         left: 15%;
         width: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    #modal-box {
+        left: 10%;
+        width: 80%;
     }
 }

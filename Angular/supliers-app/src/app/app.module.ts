@@ -15,6 +15,8 @@ import { ProductsNewComponent } from './components/products/products-new/product
 import { PurchaseNewComponent } from './components/purchase-order/purchase-new/purchase-new.component';
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
+import { NoItemsAlertComponent } from './components/shared/no-items-alert/no-items-alert.component';
+import { ItemsListComponent } from './components/shared/items-list/items-list.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { SupliersNewComponent } from './components/supliers/supliers-new/suplier
     PurchaseNewComponent,
     SupliersListComponent,
     SupliersNewComponent,
+    NoItemsAlertComponent,
+    ItemsListComponent,
   ],
   imports: [
     AppRoutingModule,

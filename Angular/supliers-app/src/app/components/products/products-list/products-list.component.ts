@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ProductInterface } from '../../../interfaces/productsInterface';
+import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 
 @Component({
   selector: 'products-list',
@@ -9,6 +10,18 @@ import { ProductInterface } from '../../../interfaces/productsInterface';
 })
 export class ProductsListComponent {
   producsArray: ProductInterface[] = productsArrayMock;
+
+  productsFields: ListTemplateInterface = {
+    section: "products",
+    label: "productos",
+    listFields: [
+      {field: "#", key: "code"},
+      {field: "Nombre", key: "name"},
+      {field: "Proveedor", key: "suplier"},
+      {field: "Categoría", key: "category"},
+      {field: "Precio", key: "price"}
+    ]
+  }
 
   deleteProduct(code: number): void {
     this.producsArray = this.producsArray.filter((product) => product.code != code);

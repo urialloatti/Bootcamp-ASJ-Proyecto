@@ -19,6 +19,10 @@ const routes: Routes = [
     component: SupliersNewComponent
   },
   {
+    path: "supliers/:id",
+    component: NotFoundComponent
+  },
+  {
     path: "products",
     component: ProductsListComponent
   },

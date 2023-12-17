@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 
 @Component({
   selector: 'supliers-list',
@@ -10,6 +11,15 @@ import { SuplierInterface } from '../../../interfaces/suplierInterface';
 export class SupliersListComponent {
 
   supliersList: SuplierInterface[] = supliersArrayMock;
+  supliersFields: ListTemplateInterface = {
+    section: "supliers",
+    label: "proveedores",
+    listFields: [
+      {field: "#", key: "id"},
+      {field: "Razón social", key: "brand"},
+      {field: "Rubro", key: "category"}
+    ] 
+  }
 
   deleteSuplier(id: number): void {
     this.supliersList = this.supliersList.filter((suplier) => suplier.id != id);

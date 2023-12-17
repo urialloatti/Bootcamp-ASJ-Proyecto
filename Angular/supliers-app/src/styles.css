@@ -1,10 +1,15 @@
 :root {
-    --bg-dark: #38374A;
-    --bg-accent: #207E89;
-    --bg-light: #EBEBEB;
+    --bg-dark: #404850;
+    --bg-accent: #208090;
+    --bg-light: #F6FAFF;
+    --bg-light-accent: #E8FBFF;
 
     --color-light: #D2E2EF;
-    --color-dark: #22222F;
-    --color-accent: #269eb0;
-    --color-accent-light: #2cd9d6;
+    --color-dark: #222A32;
+    --color-accent: #28A0B0;
+    --color-accent-light: #38B8C8;
+}
+
+.body {
+    background-color: var(--bg-light-accent);
 }
