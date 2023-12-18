@@ -9,29 +9,33 @@
                 <hr>
                 <div class="mb-3">
                     <label for="product-suplier" class="form-label">Proveedor</label>
-                    <select class="form-select" aria-label="Proveedor" id="product-suplier">
+                    <select class="form-select" aria-label="Proveedor" [(ngModel)]="currentProduct.suplier">
+                        <option value="Proveedor 1">Proveedor 1</option>
+                        <option value="Proveedor 2">Proveedor 2</option>
+                        <option value="Proveedor 3">Proveedor 3</option>
+                        <option value="Otro">Otro</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="product-category" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" id="product-category">
+                    <input type="text" class="form-control" [(ngModel)]="currentProduct.category">
                 </div>
                 <div class="mb-3">
                     <label for="product-name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="product-name">
+                    <input type="text" class="form-control" [(ngModel)]="currentProduct.name">
                 </div>
                 <div class="mb-3">
                     <label for="product-description" class="form-label">Descripción</label>
-                    <textarea class="form-control" id="product-description"></textarea>
+                    <textarea class="form-control" [(ngModel)]="currentProduct.description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="product-price" class="form-label">Precio</label>
-                    <input type="text" class="form-control" id="product-price">
+                    <input type="number" class="form-control" [(ngModel)]="currentProduct.price">
                 </div>
             </fieldset>
             <div class="row m-4">
                 <div class="col text-center">
-                    <button class="btn btn-secondary" id="confirm-create-product" (click)="saveProduct()">Cargar Producto</button>
+                    <button class="btn btn-secondary" id="confirm-create-product" (click)="saveProduct()" [disabled]="validateSubmit()" >Cargar Producto</button>
                 </div>
             </div>
         </div>

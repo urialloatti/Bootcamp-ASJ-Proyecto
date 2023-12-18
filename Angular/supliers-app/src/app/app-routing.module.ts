@@ -12,27 +12,56 @@ import { PurchaseNewComponent } from './components/purchase-order/purchase-new/p
 const routes: Routes = [
   {
     path: "supliers",
-    component: SupliersListComponent,
-  },
-  {
-    path: "supliers/new",
-    component: SupliersNewComponent
-  },
-  {
-    path: "supliers/:id",
-    component: NotFoundComponent
+    children: [
+      {
+        path: "",
+        component: SupliersListComponent
+      },
+      {
+        path: "new",
+        component: SupliersNewComponent
+      },
+      {
+        path: "update/:id",
+        component: NotFoundComponent
+      },
+      {
+        path: "**",
+        redirectTo: "",
+        pathMatch: "full"
+      }
+    ]
   },
   {
     path: "products",
-    component: ProductsListComponent
-  },
-  {
-    path: "products/new",
-    component: ProductsNewComponent
+    children: [
+      {
+        path: "",
+        component: ProductsListComponent
+      },
+      {
+        path: "new",
+        component: ProductsNewComponent
+      },
+      {
+        path: "update/:id",
+        component: NotFoundComponent
+      },
+      {
+        path: "**",
+        redirectTo: "",
+        pathMatch: "full"
+      }
+    ]
   },
   {
     path: "purchase-orders/new",
-    component: PurchaseNewComponent
+    children: [
+      {
+        path: "new",
+        component: PurchaseNewComponent
+      }
+    ]
   },
   {
     path: "",

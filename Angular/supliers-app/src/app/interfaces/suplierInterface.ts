@@ -1,10 +1,10 @@
 export interface SuplierInterface {
-    id: number,
+    id?: number,
     brand: string,
     category: string,
     web: string,
     fullAddress: FullAddress,
-    cuit: string,
+    cuit: number,
     iva: IVAOptions,
     contact: Contact
 
@@ -12,24 +12,22 @@ export interface SuplierInterface {
 
 interface FullAddress {
     address: string,
-    addressNumber: string,
-    region: string,
+    addressNumber: number,
     state: string,
     country: string
 }
 
-export enum IVAOptions {
-    "IVA Responsable Inscripto",
-    "IVA Sujeto Exento",
-    "Responsable Monotributo",
-    "Proveedor del Exterior",
-    "Otro"
-}
+export type IVAOptions = 
+    "IVA Responsable Inscripto" |
+    "IVA Sujeto Exento" |
+    "Responsable Monotributo" |
+    "Proveedor del Exterior" |
+    "Otro";
 
 interface Contact {
     name: string,
     surname: string,
-    phone: string,
+    phone: number,
     mail: string,
     rol: string
 }

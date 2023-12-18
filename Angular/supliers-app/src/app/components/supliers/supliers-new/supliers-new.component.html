@@ -9,40 +9,36 @@
                 <hr>
                 <div class="mb-3">
                     <label for="suplier-brand" class="form-label">Razón social</label>
-                    <input type="text" class="form-control" id="suplier-brand">
+                    <input type="text" class="form-control" [(ngModel)]="brand">
                 </div>
                 <div class="mb-3">
                     <label for="suplier-category" class="form-label">Rubro</label>
-                    <input type="text" class="form-control" id="suplier-category">
+                    <input type="text" class="form-control" [(ngModel)]="category">
                 </div>
                 <div class="mb-3">
                     <label for="suplier-web" class="form-label">Sitio web</label>
-                    <input type="text" class="form-control" id="suplier-web">
+                    <input type="text" class="form-control" [(ngModel)]="web">
                 </div>
             </fieldset>
             <fieldset class="px-4">
                 <div class="row mb-1">
                     <div class="col">
                         <label for="suplier-address" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" id="suplier-address">
+                        <input type="text" class="form-control" [(ngModel)]="address">
                     </div>
                     <div class="col-2">
                         <label for="suplier-address-number" class="form-label">Número</label>
-                        <input type="text" class="form-control" id="suplier-address-number">
+                        <input type="text" class="form-control" [(ngModel)]="addressNumber">
                     </div>
                 </div>
                 <div class="row mb-1">
                     <div class="col">
-                        <label for="suplier-region" class="form-label">Localidad</label>
-                        <input type="text" class="form-control" id="suplier-region">
-                    </div>
-                    <div class="col">
                         <label for="suplier-state" class="form-label">Provincia</label>
-                        <input type="text" class="form-control" id="suplier-state">
+                        <input type="text" class="form-control" [(ngModel)]="state">
                     </div>
                     <div class="col">
                         <label for="suplier-country" class="form-label">País</label>
-                        <input type="text" class="form-control" id="suplier-country">
+                        <input type="text" class="form-control" [(ngModel)]="country">
                     </div>
                 </div>
             </fieldset>
@@ -50,16 +46,16 @@
                 <div class="row mb-1">
                     <div class="col">
                         <label for="suplier-cuit" class="form-label">CUIT</label>
-                        <input type="text" class="form-control" id="suplier-cuit" placeholder="00-00000000-0">
+                        <input type="number" class="form-control" id="suplier-cuit" placeholder="00-00000000-0" [(ngModel)]="cuit">
                     </div>
                     <div class="col">
                         <label for="suplier-iva" class="form-label">Condición frente al IVA</label>
-                        <select class="form-select" aria-label="Condición IVA" id="suplier-iva">
-                            <option value="0">IVA Responsable Inscripto</option>
-                            <option value="1">IVA Sujeto Exento</option>
-                            <option value="2">Responsable Monotributo</option>
-                            <option value="3">Proveedor del Exterior</option>
-                            <option value="4">Otro</option>
+                        <select class="form-select" aria-label="Condición IVA" [(ngModel)]="iva">
+                            <option value="IVA Responsable Inscripto">IVA Responsable Inscripto</option>
+                            <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
+                            <option value="Responsable Monotributo">Responsable Monotributo</option>
+                            <option value="Proveedor del Exterior">Proveedor del Exterior</option>
+                            <option value="Otro">Otro</option>
                         </select>
                     </div>
                 </div>
@@ -71,31 +67,31 @@
                 <div class="row">
                     <div class="col-6 mb-1">
                         <label for="suplier-name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="suplier-name">
+                        <input type="text" class="form-control" [(ngModel)]="name">
                     </div>
                     <div class="col-6 mb-1">
                         <label for="suplier-surname" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="suplier-surname">
+                        <input type="text" class="form-control" [(ngModel)]="surname">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-1">
                         <label for="suplier-phone" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="suplier-phone">
+                        <input type="number" class="form-control" [(ngModel)]="phone">
                     </div>
                     <div class="col-6 mb-1">
                         <label for="suplier-mail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="suplier-mail">
+                        <input type="email" class="form-control" [(ngModel)]="mail">
                     </div>
                 </div>
                 <div class="mb-1">
                     <label for="suplier-rol" class="form-label">Rol</label>
-                    <input type="text" class="form-control" id="suplier-rol">
+                    <input type="text" class="form-control" [(ngModel)]="rol">
                 </div>
             </fieldset>
             <div class="row m-4">
                 <div class="col text-center">
-                    <button class="btn btn-secondary" (click)="saveNewSuplier()">Cargar Proveedor</button>
+                    <button class="btn btn-secondary" (click)="saveNewSuplier()" [disabled]="!validateSubmit()">Cargar Proveedor</button>
                 </div>
             </div>
         </div>

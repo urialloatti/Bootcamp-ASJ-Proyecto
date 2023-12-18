@@ -1,5 +1,5 @@
 export interface ProductInterface {
-    code: number,
+    id?: number,
     suplier: string,
     category: string,
     name: string,
