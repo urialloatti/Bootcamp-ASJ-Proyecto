@@ -43,6 +43,10 @@ export class HeaderComponent {
       sectionPath: "/purchase-orders",
       pages: [
         {
+          pageName: "Listado",
+          path: "purchase-orders"
+        },
+        {
           pageName: "Nueva órden de compra",
           path: "purchase-orders/new"
         }

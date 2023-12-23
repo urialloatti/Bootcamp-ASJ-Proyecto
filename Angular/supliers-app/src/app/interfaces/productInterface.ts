@@ -1,6 +1,7 @@
 export interface ProductInterface {
     id?: number,
-    suplier: string,
+    suplierId: number,
+    suplier?: string,
     category: string,
     name: string,
     description: string,

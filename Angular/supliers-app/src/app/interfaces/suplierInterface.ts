@@ -4,7 +4,7 @@ export interface SuplierInterface {
     category: string,
     web: string,
     fullAddress: FullAddress,
-    cuit: number,
+    cuit: string,
     iva: IVAOptions,
     contact: Contact
 
@@ -12,7 +12,7 @@ export interface SuplierInterface {
 
 interface FullAddress {
     address: string,
-    addressNumber: number,
+    addressNumber: number | undefined,
     state: string,
     country: string
 }
@@ -27,7 +27,7 @@ export type IVAOptions =
 interface Contact {
     name: string,
     surname: string,
-    phone: number,
+    phone: number | undefined,
     mail: string,
     rol: string
 }

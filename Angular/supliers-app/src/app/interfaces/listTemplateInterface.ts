@@ -6,6 +6,8 @@ export interface ListTemplateInterface {
 
 interface ListField {
     field: string,
-    key: string
+    key: string,
+    extras?: PipeExtra
 }
 
+export type PipeExtra = "Date" | "Currency" | "CUIT";

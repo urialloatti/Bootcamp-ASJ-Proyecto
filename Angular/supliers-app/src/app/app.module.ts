@@ -17,6 +17,10 @@ import { SupliersListComponent } from './components/supliers/supliers-list/supli
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
 import { NoItemsAlertComponent } from './components/shared/no-items-alert/no-items-alert.component';
 import { ItemsListComponent } from './components/shared/items-list/items-list.component';
+import { PurchaseListComponent } from './components/purchase-order/purchase-list/purchase-list.component';
+import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CuitPipePipe } from './pipes/cuit-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -34,13 +38,20 @@ import { ItemsListComponent } from './components/shared/items-list/items-list.co
     SupliersNewComponent,
     NoItemsAlertComponent,
     ItemsListComponent,
+    PurchaseListComponent,
+    TableTransformPipe,
+    CuitPipePipe,
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    CurrencyPipe,
+    CuitPipePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

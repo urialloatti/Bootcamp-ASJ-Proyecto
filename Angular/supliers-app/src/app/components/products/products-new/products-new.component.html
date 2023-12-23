@@ -1,44 +1,62 @@
-<section class="row">
+<section class="row my-3">
     <div class="col"></div>
     <div class="col-6">
-        <div action="" class="form-control">
+        <form #myForm="ngForm"  (ngSubmit)="saveProduct()"class="form-control">
             <fieldset class="px-4">
                 <div class="text-center my-4">
                     <p class="h3 text-body-secondary">Cargar nuevo Producto</p>
                 </div>
                 <hr>
                 <div class="mb-3">
-                    <label for="product-suplier" class="form-label">Proveedor</label>
-                    <select class="form-select" aria-label="Proveedor" [(ngModel)]="currentProduct.suplier">
-                        <option value="Proveedor 1">Proveedor 1</option>
-                        <option value="Proveedor 2">Proveedor 2</option>
-                        <option value="Proveedor 3">Proveedor 3</option>
-                        <option value="Otro">Otro</option>
+                    <label class="form-label">Proveedor</label>
+                    <select name="suplier" #suplier="ngModel" [(ngModel)]="currentProduct.suplierId" class="form-select" id="select-form" [disabled]="isUpdating">
+                        <option value="{{suplier.id}}" *ngFor="let suplier of supliersList">{{suplier.brand}}</option>
+                        <option value="-1" selected>Otro</option>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="product-category" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" [(ngModel)]="currentProduct.category">
+                    <label class="form-label">Categoría</label>
+                    <input type="text" name="category" #category="ngModel" [(ngModel)]="currentProduct.category"
+                        required minlength="4" maxlength="40" [ngClass]="(category.errors)? '':'is-valid'"
+                        class="form-control">
+                    <div class="form-text" *ngIf="(productValidator.category)">
+                        <p>Debe tener entre 4 y 40 caracteres.</p>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="product-name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" [(ngModel)]="currentProduct.name">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="name" #name="ngModel" [(ngModel)]="currentProduct.name"
+                        required minlength="4" maxlength="40" [ngClass]="(name.errors)? '':'is-valid'"
+                        class="form-control">
+                    <div class="form-text" *ngIf="(productValidator.name)">
+                        <p>Debe tener entre 4 y 40 caracteres.</p>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="product-description" class="form-label">Descripción</label>
-                    <textarea class="form-control" [(ngModel)]="currentProduct.description"></textarea>
+                    <label class="form-label">Descripción</label>
+                    <textarea name="description" #description="ngModel" [(ngModel)]="currentProduct.description"
+                    required [ngClass]="(description.errors)? '':'is-valid'"
+                    class="form-control"></textarea>
+                    <div class="form-text" *ngIf="(productValidator.description)">
+                        <p>Debe tener entre 1 y 500 caracteres.</p>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="product-price" class="form-label">Precio</label>
-                    <input type="number" class="form-control" [(ngModel)]="currentProduct.price">
+                    <label class="form-label">Precio</label>
+                    <input type="number" name="price" #price="ngModel" [(ngModel)]="currentProduct.price"
+                        required min="1" max="999999999" [ngClass]="(price.errors)? '':'is-valid'"
+                        class="form-control">
+                        <div class="form-text" *ngIf="(productValidator.price)">
+                            <p>Debe ser un número mayor de 0.</p>
+                        </div>
                 </div>
             </fieldset>
             <div class="row m-4">
                 <div class="col text-center">
-                    <button class="btn btn-secondary" id="confirm-create-product" (click)="saveProduct()" [disabled]="validateSubmit()" >Cargar Producto</button>
+                    <button class="btn btn-secondary" type="submit">Cargar Producto</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <div class="col"></div>
 </section>

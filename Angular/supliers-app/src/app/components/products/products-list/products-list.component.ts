@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProductsService } from '../../../services/products-service/products.service';
+import { ProductsService } from '../../../services/products.service';
 
-import { ProductInterface } from '../../../interfaces/productsInterface';
+import { ProductInterface } from '../../../interfaces/productInterface';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 
 @Component({
@@ -14,25 +14,30 @@ export class ProductsListComponent implements OnInit {
   
   producsArray!: ProductInterface[];
 
-  constructor(private pService: ProductsService) {}
+  constructor(private productsService: ProductsService) {}
   
   ngOnInit(): void {
-    this.producsArray = this.pService.getList();
+    this.producsArray = this.productsService.getList();
   }
   
   deleteProduct(id: number): void {
-    this.producsArray = this.pService.deleteElement(id);
+    let deletedProduct = this.productsService.deleteElement(id);
+    if (deletedProduct) {
+      alert(`Producto ${deletedProduct.name} eliminado con éxito.`)
+      this.producsArray = this.productsService.getList();
+    } else {
+      alert("El producto ya no existe en la base de datos.");
+    }
   }
 
   productsFields: ListTemplateInterface = {
     section: "products",
     label: "productos",
     listFields: [
-      {field: "#", key: "id"},
       {field: "Nombre", key: "name"},
       {field: "Proveedor", key: "suplier"},
       {field: "Categoría", key: "category"},
-      {field: "Precio", key: "price"}
+      {field: "Precio", key: "price", extras: "Currency"}
     ]
   }
 }

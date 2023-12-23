@@ -1,35 +1,76 @@
-import { Component } from '@angular/core';
-import { ProductInterface } from '../../../interfaces/productsInterface';
-import { ProductsService } from '../../../services/products-service/products.service';
+import { Component, OnInit } from '@angular/core';
+
+import { ProductInterface } from '../../../interfaces/productInterface';
+import { ProductsService } from '../../../services/products.service';
+import { SupliersService } from '../../../services/supliers.service';
+import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'products-new',
   templateUrl: './products-new.component.html',
   styleUrl: './products-new.component.css'
 })
-export class ProductsNewComponent {
-  constructor(private pService: ProductsService) { }
+export class ProductsNewComponent implements OnInit {
 
   flagNewProductCreated: boolean = false;
-  flagProductError: boolean = false;
-  currentProduct: ProductInterface = {
-    suplier: "",
+  isUpdating: boolean = false;
+  supliersList: SuplierInterface[] = []; 
+
+  currentProduct: ProductInterface  = {
+    suplierId: -1,
     category: "",
     name: "",
     description: "",
     price: 0
   }
 
+  productValidator: any = {
+    category: false,
+    name: false,
+    description: false,
+    price: false
+  }
+
+  constructor(private productService: ProductsService, private suplierService: SupliersService, private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.supliersList = this.suplierService.getList();
+
+    this.route.paramMap.subscribe(
+      (response) => {
+        let id = response.get("id")
+        if (id != undefined) {
+          this.currentProduct = this.productService.getElementById(parseInt(id))!;
+          this.isUpdating = true;
+        }
+      });
+  }
+
   saveProduct() {
-    this.pService.addElement(this.currentProduct);
-    this.flagNewProductCreated = true;
+    let isFormValid = true
+    this.validateSubmite();
+    Object.keys(this.productValidator).forEach(
+      (key) => {
+        if (isFormValid && this.productValidator[key]) {
+          alert("Hay errores en el formulario.");
+          isFormValid = false;
+        }
+      });
+      if (isFormValid) {
+        if (this.isUpdating) {
+          this.productService.updateElement(this.currentProduct);
+        } else {
+          this.productService.addElement(this.currentProduct);
+        }
+        this.flagNewProductCreated = true;
+      }
   }
 
-  validateString(input: string): boolean {
-    return (!(input.length == 0 || input.length > 80))
-  }
-
-  validateSubmit() {
-    return !(this.validateString(this.currentProduct.category) && this.validateString(this.currentProduct.category) && this.currentProduct.description.length > 0 && this.currentProduct.price > 0 && this.currentProduct.price < 999999999 && this.currentProduct.suplier.length > 0)
+  validateSubmite() {
+    (this.currentProduct.category.length < 4 || this.currentProduct.category.length > 40)? this.productValidator.category = true: this.productValidator.category = false;
+    (this.currentProduct.name.length < 4 || this.currentProduct.name.length > 40)? this.productValidator.name = true: this.productValidator.name = false;
+    (this.currentProduct.description.length < 1 || this.currentProduct.description.length > 500)? this.productValidator.description = true: this.productValidator.description = false;
+    (this.currentProduct.price < 1)? this.productValidator.price = true: this.productValidator.price = false;
   }
 }
