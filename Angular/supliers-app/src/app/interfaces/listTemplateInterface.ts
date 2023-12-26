@@ -20,5 +20,7 @@ export type PipeExtra =
   | 'contactPhone'
   | 'CUIT'
   | 'Currency'
+  | 'FullDate'
   | 'Date'
+  | 'PurchaseOrder'
   | 'phone';

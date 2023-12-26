@@ -61,8 +61,13 @@
                   name="quantity"
                   [(ngModel)]="currentProduct.productQuantity"
                   #quantity="ngModel"
+                  min="1"
+                  [ngClass]="quantity.errors ? 'is-invalid' : ''"
                   class="form-control"
                 />
+                <div class="form-text" *ngIf="isProductInvalid">
+                  <p>Debe ser un número mayor de 0.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -75,6 +80,16 @@
             </div>
           </div>
         </form>
+        <div class="row m-4 py-2 body rounded" *ngIf="isProductAdded">
+          <div class="col"></div>
+          <div
+            class="col-8 rounded text-center py-2 align-middle"
+            id="product-added"
+          >
+            <p class="my-0">Producto añadido con éxito!</p>
+          </div>
+          <div class="col"></div>
+        </div>
       </article>
     </div>
     <!-- <div class="col-1"></div> -->
@@ -99,6 +114,7 @@
                   #dateEmited="ngModel"
                   [(ngModel)]="currentPurchaseOrder.dateEmited"
                   class="form-control"
+                  disabled
                 />
               </div>
               <div class="col">
@@ -109,7 +125,11 @@
                   #dateArriving="ngModel"
                   [(ngModel)]="currentPurchaseOrder.dateArriving"
                   class="form-control"
+                  [min]="getMinDateShippingTemplate()"
                 />
+                <div class="form-text" *ngIf="isDateInvalid">
+                  <p>Debe seleccionar una fecha de entrega válida.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -120,9 +140,11 @@
               class="form-control"
               #shippingRequirements="ngModel"
               [(ngModel)]="currentPurchaseOrder.shippingRequirements"
+              minlength="1"
+              maxlength="500"
             ></textarea>
-            <div class="form-text" *ngIf="true">
-              <p>No puede quedar vacío.</p>
+            <div class="form-text" *ngIf="isDescriptionInvalid">
+              <p>Debe tener entre 1 y 500 caracteres.</p>
             </div>
           </div>
           <hr />
@@ -143,9 +165,13 @@
                 class="row"
                 *ngFor="let productView of currentPurchaseOrder.products"
               >
-                <div class="col">{{ productView.productName }}</div>
-                <div class="col"><hr /></div>
                 <div class="col">
+                  {{ productView.productName }} ({{
+                    productView.productQuantity
+                  }})
+                </div>
+                <!-- <div class="col"><hr /></div> -->
+                <div class="col text-end">
                   {{
                     getProductPrice(productView.productId) *
                       productView.productQuantity
@@ -162,18 +188,35 @@
                 </div>
               </div>
             </div>
+            <div class="form-text" *ngIf="isCartEmpty">
+              <p>Debe añadir al menos un producto.</p>
+            </div>
           </div>
         </fieldset>
         <div class="row m-4">
           <div class="col text-center">
-            <a href="products-list.html">
-              <button class="btn btn-secondary" id="confirm-purchase">
-                Confirmar compra
-              </button>
-            </a>
+            <button class="btn btn-secondary me-1" type="submit">
+              Confirmar compra
+            </button>
+            <button
+              class="btn btn-secondary ms-1"
+              type="button"
+              (click)="emptyCart()"
+            >
+              Eliminar productos
+            </button>
           </div>
         </div>
       </form>
     </div>
+  </section>
+  <section>
+    <shared-modal-saved
+      *ngIf="flagNewPurchaseOrderCreated"
+      [modalData]="{
+        message: 'Órden de compra cargada con éxito.',
+        path: '/purchase-orders'
+      }"
+    ></shared-modal-saved>
   </section>
 </div>

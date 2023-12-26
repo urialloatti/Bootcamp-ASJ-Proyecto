@@ -17,10 +17,17 @@ export class PurchaseListComponent implements OnInit {
     section: 'purchase-orders',
     label: 'órdenes de compra',
     listFields: [
-      { field: 'Proveedor', keys: [{ key: 'suplierName' }] },
+      {
+        field: 'Proveedor',
+        keys: [{ key: 'id', extras: 'PurchaseOrder' }],
+      },
       {
         field: 'Fecha de emisión',
-        keys: [{ key: 'dateEmited', extras: 'Date' }],
+        keys: [{ key: 'dateEmited', extras: 'FullDate' }],
+      },
+      {
+        field: 'Fecha de arribo',
+        keys: [{ key: 'dateArriving', extras: 'Date' }],
       },
       { field: 'Total', keys: [{ key: 'total', extras: 'Currency' }] },
     ],
@@ -33,31 +40,22 @@ export class PurchaseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadList();
+    console.log(this.purchaseList);
   }
 
   loadList() {
     this.purchaseList = this.purchaseService.getList();
-    for (let purchase of this.purchaseList) {
-      purchase.suplierName = this.getSuplierName(purchase.id!);
-    }
   }
 
   deleteProduct(id: number): void {
     let deleted = this.purchaseService.deleteById(id);
     if (deleted) {
-      alert(
-        `Órden de compra del proveedor ${this.getSuplierName(
-          deleted.id!
-        )} eliminado con éxito.`
-      );
+      alert(`Órden de compra del proveedor ${deleted.suplierName} cancelada.`);
       this.loadList();
     } else {
       alert('La órden de compra ya no se encuentra en la base de datos.');
     }
-  }
-
-  getSuplierName(id: number): string {
-    let suplier = this.supliersService.getElementById(id);
-    return suplier?.brand || 'Proveedor no encontrado.';
+    this.purchaseList = [];
+    setTimeout(() => this.loadList(), 1);
   }
 }

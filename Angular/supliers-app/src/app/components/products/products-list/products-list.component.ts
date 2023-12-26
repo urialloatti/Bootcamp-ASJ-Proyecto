@@ -16,6 +16,7 @@ export class ProductsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.producsArray = this.productsService.getList();
+    console.log(this.producsArray);
   }
 
   deleteProduct(id: number): void {

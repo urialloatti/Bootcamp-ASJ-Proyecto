@@ -24,21 +24,18 @@
         </td>
         <td class="d-flex justify-content-end py-2 last-column">
           <span class="mx-1 bg-transparent">
-            <button class="btn btn-secondary pb-2">
+            <button class="btn btn-secondary pb-2" routerLink="{{ item.id }}">
               <i class="bi bi-box-arrow-in-up-right"></i>
             </button>
           </span>
           <span class="mx-1 bg-transparent">
-            <button
-              class="btn btn-secondary pb-2 btn-update-suplier"
-              routerLink="u/{{ item.id }}"
-            >
+            <button class="btn btn-secondary pb-2" routerLink="u/{{ item.id }}">
               <i class="bi bi-pencil-square"></i>
             </button>
           </span>
           <span class="mx-1 bg-transparent">
             <button
-              class="btn btn-secondary pb-2 btn-del-suplier"
+              class="btn btn-secondary pb-2"
               (click)="deleteElement(item.id)"
             >
               <i class="bi bi-trash3"></i>

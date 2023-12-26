@@ -1,5 +1,6 @@
 export interface ProductInterface {
   id?: number;
+  code?: string;
   suplierId: number;
   suplier?: string;
   category: category;
@@ -9,10 +10,9 @@ export interface ProductInterface {
 }
 
 type category =
-  | 'Árboles'
-  | 'Aromáticas'
-  | 'Fertilizantes'
-  | 'Florales'
-  | 'Frutales'
-  | 'Insecticidas'
+  | 'Celulares'
+  | 'Laptops'
+  | 'Pequeños'
+  | 'Periféricos'
+  | 'Audio'
   | 'Otro';

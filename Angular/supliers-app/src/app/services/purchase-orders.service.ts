@@ -20,7 +20,9 @@ export class PurchaseOrdersService {
 
   public deleteById(id: number): PurchaseOrderInterface | undefined {
     const deleted = this.list.find((purchase) => purchase.id == id);
-    this.list = this.list.filter((purchase) => purchase.id != id);
+    if (deleted) {
+      deleted.isCanceled = true;
+    }
     return deleted;
   }
 

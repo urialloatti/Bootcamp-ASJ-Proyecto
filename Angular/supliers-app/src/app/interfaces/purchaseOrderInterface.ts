@@ -1,7 +1,7 @@
 export interface PurchaseOrderInterface {
   id?: number;
-  dateEmited: Date;
-  dateArriving: Date;
+  dateEmited: Date | string;
+  dateArriving: Date | string;
   shippingRequirements: string;
   suplierId: number;
   suplierName?: string;

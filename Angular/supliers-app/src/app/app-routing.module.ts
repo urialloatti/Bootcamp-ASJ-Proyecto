@@ -9,6 +9,9 @@ import { MainComponent } from './components/main/main.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PurchaseNewComponent } from './components/purchase-order/purchase-new/purchase-new.component';
 import { PurchaseListComponent } from './components/purchase-order/purchase-list/purchase-list.component';
+import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
+import { ProductInfoComponent } from './components/products/product-info/product-info.component';
+import { PurchaseInfoComponent } from './components/purchase-order/purchase-info/purchase-info.component';
 
 const routes: Routes = [
   {
@@ -17,6 +20,7 @@ const routes: Routes = [
       { path: '', component: SupliersListComponent },
       { path: 'new', component: SupliersNewComponent },
       { path: 'u/:id', component: SupliersNewComponent },
+      { path: ':id', component: SuplierInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
@@ -26,6 +30,7 @@ const routes: Routes = [
       { path: '', component: ProductsListComponent },
       { path: 'new', component: ProductsNewComponent },
       { path: 'u/:id', component: ProductsNewComponent },
+      { path: ':id', component: ProductInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
@@ -34,7 +39,8 @@ const routes: Routes = [
     children: [
       { path: '', component: PurchaseListComponent },
       { path: 'new', component: PurchaseNewComponent },
-      { path: 'u/:id', component: NotFoundComponent },
+      { path: 'u/:id', component: PurchaseNewComponent },
+      { path: ':id', component: PurchaseInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },

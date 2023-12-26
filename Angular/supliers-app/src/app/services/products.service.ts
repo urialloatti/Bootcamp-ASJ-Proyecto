@@ -40,12 +40,13 @@ export class ProductsService {
     product.id = this.list.length;
     product.suplier =
       this.supliersService.getElementById(product.suplierId)?.brand || 'Otro';
+    product.code = crypto.randomUUID();
     this.list.push(product);
   }
 
   // UPDATE methods
   public updateElement(newProduct: ProductInterface) {
-    let updated = this.list.find((product) => product.id == newProduct.id);
-    updated = newProduct;
+    let oldProduct = this.list.find((product) => product.id == newProduct.id);
+    oldProduct = newProduct;
   }
 }

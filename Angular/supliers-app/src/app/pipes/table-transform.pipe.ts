@@ -7,6 +7,7 @@ import { Contact, PhoneNumber } from '../interfaces/suplierInterface';
 import { ShowContactPipe } from './show-contact.pipe';
 import { ShowMailPipe } from './show-mail.pipe';
 import { ShowContactPhonePipe } from './show-contact-phone.pipe';
+import { PurchaseOrdersService } from '../services/purchase-orders.service';
 
 @Pipe({
   name: 'tableTransform',
@@ -19,7 +20,8 @@ export class TableTransformPipe implements PipeTransform {
     private contactPipe: ShowContactPipe,
     private cuitPipe: CuitPipePipe,
     private mail: ShowMailPipe,
-    private phone: PhoneNumberPipe
+    private phone: PhoneNumberPipe,
+    private pOrderService: PurchaseOrdersService
   ) {}
 
   transform(value: unknown, extra?: PipeExtra): string {
@@ -27,10 +29,7 @@ export class TableTransformPipe implements PipeTransform {
     if (extra) {
       switch (extra) {
         case 'Date':
-          result = this.datePipe.transform(
-            value as Date,
-            'dd/MM/YYYY - hh:mm a'
-          );
+          result = this.datePipe.transform(value as Date, 'dd/MM/YYYY');
           break;
         case 'Currency':
           result = this.currencyPipe.transform(value as string, 'USD');
@@ -49,6 +48,20 @@ export class TableTransformPipe implements PipeTransform {
           break;
         case 'contactPhone':
           result = this.contactPhone.transform(value as Contact);
+          break;
+        case 'PurchaseOrder':
+          let pOrder = this.pOrderService.getElementById(value as number);
+          if (pOrder!.isCanceled) {
+            result = pOrder!.suplierName + ' (Cancelado)';
+          } else {
+            result = pOrder!.suplierName || '';
+          }
+          break;
+        case 'FullDate':
+          result = this.datePipe.transform(
+            value as Date,
+            'dd/MM/YYYY - hh:mm a'
+          );
           break;
       }
     }
