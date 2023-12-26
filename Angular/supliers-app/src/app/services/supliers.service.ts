@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { suplierMockData } from '../data/mock-data';
 import { SuplierInterface } from '../interfaces/suplierInterface';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SupliersService {
-
   private list: SuplierInterface[] = suplierMockData || [];
-  
+
   public getList() {
     return this.list;
   }
@@ -24,12 +22,13 @@ export class SupliersService {
     return deleted;
   }
 
-  public addElement( suplier: SuplierInterface) {
+  public addElement(suplier: SuplierInterface) {
     suplier.id = this.list.length;
+    suplier.code = suplier.category.substring(0, 3) + suplier.id.toString();
     this.list.push(suplier);
   }
 
-  public updateElement( newSuplier: SuplierInterface) {
+  public updateElement(newSuplier: SuplierInterface) {
     let updated = this.list.find((suplier) => suplier.id == newSuplier.id);
     updated = newSuplier;
   }

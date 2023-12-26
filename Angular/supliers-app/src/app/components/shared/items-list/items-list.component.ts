@@ -4,7 +4,7 @@ import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface
 @Component({
   selector: 'shared-items-list',
   templateUrl: './items-list.component.html',
-  styleUrl: './items-list.component.css'
+  styleUrl: './items-list.component.css',
 })
 export class ItemsListComponent {
   @Input()
@@ -14,12 +14,9 @@ export class ItemsListComponent {
   public itemsArray!: any[];
 
   @Output()
-  deletedId: EventEmitter<number> = new EventEmitter;
+  deletedId: EventEmitter<number> = new EventEmitter();
 
   deleteElement(id: number): void {
     this.deletedId.emit(id);
   }
-
-
-
 }

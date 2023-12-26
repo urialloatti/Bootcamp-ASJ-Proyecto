@@ -12,88 +12,49 @@ import { PurchaseListComponent } from './components/purchase-order/purchase-list
 
 const routes: Routes = [
   {
-    path: "supliers",
+    path: 'supliers',
     children: [
-      {
-        path: "",
-        component: SupliersListComponent
-      },
-      {
-        path: "new",
-        component: SupliersNewComponent
-      },
-      {
-        path: "u/:id",
-        component: SupliersNewComponent
-      },
-      {
-        path: "**",
-        redirectTo: "",
-        pathMatch: "full"
-      }
-    ]
+      { path: '', component: SupliersListComponent },
+      { path: 'new', component: SupliersNewComponent },
+      { path: 'u/:id', component: SupliersNewComponent },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
+    ],
   },
   {
-    path: "products",
+    path: 'products',
     children: [
-      {
-        path: "",
-        component: ProductsListComponent
-      },
-      {
-        path: "new",
-        component: ProductsNewComponent
-      },
-      {
-        path: "u/:id",
-        component: ProductsNewComponent
-      },
-      {
-        path: "**",
-        redirectTo: "",
-        pathMatch: "full"
-      }
-    ]
+      { path: '', component: ProductsListComponent },
+      { path: 'new', component: ProductsNewComponent },
+      { path: 'u/:id', component: ProductsNewComponent },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
+    ],
   },
   {
-    path: "purchase-orders",
+    path: 'purchase-orders',
     children: [
-      {
-        path: "",
-        component: PurchaseListComponent
-      },
-      {
-        path: "new",
-        component: PurchaseNewComponent
-      },
-      {
-        path: "u/:id",
-        component: NotFoundComponent
-      },
-      {
-        path: "**",
-        redirectTo: "",
-        pathMatch: "full"
-      }
-    ]
+      { path: '', component: PurchaseListComponent },
+      { path: 'new', component: PurchaseNewComponent },
+      { path: 'u/:id', component: NotFoundComponent },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
+    ],
   },
   {
-    path: "",
+    path: '',
     component: MainComponent,
-    pathMatch: "full"
+    pathMatch: 'full',
   },
   {
-    path: "404",
-    component: NotFoundComponent
+    path: '404',
+    component: NotFoundComponent,
   },
   {
-    path: "**",
-    redirectTo: "404"
-  }
+    path: '**',
+    redirectTo: '404',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

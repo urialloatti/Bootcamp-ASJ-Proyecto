@@ -1,19 +1,19 @@
 #main {
-    background-image: url("../../../assets/main-background.jpg");
-    background-size: 100%;
-    background-size: cover;
-    color: var(--color-accent);
+  background-image: url("../../../assets/main-background.jpg");
+  background-size: 100%;
+  background-size: cover;
+  color: var(--color-accent);
 }
 
 .main-icon {
-    font-size: 5em;
+  font-size: 5em;
 }
 
 .main-button {
-    color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .main-button:hover {
-    color: var(--color-accent-light);
-    transition: 0.4s;
+  color: var(--color-accent-light);
+  transition: 0.4s;
 }

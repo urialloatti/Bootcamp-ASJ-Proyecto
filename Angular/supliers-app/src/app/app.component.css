@@ -1,24 +1,24 @@
 header {
-    flex: 0 1 auto;
-    background-color: var(--bg-dark);
-    color: var(--color-light);
+  flex: 0 1 auto;
+  background-color: var(--bg-dark);
+  color: var(--color-light);
 }
 
 main {
-    flex: 1 1 auto;
-    background-color: var(--bg-light);
-    /*background-image: linear-gradient(var(--bg-accent), var(--bg-light)); */
+  flex: 1 1 auto;
+  background-color: var(--bg-light);
+  /*background-image: linear-gradient(var(--bg-accent), var(--bg-light)); */
 }
 
 footer {
-    background-color: var(--bg-accent);
-    color: var(--color-accent);
+  background-color: var(--bg-accent);
+  color: var(--color-accent);
 }
 
 #container {
-    display: flex;
-    flex-flow: column;
-    height: 100vh;
-    padding-left: 0px;
-    padding-right: 0px;
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  padding-left: 0px;
+  padding-right: 0px;
 }

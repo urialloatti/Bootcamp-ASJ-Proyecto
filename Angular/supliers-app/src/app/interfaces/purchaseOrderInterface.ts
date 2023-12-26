@@ -1,14 +1,17 @@
 export interface PurchaseOrderInterface {
-    id?: number,
-    dateEmited: Date,
-    dateArriving: Date,
-    suplierId: number,
-    suplierName?: string,
-    purchases: ProductsGroup[],
-    total?: number
+  id?: number;
+  dateEmited: Date;
+  dateArriving: Date;
+  shippingRequirements: string;
+  suplierId: number;
+  suplierName?: string;
+  products: ProductGroup[];
+  total?: number;
+  isCanceled?: boolean;
 }
 
-interface ProductsGroup {
-    productId: number,
-    productQuantity: number
+export interface ProductGroup {
+  productId: number;
+  productName?: string;
+  productQuantity: number;
 }

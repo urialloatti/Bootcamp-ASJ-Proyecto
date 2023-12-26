@@ -1,112 +1,179 @@
 <div class="container body py-4 px-5 rounded">
-    <section class="row">
-        <!-- <div class="col"></div> -->
-        <div class="col-6">
-            <form action="" class="form-control">
-                <fieldset class="px-4">
-                    <div class="text-center my-4">
-                        <p class="h3 text-body-secondary">Nueva orden de compra</p>
-                    </div>
-                    <hr>
-                    <div class="mb-3">
-                        <label for="emition-date" class="form-label">Fecha emisión</label>
-                        <input type="date" class="form-control" id="emition-date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="delivery-date" class="form-label">Fecha entrega</label>
-                        <input type="date" class="form-control" id="delivery-date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="product-description" class="form-label">Dirección de entrega</label>
-                        <div class="row">
-                            <div class="col-8 form-floating">
-                                <input type="text" class="form-control px-3" id="delivery-street" placeholder="Calle">
-                                <label for="delivery-street" class="form-label mx-3 ">Calle</label>
-                            </div>
-                            <div class="col form-floating">
-                                <input type="text" class="form-control px-3" id="delivery-street-number"
-                                    placeholder="Número">
-                                <label for="delivery-street-number" class="form-label mx-3 ">Número</label>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col">
-                            <p>Productos</p>
-                        </div>
-                        <div class="col text-end">
-                            <p>Precio</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" id="current-order">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    <p>Total</p>
-                                </div>
-                                <div class="col">
-                                    <hr>
-                                </div>
-                                <div class="col text-end" id="purchase-total">
-                                    <p>$0</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-                <div class="row m-4">
-                    <div class="col text-center">
-                        <a href="products-list.html">
-                            <button class="btn btn-secondary" id="confirm-purchase">Confirmar compra</button>
-                        </a>
-                    </div>
-
+  <section class="row">
+    <div class="col me-5">
+      <article class="bg-light-subtle rounded p-4">
+        <form #productForm="ngForm" class="row" (ngSubmit)="addProduct()">
+          <div class="col-12 text-center">
+            <p class="h3 text-body-secondary">Añadir productos</p>
+          </div>
+          <div class="mb-1">
+            <label for="supliers-list" class="form-label">Proveedor</label>
+            <select
+              name="suplier"
+              #suplier="ngModel"
+              [(ngModel)]="currentPurchaseOrder.suplierId"
+              class="form-select"
+              [disabled]="isSuplierSelected"
+            >
+              <option
+                value="{{ suplier.id }}"
+                *ngFor="let suplier of supliersList"
+              >
+                {{ suplier.brand }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label for="product-list" class="form-label">Producto</label>
+            <select
+              name="product"
+              #product="ngModel"
+              [(ngModel)]="currentProduct.productId"
+              class="form-select"
+            >
+              <option
+                value="{{ productAdd.id }}"
+                *ngFor="let productAdd of getSuplierProducts(suplier.value)"
+              >
+                {{ productAdd.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <div class="row justify-content-around mb-3">
+              <div class="col-4">
+                <label for="product-price" class="form-label"
+                  >Precio Unitario</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  [value]="getProductPrice(product.value)"
+                  disabled
+                />
+              </div>
+              <div class="col-4">
+                <label for="product-quantity" class="form-label"
+                  >Cantidad</label
+                >
+                <input
+                  type="number"
+                  name="quantity"
+                  [(ngModel)]="currentProduct.productQuantity"
+                  #quantity="ngModel"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="row justify-content-center">
+            <div class="col-6 text-center">
+              <button class="btn btn-secondary" type="submit">
+                Cargar Producto
+              </button>
+            </div>
+          </div>
+        </form>
+      </article>
+    </div>
+    <!-- <div class="col-1"></div> -->
+    <div class="col-6">
+      <form
+        #purchaseForm="ngForm"
+        (ngSubmit)="savePurchase()"
+        class="form-control"
+      >
+        <fieldset class="px-4">
+          <div class="text-center my-4">
+            <p class="h3 text-body-secondary">Nueva orden de compra</p>
+          </div>
+          <hr />
+          <div class="mb-3">
+            <div class="row">
+              <div class="col">
+                <label class="form-label">Fecha emisión</label>
+                <input
+                  type="date"
+                  name="dateEmited"
+                  #dateEmited="ngModel"
+                  [(ngModel)]="currentPurchaseOrder.dateEmited"
+                  class="form-control"
+                />
+              </div>
+              <div class="col">
+                <label class="form-label">Fecha entrega</label>
+                <input
+                  type="date"
+                  name="dateArriving"
+                  #dateArriving="ngModel"
+                  [(ngModel)]="currentPurchaseOrder.dateArriving"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Aclaraciones</label>
+            <textarea
+              name="shipping-requirement"
+              class="form-control"
+              #shippingRequirements="ngModel"
+              [(ngModel)]="currentPurchaseOrder.shippingRequirements"
+            ></textarea>
+            <div class="form-text" *ngIf="true">
+              <p>No puede quedar vacío.</p>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col">
+              <p>Productos</p>
+            </div>
+            <div class="col text-end">
+              <p>Precio</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" id="current-order"></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div
+                class="row"
+                *ngFor="let productView of currentPurchaseOrder.products"
+              >
+                <div class="col">{{ productView.productName }}</div>
+                <div class="col"><hr /></div>
+                <div class="col">
+                  {{
+                    getProductPrice(productView.productId) *
+                      productView.productQuantity
+                  }}
                 </div>
-            </form>
-        </div>
-        <!-- <div class="col"></div> -->
-        <div class="col-1"></div>
-        <div class="col">
-            <article class="bg-light-subtle rounded p-4">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p class="h3 text-body-secondary">Añadir productos</p>
-                    </div>
-                    <div class="mb-1">
-                        <label for="supliers-list" class="form-label">Proveedor</label>
-                        <select class="form-select" aria-label="Proveedor" id="supliers-list">
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label for="product-list" class="form-label">Producto</label>
-                        <select class="form-select" aria-label="Producto" id="product-list">
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <div class="row justify-content-around mb-3">
-                            <div class="col-4">
-                                <label for="product-price" class="form-label">Precio</label>
-                                <input type="text" class="form-control" id="product-price">
-                            </div>
-                            <div class="col-4">
-                                <label for="product-quantity" class="form-label">Cantidad</label>
-                                <input type="text" class="form-control" id="product-quantity" value="1">
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row justify-content-center">
-                        <div class="col-6 text-center">
-                            <button class="btn btn-secondary" id="add-product">Cargar Producto</button>
-                        </div>
-                    </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Total</p>
                 </div>
-            </article>
+                <div class="col"><hr /></div>
+                <div class="col text-end" id="purchase-total">
+                  <p>{{ currentPurchaseOrder.total }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="row m-4">
+          <div class="col text-center">
+            <a href="products-list.html">
+              <button class="btn btn-secondary" id="confirm-purchase">
+                Confirmar compra
+              </button>
+            </a>
+          </div>
         </div>
-    </section>
+      </form>
+    </div>
+  </section>
 </div>

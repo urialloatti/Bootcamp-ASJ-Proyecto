@@ -1,10 +1,10 @@
 #not-found-main {
-    background-image: url("../../../assets/main-background.jpg");
-    background-size: 100%;
-    background-size: cover;
-    color: var(--color-accent);
+  background-image: url("../../../assets/main-background.jpg");
+  background-size: 100%;
+  background-size: cover;
+  color: var(--color-accent);
 }
 
 h1 {
-    font-size: 5em;
+  font-size: 5em;
 }

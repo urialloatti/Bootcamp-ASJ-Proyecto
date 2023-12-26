@@ -1,4 +1,4 @@
 export interface ModalInterface {
-    section: string,
-    path: string
+  section: string;
+  path: string;
 }

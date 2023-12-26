@@ -1,15 +1,15 @@
 :root {
-    --bg-dark: #404850;
-    --bg-accent: #208090;
-    --bg-light: #F6FAFF;
-    --bg-light-accent: #E8FBFF;
+  --bg-dark: #404850;
+  --bg-accent: #208090;
+  --bg-light: #f6faff;
+  --bg-light-accent: #e8fbff;
 
-    --color-light: #D2E2EF;
-    --color-dark: #222A32;
-    --color-accent: #28A0B0;
-    --color-accent-light: #38B8C8;
+  --color-light: #d2e2ef;
+  --color-dark: #181d22;
+  --color-accent: #28a0b0;
+  --color-accent-light: #38b8c8;
 }
 
 .body {
-    background-color: var(--bg-light-accent);
+  background-color: var(--bg-light-accent);
 }

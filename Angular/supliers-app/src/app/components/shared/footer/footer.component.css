@@ -1,10 +1,10 @@
 li {
-    color: var(--color-accent);
-    border: 0px;
+  color: var(--color-accent);
+  border: 0px;
 }
 
 li:hover {
-    color: var(--color-light);
-    transition: 0.3s;
-    cursor: pointer;
+  color: var(--color-light);
+  transition: 0.3s;
+  cursor: pointer;
 }

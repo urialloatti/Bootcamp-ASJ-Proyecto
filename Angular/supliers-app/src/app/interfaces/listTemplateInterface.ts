@@ -1,13 +1,24 @@
 export interface ListTemplateInterface {
-    section: string,
-    label: string,
-    listFields: ListField[]
+  section: string;
+  label: string;
+  listFields: ListField[];
 }
 
 interface ListField {
-    field: string,
-    key: string,
-    extras?: PipeExtra
+  field: string;
+  keys: keyValue[];
 }
 
-export type PipeExtra = "Date" | "Currency" | "CUIT";
+interface keyValue {
+  key: string;
+  extras?: PipeExtra;
+}
+
+export type PipeExtra =
+  | 'contactMails'
+  | 'contactName'
+  | 'contactPhone'
+  | 'CUIT'
+  | 'Currency'
+  | 'Date'
+  | 'phone';

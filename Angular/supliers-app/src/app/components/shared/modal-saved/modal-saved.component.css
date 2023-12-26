@@ -1,43 +1,43 @@
 #modal-box {
-    height: fit-content;
-    position: fixed;
-    top: 10%;
-    left: 30%;
-    display: inline;
-    width: 40%;
+  height: fit-content;
+  position: fixed;
+  top: 10%;
+  left: 30%;
+  display: inline;
+  width: 40%;
 }
 
 #modal-dialog {
-    z-index: 1055;
+  z-index: 1055;
 }
 
 .modal-header-bg {
-    background-color: var(--bg-accent);
-    color: var(--color-light);
+  background-color: var(--bg-accent);
+  color: var(--color-light);
 }
 
 .modal-content-bg {
-    background-color: var(--bg-light);
-    color: var(--color-light);
+  background-color: var(--bg-light);
+  color: var(--color-light);
 }
 
 @media (max-width: 1200px) {
-    #modal-box {
-        left: 25%;
-        width: 50%;
-    }
+  #modal-box {
+    left: 25%;
+    width: 50%;
+  }
 }
 
 @media (max-width: 992px) {
-    #modal-box {
-        left: 15%;
-        width: 70%;
-    }
+  #modal-box {
+    left: 15%;
+    width: 70%;
+  }
 }
 
 @media (max-width: 768px) {
-    #modal-box {
-        left: 10%;
-        width: 80%;
-    }
+  #modal-box {
+    left: 10%;
+    width: 80%;
+  }
 }

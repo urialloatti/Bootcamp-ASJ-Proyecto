@@ -1,169 +1,387 @@
 <section class="row my-3">
-    <div class="col"></div>
-    <div class="col-6">
-        <form #myForm="ngForm" (ngSubmit)="saveSuplier()" class="form-control">
-            <fieldset class="px-4">
-                <div class="text-center my-4">
-                    <p class="h3 text-body-secondary">Cargar nuevo proveedor</p>
-                </div>
-                <hr>
-                <div class="mb-3">
-                    <label for="suplier-brand" class="form-label">Razón social</label>
-                    <input type="text" name="brand" #brand="ngModel" [(ngModel)]="currentSuplier.brand"
-                        required minlength="4" maxlength="60" [ngClass]="(brand.errors)? '':'is-valid'"
-                        class="form-control">
-                    <div class="form-text" *ngIf="(isSuplierInvalid.brand)">
-                        <p>Debe tener al menos 4 caracteres.</p>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="suplier-category" class="form-label">Rubro</label>
-                    <input type="text" name="category" #category="ngModel" [(ngModel)]="currentSuplier.category"
-                        required minlength="4" maxlength="60" [ngClass]="(category.errors)? '':'is-valid'"
-                        class="form-control">
-                        <div class="form-text" *ngIf="(isSuplierInvalid.category)">
-                            <p>Debe tener al menos 4 caracteres.</p>
-                        </div>
-                </div>
-                <div class="mb-3">
-                    <label for="suplier-web" class="form-label">Sitio web</label>
-                    <input type="text" name="web" #web="ngModel" [(ngModel)]="currentSuplier.web"
-                        required minlength="4" maxlength="60" [ngClass]="(web.errors)?'':'is-valid'"
-                        class="form-control">
-                        <div class="form-text" *ngIf="(isSuplierInvalid.web)">
-                            <p>Debe tener al menos 4 caracteres.</p>
-                        </div>
-                </div>
-            </fieldset>
-            <fieldset class="px-4">
-                <div class="row mb-1">
-                    <div class="col">
-                        <label for="suplier-address" class="form-label">Dirección</label>
-                        <input type="text" name="address" #address="ngModel" [(ngModel)]="currentSuplier.fullAddress.address"
-                            required minlength="4" maxlength="60" [ngClass]="(address.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.fullAddressAddress)">
-                                <p>Debe tener al menos 4 caracteres.</p>
-                            </div>
-                    </div>
-                    <div class="col-2">
-                        <label for="suplier-address-number" class="form-label">Número</label>
-                        <input type="number" name="addressNumber" #addressNumber="ngModel" [(ngModel)]="currentSuplier.fullAddress.addressNumber"
-                            required [ngClass]="(addressNumber.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.fullAddressAddressNumber)">
-                                <p>Debe ingresar un número positivo.</p>
-                            </div>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <div class="col">
-                        <label for="suplier-state" class="form-label">Provincia</label>
-                        <input type="text" name="state" #state="ngModel" [(ngModel)]="currentSuplier.fullAddress.state"
-                            required minlength="4" maxlength="60" [ngClass]="(state.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.fullAddressState)">
-                                <p>Debe tener al menos 4 caracteres.</p>
-                            </div>
-                    </div>
-                    <div class="col">
-                        <label for="suplier-country" class="form-label">País</label>
-                        <input type="text" name="country" #country="ngModel" [(ngModel)]="currentSuplier.fullAddress.country"
-                            required minlength="4" maxlength="60" [ngClass]="(country.errors)? '':'is-valid'"
-                            class="form-control" >
-                            <div class="form-text" *ngIf="(isSuplierInvalid.fullAddressCountry)">
-                                <p>Debe tener al menos 4 caracteres.</p>
-                            </div>
-                    </div>
-                </div>
-            </fieldset>
-            <fieldset class="px-4 mt-3">
-                <div class="row mb-1">
-                    <div class="col">
-                        <label for="suplier-cuit" class="form-label">CUIT</label>
-                        <input type="text" name="cuit" #cuit="ngModel" [(ngModel)]="currentSuplier.cuit"
-                            required minlength="11" maxlength="13" [ngClass]="validateCuitInput(cuit)? 'is-valid':''"
-                            placeholder="00-00000000-0" class="form-control"
-                            [disabled]="isUpdating">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.cuit)">
-                                <p>Debe tener 11 números y no contener letras ni guiones.</p>
-                            </div>
-                    </div>
-                    <div class="col">
-                        <label for="suplier-iva" class="form-label">Condición frente al IVA</label>
-                        <select class="form-select" name="iva" aria-label="Condición IVA" [(ngModel)]="currentSuplier.iva">
-                            <option value="IVA Responsable Inscripto">IVA Responsable Inscripto</option>
-                            <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
-                            <option value="Responsable Monotributo">Responsable Monotributo</option>
-                            <option value="Proveedor del Exterior">Proveedor del Exterior</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-            <fieldset class="px-4">
-                <div class="text-center my-4">
-                    <p class="h5 text-body-secondary">Datos de contacto</p>
-                </div>
-                <div class="row">
-                    <div class="col-6 mb-1">
-                        <label for="suplier-name" class="form-label">Nombre</label>
-                        <input type="text" name="name" #name="ngModel" [(ngModel)]="currentSuplier.contact.name"  
-                            required minlength="4" maxlength="30" [ngClass]="(name.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.contactName)">
-                                <p>Debe tener al menos 4 caracteres.</p>
-                            </div>
-                    </div>
-                    <div class="col-6 mb-1">
-                        <label for="suplier-surname" class="form-label">Apellido</label>
-                        <input type="text" name="surname" #surname="ngModel" [(ngModel)]="currentSuplier.contact.surname"
-                            required minlength="4" maxlength="30" [ngClass]="(surname.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.contactSurname)">
-                                <p>Debe tener al menos 4 caracteres.</p>
-                            </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 mb-1">
-                        <label for="suplier-phone" class="form-label">Teléfono</label>
-                        <input type="number" name="phone" #phone="ngModel" [(ngModel)]="currentSuplier.contact.phone"
-                            required min="1000000000" max="99999999999999" [ngClass]="(phone.errors)? '':'is-valid'"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.contactPhone)">
-                                <p>Ingrese el número completo sin 0 ni 15.</p>
-                            </div>
-                    </div>
-                    <div class="col-6 mb-1">
-                        <label for="suplier-mail" class="form-label">Email</label>
-                        <input type="email" name="mail" #mail="ngModel" [(ngModel)]="currentSuplier.contact.mail"
-                            required minlength="4" maxlength="40" [ngClass]="validateMailInput(mail)? 'is-valid':''"
-                            class="form-control">
-                            <div class="form-text" *ngIf="(isSuplierInvalid.contactMail)">
-                                <p>Por favor introduzca una dirección de correo válida.</p>
-                            </div>
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="suplier-rol" class="form-label">Rol</label>
-                    <input type="text" name="rol" #rol="ngModel" [(ngModel)]="currentSuplier.contact.rol"
-                        required minlength="4" maxlength="40" [ngClass]="(rol.errors)? '':'is-valid'"
-                        class="form-control">
-                        <div class="form-text" *ngIf="(isSuplierInvalid.contactRol)">
-                            <p>Debe tener al menos 4 caracteres.</p>
-                        </div>
-                </div>
-            </fieldset>
-            <div class="row m-4">
-                <div class="col text-center">
-                    <button class="btn btn-secondary" type="submit">Guardar Proveedor</button>
-                    <!-- [disabled]="myForm.invalid" -->
-                </div>
+  <div class="col"></div>
+  <div class="col-6">
+    <form #myForm="ngForm" (ngSubmit)="saveSuplier()" class="form-control">
+      <fieldset class="px-4">
+        <div class="text-center my-4">
+          <p class="h3 text-body-secondary">Cargar nuevo proveedor</p>
+        </div>
+        <hr />
+        <div class="mb-3">
+          <label class="form-label">Razón social</label>
+          <input
+            type="text"
+            name="brand"
+            #brand="ngModel"
+            [(ngModel)]="currentSuplier.brand"
+            required
+            minlength="4"
+            maxlength="60"
+            [ngClass]="brand.errors ? '' : 'is-valid'"
+            class="form-control"
+          />
+          <div class="form-text" *ngIf="isSuplierInvalid.brand">
+            <p>Debe tener al menos 4 caracteres.</p>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Rubro</label>
+          <input
+            type="text"
+            name="category"
+            #category="ngModel"
+            [(ngModel)]="currentSuplier.category"
+            required
+            minlength="4"
+            maxlength="60"
+            [ngClass]="category.errors ? '' : 'is-valid'"
+            class="form-control"
+          />
+          <div class="form-text" *ngIf="isSuplierInvalid.category">
+            <p>Debe tener al menos 4 caracteres.</p>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <div class="col-6 mb-1">
+            <label class="form-label">Teléfono</label>
+            <div class="row">
+              <div class="col col-5">
+                <select
+                  name="suplier"
+                  #suplier="ngModel"
+                  [(ngModel)]="currentSuplier.phone.country"
+                  class="form-select"
+                >
+                  <option
+                    value="{{ country.code }}"
+                    *ngFor="let country of countryCodes"
+                  >
+                    +{{ country.code }} - {{ country.country }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <input
+                  type="number"
+                  name="companyPhone"
+                  #companyPhone="ngModel"
+                  [(ngModel)]="currentSuplier.phone.number"
+                  required
+                  min="100000000"
+                  max="9999999999999"
+                  [ngClass]="companyPhone.errors ? '' : 'is-valid'"
+                  class="form-control"
+                />
+              </div>
             </div>
-        </form>
-    </div>
-    <div class="col"></div>
+            <div class="form-text" *ngIf="isSuplierInvalid.phone">
+              <p>Ingrese el código de país y luego el número de teléfono.</p>
+            </div>
+          </div>
+          <div class="col col-6">
+            <label class="form-label">Sitio web</label>
+            <input
+              type="text"
+              name="web"
+              #web="ngModel"
+              [(ngModel)]="currentSuplier.web"
+              required
+              minlength="4"
+              maxlength="60"
+              [ngClass]="web.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.web">
+              <p>Debe tener al menos 4 caracteres.</p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="px-4">
+        <div class="row mb-1">
+          <div class="col">
+            <label class="form-label">Dirección</label>
+            <input
+              type="text"
+              name="address"
+              #address="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.address"
+              required
+              minlength="4"
+              maxlength="60"
+              [ngClass]="address.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.fullAddressAddress">
+              <p>Debe tener al menos 4 caracteres.</p>
+            </div>
+          </div>
+          <div class="col-2">
+            <label class="form-label">Número</label>
+            <input
+              type="number"
+              name="addressNumber"
+              #addressNumber="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.addressNumber"
+              required
+              [ngClass]="addressNumber.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div
+              class="form-text"
+              *ngIf="isSuplierInvalid.fullAddressAddressNumber"
+            >
+              <p>Debe ingresar un número positivo.</p>
+            </div>
+          </div>
+          <div class="col-3">
+            <label class="form-label">Código postal</label>
+            <input
+              type="text"
+              name="zipCode"
+              #zipCode="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.zipCode"
+              required
+              [ngClass]="zipCode.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.fullAddresZIP">
+              <p>Debe ingresar un número positivo.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col">
+            <label class="form-label">País</label>
+            <select
+              name="country"
+              #country="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.country"
+              class="form-select"
+            >
+              <option
+                value="{{ country.country }}"
+                *ngFor="let country of locationOptions"
+              >
+                {{ country.country }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <label class="form-label">Provincia</label>
+            <select
+              name="state"
+              #state="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.state"
+              class="form-select"
+            >
+              <option
+                value="{{ state }}"
+                *ngFor="
+                  let state of getProvinces(currentSuplier.fullAddress.country)
+                "
+              >
+                {{ state }}
+              </option>
+            </select>
+          </div>
+          <div class="col">
+            <label class="form-label">Localidad</label>
+            <input
+              type="text"
+              name="district"
+              #district="ngModel"
+              [(ngModel)]="currentSuplier.fullAddress.district"
+              required
+              minlength="4"
+              maxlength="60"
+              [ngClass]="district.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.fullAddressDistrict">
+              <p>Debe tener al menos 4 caracteres.</p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="px-4 mt-3">
+        <div class="row mb-1">
+          <div class="col">
+            <label class="form-label">CUIT</label>
+            <input
+              type="text"
+              name="cuit"
+              #cuit="ngModel"
+              [(ngModel)]="currentSuplier.cuit"
+              required
+              minlength="11"
+              maxlength="13"
+              [ngClass]="validateCuitInput(cuit) ? 'is-valid' : ''"
+              placeholder="00-00000000-0"
+              class="form-control"
+              [disabled]="isUpdating"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.cuit">
+              <p>Debe tener 11 números y no contener letras ni guiones.</p>
+            </div>
+          </div>
+          <div class="col">
+            <label class="form-label">Condición frente al IVA</label>
+            <select
+              class="form-select"
+              name="iva"
+              aria-label="Condición IVA"
+              [(ngModel)]="currentSuplier.iva"
+            >
+              <option value="IVA Responsable Inscripto">
+                IVA Responsable Inscripto
+              </option>
+              <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
+              <option value="Responsable Monotributo">
+                Responsable Monotributo
+              </option>
+              <option value="Proveedor del Exterior">
+                Proveedor del Exterior
+              </option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="px-4">
+        <div class="text-center my-4">
+          <p class="h5 text-body-secondary">Datos de contacto</p>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-1">
+            <label class="form-label">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              #name="ngModel"
+              [(ngModel)]="currentSuplier.contact.name"
+              required
+              minlength="4"
+              maxlength="30"
+              [ngClass]="name.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.contactName">
+              <p>Debe tener al menos 4 caracteres.</p>
+            </div>
+          </div>
+          <div class="col-6 mb-1">
+            <label class="form-label">Apellido</label>
+            <input
+              type="text"
+              name="surname"
+              #surname="ngModel"
+              [(ngModel)]="currentSuplier.contact.surname"
+              required
+              minlength="4"
+              maxlength="30"
+              [ngClass]="surname.errors ? '' : 'is-valid'"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.contactSurname">
+              <p>Debe tener al menos 4 caracteres.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-1">
+            <label class="form-label">Teléfono</label>
+            <div class="row">
+              <div class="col col-5">
+                <select
+                  name="suplier"
+                  #suplier="ngModel"
+                  [(ngModel)]="currentSuplier.contact.phone.country"
+                  class="form-select"
+                >
+                  <option
+                    *ngFor="let country of countryCodes"
+                    value="{{ country.code }}"
+                  >
+                    +{{ country.code }} - {{ country.country }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <input
+                  type="number"
+                  name="contactPhone"
+                  #contactPhone="ngModel"
+                  [(ngModel)]="currentSuplier.contact.phone.number"
+                  required
+                  min="100000000"
+                  max="9999999999999"
+                  [ngClass]="contactPhone.errors ? '' : 'is-valid'"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="form-text" *ngIf="isSuplierInvalid.contactPhone">
+              <p>Ingrese el código de país y luego el número de teléfono.</p>
+            </div>
+          </div>
+          <div class="col-6 mb-1">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="mail"
+              #mail="ngModel"
+              [(ngModel)]="currentSuplier.contact.mail"
+              required
+              minlength="4"
+              maxlength="40"
+              [ngClass]="validateMailInput(mail) ? 'is-valid' : ''"
+              class="form-control"
+            />
+            <div class="form-text" *ngIf="isSuplierInvalid.contactMail">
+              <p>Por favor introduzca una dirección de correo válida.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mb-1">
+          <label class="form-label">Rol</label>
+          <input
+            type="text"
+            name="rol"
+            #rol="ngModel"
+            [(ngModel)]="currentSuplier.contact.rol"
+            required
+            minlength="4"
+            maxlength="40"
+            [ngClass]="rol.errors ? '' : 'is-valid'"
+            class="form-control"
+          />
+          <div class="form-text" *ngIf="isSuplierInvalid.contactRol">
+            <p>Debe tener al menos 4 caracteres.</p>
+          </div>
+        </div>
+      </fieldset>
+      <div class="row m-4">
+        <div class="col text-center">
+          <button class="btn btn-secondary me-1" type="submit">
+            Guardar Proveedor
+          </button>
+          <button
+            class="btn btn-secondary ms-1"
+            type="reset"
+            *ngIf="!isUpdating"
+          >
+            Limpiar Campos
+          </button>
+          <!-- [disabled]="myForm.invalid" -->
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col"></div>
 </section>
 
-<shared-modal-saved *ngIf="flagNewSuplierCreated" [modalData]="{section: 'Proveedor', path: '/supliers'}"></shared-modal-saved>
+<shared-modal-saved
+  *ngIf="flagNewSuplierCreated"
+  [modalData]="{ section: 'Proveedor', path: '/supliers' }"
+></shared-modal-saved>

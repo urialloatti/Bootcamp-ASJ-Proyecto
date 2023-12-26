@@ -1,3 +1,7 @@
 <div class="container body py-4 px-3 rounded">
-    <shared-items-list [listTemplate]="supliersFields" [itemsArray]="supliersArray" (deletedId)="deleteSuplier($event)"></shared-items-list>
+  <shared-items-list
+    [listTemplate]="supliersFields"
+    [itemsArray]="supliersArray"
+    (deletedId)="deleteSuplier($event)"
+  ></shared-items-list>
 </div>
