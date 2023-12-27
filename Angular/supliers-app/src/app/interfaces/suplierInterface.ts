@@ -9,6 +9,7 @@ export interface SuplierInterface {
   cuit: string;
   iva: IVAOptions;
   contact: Contact;
+  logo?: string;
 }
 
 interface FullAddress {

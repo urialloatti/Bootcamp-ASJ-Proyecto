@@ -20,7 +20,12 @@ export class SuplierInfoComponent {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id) {
-        this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
+        this.suplierService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentSuplier = response;
+          });
+        // this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
       }
     });
   }

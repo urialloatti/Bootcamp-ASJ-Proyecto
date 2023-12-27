@@ -33,6 +33,8 @@ export class PurchaseListComponent implements OnInit {
     ],
   };
 
+  isListLoaded: boolean = true;
+
   constructor(
     private purchaseService: PurchaseOrdersService,
     private supliersService: SupliersService

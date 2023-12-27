@@ -71,7 +71,12 @@ export class SupliersNewComponent implements OnInit {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
-        this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
+        this.suplierService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentSuplier = response;
+          });
+        // this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
         this.isUpdating = true;
       }
     });
@@ -88,9 +93,9 @@ export class SupliersNewComponent implements OnInit {
     });
     if (isFormValid) {
       if (this.isUpdating) {
-        this.suplierService.updateElement(this.currentSuplier);
+        this.suplierService.updateElement(this.currentSuplier).subscribe();
       } else {
-        this.suplierService.addElement(this.currentSuplier);
+        this.suplierService.addElement(this.currentSuplier).subscribe();
       }
       console.log(this.currentSuplier);
       this.flagNewSuplierCreated = true;

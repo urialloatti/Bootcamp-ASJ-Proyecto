@@ -11,21 +11,36 @@ import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface
 })
 export class ProductsListComponent implements OnInit {
   producsArray!: ProductInterface[];
+  isListLoaded: boolean = false;
 
   constructor(private productsService: ProductsService) {}
 
   ngOnInit(): void {
-    this.producsArray = this.productsService.getList();
+    this.productsService.getList().subscribe((response) => {
+      this.producsArray = response;
+      this.isListLoaded = true;
+    });
   }
 
   deleteProduct(id: number): void {
-    let deletedProduct = this.productsService.deleteElement(id);
-    if (deletedProduct) {
-      alert(`Producto ${deletedProduct.name} eliminado con éxito.`);
-      this.producsArray = this.productsService.getList();
-    } else {
-      alert('El producto ya no existe en la base de datos.');
-    }
+    let deleted: ProductInterface;
+    this.productsService.getElementById(id).subscribe((response) => {
+      deleted = response;
+      if (confirm(`¿Está seguro de que desea eliminar ${deleted.name}?`)) {
+        this.productsService.deleteElement(id).subscribe(
+          (response) => {
+            alert(`Producto ${deleted.name} eliminado con éxito.`);
+            this.productsService.getList().subscribe((response) => {
+              this.producsArray = response;
+            });
+          },
+          (error) => {
+            alert('El producto ya no existe en la base de datos.');
+            console.log(error);
+          }
+        );
+      }
+    });
   }
 
   productsFields: ListTemplateInterface = {

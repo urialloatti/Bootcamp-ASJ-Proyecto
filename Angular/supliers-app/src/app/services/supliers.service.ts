@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 import { suplierMockData } from '../data/mock-data';
 import { SuplierInterface } from '../interfaces/suplierInterface';
 
@@ -6,32 +9,45 @@ import { SuplierInterface } from '../interfaces/suplierInterface';
   providedIn: 'root',
 })
 export class SupliersService {
-  private list: SuplierInterface[] = suplierMockData || [];
+  constructor(private http: HttpClient) {}
 
-  public getList() {
-    return this.list.sort((a, b) =>
-      a.brand.toLowerCase().localeCompare(b.brand.toLowerCase())
+  URL_API: string = 'http://localhost:3000/supliers';
+  private counter: number = 2;
+
+  public getList(): Observable<SuplierInterface[]> {
+    return this.http.get<SuplierInterface[]>(this.URL_API).pipe(
+      map((list: SuplierInterface[]) => {
+        return list.sort((a, b) =>
+          a.brand.toLowerCase().localeCompare(b.brand.toLowerCase())
+        );
+      })
     );
   }
 
-  public getElementById(id: number): SuplierInterface | undefined {
-    return this.list.find((suplier) => suplier.id == id);
+  public getElementById(id: number): Observable<SuplierInterface> {
+    return this.http.get<SuplierInterface>(this.URL_API + '/' + id);
   }
 
-  public deleteElement(id: number) {
-    const deleted = this.list.find((suplier) => suplier.id == id);
-    this.list = this.list.filter((suplier) => suplier.id != id);
-    return deleted;
+  public deleteElement(id: number): Observable<SuplierInterface> {
+    return this.http.delete<SuplierInterface>(this.URL_API + '/' + id);
   }
 
-  public addElement(suplier: SuplierInterface) {
-    suplier.id = this.list.length;
+  // POST methods
+
+  public addElement(suplier: SuplierInterface): Observable<SuplierInterface> {
+    suplier.id = this.counter;
     suplier.code = suplier.category.substring(0, 3) + suplier.id.toString();
-    this.list.push(suplier);
+    this.counter++;
+    return this.http.post<SuplierInterface>(this.URL_API, suplier);
   }
 
-  public updateElement(newSuplier: SuplierInterface) {
-    let updated = this.list.find((suplier) => suplier.id == newSuplier.id);
-    updated = newSuplier;
+  // PUT methods
+  public updateElement(
+    suplier: SuplierInterface
+  ): Observable<SuplierInterface> {
+    return this.http.put<SuplierInterface>(
+      this.URL_API + '/' + suplier.id,
+      suplier
+    );
   }
 }

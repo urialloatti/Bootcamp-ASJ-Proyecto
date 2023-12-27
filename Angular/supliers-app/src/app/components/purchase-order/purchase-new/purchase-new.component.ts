@@ -56,10 +56,16 @@ export class PurchaseNewComponent implements OnInit {
   };
 
   supliersList: SuplierInterface[] = [];
+  suplierProducts: ProductInterface[] = [];
 
   ngOnInit(): void {
-    this.supliersList = this.suplierService.getList();
+    // this.supliersList = this.suplierService.getList();
+    this.suplierService.getList().subscribe((response) => {
+      this.supliersList = response;
+    });
     this.currentPurchaseOrder.dateArriving = this.getMinDateShippingTemplate();
+    this.getSuplierProducts(this.currentPurchaseOrder.suplierId);
+    this.getProductPrice(this.currentProduct.productId);
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
@@ -73,14 +79,16 @@ export class PurchaseNewComponent implements OnInit {
     });
   }
 
-  getSuplierProducts(id: number): ProductInterface[] {
-    let list = this.productService.getElementsBySuplierId(id);
-    return list;
+  getSuplierProducts(id: number): void {
+    this.productService.getElementsBySuplierId(id).subscribe((response) => {
+      this.suplierProducts = response;
+    });
   }
 
-  getProductPrice(id: number): number {
-    let product = this.productService.getElementById(id);
-    return product?.price || 0;
+  getProductPrice(id: number): void {
+    this.productService.getElementById(id).subscribe((response) => {
+      this.currentProduct.price = response.price;
+    });
   }
 
   savePurchase() {
@@ -88,12 +96,15 @@ export class PurchaseNewComponent implements OnInit {
     if (this.isDateInvalid || this.isCartEmpty || this.isDescriptionInvalid) {
       alert('Hay errores en el formulario.');
     } else {
-      let suplier = this.suplierService.getElementById(
-        this.currentPurchaseOrder.suplierId
-      );
-      this.currentPurchaseOrder.suplierName = suplier?.brand;
-      this.purchaseService.addElement(this.currentPurchaseOrder);
-      this.flagNewPurchaseOrderCreated = true;
+      let suplier: SuplierInterface;
+      this.suplierService
+        .getElementById(this.currentPurchaseOrder.suplierId)
+        .subscribe((response) => {
+          suplier = response;
+          this.currentPurchaseOrder.suplierName = suplier?.brand;
+          this.purchaseService.addElement(this.currentPurchaseOrder);
+          this.flagNewPurchaseOrderCreated = true;
+        });
     }
   }
 
@@ -101,30 +112,34 @@ export class PurchaseNewComponent implements OnInit {
     this.isProductInvalid = false;
     if (this.currentProduct.productQuantity > 0) {
       this.isSuplierSelected = true;
-      let product = this.productService.getElementById(
-        this.currentProduct.productId
-      )!;
-      let productSearched = this.currentPurchaseOrder.products.find(
-        (prod) => prod.productId == this.currentProduct.productId
-      );
-      let price = product.price;
-      let total = price * this.currentProduct.productQuantity;
-      if (productSearched) {
-        productSearched.productQuantity += this.currentProduct.productQuantity;
-      } else {
-        this.currentProduct.productName = product.name;
-        this.currentProduct.price = price;
-        this.currentPurchaseOrder.products.push(
-          structuredClone(this.currentProduct)
-        );
-      }
-      !this.currentPurchaseOrder.total
-        ? (this.currentPurchaseOrder.total = total)
-        : (this.currentPurchaseOrder.total =
-            this.currentPurchaseOrder.total + total);
-      this.currentProduct.productQuantity = 1;
-      this.isProductAdded = true;
-      setTimeout(() => (this.isProductAdded = false), 2000);
+      let product: ProductInterface;
+      this.productService
+        .getElementById(this.currentProduct.productId)
+        .subscribe((response) => {
+          product = response;
+          let productSearched = this.currentPurchaseOrder.products.find(
+            (prod) => prod.productId == this.currentProduct.productId
+          );
+          let price = product?.price;
+          let total = price * this.currentProduct.productQuantity;
+          if (productSearched) {
+            productSearched.productQuantity +=
+              this.currentProduct.productQuantity;
+          } else {
+            this.currentProduct.productName = product?.name;
+            this.currentProduct.price = price;
+            this.currentPurchaseOrder.products.push(
+              structuredClone(this.currentProduct)
+            );
+          }
+          !this.currentPurchaseOrder.total
+            ? (this.currentPurchaseOrder.total = total)
+            : (this.currentPurchaseOrder.total =
+                this.currentPurchaseOrder.total + total);
+          this.currentProduct.productQuantity = 1;
+          this.isProductAdded = true;
+          setTimeout(() => (this.isProductAdded = false), 2000);
+        });
     } else {
       this.isProductInvalid = true;
     }

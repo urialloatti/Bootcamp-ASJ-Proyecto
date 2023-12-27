@@ -38,12 +38,18 @@ export class ProductsNewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.supliersList = this.suplierService.getList();
+    this.suplierService.getList().subscribe((response) => {
+      this.supliersList = response;
+    });
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
-        this.currentProduct = this.productService.getElementById(parseInt(id))!;
+        this.productService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentProduct = response;
+          });
         this.isUpdating = true;
       }
     });
@@ -59,10 +65,15 @@ export class ProductsNewComponent implements OnInit {
       }
     });
     if (isFormValid) {
+      let suplierName =
+        this.supliersList.find(
+          (suplier) => suplier.id == this.currentProduct.suplierId
+        )?.brand || 'Otro';
+      this.currentProduct.suplier = suplierName;
       if (this.isUpdating) {
-        this.productService.updateElement(this.currentProduct);
+        this.productService.updateElement(this.currentProduct).subscribe();
       } else {
-        this.productService.addElement(this.currentProduct);
+        this.productService.addElement(this.currentProduct).subscribe();
       }
       this.flagNewProductCreated = true;
     }

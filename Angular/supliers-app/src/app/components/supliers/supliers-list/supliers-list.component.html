@@ -2,6 +2,7 @@
   <shared-items-list
     [listTemplate]="supliersFields"
     [itemsArray]="supliersArray"
+    [isLoaded]="isListLoaded"
     (deletedId)="deleteSuplier($event)"
   ></shared-items-list>
 </div>

@@ -20,7 +20,11 @@ export class ProductInfoComponent implements OnInit {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id) {
-        this.currentProduct = this.productService.getElementById(parseInt(id))!;
+        this.productService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentProduct = response;
+          });
       }
     });
   }

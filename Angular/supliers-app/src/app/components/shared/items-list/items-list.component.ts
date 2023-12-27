@@ -11,7 +11,10 @@ export class ItemsListComponent {
   public listTemplate!: ListTemplateInterface;
 
   @Input()
-  public itemsArray!: any[];
+  public itemsArray: any[] = [];
+
+  @Input()
+  public isLoaded!: boolean;
 
   @Output()
   deletedId: EventEmitter<number> = new EventEmitter();

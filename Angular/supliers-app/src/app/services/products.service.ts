@@ -1,7 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, filter, map, pipe } from 'rxjs';
+
 import { productsMockData } from '../data/mock-data';
 import { ProductInterface } from '../interfaces/productInterface';
 import { SupliersService } from './supliers.service';
+import { __makeTemplateObject } from 'tslib';
 
 // const data: ProductInterface[] = productsMockData;
 
@@ -9,44 +13,62 @@ import { SupliersService } from './supliers.service';
   providedIn: 'root',
 })
 export class ProductsService {
+  private counter: number = 4;
+  private URL_API = 'http://localhost:3000/products';
   private list: ProductInterface[] = productsMockData || [];
 
-  constructor(private supliersService: SupliersService) {}
+  constructor(
+    private supliersService: SupliersService,
+    private http: HttpClient
+  ) {}
 
   // GET methods
-  public getList(): ProductInterface[] {
-    return this.list.sort((a, b) =>
-      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  public getList(): Observable<ProductInterface[]> {
+    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
+      map((list: ProductInterface[]) => {
+        const sorted = list.sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+        return sorted;
+      })
     );
   }
 
-  public getElementById(id: number): ProductInterface | undefined {
-    return this.list.find((product) => product.id == id);
+  public getElementById(id: number): Observable<ProductInterface> {
+    return this.http.get<ProductInterface>(this.URL_API + '/' + id);
   }
 
-  public getElementsBySuplierId(id: number): ProductInterface[] {
-    return this.list.filter((product) => product.suplierId == id);
+  public getElementsBySuplierId(id: number): Observable<ProductInterface[]> {
+    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
+      map((res: ProductInterface[]) => {
+        const filtered = res.filter((item) => item.suplierId == id);
+        return filtered;
+      })
+    );
   }
 
   // DELETE methods
-  public deleteElement(id: number): ProductInterface | undefined {
-    const deleted = this.list.find((product) => product.id == id);
-    this.list = this.list.filter((product) => product.id != id);
-    return deleted;
+  public deleteElement(id: number): Observable<ProductInterface> {
+    return this.http.delete<ProductInterface>(this.URL_API + '/' + id);
   }
 
-  // CREATE methods
-  public addElement(product: ProductInterface): void {
-    product.id = this.list.length;
-    product.suplier =
-      this.supliersService.getElementById(product.suplierId)?.brand || 'Otro';
+  // POST methods
+  public addElement(product: ProductInterface): Observable<ProductInterface> {
+    product.id = this.counter;
     product.code = crypto.randomUUID();
-    this.list.push(product);
+    this.counter++;
+    return this.http.post<ProductInterface>(this.URL_API, product);
   }
 
   // UPDATE methods
-  public updateElement(newProduct: ProductInterface) {
-    let oldProduct = this.list.find((product) => product.id == newProduct.id);
-    oldProduct = newProduct;
+  public updateElement(
+    product: ProductInterface
+  ): Observable<ProductInterface> {
+    return this.http.put<ProductInterface>(
+      this.URL_API + '/' + product.id,
+      product
+    );
+    // let oldProduct = this.list.find((product) => product.id == newProduct.id);
+    // oldProduct = newProduct;
   }
 }
