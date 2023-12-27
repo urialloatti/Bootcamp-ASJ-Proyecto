@@ -5,11 +5,18 @@
   --bg-light-accent: #e8fbff;
 
   --color-light: #d2e2ef;
-  --color-dark: #181d22;
+  --color-lighter: #d3e9fa;
+  --color-dark: #101a24;
+  --color-middle: #5a686d;
   --color-accent: #28a0b0;
   --color-accent-light: #38b8c8;
+  --color-accent-lighter: #3dd1e4;
 }
 
 .body {
   background-color: var(--bg-light-accent);
+}
+
+.title {
+  color: var(--color-middle) !important;
 }

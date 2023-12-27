@@ -29,6 +29,7 @@ import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { PurchaseStatePipe } from './pipes/purchase-state.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     SupliersListComponent,
     SupliersNewComponent,
     TableTransformPipe,
+    PurchaseStatePipe,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule],
   providers: [

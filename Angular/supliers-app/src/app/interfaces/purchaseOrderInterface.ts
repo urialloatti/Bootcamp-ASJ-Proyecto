@@ -13,5 +13,6 @@ export interface PurchaseOrderInterface {
 export interface ProductGroup {
   productId: number;
   productName?: string;
+  price: number;
   productQuantity: number;
 }

@@ -112,10 +112,16 @@ export const purchaseOrdersMockData: PurchaseOrderInterface[] = [
     shippingRequirements: 'Llamar al arribar',
     total: 5779995,
     products: [
-      { productId: 0, productName: 'Samsung Galaxy A54', productQuantity: 2 },
+      {
+        productId: 0,
+        productName: 'Samsung Galaxy A54',
+        price: 939999,
+        productQuantity: 2,
+      },
       {
         productId: 1,
         productName: 'Notebook HP 15.6” Ryzen 5',
+        price: 1299999,
         productQuantity: 3,
       },
     ],
@@ -124,16 +130,22 @@ export const purchaseOrdersMockData: PurchaseOrderInterface[] = [
   {
     id: 2,
     suplierId: 1,
-    suplierName: 'Cetrogar',
+    suplierName: 'Cetrogar SA',
     dateEmited: '2023-12-26',
     dateArriving: '2024-01-05',
     shippingRequirements: '-',
     total: 6139995,
     products: [
-      { productId: 2, productName: 'Samsung Galaxy S23', productQuantity: 1 },
+      {
+        productId: 2,
+        productName: 'Samsung Galaxy S23',
+        price: 939999,
+        productQuantity: 1,
+      },
       {
         productId: 3,
         productName: 'Notebook Dell 15.6” Intell I7',
+        price: 1299999,
         productQuantity: 4,
       },
     ],

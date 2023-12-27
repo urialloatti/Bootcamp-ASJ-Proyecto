@@ -1,10 +1,18 @@
 li {
+  border: 0px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.footer-link {
   color: var(--color-accent);
   border: 0px;
 }
 
-li:hover {
-  color: var(--color-light);
+.footer-link:hover {
+  color: var(--color-lighter);
   transition: 0.3s;
   cursor: pointer;
 }

@@ -2,9 +2,11 @@
   <section class="row">
     <div class="col me-5">
       <article class="bg-light-subtle rounded p-4">
-        <form #productForm="ngForm" class="row" (ngSubmit)="addProduct()">
-          <div class="col-12 text-center">
-            <p class="h3 text-body-secondary">Añadir productos</p>
+        <form #productForm="ngForm" (ngSubmit)="addProduct()">
+          <div class="row">
+            <div class="col-12 text-center">
+              <h2 class="h3 title">Añadir productos</h2>
+            </div>
           </div>
           <div class="mb-1">
             <label for="supliers-list" class="form-label">Proveedor</label>
@@ -94,120 +96,118 @@
     </div>
     <!-- <div class="col-1"></div> -->
     <div class="col-6">
-      <form
-        #purchaseForm="ngForm"
-        (ngSubmit)="savePurchase()"
-        class="form-control"
-      >
-        <fieldset class="px-4">
-          <div class="text-center my-4">
-            <p class="h3 text-body-secondary">Nueva orden de compra</p>
-          </div>
-          <hr />
-          <div class="mb-3">
-            <div class="row">
-              <div class="col">
-                <label class="form-label">Fecha emisión</label>
-                <input
-                  type="date"
-                  name="dateEmited"
-                  #dateEmited="ngModel"
-                  [(ngModel)]="currentPurchaseOrder.dateEmited"
-                  class="form-control"
-                  disabled
-                />
-              </div>
-              <div class="col">
-                <label class="form-label">Fecha entrega</label>
-                <input
-                  type="date"
-                  name="dateArriving"
-                  #dateArriving="ngModel"
-                  [(ngModel)]="currentPurchaseOrder.dateArriving"
-                  class="form-control"
-                  [min]="getMinDateShippingTemplate()"
-                />
-                <div class="form-text" *ngIf="isDateInvalid">
-                  <p>Debe seleccionar una fecha de entrega válida.</p>
-                </div>
-              </div>
+      <article class="bg-light-subtle rounded p-4">
+        <form #purchaseForm="ngForm" (ngSubmit)="savePurchase()">
+          <fieldset class="px-4">
+            <div class="text-center my-4">
+              <h1 class="h3 title">Nueva orden de compra</h1>
             </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Aclaraciones</label>
-            <textarea
-              name="shipping-requirement"
-              class="form-control"
-              #shippingRequirements="ngModel"
-              [(ngModel)]="currentPurchaseOrder.shippingRequirements"
-              minlength="1"
-              maxlength="500"
-            ></textarea>
-            <div class="form-text" *ngIf="isDescriptionInvalid">
-              <p>Debe tener entre 1 y 500 caracteres.</p>
-            </div>
-          </div>
-          <hr />
-          <div class="row">
-            <div class="col">
-              <p>Productos</p>
-            </div>
-            <div class="col text-end">
-              <p>Precio</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col" id="current-order"></div>
-          </div>
-          <div class="row mt-3">
-            <div class="col">
-              <div
-                class="row"
-                *ngFor="let productView of currentPurchaseOrder.products"
-              >
-                <div class="col">
-                  {{ productView.productName }} ({{
-                    productView.productQuantity
-                  }})
-                </div>
-                <!-- <div class="col"><hr /></div> -->
-                <div class="col text-end">
-                  {{
-                    getProductPrice(productView.productId) *
-                      productView.productQuantity
-                  }}
-                </div>
-              </div>
+            <hr />
+            <div class="mb-3">
               <div class="row">
                 <div class="col">
-                  <p>Total</p>
+                  <label class="form-label">Fecha emisión</label>
+                  <input
+                    type="date"
+                    name="dateEmited"
+                    #dateEmited="ngModel"
+                    [(ngModel)]="currentPurchaseOrder.dateEmited"
+                    class="form-control"
+                    disabled
+                  />
                 </div>
-                <div class="col"><hr /></div>
-                <div class="col text-end" id="purchase-total">
-                  <p>{{ currentPurchaseOrder.total }}</p>
+                <div class="col">
+                  <label class="form-label">Fecha entrega</label>
+                  <input
+                    type="date"
+                    name="dateArriving"
+                    #dateArriving="ngModel"
+                    [(ngModel)]="currentPurchaseOrder.dateArriving"
+                    class="form-control"
+                    [min]="getMinDateShippingTemplate()"
+                  />
+                  <div class="form-text" *ngIf="isDateInvalid">
+                    <p>Debe seleccionar una fecha de entrega válida.</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="form-text" *ngIf="isCartEmpty">
-              <p>Debe añadir al menos un producto.</p>
+            <div class="mb-3">
+              <label class="form-label">Aclaraciones</label>
+              <textarea
+                name="shipping-requirement"
+                class="form-control"
+                #shippingRequirements="ngModel"
+                [(ngModel)]="currentPurchaseOrder.shippingRequirements"
+                minlength="1"
+                maxlength="500"
+              ></textarea>
+              <div class="form-text" *ngIf="isDescriptionInvalid">
+                <p>Debe tener entre 1 y 500 caracteres.</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col">
+                <p>Productos</p>
+              </div>
+              <div class="col text-end">
+                <p>Precio</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" id="current-order"></div>
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div
+                  class="row"
+                  *ngFor="let productView of currentPurchaseOrder.products"
+                >
+                  <div class="col">
+                    {{ productView.productName }} ({{
+                      productView.productQuantity
+                    }})
+                  </div>
+                  <!-- <div class="col"><hr /></div> -->
+                  <div class="col text-end">
+                    {{
+                      getProductPrice(productView.productId) *
+                        productView.productQuantity
+                    }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <p>Total</p>
+                  </div>
+                  <div class="col"><hr /></div>
+                  <div class="col text-end" id="purchase-total">
+                    <p>{{ currentPurchaseOrder.total }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-text" *ngIf="isCartEmpty">
+                <p>Debe añadir al menos un producto.</p>
+              </div>
+            </div>
+          </fieldset>
+          <div class="row m-4">
+            <div class="col text-center">
+              <button class="btn btn-secondary me-1" type="submit">
+                Confirmar compra
+              </button>
+              <button
+                class="btn btn-secondary ms-1"
+                type="button"
+                (click)="emptyCart()"
+              >
+                Eliminar productos
+              </button>
             </div>
           </div>
-        </fieldset>
-        <div class="row m-4">
-          <div class="col text-center">
-            <button class="btn btn-secondary me-1" type="submit">
-              Confirmar compra
-            </button>
-            <button
-              class="btn btn-secondary ms-1"
-              type="button"
-              (click)="emptyCart()"
-            >
-              Eliminar productos
-            </button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </article>
     </div>
   </section>
   <section>

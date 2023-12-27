@@ -9,7 +9,9 @@ export class SupliersService {
   private list: SuplierInterface[] = suplierMockData || [];
 
   public getList() {
-    return this.list;
+    return this.list.sort((a, b) =>
+      a.brand.toLowerCase().localeCompare(b.brand.toLowerCase())
+    );
   }
 
   public getElementById(id: number): SuplierInterface | undefined {

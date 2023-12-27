@@ -17,7 +17,6 @@ export class SupliersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.supliersArray = this.supliersService.getList();
-    console.log(this.supliersArray);
   }
 
   deleteSuplier(id: number): void {

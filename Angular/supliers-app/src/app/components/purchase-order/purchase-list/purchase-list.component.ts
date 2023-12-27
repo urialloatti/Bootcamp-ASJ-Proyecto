@@ -40,7 +40,6 @@ export class PurchaseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadList();
-    console.log(this.purchaseList);
   }
 
   loadList() {

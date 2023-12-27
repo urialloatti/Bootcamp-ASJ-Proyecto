@@ -51,6 +51,7 @@ export class PurchaseNewComponent implements OnInit {
   currentProduct: ProductGroup = {
     productId: 0,
     productName: undefined,
+    price: -1,
     productQuantity: 1,
   };
 
@@ -67,6 +68,7 @@ export class PurchaseNewComponent implements OnInit {
           parseInt(id)
         )!;
         this.isUpdating = true;
+        this.isSuplierSelected = true;
       }
     });
   }
@@ -84,7 +86,7 @@ export class PurchaseNewComponent implements OnInit {
   savePurchase() {
     this.validateForm();
     if (this.isDateInvalid || this.isCartEmpty || this.isDescriptionInvalid) {
-      alert('Error');
+      alert('Hay errores en el formulario.');
     } else {
       let suplier = this.suplierService.getElementById(
         this.currentPurchaseOrder.suplierId
@@ -105,20 +107,21 @@ export class PurchaseNewComponent implements OnInit {
       let productSearched = this.currentPurchaseOrder.products.find(
         (prod) => prod.productId == this.currentProduct.productId
       );
-      let price = product.price * this.currentProduct.productQuantity;
+      let price = product.price;
+      let total = price * this.currentProduct.productQuantity;
       if (productSearched) {
         productSearched.productQuantity += this.currentProduct.productQuantity;
       } else {
         this.currentProduct.productName = product.name;
-
+        this.currentProduct.price = price;
         this.currentPurchaseOrder.products.push(
           structuredClone(this.currentProduct)
         );
       }
       !this.currentPurchaseOrder.total
-        ? (this.currentPurchaseOrder.total = price)
+        ? (this.currentPurchaseOrder.total = total)
         : (this.currentPurchaseOrder.total =
-            this.currentPurchaseOrder.total + price);
+            this.currentPurchaseOrder.total + total);
       this.currentProduct.productQuantity = 1;
       this.isProductAdded = true;
       setTimeout(() => (this.isProductAdded = false), 2000);

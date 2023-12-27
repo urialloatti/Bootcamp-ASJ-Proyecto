@@ -1,9 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { SupliersService } from '../../../services/supliers.service';
+import { ProductInterface } from '../../../interfaces/productInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 
 @Component({
