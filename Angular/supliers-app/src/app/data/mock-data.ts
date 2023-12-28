@@ -125,7 +125,7 @@ export const purchaseOrdersMockData: PurchaseOrderInterface[] = [
         productQuantity: 3,
       },
     ],
-    isCanceled: false,
+    isAvailable: false,
   },
   {
     id: 2,
@@ -149,6 +149,6 @@ export const purchaseOrdersMockData: PurchaseOrderInterface[] = [
         productQuantity: 4,
       },
     ],
-    isCanceled: false,
+    isAvailable: false,
   },
 ];

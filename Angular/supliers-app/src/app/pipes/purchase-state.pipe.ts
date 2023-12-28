@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PurchaseStatePipe implements PipeTransform {
   transform(value: boolean | undefined): string {
-    return !value ? 'Pendiente' : 'Cancelado';
+    return !value ? 'Cancelado' : 'Pendiente';
   }
 }

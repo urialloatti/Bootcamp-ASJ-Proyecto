@@ -2,6 +2,8 @@
   <shared-items-list
     [listTemplate]="purchaseFields"
     [itemsArray]="purchaseList"
-    (deletedId)="deleteProduct($event)"
+    [isLoaded]="isListLoaded"
+    [hasPicture]="false"
+    (deletedId)="deletePurchase($event)"
   ></shared-items-list>
 </div>

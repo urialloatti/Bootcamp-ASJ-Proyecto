@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ProductsService } from '../../../services/products.service';
-import { SupliersService } from '../../../services/supliers.service';
 import { ProductInterface } from '../../../interfaces/productInterface';
+import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { SupliersService } from '../../../services/supliers.service';
 
 @Component({
   selector: 'products-new',
@@ -17,11 +17,12 @@ export class ProductsNewComponent implements OnInit {
   supliersList: SuplierInterface[] = [];
 
   currentProduct: ProductInterface = {
-    suplierId: -1,
     category: 'Otro',
-    name: '',
     description: '',
+    name: '',
+    picture: '',
     price: 0,
+    suplierId: -1,
   };
 
   productValidator: any = {
@@ -38,12 +39,18 @@ export class ProductsNewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.supliersList = this.suplierService.getList();
+    this.suplierService.getList().subscribe((response) => {
+      this.supliersList = response;
+    });
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
-        this.currentProduct = this.productService.getElementById(parseInt(id))!;
+        this.productService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentProduct = response;
+          });
         this.isUpdating = true;
       }
     });
@@ -59,10 +66,16 @@ export class ProductsNewComponent implements OnInit {
       }
     });
     if (isFormValid) {
+      let suplierName =
+        this.supliersList.find(
+          (suplier) => suplier.id == this.currentProduct.suplierId
+        )?.brand || 'Otro';
+      this.currentProduct.suplier = suplierName;
       if (this.isUpdating) {
-        this.productService.updateElement(this.currentProduct);
+        this.productService.updateElement(this.currentProduct).subscribe();
       } else {
-        this.productService.addElement(this.currentProduct);
+        this.currentProduct.isAvailable = true;
+        this.productService.addElement(this.currentProduct).subscribe();
       }
       this.flagNewProductCreated = true;
     }

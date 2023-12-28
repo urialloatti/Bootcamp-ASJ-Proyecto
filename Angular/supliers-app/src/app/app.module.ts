@@ -2,6 +2,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
@@ -25,17 +26,16 @@ import { SupliersNewComponent } from './components/supliers/supliers-new/suplier
 
 import { CuitPipePipe } from './pipes/cuit-pipe.pipe';
 import { PhoneNumberPipe } from './pipes/phone-number.pipe';
+import { PurchaseStatePipe } from './pipes/purchase-state.pipe';
 import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
-import { PurchaseStatePipe } from './pipes/purchase-state.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
 
-    CuitPipePipe,
     FooterComponent,
     HeaderComponent,
     ItemsListComponent,
@@ -43,28 +43,30 @@ import { PurchaseStatePipe } from './pipes/purchase-state.pipe';
     ModalSavedComponent,
     NoItemsAlertComponent,
     NotFoundComponent,
-    PhoneNumberPipe,
     ProductInfoComponent,
     ProductsListComponent,
     ProductsNewComponent,
     PurchaseInfoComponent,
     PurchaseListComponent,
     PurchaseNewComponent,
-    ShowContactPhonePipe,
-    ShowContactPipe,
-    ShowMailPipe,
     SuplierInfoComponent,
     SupliersListComponent,
     SupliersNewComponent,
-    TableTransformPipe,
+
+    CuitPipePipe,
+    PhoneNumberPipe,
     PurchaseStatePipe,
+    ShowContactPhonePipe,
+    ShowContactPipe,
+    ShowMailPipe,
+    TableTransformPipe,
   ],
-  imports: [AppRoutingModule, BrowserModule, FormsModule],
+  imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [
+    CuitPipePipe,
     CurrencyPipe,
     DatePipe,
     JsonPipe,
-    CuitPipePipe,
     PhoneNumberPipe,
     ShowContactPhonePipe,
     ShowContactPipe,

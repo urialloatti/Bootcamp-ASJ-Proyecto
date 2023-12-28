@@ -5,7 +5,8 @@
       <form #myForm="ngForm" (ngSubmit)="saveSuplier()">
         <fieldset class="px-4">
           <div class="text-center my-4">
-            <h1 class="h3 title">Cargar nuevo proveedor</h1>
+            <h1 class="h3 title" *ngIf="!isUpdating">Cargar nuevo Proveedor</h1>
+            <h1 class="h3 title" *ngIf="isUpdating">Actualizar Proveedor</h1>
           </div>
           <hr />
           <div class="mb-3">
@@ -373,7 +374,8 @@
         <div class="row m-4">
           <div class="col text-center">
             <button class="btn btn-secondary me-1" type="submit">
-              Guardar Proveedor
+              <span *ngIf="isUpdating">Actualizar Proveedor</span>
+              <span *ngIf="!isUpdating">Cargar Proveedor</span>
             </button>
             <button
               class="btn btn-secondary ms-1"

@@ -7,7 +7,7 @@ export interface PurchaseOrderInterface {
   suplierName?: string;
   products: ProductGroup[];
   total?: number;
-  isCanceled?: boolean;
+  isAvailable?: boolean;
 }
 
 export interface ProductGroup {

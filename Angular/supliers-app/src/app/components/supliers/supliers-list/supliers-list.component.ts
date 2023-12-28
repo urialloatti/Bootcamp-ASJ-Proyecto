@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SupliersService } from '../../../services/supliers.service';
-
-import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
+import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { SupliersService } from '../../../services/supliers.service';
 
 @Component({
   selector: 'supliers-list',
@@ -12,23 +11,6 @@ import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface
 })
 export class SupliersListComponent implements OnInit {
   supliersArray!: SuplierInterface[];
-
-  constructor(private supliersService: SupliersService) {}
-
-  ngOnInit(): void {
-    this.supliersArray = this.supliersService.getList();
-  }
-
-  deleteSuplier(id: number): void {
-    let deletedSuplier = this.supliersService.deleteElement(id);
-    if (deletedSuplier) {
-      alert(`Proveedor ${deletedSuplier.brand} eliminado con éxito.`);
-      this.supliersArray = this.supliersService.getList();
-    } else {
-      alert('El proveedor ya no existe en la base de datos.');
-    }
-  }
-
   supliersFields: ListTemplateInterface = {
     section: 'supliers',
     label: 'proveedores',
@@ -45,4 +27,35 @@ export class SupliersListComponent implements OnInit {
       },
     ],
   };
+  isListLoaded: boolean = false;
+
+  constructor(private supliersService: SupliersService) {}
+
+  ngOnInit(): void {
+    this.supliersService.getList().subscribe((response) => {
+      this.supliersArray = response;
+      this.isListLoaded = true;
+    });
+  }
+
+  deleteSuplier(id: number): void {
+    let deleted: SuplierInterface;
+    this.supliersService.getElementById(id).subscribe((response) => {
+      deleted = response;
+      if (confirm(`¿Está seguro de que desea eliminar ${deleted.brand}?`)) {
+        this.supliersService.deleteElementById(id).subscribe(
+          (response) => {
+            alert(`Producto ${deleted.brand} eliminado con éxito.`);
+            this.supliersService.getList().subscribe((response) => {
+              this.supliersArray = response;
+            });
+          },
+          (error) => {
+            alert('El proveedor ya no existe en la base de datos.');
+            console.log(error);
+          }
+        );
+      }
+    });
+  }
 }

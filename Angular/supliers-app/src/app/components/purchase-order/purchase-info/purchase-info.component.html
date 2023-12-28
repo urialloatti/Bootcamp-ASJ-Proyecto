@@ -3,6 +3,11 @@
     <div class="col"></div>
     <div class="col-12 col-md-9">
       <article class="bg-body-tertiary rounded p-4 px-5">
+        <div class="row">
+          <div class="col">
+            <a class="fs-7" routerLink="/purchase-orders">← Ir al listado</a>
+          </div>
+        </div>
         <div class="row mb-4">
           <div class="col-12 text-center">
             <h1 class="title">Proveedor: {{ currentPurchase.suplierName }}</h1>
@@ -20,7 +25,7 @@
           </div>
           <div class="col col-md-4 text-center">
             <h5 class="text-body-tertiary">
-              Estado: {{ currentPurchase.isCanceled | purchaseState }}
+              Estado: {{ currentPurchase.isAvailable | purchaseState }}
             </h5>
           </div>
         </div>
@@ -68,8 +73,33 @@
             <p>ID: {{ currentPurchase.id }}</p>
           </div>
         </div>
+        <div class="row my-3">
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              [routerLink]="'/purchase-orders/u/' + currentPurchase.id"
+            >
+              Modificar
+            </button>
+          </div>
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              (click)="deletePurchase(currentPurchase.id!)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
       </article>
     </div>
     <div class="col"></div>
   </div>
 </div>
+<shared-modal-saved
+  *ngIf="flag"
+  [modalData]="{
+    message: 'Órden de compra cancelada con éxito.',
+    path: '{{path}}'
+  }"
+></shared-modal-saved>

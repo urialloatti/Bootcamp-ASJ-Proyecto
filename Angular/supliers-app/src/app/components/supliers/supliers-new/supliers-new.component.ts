@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { SupliersService } from '../../../services/supliers.service';
-import {
-  PhoneNumber,
-  SuplierInterface,
-} from '../../../interfaces/suplierInterface';
-import { __makeTemplateObject } from 'tslib';
-import { NgModel } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NgModel } from '@angular/forms';
+
+import { SupliersService } from '../../../services/supliers.service';
+import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
 
 @Component({
@@ -15,10 +12,10 @@ import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
   styleUrl: './supliers-new.component.css',
 })
 export class SupliersNewComponent implements OnInit {
+  countryCodes = phoneCountryCodes;
   flagNewSuplierCreated: boolean = false;
   isUpdating: boolean = false;
   locationOptions = locationDB;
-  countryCodes = phoneCountryCodes;
 
   currentSuplier: SuplierInterface = {
     brand: '',
@@ -71,7 +68,12 @@ export class SupliersNewComponent implements OnInit {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
-        this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
+        this.suplierService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentSuplier = response;
+          });
+        // this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
         this.isUpdating = true;
       }
     });
@@ -88,9 +90,10 @@ export class SupliersNewComponent implements OnInit {
     });
     if (isFormValid) {
       if (this.isUpdating) {
-        this.suplierService.updateElement(this.currentSuplier);
+        this.suplierService.updateElement(this.currentSuplier).subscribe();
       } else {
-        this.suplierService.addElement(this.currentSuplier);
+        this.currentSuplier.isAvailable = true;
+        this.suplierService.addElement(this.currentSuplier).subscribe();
       }
       console.log(this.currentSuplier);
       this.flagNewSuplierCreated = true;

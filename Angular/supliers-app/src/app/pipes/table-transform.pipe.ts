@@ -7,7 +7,6 @@ import { Contact, PhoneNumber } from '../interfaces/suplierInterface';
 import { ShowContactPipe } from './show-contact.pipe';
 import { ShowMailPipe } from './show-mail.pipe';
 import { ShowContactPhonePipe } from './show-contact-phone.pipe';
-import { PurchaseOrdersService } from '../services/purchase-orders.service';
 
 @Pipe({
   name: 'tableTransform',
@@ -16,55 +15,37 @@ export class TableTransformPipe implements PipeTransform {
   constructor(
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe,
+    private jsonPipe: JsonPipe,
     private contactPhone: ShowContactPhonePipe,
     private contactPipe: ShowContactPipe,
     private cuitPipe: CuitPipePipe,
     private mail: ShowMailPipe,
-    private phone: PhoneNumberPipe,
-    private pOrderService: PurchaseOrdersService
+    private phone: PhoneNumberPipe
   ) {}
 
-  transform(value: unknown, extra?: PipeExtra): string {
-    let result: string | null = '';
+  transform(value: unknown, extra?: PipeExtra): any {
     if (extra) {
       switch (extra) {
         case 'Date':
-          result = this.datePipe.transform(value as Date, 'dd/MM/YYYY');
-          break;
+          return this.datePipe.transform(value as Date, 'dd/MM/YYYY');
         case 'Currency':
-          result = this.currencyPipe.transform(value as string, 'USD');
-          break;
+          return this.currencyPipe.transform(value as string, 'USD');
         case 'CUIT':
-          result = this.cuitPipe.transform(value as string);
-          break;
+          return this.cuitPipe.transform(value as string);
         case 'phone':
-          result = this.phone.transform(value as PhoneNumber);
-          break;
+          return this.phone.transform(value as PhoneNumber);
         case 'contactName':
-          result = this.contactPipe.transform(value as Contact);
-          break;
+          return this.contactPipe.transform(value as Contact);
         case 'contactMails':
-          result = this.mail.transform(value as Contact);
-          break;
+          return this.mail.transform(value as Contact);
         case 'contactPhone':
-          result = this.contactPhone.transform(value as Contact);
-          break;
+          return this.contactPhone.transform(value as Contact);
         case 'PurchaseOrder':
-          let pOrder = this.pOrderService.getElementById(value as number);
-          if (pOrder!.isCanceled) {
-            result = pOrder!.suplierName + ' (Cancelado)';
-          } else {
-            result = pOrder!.suplierName || '';
-          }
-          break;
+          return value ? '(Pendiente)' : '(Cancelado)';
         case 'FullDate':
-          result = this.datePipe.transform(
-            value as Date,
-            'dd/MM/YYYY - hh:mm a'
-          );
-          break;
+          return this.datePipe.transform(value as Date, 'dd/MM/YYYY - hh:mm a');
       }
     }
-    return result || (value as string);
+    return value;
   }
 }

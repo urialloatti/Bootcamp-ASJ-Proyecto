@@ -3,59 +3,82 @@
     <h1 class="title">Lista de {{ listTemplate.label }}</h1>
   </div>
 </div>
-<section *ngIf="itemsArray.length > 0">
-  <table class="table table-striped table-hover rounded">
-    <thead class="table-light">
-      <tr>
-        <th
-          scope="col"
-          class="text-center"
-          *ngFor="let headers of listTemplate.listFields"
-        >
-          {{ headers.field }}
-        </th>
-        <th scope="col" class="text-center last-column">
-          <i class="bi bi-gear-fill"></i>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of itemsArray">
-        <td *ngFor="let field of listTemplate.listFields">
-          <span *ngFor="let keyV of field.keys; index as i"
-            >{{ item[keyV.key] | tableTransform : keyV.extras }}
-            <span *ngIf="i < field.keys.length - 1"> | </span>
-          </span>
-        </td>
-        <td class="d-flex justify-content-end py-2 last-column">
-          <span class="mx-1 bg-transparent">
-            <button class="btn btn-secondary pb-2" routerLink="{{ item.id }}">
-              <i class="bi bi-box-arrow-in-up-right"></i>
-            </button>
-          </span>
-          <span class="mx-1 bg-transparent">
-            <button class="btn btn-secondary pb-2" routerLink="u/{{ item.id }}">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-          </span>
-          <span class="mx-1 bg-transparent">
-            <button
-              class="btn btn-secondary pb-2"
-              (click)="deleteElement(item.id)"
-            >
-              <i class="bi bi-trash3"></i>
-            </button>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-<section *ngIf="itemsArray.length == 0">
-  <shared-no-items-alert
-    alerLabel="{{ listTemplate.label }}"
-  ></shared-no-items-alert>
-</section>
+<div *ngIf="isLoaded">
+  <section *ngIf="itemsArray.length > 0">
+    <table class="table table-striped table-hover rounded">
+      <thead class="table-light">
+        <tr>
+          <th
+            scope="col"
+            *ngIf="hasPicture"
+            style="width: 5em"
+            class="text-center"
+          >
+            <i class="bi bi-image-fill"></i>
+          </th>
+          <th
+            scope="col"
+            class="text-center"
+            *ngFor="let headers of listTemplate.listFields"
+          >
+            {{ headers.field }}
+          </th>
+          <th scope="col" class="text-center last-column">
+            <i class="bi bi-gear-fill"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemsArray" class="tr">
+          <td *ngIf="hasPicture">
+            <img
+              class="img-thumbnail"
+              src="{{ item.picture || '' }}"
+              (error)="imageNotFound($event)"
+            />
+          </td>
+          <td *ngFor="let field of listTemplate.listFields">
+            <span *ngFor="let keyV of field.keys; index as i"
+              >{{ item[keyV.key] | tableTransform : keyV.extras }}
+              <span *ngIf="i < field.keys.length - 1"> | </span>
+            </span>
+          </td>
+          <td
+            class="d-flex justify-content-end align-items-center py-2 last-column"
+          >
+            <span class="mx-1 bg-transparent">
+              <button class="btn btn-secondary pb-2" routerLink="{{ item.id }}">
+                <i class="bi bi-box-arrow-in-up-right"></i>
+              </button>
+            </span>
+            <span class="mx-1 bg-transparent">
+              <button
+                class="btn btn-secondary pb-2"
+                routerLink="u/{{ item.id }}"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </span>
+            <span class="mx-1 bg-transparent">
+              <button
+                class="btn btn-secondary pb-2"
+                (click)="deleteElement(item.id)"
+                [disabled]="!item.isAvailable"
+              >
+                <i class="bi bi-trash3"></i>
+              </button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section *ngIf="itemsArray.length == 0">
+    <shared-no-items-alert
+      alerLabel="{{ listTemplate.label }}"
+    ></shared-no-items-alert>
+  </section>
+</div>
 <div class="row">
   <div class="col"></div>
   <div class="col text-center">

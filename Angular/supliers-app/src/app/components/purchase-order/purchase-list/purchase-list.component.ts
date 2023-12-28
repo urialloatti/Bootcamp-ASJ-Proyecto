@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
-import { SupliersService } from '../../../services/supliers.service';
 
 @Component({
   selector: 'app-purchase-list',
@@ -19,7 +18,10 @@ export class PurchaseListComponent implements OnInit {
     listFields: [
       {
         field: 'Proveedor',
-        keys: [{ key: 'id', extras: 'PurchaseOrder' }],
+        keys: [
+          { key: 'suplierName' },
+          { key: 'isAvailable', extras: 'PurchaseOrder' },
+        ],
       },
       {
         field: 'Fecha de emisión',
@@ -33,28 +35,31 @@ export class PurchaseListComponent implements OnInit {
     ],
   };
 
-  constructor(
-    private purchaseService: PurchaseOrdersService,
-    private supliersService: SupliersService
-  ) {}
+  isListLoaded: boolean = true;
+
+  constructor(private purchaseService: PurchaseOrdersService) {}
 
   ngOnInit(): void {
     this.loadList();
   }
 
   loadList() {
-    this.purchaseList = this.purchaseService.getList();
+    this.purchaseService.getList().subscribe((response) => {
+      this.purchaseList = response;
+    });
   }
 
-  deleteProduct(id: number): void {
-    let deleted = this.purchaseService.deleteById(id);
-    if (deleted) {
-      alert(`Órden de compra del proveedor ${deleted.suplierName} cancelada.`);
-      this.loadList();
-    } else {
-      alert('La órden de compra ya no se encuentra en la base de datos.');
-    }
-    this.purchaseList = [];
-    setTimeout(() => this.loadList(), 1);
+  deletePurchase(id: number): void {
+    let deleted: PurchaseOrderInterface;
+    this.purchaseService.getElementById(id).subscribe((dto) => {
+      deleted = dto;
+      if (
+        confirm(
+          `¿Está seguro de que desea cancelar la órden de compra del ${deleted.dateEmited} del provedor ${deleted.suplierName}?`
+        )
+      ) {
+        this.purchaseService.deleteById(id).subscribe(() => this.loadList());
+      }
+    });
   }
 }

@@ -1,3 +1,10 @@
 .last-column {
   width: 10rem;
+  height: 5em;
+}
+
+img {
+  width: 4em;
+  height: 4em;
+  object-fit: cover;
 }
