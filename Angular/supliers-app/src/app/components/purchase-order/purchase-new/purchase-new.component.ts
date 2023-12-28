@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ProductsService } from '../../../services/products.service';
@@ -10,8 +11,6 @@ import {
 } from '../../../interfaces/purchaseOrderInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
-import { timeout } from 'rxjs';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-purchase-new',
@@ -39,13 +38,14 @@ export class PurchaseNewComponent implements OnInit {
   currentPurchaseOrder: PurchaseOrderInterface = {
     dateArriving: new Date(),
     dateEmited: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
-    isCanceled: false,
+    isAvailable: true,
     products: [],
     shippingRequirements: '',
     suplierId: 0,
     suplierName: '',
     total: 0,
   };
+
   dateShipping: Date = new Date();
 
   currentProduct: ProductGroup = {
@@ -59,7 +59,6 @@ export class PurchaseNewComponent implements OnInit {
   suplierProducts: ProductInterface[] = [];
 
   ngOnInit(): void {
-    // this.supliersList = this.suplierService.getList();
     this.suplierService.getList().subscribe((response) => {
       this.supliersList = response;
     });
@@ -70,9 +69,11 @@ export class PurchaseNewComponent implements OnInit {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
-        this.currentPurchaseOrder = this.purchaseService.getElementById(
-          parseInt(id)
-        )!;
+        this.purchaseService
+          .getElementById(parseInt(id))
+          .subscribe((response) => {
+            this.currentPurchaseOrder = response;
+          });
         this.isUpdating = true;
         this.isSuplierSelected = true;
       }
@@ -102,7 +103,12 @@ export class PurchaseNewComponent implements OnInit {
         .subscribe((response) => {
           suplier = response;
           this.currentPurchaseOrder.suplierName = suplier?.brand;
-          this.purchaseService.addElement(this.currentPurchaseOrder);
+          if (!this.isUpdating) {
+            this.currentPurchaseOrder.dateEmited = new Date();
+          }
+          this.purchaseService
+            .addElements(this.currentPurchaseOrder)
+            .subscribe();
           this.flagNewPurchaseOrderCreated = true;
         });
     }

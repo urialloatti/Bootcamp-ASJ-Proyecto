@@ -48,7 +48,7 @@ export class ProductsService {
   }
 
   // DELETE methods
-  public deleteElement(id: number): Observable<ProductInterface> {
+  public deleteElementById(id: number): Observable<ProductInterface> {
     return this.http.delete<ProductInterface>(this.URL_API + '/' + id);
   }
 

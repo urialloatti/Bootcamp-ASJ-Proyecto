@@ -3,6 +3,7 @@
     [listTemplate]="purchaseFields"
     [itemsArray]="purchaseList"
     [isLoaded]="isListLoaded"
-    (deletedId)="deleteProduct($event)"
+    [hasPicture]="false"
+    (deletedId)="deletePurchase($event)"
   ></shared-items-list>
 </div>

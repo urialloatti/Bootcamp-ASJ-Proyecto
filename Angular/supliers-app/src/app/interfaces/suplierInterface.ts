@@ -10,6 +10,7 @@ export interface SuplierInterface {
   iva: IVAOptions;
   contact: Contact;
   logo?: string;
+  isAvailable?: boolean;
 }
 
 interface FullAddress {

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { SupliersService } from '../../../services/supliers.service';
-
-import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
+import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { SupliersService } from '../../../services/supliers.service';
 
 @Component({
   selector: 'supliers-list',
@@ -44,7 +43,7 @@ export class SupliersListComponent implements OnInit {
     this.supliersService.getElementById(id).subscribe((response) => {
       deleted = response;
       if (confirm(`¿Está seguro de que desea eliminar ${deleted.brand}?`)) {
-        this.supliersService.deleteElement(id).subscribe(
+        this.supliersService.deleteElementById(id).subscribe(
           (response) => {
             alert(`Producto ${deleted.brand} eliminado con éxito.`);
             this.supliersService.getList().subscribe((response) => {

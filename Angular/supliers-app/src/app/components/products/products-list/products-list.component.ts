@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProductsService } from '../../../services/products.service';
-import { ProductInterface } from '../../../interfaces/productInterface';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
+import { ProductInterface } from '../../../interfaces/productInterface';
+import { ProductsService } from '../../../services/products.service';
 
 @Component({
   selector: 'products-list',
@@ -27,8 +27,8 @@ export class ProductsListComponent implements OnInit {
     this.productsService.getElementById(id).subscribe((response) => {
       deleted = response;
       if (confirm(`¿Está seguro de que desea eliminar ${deleted.name}?`)) {
-        this.productsService.deleteElement(id).subscribe(
-          (response) => {
+        this.productsService.deleteElementById(id).subscribe(
+          () => {
             alert(`Producto ${deleted.name} eliminado con éxito.`);
             this.productsService.getList().subscribe((response) => {
               this.producsArray = response;

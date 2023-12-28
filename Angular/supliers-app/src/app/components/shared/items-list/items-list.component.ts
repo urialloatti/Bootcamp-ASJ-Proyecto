@@ -16,10 +16,18 @@ export class ItemsListComponent {
   @Input()
   public isLoaded!: boolean;
 
+  @Input()
+  public hasPicture!: boolean;
+
   @Output()
   deletedId: EventEmitter<number> = new EventEmitter();
 
   deleteElement(id: number): void {
     this.deletedId.emit(id);
+  }
+
+  imageNotFound(event: Event): void {
+    (event.target as HTMLImageElement).src =
+      '../../../../assets/image-not-found.jpg';
   }
 }

@@ -7,10 +7,7 @@
       "category": "Tecnología",
       "cuit": "30526874249",
       "iva": "IVA Responsable Inscripto",
-      "phone": {
-        "country": 54,
-        "number": 800322156521
-      },
+      "phone": { "country": 54, "number": 800322156521 },
       "web": "fravega.com",
       "fullAddress": {
         "address": "9 de Julio",
@@ -24,24 +21,19 @@
         "name": "Jorge",
         "surname": "Amparo",
         "mail": "jamparo@fravega.com",
-        "phone": {
-          "country": 54,
-          "number": 3516305067
-        },
+        "phone": { "country": 54, "number": 3516305067 },
         "rol": "Encargado de compras"
-      }
+      },
+      "isAvailable": true
     },
     {
       "id": 1,
       "code": "Tec1",
-      "brand": "Cetrogar SA",
+      "brand": "Cetrogar",
       "category": "Tecnología",
       "cuit": "30592845748",
       "iva": "IVA Responsable Inscripto",
-      "phone": {
-        "country": 54,
-        "number": 800322663597
-      },
+      "phone": { "country": 54, "number": 800322663597 },
       "web": "cetrogar.com",
       "fullAddress": {
         "address": "Rivera Indarte",
@@ -55,14 +47,13 @@
         "name": "Ana Clara",
         "surname": "Suarez",
         "mail": "asuarez@cetrogar.com",
-        "phone": {
-          "country": 54,
-          "number": 3516523678
-        },
+        "phone": { "country": 54, "number": 3516523678 },
         "rol": "Encargado de compras"
-      }
+      },
+      "isAvailable": true
     }
   ],
+
   "products": [
     {
       "id": 0,
@@ -72,7 +63,9 @@
       "suplier": "Fravega SA",
       "category": "Celulares",
       "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista."
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 1,
@@ -82,7 +75,9 @@
       "suplier": "Fravega SA",
       "category": "Laptops",
       "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos"
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 2,
@@ -92,7 +87,9 @@
       "suplier": "Cetrogar",
       "category": "Celulares",
       "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista."
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 3,
@@ -102,9 +99,12 @@
       "suplierId": 1,
       "category": "Laptops",
       "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos"
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
     }
   ],
+
   "purchaseOrders": [
     {
       "id": 0,
@@ -128,10 +128,10 @@
           "productQuantity": 3
         }
       ],
-      "isCanceled": false
+      "isAvailable": true
     },
     {
-      "id": 2,
+      "id": 1,
       "suplierId": 1,
       "suplierName": "Cetrogar SA",
       "dateEmited": "2023-12-26",
@@ -152,7 +152,7 @@
           "productQuantity": 4
         }
       ],
-      "isCanceled": false
+      "isAvailable": true
     }
   ]
 }

@@ -33,6 +33,7 @@
               #product="ngModel"
               [(ngModel)]="currentProduct.productId"
               class="form-select"
+              [disabled]="isUpdating"
               (change)="getProductPrice(currentProduct.productId)"
               *ngIf="suplierProducts.length > 0"
             >
@@ -71,6 +72,7 @@
                   [(ngModel)]="currentProduct.productQuantity"
                   #quantity="ngModel"
                   min="1"
+                  [disabled]="isUpdating"
                   [ngClass]="quantity.errors ? 'is-invalid' : ''"
                   class="form-control"
                 />
@@ -83,7 +85,11 @@
           <hr />
           <div class="row justify-content-center">
             <div class="col-6 text-center">
-              <button class="btn btn-secondary" type="submit">
+              <button
+                class="btn btn-secondary"
+                type="submit"
+                [disabled]="isUpdating"
+              >
                 Cargar Producto
               </button>
             </div>
@@ -101,13 +107,17 @@
         </div>
       </article>
     </div>
-    <!-- <div class="col-1"></div> -->
     <div class="col-6">
       <article class="bg-light-subtle rounded p-4">
         <form #purchaseForm="ngForm" (ngSubmit)="savePurchase()">
           <fieldset class="px-4">
             <div class="text-center my-4">
-              <h1 class="h3 title">Nueva orden de compra</h1>
+              <h1 class="h3 title" *ngIf="!isUpdating">
+                Nueva órden de compra
+              </h1>
+              <h1 class="h3 title" *ngIf="isUpdating">
+                Actualizar órden de compra
+              </h1>
             </div>
             <hr />
             <div class="mb-3">
@@ -176,7 +186,6 @@
                       productView.productQuantity
                     }})
                   </div>
-                  <!-- <div class="col"><hr /></div> -->
                   <div class="col text-end">
                     {{
                       currentProduct.price! * productView.productQuantity

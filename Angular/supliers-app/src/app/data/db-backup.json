@@ -23,7 +23,8 @@
         "mail": "jamparo@fravega.com",
         "phone": { "country": 54, "number": 3516305067 },
         "rol": "Encargado de compras"
-      }
+      },
+      "isAvailable": true
     },
     {
       "id": 1,
@@ -48,7 +49,8 @@
         "mail": "asuarez@cetrogar.com",
         "phone": { "country": 54, "number": 3516523678 },
         "rol": "Encargado de compras"
-      }
+      },
+      "isAvailable": true
     }
   ],
 
@@ -61,7 +63,9 @@
       "suplier": "Fravega SA",
       "category": "Celulares",
       "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista."
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 1,
@@ -71,7 +75,9 @@
       "suplier": "Fravega SA",
       "category": "Laptops",
       "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos"
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 2,
@@ -81,7 +87,9 @@
       "suplier": "Cetrogar",
       "category": "Celulares",
       "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista."
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
     },
     {
       "id": 3,
@@ -91,7 +99,9 @@
       "suplierId": 1,
       "category": "Laptops",
       "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos"
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
     }
   ],
 
@@ -118,10 +128,10 @@
           "productQuantity": 3
         }
       ],
-      "isCanceled": false
+      "isAvailable": true
     },
     {
-      "id": 2,
+      "id": 1,
       "suplierId": 1,
       "suplierName": "Cetrogar SA",
       "dateEmited": "2023-12-26",
@@ -142,7 +152,7 @@
           "productQuantity": 4
         }
       ],
-      "isCanceled": false
+      "isAvailable": true
     }
   ]
 }

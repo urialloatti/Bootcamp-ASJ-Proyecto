@@ -2,22 +2,41 @@
   <div class="row">
     <div class="col"></div>
     <div class="col-9">
-      <article class="bg-body-tertiary rounded p-4 px-5">
-        <div class="row mb-4">
-          <div class="col-12 text-center">
-            <h1 class="title">Producto: {{ currentProduct.name }}</h1>
-          </div>
-        </div>
+      <article class="bg-body-tertiary rounded p-2 px-5">
         <div class="row mb-3">
           <div class="col">
-            <h2 class="h3 text-body-tertiary">
-              Proveedor: {{ currentProduct.suplier }}
-            </h2>
+            <a class="text-decoration-none" routerLink="/products"
+              >← Ir al listado</a
+            >
           </div>
-          <div class="col text-end">
-            <h2 class="h3 text-body-tertiary">
-              Categoría: {{ currentProduct.category }}
-            </h2>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-6 col-md-4 pe-3">
+            <img
+              src="{{ currentProduct.picture }}"
+              alt="{{ currentProduct.name }}"
+              (error)="imageNotFound($event)"
+              class="rounded"
+            />
+          </div>
+          <div class="col ps-3">
+            <div class="row mb-4">
+              <div class="col-12 text-center">
+                <h1 class="h2 title">{{ currentProduct.name }}</h1>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <h2 class="h4 text-body-tertiary">
+                  Proveedor: {{ currentProduct.suplier }}
+                </h2>
+              </div>
+              <div class="col text-end">
+                <h2 class="h4 text-body-tertiary">
+                  Categoría: {{ currentProduct.category }}
+                </h2>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row mb-3">
@@ -37,7 +56,24 @@
             </p>
           </div>
         </div>
-        <div class="row"></div>
+        <div class="row my-3">
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              [routerLink]="'/products/u/' + currentProduct.id"
+            >
+              Modificar
+            </button>
+          </div>
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              (click)="deleteProduct(currentProduct.id!)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
       </article>
     </div>
     <div class="col"></div>

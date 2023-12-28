@@ -28,7 +28,7 @@ export class SupliersService {
     return this.http.get<SuplierInterface>(this.URL_API + '/' + id);
   }
 
-  public deleteElement(id: number): Observable<SuplierInterface> {
+  public deleteElementById(id: number): Observable<SuplierInterface> {
     return this.http.delete<SuplierInterface>(this.URL_API + '/' + id);
   }
 

@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ProductsService } from '../../../services/products.service';
-import { SupliersService } from '../../../services/supliers.service';
 import { ProductInterface } from '../../../interfaces/productInterface';
+import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
+import { SupliersService } from '../../../services/supliers.service';
 
 @Component({
   selector: 'products-new',
@@ -17,11 +17,12 @@ export class ProductsNewComponent implements OnInit {
   supliersList: SuplierInterface[] = [];
 
   currentProduct: ProductInterface = {
-    suplierId: -1,
     category: 'Otro',
-    name: '',
     description: '',
+    name: '',
+    picture: '',
     price: 0,
+    suplierId: -1,
   };
 
   productValidator: any = {
@@ -73,6 +74,7 @@ export class ProductsNewComponent implements OnInit {
       if (this.isUpdating) {
         this.productService.updateElement(this.currentProduct).subscribe();
       } else {
+        this.currentProduct.isAvailable = true;
         this.productService.addElement(this.currentProduct).subscribe();
       }
       this.flagNewProductCreated = true;

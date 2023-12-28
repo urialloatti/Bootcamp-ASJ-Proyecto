@@ -8,6 +8,7 @@ export interface ProductInterface {
   description: string;
   price: number;
   picture?: string;
+  isAvailable?: boolean;
 }
 
 type category =
