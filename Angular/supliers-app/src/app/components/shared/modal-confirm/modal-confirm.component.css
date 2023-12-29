@@ -21,6 +21,14 @@
   color: var(--color-light);
 }
 
+.modal-title {
+  width: 100%;
+}
+
+#btn-close {
+  cursor: pointer;
+}
+
 @media (max-width: 1200px) {
   #modal-box {
     left: 25%;
@@ -40,4 +48,15 @@
     left: 10%;
     width: 80%;
   }
+}
+
+.btn-color {
+  background-color: var(--color-accent-light);
+  color: var(--color-dark);
+}
+
+.btn-color:hover {
+  background-color: var(--color-accent-lighter);
+  color: var(--color-dark);
+  transition: 0.1s;
 }

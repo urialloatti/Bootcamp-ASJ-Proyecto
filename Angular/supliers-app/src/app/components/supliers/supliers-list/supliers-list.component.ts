@@ -3,6 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
+import { ModalsService } from '../../../services/modal-confirm.service';
+import {
+  ModalConfirmInterface,
+  ModalMessageInterface,
+} from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'supliers-list',
@@ -10,6 +15,10 @@ import { SupliersService } from '../../../services/supliers.service';
   styleUrl: './supliers-list.component.css',
 })
 export class SupliersListComponent implements OnInit {
+  constructor(
+    private supliersService: SupliersService,
+    private confirmService: ModalsService
+  ) {}
   supliersArray!: SuplierInterface[];
   supliersFields: ListTemplateInterface = {
     section: 'supliers',
@@ -27,9 +36,11 @@ export class SupliersListComponent implements OnInit {
       },
     ],
   };
+  modalConfirmFlag: boolean = false;
+  modalConfirmObject!: ModalConfirmInterface;
   isListLoaded: boolean = false;
-
-  constructor(private supliersService: SupliersService) {}
+  modalMessageFlag: boolean = false;
+  modalMessageObject!: ModalMessageInterface;
 
   ngOnInit(): void {
     this.supliersService.getList().subscribe((response) => {
@@ -42,20 +53,42 @@ export class SupliersListComponent implements OnInit {
     let deleted: SuplierInterface;
     this.supliersService.getElementById(id).subscribe((response) => {
       deleted = response;
-      if (confirm(`¿Está seguro de que desea eliminar ${deleted.brand}?`)) {
-        this.supliersService.deleteElementById(id).subscribe(
-          (response) => {
-            alert(`Producto ${deleted.brand} eliminado con éxito.`);
-            this.supliersService.getList().subscribe((response) => {
-              this.supliersArray = response;
-            });
-          },
-          (error) => {
-            alert('El proveedor ya no existe en la base de datos.');
-            console.log(error);
-          }
-        );
-      }
+      this.modalConfirmObject = {
+        header: `Eliminando proveedor ${deleted.code}`,
+        message: `Está seguro de eliminar el proveedor ${deleted.brand}`,
+        cancel: 'Cancelar',
+        confirm: 'Eliminar',
+      };
+      this.modalConfirmFlag = true;
+      this.confirmService.confirm$.subscribe((response) => {
+        this.modalConfirmFlag = false;
+        if (response) {
+          this.supliersService.deleteElementById(id).subscribe(
+            () => {
+              this.modalMessageObject = {
+                message: `Proveedor ${deleted.brand} eliminado con éxito.`,
+                confirm: 'Aceptar',
+              };
+              this.modalMessageFlag = true;
+              this.supliersService.getList().subscribe((response) => {
+                this.supliersArray = response;
+              });
+            },
+            (error) => {
+              this.modalMessageObject = {
+                message: `El proveedor ya no existe en la base de datos.`,
+                confirm: 'Aceptar',
+              };
+              this.modalMessageFlag = true;
+              console.log(error);
+            }
+          );
+        }
+      });
     });
+  }
+
+  hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }

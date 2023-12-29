@@ -5,6 +5,7 @@ import { NgModel } from '@angular/forms';
 import { SupliersService } from '../../../services/supliers.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
+import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'supliers-new',
@@ -12,10 +13,10 @@ import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
   styleUrl: './supliers-new.component.css',
 })
 export class SupliersNewComponent implements OnInit {
-  countryCodes = phoneCountryCodes;
-  flagNewSuplierCreated: boolean = false;
-  isUpdating: boolean = false;
-  locationOptions = locationDB;
+  constructor(
+    private suplierService: SupliersService,
+    private route: ActivatedRoute
+  ) {}
 
   currentSuplier: SuplierInterface = {
     brand: '',
@@ -40,7 +41,6 @@ export class SupliersNewComponent implements OnInit {
       surname: '',
     },
   };
-
   isSuplierInvalid: any = {
     brand: false,
     category: false,
@@ -58,11 +58,14 @@ export class SupliersNewComponent implements OnInit {
     contactMail: false,
     contactRol: false,
   };
-
-  constructor(
-    private suplierService: SupliersService,
-    private route: ActivatedRoute
-  ) {}
+  countryCodes = phoneCountryCodes;
+  cuitList: string[] = [];
+  locationOptions = locationDB;
+  cuitExistFlag: boolean = false;
+  flagNewSuplierCreated: boolean = false;
+  modalMessageFlag: boolean = false;
+  modalMessageObject!: ModalMessageInterface;
+  isUpdating: boolean = false;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
@@ -75,6 +78,12 @@ export class SupliersNewComponent implements OnInit {
           });
         // this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
         this.isUpdating = true;
+      } else {
+        this.suplierService.getList().subscribe((response) => {
+          for (let suplier of response) {
+            this.cuitList.push(suplier.cuit);
+          }
+        });
       }
     });
   }
@@ -84,7 +93,11 @@ export class SupliersNewComponent implements OnInit {
     this.validateSubmite();
     Object.keys(this.isSuplierInvalid).forEach((key) => {
       if (isFormValid && this.isSuplierInvalid[key]) {
-        alert('Hay errores en el formulario.');
+        this.modalMessageObject = {
+          message: `Hay errores en el formulario.`,
+          confirm: 'Continuar editando',
+        };
+        this.modalMessageFlag = true;
         isFormValid = false;
       }
     });
@@ -128,6 +141,12 @@ export class SupliersNewComponent implements OnInit {
 
   validateCuit(cuit: string): boolean {
     // returns true if valid.
+    for (let compareCuit of this.cuitList) {
+      if (cuit == compareCuit) {
+        this.cuitExistFlag = true;
+        return false;
+      }
+    }
     return !/[^0-9]/.test(cuit);
   }
 
@@ -189,5 +208,9 @@ export class SupliersNewComponent implements OnInit {
     this.currentSuplier.contact.rol.length > 40
       ? (this.isSuplierInvalid.contactRol = true)
       : (this.isSuplierInvalid.contactRol = false);
+  }
+
+  hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }

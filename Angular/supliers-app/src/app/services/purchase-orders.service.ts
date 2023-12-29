@@ -35,16 +35,20 @@ export class PurchaseOrdersService {
     );
   }
 
-  public addElement(product: PurchaseOrderInterface): void {
-    product.id = this.list.length;
-    this.list.push(product);
-  }
-
-  public addElements(
+  public addElement(
     pOrder: PurchaseOrderInterface
   ): Observable<PurchaseOrderInterface> {
     pOrder.id = this.counter;
     this.counter++;
     return this.http.post<PurchaseOrderInterface>(this.URL_API, pOrder);
+  }
+
+  public updateElement(
+    pOrder: PurchaseOrderInterface
+  ): Observable<PurchaseOrderInterface> {
+    return this.http.put<PurchaseOrderInterface>(
+      this.URL_API + '/' + pOrder.id,
+      pOrder
+    );
   }
 }

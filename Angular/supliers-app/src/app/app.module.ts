@@ -11,7 +11,6 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { ItemsListComponent } from './components/shared/items-list/items-list.component';
 import { MainComponent } from './components/main/main.component';
-import { ModalSavedComponent } from './components/shared/modal-saved/modal-saved.component';
 import { NoItemsAlertComponent } from './components/shared/no-items-alert/no-items-alert.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductInfoComponent } from './components/products/product-info/product-info.component';
@@ -31,6 +30,9 @@ import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { ModalConfirmComponent } from './components/shared/modal-confirm/modal-confirm.component';
+import { ModalRedirectComponent } from './components/shared/modal-redirect/modal-redirect.component';
+import { ModalMessageComponent } from './components/shared/modal-message/modal-message.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,6 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     HeaderComponent,
     ItemsListComponent,
     MainComponent,
-    ModalSavedComponent,
     NoItemsAlertComponent,
     NotFoundComponent,
     ProductInfoComponent,
@@ -60,6 +61,9 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     ShowContactPipe,
     ShowMailPipe,
     TableTransformPipe,
+    ModalConfirmComponent,
+    ModalRedirectComponent,
+    ModalMessageComponent,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [

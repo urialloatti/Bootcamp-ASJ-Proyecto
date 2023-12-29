@@ -1,0 +1,43 @@
+<div
+  class="modal"
+  tabindex="-1"
+  id="modal-box"
+  [ngClass]="triedToEscape ? 'fade show' : 'fade show modal-static'"
+>
+  <div class="modal-dialog" id="modal-dialog">
+    <div class="modal-content modal-content-bg">
+      <div class="modal-header justify-content-between modal-header-bg py-2">
+        <div class="text-center modal-title">
+          <h2 class="modal-title fs-5">{{ modalData.header }}</h2>
+        </div>
+        <span class="fs-4" id="btn-close" (click)="sendResponse(false)"
+          ><i class="bi bi-x"></i
+        ></span>
+      </div>
+      <div class="modal-body text-center py-1">
+        <p class="fs-5 text-dark">{{ modalData.message }}</p>
+      </div>
+      <div class="modal-footer d-flex justify-content-end border-top-0 pt-0">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="sendResponse(false)"
+        >
+          {{ modalData.cancel }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-color"
+          (click)="sendResponse(true)"
+        >
+          {{ modalData.confirm }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal-backdrop fade show"
+  id="modal-backdrop"
+  (click)="backClick()"
+></div>

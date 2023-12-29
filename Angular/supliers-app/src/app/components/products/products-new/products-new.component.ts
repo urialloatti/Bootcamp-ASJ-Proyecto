@@ -5,6 +5,7 @@ import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
+import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'products-new',
@@ -12,9 +13,11 @@ import { SupliersService } from '../../../services/supliers.service';
   styleUrl: './products-new.component.css',
 })
 export class ProductsNewComponent implements OnInit {
-  flagNewProductCreated: boolean = false;
-  isUpdating: boolean = false;
-  supliersList: SuplierInterface[] = [];
+  constructor(
+    private productService: ProductsService,
+    private route: ActivatedRoute,
+    private suplierService: SupliersService
+  ) {}
 
   currentProduct: ProductInterface = {
     category: 'Otro',
@@ -24,19 +27,17 @@ export class ProductsNewComponent implements OnInit {
     price: 0,
     suplierId: -1,
   };
-
   productValidator: any = {
     category: false,
     name: false,
     description: false,
     price: false,
   };
-
-  constructor(
-    private productService: ProductsService,
-    private route: ActivatedRoute,
-    private suplierService: SupliersService
-  ) {}
+  supliersList: SuplierInterface[] = [];
+  flagNewProductCreated: boolean = false;
+  modalMessageFlag: boolean = false;
+  modalMessageObject!: ModalMessageInterface;
+  isUpdating: boolean = false;
 
   ngOnInit(): void {
     this.suplierService.getList().subscribe((response) => {
@@ -61,7 +62,11 @@ export class ProductsNewComponent implements OnInit {
     this.validateSubmite();
     Object.keys(this.productValidator).forEach((key) => {
       if (isFormValid && this.productValidator[key]) {
-        alert('Hay errores en el formulario.');
+        this.modalMessageObject = {
+          message: `Hay errores en el formulario.`,
+          confirm: 'Continuar editando',
+        };
+        this.modalMessageFlag = true;
         isFormValid = false;
       }
     });
@@ -92,5 +97,9 @@ export class ProductsNewComponent implements OnInit {
     this.currentProduct.price < 1
       ? (this.productValidator.price = true)
       : (this.productValidator.price = false);
+  }
+
+  hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }

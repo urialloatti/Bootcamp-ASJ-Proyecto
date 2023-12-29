@@ -188,7 +188,7 @@
                   </div>
                   <div class="col text-end">
                     {{
-                      currentProduct.price! * productView.productQuantity
+                      productView.price! * productView.productQuantity
                         | currency : "USD"
                     }}
                   </div>
@@ -227,12 +227,18 @@
     </div>
   </section>
   <section>
-    <shared-modal-saved
+    <shared-modal-redirect
       *ngIf="flagNewPurchaseOrderCreated"
       [modalData]="{
         message: 'Órden de compra cargada con éxito.',
         path: '/purchase-orders'
       }"
-    ></shared-modal-saved>
+    ></shared-modal-redirect>
+    <shared-modal-message
+      *ngIf="modalMessageFlag"
+      [modalData]="modalMessageObject"
+      (modalViewed)="hideModal()"
+    >
+    </shared-modal-message>
   </section>
 </div>

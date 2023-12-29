@@ -7,3 +7,13 @@
     (deletedId)="deleteProduct($event)"
   ></shared-items-list>
 </div>
+<shared-modal-confirm
+  *ngIf="modalConfirmFlag"
+  [modalData]="modalConfirmObject"
+></shared-modal-confirm>
+<shared-modal-message
+  *ngIf="modalMessageFlag"
+  [modalData]="modalMessageObject"
+  (modalViewed)="hideModal()"
+>
+</shared-modal-message>

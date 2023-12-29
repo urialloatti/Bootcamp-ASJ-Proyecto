@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
+import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'app-purchase-info',
@@ -13,11 +15,14 @@ export class PurchaseInfoComponent {
   constructor(
     private purchaseService: PurchaseOrdersService,
     private route: ActivatedRoute,
-    private router: Router
+    private confirmService: ModalsService
   ) {}
 
+  pageLoadedFlag: boolean = false;
   currentPurchase!: PurchaseOrderInterface;
-  flag: boolean = false;
+  modalRedirectFlag: boolean = false;
+  modalConfirmFlag: boolean = false;
+  modalConfirmObject!: ModalConfirmInterface;
   path: string = '/purchase-orders/';
 
   ngOnInit(): void {
@@ -34,22 +39,28 @@ export class PurchaseInfoComponent {
     let deleted: PurchaseOrderInterface;
     this.purchaseService.getElementById(id).subscribe((dto) => {
       deleted = dto;
-      if (
-        confirm(
-          `¿Está seguro de que desea cancelar la órden de compra del ${deleted.dateEmited} del provedor ${deleted.suplierName}?`
-        )
-      ) {
-        this.purchaseService.deleteById(id).subscribe(() => {
-          this.loadPurchase(id.toString());
-          // window.location.reload();
-          this.flag = true;
-        });
-      }
+      this.modalConfirmObject = {
+        header: `Cancelar órden de compra ${deleted.id}`,
+        message: `Está seguro de cancelar la órden de compra generada el ${deleted.dateEmited}?`,
+        cancel: 'Volver atrás',
+        confirm: 'Cancelar órden de compra',
+      };
+      this.modalConfirmFlag = true;
+      this.confirmService.confirm$.subscribe((response) => {
+        this.modalConfirmFlag = false;
+        if (response) {
+          this.purchaseService.deleteById(id).subscribe(() => {
+            this.modalRedirectFlag = true;
+            this.loadPurchase(id.toString());
+          });
+        }
+      });
     });
   }
 
   loadPurchase(id: string): void {
     this.purchaseService.getElementById(parseInt(id)).subscribe((response) => {
+      this.pageLoadedFlag = true;
       this.currentPurchase = response;
     });
   }

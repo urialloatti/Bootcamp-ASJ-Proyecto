@@ -12,6 +12,7 @@ import { PurchaseListComponent } from './components/purchase-order/purchase-list
 import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
 import { ProductInfoComponent } from './components/products/product-info/product-info.component';
 import { PurchaseInfoComponent } from './components/purchase-order/purchase-info/purchase-info.component';
+import { ModalConfirmComponent } from './components/shared/modal-confirm/modal-confirm.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
     path: '404',
     component: NotFoundComponent,
   },
+  { path: 'modal', component: ModalConfirmComponent },
   {
     path: '**',
     redirectTo: '404',

@@ -11,6 +11,7 @@ import {
 } from '../../../interfaces/purchaseOrderInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
+import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'app-purchase-new',
@@ -26,15 +27,6 @@ export class PurchaseNewComponent implements OnInit {
     private datePipe: DatePipe
   ) {}
 
-  flagNewPurchaseOrderCreated: boolean = false;
-  isCartEmpty: boolean = false;
-  isDateInvalid: boolean = false;
-  isDescriptionInvalid: boolean = false;
-  isProductAdded: boolean = false;
-  isProductInvalid: boolean = false;
-  isSuplierSelected: boolean = false;
-  isUpdating: boolean = false;
-
   currentPurchaseOrder: PurchaseOrderInterface = {
     dateArriving: new Date(),
     dateEmited: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
@@ -45,18 +37,25 @@ export class PurchaseNewComponent implements OnInit {
     suplierName: '',
     total: 0,
   };
-
-  dateShipping: Date = new Date();
-
   currentProduct: ProductGroup = {
-    productId: 0,
+    productId: -1,
     productName: undefined,
     price: -1,
     productQuantity: 1,
   };
-
   supliersList: SuplierInterface[] = [];
   suplierProducts: ProductInterface[] = [];
+  dateShipping: Date = new Date();
+  flagNewPurchaseOrderCreated: boolean = false;
+  isCartEmpty: boolean = false;
+  isDateInvalid: boolean = false;
+  isDescriptionInvalid: boolean = false;
+  isProductAdded: boolean = false;
+  isProductInvalid: boolean = false;
+  isSuplierSelected: boolean = false;
+  modalMessageFlag: boolean = false;
+  modalMessageObject!: ModalMessageInterface;
+  isUpdating: boolean = false;
 
   ngOnInit(): void {
     this.suplierService.getList().subscribe((response) => {
@@ -95,7 +94,11 @@ export class PurchaseNewComponent implements OnInit {
   savePurchase() {
     this.validateForm();
     if (this.isDateInvalid || this.isCartEmpty || this.isDescriptionInvalid) {
-      alert('Hay errores en el formulario.');
+      this.modalMessageObject = {
+        message: `Hay errores en el formulario.`,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
     } else {
       let suplier: SuplierInterface;
       this.suplierService
@@ -105,10 +108,14 @@ export class PurchaseNewComponent implements OnInit {
           this.currentPurchaseOrder.suplierName = suplier?.brand;
           if (!this.isUpdating) {
             this.currentPurchaseOrder.dateEmited = new Date();
+            this.purchaseService
+              .addElement(this.currentPurchaseOrder)
+              .subscribe();
+          } else {
+            this.purchaseService
+              .updateElement(this.currentPurchaseOrder)
+              .subscribe();
           }
-          this.purchaseService
-            .addElements(this.currentPurchaseOrder)
-            .subscribe();
           this.flagNewPurchaseOrderCreated = true;
         });
     }
@@ -163,7 +170,7 @@ export class PurchaseNewComponent implements OnInit {
 
   getMinDateShipping(): Date {
     const day = 1000 * 60 * 60 * 24;
-    let daysDelay = 2;
+    let daysDelay = 3;
     let dateCreated = this.getDateObject(this.currentPurchaseOrder.dateEmited);
     return new Date(day * daysDelay + dateCreated.getTime());
   }
@@ -191,5 +198,9 @@ export class PurchaseNewComponent implements OnInit {
     this.currentPurchaseOrder.shippingRequirements.length > 500
       ? (this.isDescriptionInvalid = true)
       : (this.isDescriptionInvalid = false);
+  }
+
+  hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }

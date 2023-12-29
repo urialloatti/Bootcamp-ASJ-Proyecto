@@ -20,3 +20,12 @@
 .title {
   color: var(--color-middle) !important;
 }
+
+.btn-color {
+  background-color: var(--bg-accent);
+}
+
+.btn-color:hover {
+  background-color: var(--color-accent-light);
+  transition: 0.3s;
+}

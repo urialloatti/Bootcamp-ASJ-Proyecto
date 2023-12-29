@@ -1,5 +1,6 @@
 header {
-  flex: 0 1 auto;
+  position: sticky;
+  top: 0px;
   background-color: var(--bg-dark);
   color: var(--color-light);
 }

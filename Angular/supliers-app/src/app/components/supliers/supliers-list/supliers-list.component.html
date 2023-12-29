@@ -6,4 +6,14 @@
     [hasPicture]="false"
     (deletedId)="deleteSuplier($event)"
   ></shared-items-list>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+  <shared-modal-message
+    *ngIf="modalMessageFlag"
+    [modalData]="modalMessageObject"
+    (modalViewed)="hideModal()"
+  >
+  </shared-modal-message>
 </div>

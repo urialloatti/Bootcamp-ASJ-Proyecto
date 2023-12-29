@@ -54,6 +54,7 @@
               minlength="4"
               maxlength="40"
               [ngClass]="name.errors ? '' : 'is-valid'"
+              [ngClass]="productValidator.name ? 'is-invalid' : ''"
               class="form-control"
             />
             <div class="form-text" *ngIf="productValidator.name">
@@ -68,6 +69,7 @@
               [(ngModel)]="currentProduct.description"
               required
               [ngClass]="description.errors ? '' : 'is-valid'"
+              [ngClass]="productValidator.description ? 'is-invalid' : ''"
               class="form-control"
             ></textarea>
             <div class="form-text" *ngIf="productValidator.description">
@@ -97,6 +99,7 @@
                   min="1"
                   max="999999999"
                   [ngClass]="price.errors ? '' : 'is-valid'"
+                  [ngClass]="productValidator.price ? 'is-invalid' : ''"
                   class="form-control"
                 />
                 <div class="form-text" *ngIf="productValidator.price">
@@ -120,7 +123,13 @@
   <div class="col"></div>
 </section>
 
-<shared-modal-saved
+<shared-modal-redirect
   *ngIf="flagNewProductCreated"
   [modalData]="{ message: 'Producto cargado con éxito.', path: '/products' }"
-></shared-modal-saved>
+></shared-modal-redirect>
+<shared-modal-message
+  *ngIf="modalMessageFlag"
+  [modalData]="modalMessageObject"
+  (modalViewed)="hideModal()"
+>
+</shared-modal-message>
