@@ -54,7 +54,7 @@ const loadButtonProduct = () => {
         e.preventDefault();
         productsArray.push(createProduct());
         window.localStorage.setItem("products", JSON.stringify(productsArray));
-        alert("Producto cargado con éxito.")
+        alert("Producto cargado con éxito.");
     })
 };
 
