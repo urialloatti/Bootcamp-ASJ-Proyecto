@@ -10,41 +10,67 @@
           </div>
           <hr />
           <div class="mb-3">
-            <label class="form-label">Proveedor</label>
+            <label class="form-label"
+              >Proveedor <span class="fw-light">*</span></label
+            >
             <select
               name="suplier"
               #suplier="ngModel"
               [(ngModel)]="currentProduct.suplierId"
               class="form-select"
               [disabled]="isUpdating"
+              [ngClass]="productValidator.suplierId ? 'is-invalid' : ''"
+              [ngClass]="currentProduct.suplierId != -1 ? 'is-valid' : ''"
             >
+              <option value="-1" disabled>Seleccione un proveedor</option>
               <option
                 value="{{ suplier.id }}"
                 *ngFor="let suplier of supliersList"
               >
                 {{ suplier.brand }}
               </option>
-              <option value="-1" selected>Otro</option>
             </select>
+            <div
+              class="form-text"
+              *ngIf="
+                productValidator.suplierId && currentProduct.suplierId == -1
+              "
+            >
+              <p>Debe seleccionar una opción.</p>
+            </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Categoría</label>
+            <label class="form-label"
+              >Categoría <span class="fw-light">*</span></label
+            >
             <select
               name="category"
               #category="ngModel"
               [(ngModel)]="currentProduct.category"
               class="form-select"
+              [ngClass]="productValidator.category ? 'is-invalid' : ''"
+              [ngClass]="currentProduct.category != 'Otro' ? 'is-valid' : ''"
             >
+              <option disabled value="Otro">Seleccione una opción</option>
               <option value="Celulares">Celulares</option>
               <option value="Laptops">Laptops</option>
               <option value="Pequeños">Pequeños</option>
               <option value="Periféricos">Periféricos</option>
               <option value="Audio">Audio</option>
-              <option value="Otro">Otro</option>
             </select>
+            <div
+              class="form-text"
+              *ngIf="
+                productValidator.category && currentProduct.category == 'Otro'
+              "
+            >
+              <p>Debe seleccionar una opción.</p>
+            </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Nombre</label>
+            <label class="form-label"
+              >Nombre <span class="fw-light">*</span></label
+            >
             <input
               type="text"
               name="name"
@@ -57,12 +83,14 @@
               [ngClass]="productValidator.name ? 'is-invalid' : ''"
               class="form-control"
             />
-            <div class="form-text" *ngIf="productValidator.name">
+            <div class="form-text" *ngIf="productValidator.name && name.errors">
               <p>Debe tener entre 4 y 40 caracteres.</p>
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Descripción</label>
+            <label class="form-label"
+              >Descripción <span class="fw-light">*</span></label
+            >
             <textarea
               name="description"
               #description="ngModel"
@@ -72,7 +100,10 @@
               [ngClass]="productValidator.description ? 'is-invalid' : ''"
               class="form-control"
             ></textarea>
-            <div class="form-text" *ngIf="productValidator.description">
+            <div
+              class="form-text"
+              *ngIf="productValidator.description && description.errors"
+            >
               <p>Debe tener entre 1 y 500 caracteres.</p>
             </div>
           </div>
@@ -89,7 +120,9 @@
                 />
               </div>
               <div class="col">
-                <label class="form-label">Precio</label>
+                <label class="form-label"
+                  >Precio <span class="fw-light">*</span></label
+                >
                 <input
                   type="number"
                   name="price"
@@ -102,7 +135,10 @@
                   [ngClass]="productValidator.price ? 'is-invalid' : ''"
                   class="form-control"
                 />
-                <div class="form-text" *ngIf="productValidator.price">
+                <div
+                  class="form-text"
+                  *ngIf="productValidator.price && price.errors"
+                >
                   <p>Debe ser un número mayor de 0.</p>
                 </div>
               </div>
@@ -122,14 +158,15 @@
   </div>
   <div class="col"></div>
 </section>
-
-<shared-modal-redirect
-  *ngIf="flagNewProductCreated"
-  [modalData]="{ message: 'Producto cargado con éxito.', path: '/products' }"
-></shared-modal-redirect>
-<shared-modal-message
-  *ngIf="modalMessageFlag"
-  [modalData]="modalMessageObject"
-  (modalViewed)="hideModal()"
->
-</shared-modal-message>
+<section>
+  <shared-modal-redirect
+    *ngIf="flagNewProductCreated"
+    [modalData]="{ message: 'Producto cargado con éxito.', path: '/products' }"
+  ></shared-modal-redirect>
+  <shared-modal-message
+    *ngIf="modalMessageFlag"
+    [modalData]="modalMessageObject"
+    (modalViewed)="hideModal()"
+  >
+  </shared-modal-message>
+</section>

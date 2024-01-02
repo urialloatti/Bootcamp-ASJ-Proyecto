@@ -17,7 +17,8 @@ export class SupliersService {
   public getList(): Observable<SuplierInterface[]> {
     return this.http.get<SuplierInterface[]>(this.URL_API).pipe(
       map((list: SuplierInterface[]) => {
-        return list.sort((a, b) =>
+        const filtered_list = list.filter((suplier) => suplier.isAvailable);
+        return filtered_list.sort((a, b) =>
           a.brand.toLowerCase().localeCompare(b.brand.toLowerCase())
         );
       })
@@ -30,6 +31,18 @@ export class SupliersService {
 
   public deleteElementById(id: number): Observable<SuplierInterface> {
     return this.http.delete<SuplierInterface>(this.URL_API + '/' + id);
+  }
+
+  cancelElementById(id: number): Observable<SuplierInterface> {
+    return this.http.get<SuplierInterface>(this.URL_API + '/' + id).pipe(
+      map((dto) => {
+        dto.isAvailable = false;
+        this.http
+          .put<SuplierInterface>(this.URL_API + '/' + id, dto)
+          .subscribe();
+        return dto;
+      })
+    );
   }
 
   // POST methods

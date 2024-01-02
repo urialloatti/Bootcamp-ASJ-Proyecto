@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
+import {
+  ModalConfirmInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
+import { ProductInterface } from '../../../interfaces/productInterface';
+import { ModalsService } from '../../../services/modal-confirm.service';
 
 @Component({
   selector: 'app-product-info',
@@ -11,12 +16,16 @@ import { ProductsService } from '../../../services/products.service';
 })
 export class ProductInfoComponent implements OnInit {
   constructor(
-    private productService: ProductsService,
     private route: ActivatedRoute,
-    private router: Router
+    private productService: ProductsService,
+    private confirmService: ModalsService
   ) {}
 
   currentProduct!: ProductInterface;
+  modalConfirmFlag: boolean = false;
+  modalConfirmObject!: ModalConfirmInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
@@ -32,17 +41,31 @@ export class ProductInfoComponent implements OnInit {
   }
 
   deleteProduct(id: number): void {
-    let deleted: ProductInterface;
-    this.productService.getElementById(id).subscribe((response) => {
-      deleted = response;
-      if (confirm(`¿Está seguro de que desea eliminar ${deleted.name}?`)) {
-        this.productService.deleteElementById(id).subscribe(
-          () => {
-            alert(`Producto ${deleted.name} eliminado con éxito.`);
-            setTimeout(() => this.router.navigateByUrl('/products'), 1000);
+    this.modalConfirmObject = {
+      header: `Eliminando producto ${this.currentProduct.code}`,
+      message: `Está seguro de eliminar el producto ${this.currentProduct.name}`,
+      cancel: 'Cancelar',
+      confirm: 'Eliminar',
+    };
+    this.modalConfirmFlag = true;
+    this.confirmService.confirm$.subscribe((confirmation) => {
+      this.modalConfirmFlag = false;
+      if (confirmation) {
+        this.currentProduct.isAvailable = false;
+        this.productService.cancelElementById(id).subscribe(
+          (response) => {
+            this.modalRedirectObject = {
+              message: `Producto ${response.name} eliminado con éxito.`,
+              path: '/products',
+            };
+            this.modalRedirectFlag = true;
           },
           (error) => {
-            alert('El producto ya no existe en la base de datos.');
+            this.modalRedirectObject = {
+              message: `Producto ${this.currentProduct.name} ya no se encuentra en la base de datos.`,
+              path: '/products',
+            };
+            this.modalRedirectFlag = true;
             console.log(error);
           }
         );

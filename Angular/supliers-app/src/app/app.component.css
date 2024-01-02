@@ -8,7 +8,6 @@ header {
 main {
   flex: 1 1 auto;
   background-color: var(--bg-light);
-  /*background-image: linear-gradient(var(--bg-accent), var(--bg-light)); */
 }
 
 footer {

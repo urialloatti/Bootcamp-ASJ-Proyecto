@@ -7,7 +7,9 @@
     (deletedId)="deletePurchase($event)"
   ></shared-items-list>
 </div>
-<shared-modal-confirm
-  *ngIf="modalConfirmFlag"
-  [modalData]="modalConfirmObject"
-></shared-modal-confirm>
+<section>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+</section>

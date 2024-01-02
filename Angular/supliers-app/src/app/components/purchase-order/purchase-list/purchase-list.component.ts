@@ -68,7 +68,9 @@ export class PurchaseListComponent implements OnInit {
       this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
-          this.purchaseService.deleteById(id).subscribe(() => this.loadList());
+          this.purchaseService
+            .cancelElementById(id)
+            .subscribe(() => this.loadList());
         }
       });
     });

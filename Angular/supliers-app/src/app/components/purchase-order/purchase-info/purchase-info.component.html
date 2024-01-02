@@ -103,15 +103,14 @@
       <div class="col"></div>
     </div>
   </div>
-  <shared-modal-redirect
-    *ngIf="modalRedirectFlag"
-    [modalData]="{
-      message: 'Órden de compra cancelada con éxito.',
-      path: '{{path}}'
-    }"
-  ></shared-modal-redirect>
-  <shared-modal-confirm
-    *ngIf="modalConfirmFlag"
-    [modalData]="modalConfirmObject"
-  ></shared-modal-confirm>
+  <section>
+    <shared-modal-confirm
+      *ngIf="modalConfirmFlag"
+      [modalData]="modalConfirmObject"
+    ></shared-modal-confirm>
+    <shared-modal-redirect
+      *ngIf="modalRedirectFlag"
+      [modalData]="modalRedirectObject"
+    ></shared-modal-redirect>
+  </section>
 </div>

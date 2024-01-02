@@ -23,7 +23,7 @@ export class PurchaseOrdersService {
     return this.http.get<PurchaseOrderInterface>(this.URL_API + '/' + id);
   }
 
-  public deleteById(id: number): Observable<PurchaseOrderInterface> {
+  public cancelElementById(id: number): Observable<PurchaseOrderInterface> {
     return this.http.get<PurchaseOrderInterface>(this.URL_API + '/' + id).pipe(
       map((dto) => {
         dto.isAvailable = false;

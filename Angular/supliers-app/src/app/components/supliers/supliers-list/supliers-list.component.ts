@@ -36,9 +36,9 @@ export class SupliersListComponent implements OnInit {
       },
     ],
   };
+  isListLoaded: boolean = false;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
-  isListLoaded: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
 
@@ -60,13 +60,14 @@ export class SupliersListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((response) => {
+      this.confirmService.confirm$.subscribe((confirmation) => {
         this.modalConfirmFlag = false;
-        if (response) {
-          this.supliersService.deleteElementById(id).subscribe(
-            () => {
+        if (confirmation) {
+          deleted.isAvailable = false;
+          this.supliersService.cancelElementById(id).subscribe(
+            (response) => {
               this.modalMessageObject = {
-                message: `Proveedor ${deleted.brand} eliminado con éxito.`,
+                message: `Proveedor ${response.brand} eliminado con éxito.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;

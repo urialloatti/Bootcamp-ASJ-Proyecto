@@ -1,18 +1,17 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProductsListComponent } from './components/products/products-list/products-list.component';
-import { ProductsNewComponent } from './components/products/products-new/products-new.component';
-import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
-import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
 import { MainComponent } from './components/main/main.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { PurchaseNewComponent } from './components/purchase-order/purchase-new/purchase-new.component';
-import { PurchaseListComponent } from './components/purchase-order/purchase-list/purchase-list.component';
-import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
 import { ProductInfoComponent } from './components/products/product-info/product-info.component';
+import { ProductsListComponent } from './components/products/products-list/products-list.component';
+import { ProductsNewComponent } from './components/products/products-new/products-new.component';
 import { PurchaseInfoComponent } from './components/purchase-order/purchase-info/purchase-info.component';
-import { ModalConfirmComponent } from './components/shared/modal-confirm/modal-confirm.component';
+import { PurchaseListComponent } from './components/purchase-order/purchase-list/purchase-list.component';
+import { PurchaseNewComponent } from './components/purchase-order/purchase-new/purchase-new.component';
+import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
+import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
+import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
 
 const routes: Routes = [
   {
@@ -54,7 +53,6 @@ const routes: Routes = [
     path: '404',
     component: NotFoundComponent,
   },
-  { path: 'modal', component: ModalConfirmComponent },
   {
     path: '**',
     redirectTo: '404',

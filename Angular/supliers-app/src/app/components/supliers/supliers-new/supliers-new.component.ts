@@ -76,7 +76,6 @@ export class SupliersNewComponent implements OnInit {
           .subscribe((response) => {
             this.currentSuplier = response;
           });
-        // this.currentSuplier = this.suplierService.getElementById(parseInt(id))!;
         this.isUpdating = true;
       } else {
         this.suplierService.getList().subscribe((response) => {

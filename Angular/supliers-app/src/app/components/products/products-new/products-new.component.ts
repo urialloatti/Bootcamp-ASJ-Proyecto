@@ -29,9 +29,10 @@ export class ProductsNewComponent implements OnInit {
   };
   productValidator: any = {
     category: false,
-    name: false,
     description: false,
+    name: false,
     price: false,
+    suplierId: false,
   };
   supliersList: SuplierInterface[] = [];
   flagNewProductCreated: boolean = false;
@@ -97,6 +98,12 @@ export class ProductsNewComponent implements OnInit {
     this.currentProduct.price < 1
       ? (this.productValidator.price = true)
       : (this.productValidator.price = false);
+    this.currentProduct.category == 'Otro'
+      ? (this.productValidator.category = true)
+      : (this.productValidator.category = false);
+    this.currentProduct.suplierId == -1
+      ? (this.productValidator.suplierId = true)
+      : (this.productValidator.suplierId = false);
   }
 
   hideModal(): void {

@@ -3,6 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
+import {
+  ModalConfirmInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
+import { ModalsService } from '../../../services/modal-confirm.service';
 
 @Component({
   selector: 'app-suplier-info',
@@ -11,12 +16,16 @@ import { SupliersService } from '../../../services/supliers.service';
 })
 export class SuplierInfoComponent {
   constructor(
-    private suplierService: SupliersService,
     private route: ActivatedRoute,
-    private router: Router
+    private confirmService: ModalsService,
+    private suplierService: SupliersService
   ) {}
 
   currentSuplier!: SuplierInterface;
+  modalConfirmFlag: boolean = false;
+  modalConfirmObject!: ModalConfirmInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
@@ -32,17 +41,31 @@ export class SuplierInfoComponent {
   }
 
   deleteSuplier(id: number): void {
-    let deleted: SuplierInterface;
-    this.suplierService.getElementById(id).subscribe((response) => {
-      deleted = response;
-      if (confirm(`¿Está seguro de que desea eliminar ${deleted.brand}?`)) {
-        this.suplierService.deleteElementById(id).subscribe(
-          () => {
-            alert(`Proveedor ${deleted.brand} eliminado con éxito.`);
-            setTimeout(() => this.router.navigateByUrl('/supliers'), 1000);
+    this.modalConfirmObject = {
+      header: `Eliminando proveedor ${this.currentSuplier.code}`,
+      message: `Está seguro de eliminar el proveedor ${this.currentSuplier.brand}`,
+      cancel: 'Cancelar',
+      confirm: 'Eliminar',
+    };
+    this.modalConfirmFlag = true;
+    this.confirmService.confirm$.subscribe((confirmation) => {
+      this.modalConfirmFlag = false;
+      if (confirmation) {
+        this.currentSuplier.isAvailable = false;
+        this.suplierService.cancelElementById(id).subscribe(
+          (response) => {
+            this.modalRedirectObject = {
+              message: `Proveedor ${response.brand} eliminado con éxito.`,
+              path: '/supliers',
+            };
+            this.modalRedirectFlag = true;
           },
           (error) => {
-            alert('El proveedor ya no existe en la base de datos.');
+            this.modalRedirectObject = {
+              message: `Proveedor ${this.currentSuplier.brand} ya no se encuentra en la base de datos.`,
+              path: '/supliers',
+            };
+            this.modalRedirectFlag = true;
             console.log(error);
           }
         );

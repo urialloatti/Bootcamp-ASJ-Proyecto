@@ -26,10 +26,10 @@ export class ProductsService {
   public getList(): Observable<ProductInterface[]> {
     return this.http.get<ProductInterface[]>(this.URL_API).pipe(
       map((list: ProductInterface[]) => {
-        const sorted = list.sort((a, b) =>
+        const filtered_list = list.filter((product) => product.isAvailable);
+        return filtered_list.sort((a, b) =>
           a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         );
-        return sorted;
       })
     );
   }
@@ -52,6 +52,18 @@ export class ProductsService {
     return this.http.delete<ProductInterface>(this.URL_API + '/' + id);
   }
 
+  cancelElementById(id: number): Observable<ProductInterface> {
+    return this.http.get<ProductInterface>(this.URL_API + '/' + id).pipe(
+      map((dto) => {
+        dto.isAvailable = false;
+        this.http
+          .put<ProductInterface>(this.URL_API + '/' + id, dto)
+          .subscribe();
+        return dto;
+      })
+    );
+  }
+
   // POST methods
   public addElement(product: ProductInterface): Observable<ProductInterface> {
     product.id = this.counter;
@@ -68,7 +80,5 @@ export class ProductsService {
       this.URL_API + '/' + product.id,
       product
     );
-    // let oldProduct = this.list.find((product) => product.id == newProduct.id);
-    // oldProduct = newProduct;
   }
 }

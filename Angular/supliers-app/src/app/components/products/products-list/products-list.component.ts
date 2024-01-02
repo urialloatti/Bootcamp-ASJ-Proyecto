@@ -20,7 +20,7 @@ export class ProductsListComponent implements OnInit {
     private confirmService: ModalsService
   ) {}
 
-  producsArray!: ProductInterface[];
+  productsArray!: ProductInterface[];
   productsFields: ListTemplateInterface = {
     section: 'products',
     label: 'productos',
@@ -39,7 +39,7 @@ export class ProductsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.productsService.getList().subscribe((response) => {
-      this.producsArray = response;
+      this.productsArray = response;
       this.isListLoaded = true;
     });
   }
@@ -58,15 +58,16 @@ export class ProductsListComponent implements OnInit {
       this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
-          this.productsService.deleteElementById(id).subscribe(
-            () => {
+          deleted.isAvailable = false;
+          this.productsService.cancelElementById(id).subscribe(
+            (response) => {
               this.modalMessageObject = {
-                message: `Producto ${deleted.name} eliminado con éxito.`,
+                message: `Producto ${response.name} eliminado con éxito.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
               this.productsService.getList().subscribe((response) => {
-                this.producsArray = response;
+                this.productsArray = response;
               });
             },
             (error) => {

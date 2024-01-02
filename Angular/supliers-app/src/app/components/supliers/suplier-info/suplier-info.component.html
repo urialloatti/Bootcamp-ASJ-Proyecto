@@ -1,4 +1,4 @@
-<div class="container py-4 rounded h-100 body">
+<section class="container py-4 rounded h-100 body">
   <div class="row">
     <div class="col"></div>
     <div class="col-9">
@@ -156,4 +156,14 @@
     </div>
     <div class="col"></div>
   </div>
-</div>
+</section>
+<section>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
+</section>
