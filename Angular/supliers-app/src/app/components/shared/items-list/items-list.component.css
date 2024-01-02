@@ -2,12 +2,17 @@
   width: 10rem;
 }
 
-.last-column-data {
-  height: 5em;
-}
-
 img {
-  width: 4em;
+  width: 5em;
   height: 4em;
   object-fit: cover;
+  padding: 0.25em;
+  border: 1px #ccc solid;
+  background-color: var(--bg-light);
+}
+
+@media (max-width: 768px) {
+  .items-table {
+    overflow-x: auto;
+  }
 }

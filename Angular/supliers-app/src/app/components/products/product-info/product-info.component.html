@@ -1,13 +1,18 @@
 <section class="container py-4 rounded h-100 body">
   <div class="row">
-    <div class="col"></div>
-    <div class="col-9">
+    <div class="col d-none d-sm-block"></div>
+    <div class="col col-sm-10 col-md-9">
       <article class="bg-body-tertiary rounded p-2 px-5">
         <div class="row mb-3">
           <div class="col">
             <a class="text-decoration-none" routerLink="/products"
               >← Ir al listado</a
             >
+          </div>
+        </div>
+        <div class="row d-block d-md-none mb-2">
+          <div class="col text-center">
+            <h1 class="h2 title">{{ currentProduct.name }}</h1>
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -20,7 +25,7 @@
             />
           </div>
           <div class="col ps-3">
-            <div class="row mb-4">
+            <div class="row mb-4 d-none d-md-block">
               <div class="col-12 text-center">
                 <h1 class="h2 title">{{ currentProduct.name }}</h1>
               </div>
@@ -28,12 +33,14 @@
             <div class="row mb-3">
               <div class="col">
                 <h2 class="h4 text-body-tertiary">
-                  Proveedor: {{ currentProduct.suplier }}
+                  <span class="h5">Proveedor: </span
+                  >{{ currentProduct.suplier }}
                 </h2>
               </div>
-              <div class="col text-end">
+              <div class="col">
                 <h2 class="h4 text-body-tertiary">
-                  Categoría: {{ currentProduct.category }}
+                  <span class="h5">Categoría: </span>
+                  {{ currentProduct.category }}
                 </h2>
               </div>
             </div>
@@ -76,7 +83,7 @@
         </div>
       </article>
     </div>
-    <div class="col"></div>
+    <div class="col d-none d-sm-block"></div>
   </div>
 </section>
 <section>

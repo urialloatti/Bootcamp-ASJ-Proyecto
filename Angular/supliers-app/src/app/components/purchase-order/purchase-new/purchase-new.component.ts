@@ -33,14 +33,14 @@ export class PurchaseNewComponent implements OnInit {
     isAvailable: true,
     products: [],
     shippingRequirements: '',
-    suplierId: 0,
+    suplierId: -1,
     suplierName: '',
     total: 0,
   };
   currentProduct: ProductGroup = {
     productId: -1,
     productName: undefined,
-    price: -1,
+    price: 0,
     productQuantity: 1,
   };
   supliersList: SuplierInterface[] = [];
@@ -62,8 +62,8 @@ export class PurchaseNewComponent implements OnInit {
       this.supliersList = response;
     });
     this.currentPurchaseOrder.dateArriving = this.getMinDateShippingTemplate();
-    this.getSuplierProducts(this.currentPurchaseOrder.suplierId);
-    this.getProductPrice(this.currentProduct.productId);
+    // this.getSuplierProducts(this.currentPurchaseOrder.suplierId);
+    // this.getProductPrice(this.currentProduct.productId);
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
@@ -161,6 +161,12 @@ export class PurchaseNewComponent implements OnInit {
   emptyCart() {
     this.currentPurchaseOrder.products = [];
     this.currentPurchaseOrder.total = 0;
+  }
+  removeItemFromCart(id: number) {
+    const filtered = this.currentPurchaseOrder.products.filter(
+      (product) => product.productId != id
+    );
+    this.currentPurchaseOrder.products = filtered;
   }
 
   getMinDateShippingTemplate(): string {
