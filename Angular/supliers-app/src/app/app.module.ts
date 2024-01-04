@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+
 import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
 
 import { FooterComponent } from './components/shared/footer/footer.component';

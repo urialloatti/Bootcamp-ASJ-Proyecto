@@ -62,8 +62,6 @@ export class PurchaseNewComponent implements OnInit {
       this.supliersList = response;
     });
     this.currentPurchaseOrder.dateArriving = this.getMinDateShippingTemplate();
-    // this.getSuplierProducts(this.currentPurchaseOrder.suplierId);
-    // this.getProductPrice(this.currentProduct.productId);
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
