@@ -1,6 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 import { SupliersService } from '../../../services/supliers.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
@@ -14,8 +15,9 @@ import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 })
 export class SupliersNewComponent implements OnInit {
   constructor(
+    private route: ActivatedRoute,
     private suplierService: SupliersService,
-    private route: ActivatedRoute
+    private titleService: Title
   ) {}
 
   currentSuplier: SuplierInterface = {
@@ -32,7 +34,7 @@ export class SupliersNewComponent implements OnInit {
       zipCode: '',
     },
     cuit: '',
-    iva: 'Proveedor del Exterior',
+    iva: 'Otro',
     contact: {
       mail: '',
       name: '',
@@ -75,6 +77,7 @@ export class SupliersNewComponent implements OnInit {
           .getElementById(parseInt(id))
           .subscribe((response) => {
             this.currentSuplier = response;
+            this.titleService.setTitle(`Editar ${response.brand}`);
           });
         this.isUpdating = true;
       } else {
@@ -186,6 +189,9 @@ export class SupliersNewComponent implements OnInit {
     this.currentSuplier.cuit.length > 13
       ? (this.isSuplierInvalid.cuit = true)
       : (this.isSuplierInvalid.cuit = false);
+    this.currentSuplier.iva === 'Otro'
+      ? (this.isSuplierInvalid.iva = true)
+      : (this.isSuplierInvalid.iva = false);
     this.currentSuplier.contact.name.length < 4 ||
     this.currentSuplier.contact.name.length > 30
       ? (this.isSuplierInvalid.contactName = true)

@@ -5,6 +5,7 @@ import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterfa
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ModalsService } from '../../../services/modal-confirm.service';
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-purchase-list',
@@ -17,7 +18,9 @@ export class PurchaseListComponent implements OnInit {
     private confirmService: ModalsService
   ) {}
 
-  purchaseList: PurchaseOrderInterface[] = [];
+  purchaseArray: PurchaseOrderInterface[] = [];
+  purchaseList$!: Observable<PurchaseOrderInterface[]>;
+
   purchaseFields: ListTemplateInterface = {
     section: 'purchase-orders',
     label: 'órdenes de compra',
@@ -45,12 +48,13 @@ export class PurchaseListComponent implements OnInit {
   isListLoaded: boolean = true;
 
   ngOnInit(): void {
+    this.purchaseList$ = this.purchaseService.getList();
     this.loadList();
   }
 
   loadList() {
     this.purchaseService.getList().subscribe((response) => {
-      this.purchaseList = response;
+      this.purchaseArray = response;
     });
   }
 

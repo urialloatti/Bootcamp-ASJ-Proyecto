@@ -1,5 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
@@ -18,7 +19,8 @@ export class SuplierInfoComponent {
   constructor(
     private route: ActivatedRoute,
     private confirmService: ModalsService,
-    private suplierService: SupliersService
+    private suplierService: SupliersService,
+    private titleService: Title
   ) {}
 
   currentSuplier!: SuplierInterface;
@@ -35,6 +37,7 @@ export class SuplierInfoComponent {
           .getElementById(parseInt(id))
           .subscribe((response) => {
             this.currentSuplier = response;
+            this.titleService.setTitle(response.brand);
           });
       }
     });

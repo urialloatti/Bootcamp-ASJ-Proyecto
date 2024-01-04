@@ -6,11 +6,13 @@
         <fieldset class="px-4">
           <div class="text-center my-4">
             <h1 class="h3 title" *ngIf="!isUpdating">Cargar nuevo Proveedor</h1>
-            <h1 class="h3 title" *ngIf="isUpdating">Actualizar Proveedor</h1>
+            <h1 class="h3 title" *ngIf="isUpdating">Editar Proveedor</h1>
           </div>
           <hr />
           <div class="mb-3">
-            <label class="form-label">Razón social</label>
+            <label class="form-label"
+              >Razón social <span class="fw-light">*</span></label
+            >
             <input
               type="text"
               name="brand"
@@ -31,7 +33,9 @@
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Rubro</label>
+            <label class="form-label"
+              >Rubro <span class="fw-light">*</span></label
+            >
             <input
               type="text"
               name="category"
@@ -52,10 +56,12 @@
             </div>
           </div>
           <div class="mb-3 row">
-            <div class="col-6 mb-1">
-              <label class="form-label">Teléfono</label>
+            <div class="col-12 col-lg-6 mb-1">
+              <label class="form-label"
+                >Teléfono <span class="fw-light">*</span></label
+              >
               <div class="row">
-                <div class="col col-5">
+                <div class="col col-sm-5">
                   <select
                     name="suplier"
                     #suplier="ngModel"
@@ -92,8 +98,10 @@
                 <p>Ingrese el código de país y luego el número de teléfono.</p>
               </div>
             </div>
-            <div class="col col-6">
-              <label class="form-label">Sitio web</label>
+            <div class="col col-lg-6">
+              <label class="form-label"
+                >Sitio web <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="web"
@@ -113,9 +121,11 @@
           </div>
         </fieldset>
         <fieldset class="px-4">
-          <div class="row mb-1 d-flex align-items-end">
-            <div class="col">
-              <label class="form-label">Dirección</label>
+          <div class="row mb-1">
+            <div class="col-12 col-lg-7">
+              <label class="form-label"
+                >Dirección <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="address"
@@ -137,8 +147,10 @@
                 <p>Debe tener al menos 4 caracteres.</p>
               </div>
             </div>
-            <div class="col-2">
-              <label class="form-label">Número</label>
+            <div class="col col-lg-2">
+              <label class="form-label"
+                >Número <span class="fw-light">*</span></label
+              >
               <input
                 type="number"
                 name="addressNumber"
@@ -161,8 +173,10 @@
                 <p>Debe ingresar un número positivo.</p>
               </div>
             </div>
-            <div class="col-3">
-              <label class="form-label">Código postal</label>
+            <div class="col col-lg-3">
+              <label class="form-label"
+                >Código postal <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="zipCode"
@@ -184,8 +198,10 @@
             </div>
           </div>
           <div class="row mb-1">
-            <div class="col">
-              <label class="form-label">País</label>
+            <div class="col-6 col-md-4">
+              <label class="form-label"
+                >País <span class="fw-light">*</span></label
+              >
               <select
                 name="country"
                 #country="ngModel"
@@ -200,8 +216,10 @@
                 </option>
               </select>
             </div>
-            <div class="col">
-              <label class="form-label">Provincia</label>
+            <div class="col-6 col-md-4">
+              <label class="form-label"
+                >Provincia <span class="fw-light">*</span></label
+              >
               <select
                 name="state"
                 #state="ngModel"
@@ -221,7 +239,9 @@
               </select>
             </div>
             <div class="col">
-              <label class="form-label">Localidad</label>
+              <label class="form-label"
+                >Localidad <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="district"
@@ -246,9 +266,16 @@
           </div>
         </fieldset>
         <fieldset class="px-4 mt-3">
-          <div class="row mb-1 d-flex align-items-end">
-            <div class="col">
-              <label class="form-label">CUIT</label>
+          <div
+            class="row mb-1 d-flex"
+            [ngClass]="
+              isSuplierInvalid.cuit ? 'align-items-start' : 'align-items-end'
+            "
+          >
+            <div class="col-12 col-sm-5">
+              <label class="form-label"
+                >CUIT <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="cuit"
@@ -273,14 +300,17 @@
                 <p>El CUIT ingresado ya existe en la base de datos.</p>
               </div>
             </div>
-            <div class="col">
-              <label class="form-label">Condición frente al IVA</label>
+            <div class="col-12 col-sm-7">
+              <label class="form-label"
+                >Condición frente al IVA <span class="fw-light">*</span></label
+              >
               <select
                 class="form-select"
                 name="iva"
                 aria-label="Condición IVA"
                 [(ngModel)]="currentSuplier.iva"
               >
+                <option value="Otro" disabled>Seleccione una opción</option>
                 <option value="IVA Responsable Inscripto">
                   IVA Responsable Inscripto
                 </option>
@@ -291,8 +321,10 @@
                 <option value="Proveedor del Exterior">
                   Proveedor del Exterior
                 </option>
-                <option value="Otro">Otro</option>
               </select>
+              <div class="form-text" *ngIf="isSuplierInvalid.iva">
+                <p>Debe seleccionar una opción.</p>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -301,8 +333,10 @@
             <p class="h5 text-body-secondary">Datos de contacto</p>
           </div>
           <div class="row">
-            <div class="col-6 mb-1">
-              <label class="form-label">Nombre</label>
+            <div class="col-12 col-md-6 mb-1">
+              <label class="form-label"
+                >Nombre <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="name"
@@ -322,8 +356,10 @@
                 <p>Debe tener al menos 4 caracteres.</p>
               </div>
             </div>
-            <div class="col-6 mb-1">
-              <label class="form-label">Apellido</label>
+            <div class="col-12 col-md-6 mb-1">
+              <label class="form-label"
+                >Apellido <span class="fw-light">*</span></label
+              >
               <input
                 type="text"
                 name="surname"
@@ -345,10 +381,12 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-6 mb-1">
-              <label class="form-label">Teléfono</label>
+            <div class="col-12 col-md-6 mb-1">
+              <label class="form-label"
+                >Teléfono <span class="fw-light">*</span></label
+              >
               <div class="row">
-                <div class="col col-5">
+                <div class="col col-sm-5">
                   <select
                     name="suplier"
                     #suplier="ngModel"
@@ -363,7 +401,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="col">
+                <div class="col col-sm-7">
                   <input
                     type="number"
                     name="contactPhone"
@@ -387,8 +425,10 @@
                 <p>Ingrese el código de país y luego el número de teléfono.</p>
               </div>
             </div>
-            <div class="col-6 mb-1">
-              <label class="form-label">Email</label>
+            <div class="col-12 col-md-6 mb-1">
+              <label class="form-label"
+                >Email <span class="fw-light">*</span></label
+              >
               <input
                 type="email"
                 name="mail"
@@ -410,7 +450,9 @@
             </div>
           </div>
           <div class="mb-1">
-            <label class="form-label">Rol</label>
+            <label class="form-label"
+              >Rol <span class="fw-light">*</span></label
+            >
             <input
               type="text"
               name="rol"
@@ -433,8 +475,8 @@
         </fieldset>
         <div class="row m-4">
           <div class="col text-center">
-            <button class="btn btn-secondary me-1" type="submit">
-              <span *ngIf="isUpdating">Actualizar Proveedor</span>
+            <button class="btn btn-secondary me-1 my-2" type="submit">
+              <span *ngIf="isUpdating">Editar Proveedor</span>
               <span *ngIf="!isUpdating">Cargar Proveedor</span>
             </button>
             <button
@@ -444,7 +486,6 @@
             >
               Limpiar Campos
             </button>
-            <!-- [disabled]="myForm.invalid" -->
           </div>
         </div>
       </form>

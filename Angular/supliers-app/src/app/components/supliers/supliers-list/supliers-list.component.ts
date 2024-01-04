@@ -8,6 +8,7 @@ import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'supliers-list',
@@ -20,6 +21,7 @@ export class SupliersListComponent implements OnInit {
     private confirmService: ModalsService
   ) {}
   supliersArray!: SuplierInterface[];
+  suplierList$!: Observable<SuplierInterface[]>;
   supliersFields: ListTemplateInterface = {
     section: 'supliers',
     label: 'proveedores',
@@ -43,6 +45,7 @@ export class SupliersListComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
 
   ngOnInit(): void {
+    this.suplierList$ = this.supliersService.getList();
     this.supliersService.getList().subscribe((response) => {
       this.supliersArray = response;
       this.isListLoaded = true;

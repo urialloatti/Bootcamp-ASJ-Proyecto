@@ -8,6 +8,7 @@ import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'products-list',
@@ -36,8 +37,10 @@ export class ProductsListComponent implements OnInit {
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   isListLoaded: boolean = false;
+  productsList$!: Observable<ProductInterface[]>;
 
   ngOnInit(): void {
+    this.productsList$ = this.productsService.getList();
     this.productsService.getList().subscribe((response) => {
       this.productsArray = response;
       this.isListLoaded = true;

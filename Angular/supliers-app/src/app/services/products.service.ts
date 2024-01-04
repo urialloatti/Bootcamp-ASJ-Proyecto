@@ -41,7 +41,9 @@ export class ProductsService {
   public getElementsBySuplierId(id: number): Observable<ProductInterface[]> {
     return this.http.get<ProductInterface[]>(this.URL_API).pipe(
       map((res: ProductInterface[]) => {
-        const filtered = res.filter((item) => item.suplierId == id);
+        const filtered = res.filter(
+          (item) => item.suplierId == id && item.isAvailable
+        );
         return filtered;
       })
     );

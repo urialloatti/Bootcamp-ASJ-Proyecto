@@ -51,7 +51,8 @@ export class PurchaseNewComponent implements OnInit {
   isDateInvalid: boolean = false;
   isDescriptionInvalid: boolean = false;
   isProductAdded: boolean = false;
-  isProductInvalid: boolean = false;
+  isProductQuantityInvalid: boolean = false;
+  isProductEmpty: boolean = false;
   isSuplierSelected: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
@@ -70,6 +71,10 @@ export class PurchaseNewComponent implements OnInit {
           .getElementById(parseInt(id))
           .subscribe((response) => {
             this.currentPurchaseOrder = response;
+            this.dateShipping = this.getDateObject(
+              this.currentPurchaseOrder.dateArriving
+            );
+            console.log(this.dateShipping);
           });
         this.isUpdating = true;
         this.isSuplierSelected = true;
@@ -81,12 +86,14 @@ export class PurchaseNewComponent implements OnInit {
     this.productService.getElementsBySuplierId(id).subscribe((response) => {
       this.suplierProducts = response;
     });
+    this.currentProduct.productId = -1;
   }
 
   getProductPrice(id: number): void {
     this.productService.getElementById(id).subscribe((response) => {
       this.currentProduct.price = response.price;
     });
+    this.isProductEmpty = false;
   }
 
   savePurchase() {
@@ -120,8 +127,11 @@ export class PurchaseNewComponent implements OnInit {
   }
 
   addProduct() {
-    this.isProductInvalid = false;
-    if (this.currentProduct.productQuantity > 0) {
+    this.isProductQuantityInvalid = false;
+    if (
+      this.currentProduct.productQuantity > 0 &&
+      this.currentProduct.productId != -1
+    ) {
       this.isSuplierSelected = true;
       let product: ProductInterface;
       this.productService
@@ -143,16 +153,15 @@ export class PurchaseNewComponent implements OnInit {
               structuredClone(this.currentProduct)
             );
           }
-          !this.currentPurchaseOrder.total
-            ? (this.currentPurchaseOrder.total = total)
-            : (this.currentPurchaseOrder.total =
-                this.currentPurchaseOrder.total + total);
+          this.calculateTotal();
           this.currentProduct.productQuantity = 1;
           this.isProductAdded = true;
           setTimeout(() => (this.isProductAdded = false), 2000);
         });
+    } else if (this.currentProduct.productQuantity < 1) {
+      this.isProductQuantityInvalid = true;
     } else {
-      this.isProductInvalid = true;
+      this.isProductEmpty = true;
     }
   }
 
@@ -160,23 +169,43 @@ export class PurchaseNewComponent implements OnInit {
     this.currentPurchaseOrder.products = [];
     this.currentPurchaseOrder.total = 0;
   }
+
   removeItemFromCart(id: number) {
     const filtered = this.currentPurchaseOrder.products.filter(
       (product) => product.productId != id
     );
     this.currentPurchaseOrder.products = filtered;
+    this.calculateTotal();
+  }
+
+  calculateTotal(): void {
+    let total: number = 0;
+    for (const product of this.currentPurchaseOrder.products) {
+      total += product.price * product.productQuantity;
+    }
+    this.currentPurchaseOrder.total = total;
   }
 
   getMinDateShippingTemplate(): string {
-    let dateShipping = this.getMinDateShipping();
-    return this.datePipe.transform(dateShipping, 'yyyy-MM-dd') || '2024-01-01';
+    if (!this.isUpdating) {
+      let dateShipping = this.getMinDateShipping();
+      return this.datePipe.transform(dateShipping, 'yyyy-MM-dd')!;
+    } else {
+      return this.datePipe.transform(this.dateShipping, 'yyyy-MM-dd')!;
+    }
   }
 
   getMinDateShipping(): Date {
-    const day = 1000 * 60 * 60 * 24;
-    let daysDelay = 3;
-    let dateCreated = this.getDateObject(this.currentPurchaseOrder.dateEmited);
-    return new Date(day * daysDelay + dateCreated.getTime());
+    if (!this.isUpdating) {
+      const day = 1000 * 60 * 60 * 24;
+      let daysDelay = 3;
+      let dateCreated = this.getDateObject(
+        this.currentPurchaseOrder.dateEmited
+      );
+      return new Date(day * daysDelay + dateCreated.getTime());
+    } else {
+      return this.getDateObject(this.dateShipping);
+    }
   }
 
   getDateObject(date: string | Date): Date {
@@ -194,7 +223,6 @@ export class PurchaseNewComponent implements OnInit {
     this.getMinDateShipping().getTime()
       ? (this.isDateInvalid = true)
       : (this.isDateInvalid = false);
-
     this.currentPurchaseOrder.products.length < 1
       ? (this.isCartEmpty = true)
       : (this.isCartEmpty = false);

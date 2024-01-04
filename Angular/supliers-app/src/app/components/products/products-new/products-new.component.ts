@@ -6,6 +6,7 @@ import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'products-new',
@@ -14,8 +15,10 @@ import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 })
 export class ProductsNewComponent implements OnInit {
   constructor(
-    private productService: ProductsService,
     private route: ActivatedRoute,
+    private titleService: Title,
+
+    private productService: ProductsService,
     private suplierService: SupliersService
   ) {}
 
@@ -47,13 +50,14 @@ export class ProductsNewComponent implements OnInit {
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id != undefined) {
+      if (id !== undefined) {
         this.productService
-          .getElementById(parseInt(id))
+          .getElementById(parseInt(id!))
           .subscribe((response) => {
             this.currentProduct = response;
+            this.titleService.setTitle(`Editar ${response.name}`);
+            this.isUpdating = true;
           });
-        this.isUpdating = true;
       }
     });
   }

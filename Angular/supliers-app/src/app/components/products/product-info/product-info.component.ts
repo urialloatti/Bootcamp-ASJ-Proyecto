@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { ProductsService } from '../../../services/products.service';
 import {
@@ -17,8 +18,10 @@ import { ModalsService } from '../../../services/modal-confirm.service';
 export class ProductInfoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductsService,
-    private confirmService: ModalsService
+    private titleService: Title,
+
+    private confirmService: ModalsService,
+    private productService: ProductsService
   ) {}
 
   currentProduct!: ProductInterface;
@@ -35,6 +38,7 @@ export class ProductInfoComponent implements OnInit {
           .getElementById(parseInt(id))
           .subscribe((response) => {
             this.currentProduct = response;
+            this.titleService.setTitle(response.name);
           });
       }
     });
