@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ModalsService {
+export class ModalService {
   public confirmSubject: Subject<boolean> = new Subject<boolean>();
   public confirm$: Observable<boolean> = this.confirmSubject.asObservable();
 

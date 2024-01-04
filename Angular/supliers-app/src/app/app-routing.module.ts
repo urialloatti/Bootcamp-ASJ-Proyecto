@@ -12,6 +12,7 @@ import { PurchaseNewComponent } from './components/purchase-order/purchase-new/p
 import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
@@ -77,6 +78,10 @@ const routes: Routes = [
     component: MainComponent,
     title: 'Gestión de compras',
     pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: '404',

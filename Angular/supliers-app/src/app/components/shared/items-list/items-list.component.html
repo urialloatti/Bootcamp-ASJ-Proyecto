@@ -16,24 +16,26 @@
           <button
             type="button"
             class="btn btn-secondary"
-            *ngIf="currentPage != 0"
+            [disabled]="currentPage == 0"
             (click)="changePage(-1)"
           >
             <i class="bi bi-chevron-compact-left"></i>
           </button>
+          <span *ngFor="let page of pageList">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              [ngClass]="page.index == currentPage ? 'active' : ''"
+              (click)="selectPage(page.index)"
+              *ngIf="fromPage <= page.index && page.index <= toPage"
+            >
+              {{ page.index + 1 }}
+            </button>
+          </span>
           <button
             type="button"
             class="btn btn-secondary"
-            *ngFor="let page of pageList; index as i"
-            [ngClass]="i == currentPage ? 'active' : ''"
-            (click)="selectPage(i)"
-          >
-            {{ i + 1 }}
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            *ngIf="currentPage != pageList.length - 1"
+            [disabled]="currentPage == pageList.length - 1"
             (click)="changePage(1)"
           >
             <i class="bi bi-chevron-compact-right"></i>

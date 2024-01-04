@@ -69,7 +69,7 @@
     {
       "id": 0,
       "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 0",
+      "name": "Samsung Galaxy A54 00",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Celulares",
@@ -81,7 +81,7 @@
     {
       "id": 1,
       "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 1",
+      "name": "Notebook HP 15.6” Ryzen 5 01",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Laptops",
@@ -93,7 +93,7 @@
     {
       "id": 2,
       "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 2",
+      "name": "Samsung Galaxy S23 02",
       "suplierId": 1,
       "suplier": "Cetrogar",
       "category": "Celulares",
@@ -105,7 +105,7 @@
     {
       "id": 3,
       "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 3",
+      "name": "Notebook Dell 15.6” Intell I7 03",
       "suplier": "Cetrogar",
       "suplierId": 1,
       "category": "Laptops",
@@ -117,7 +117,7 @@
     {
       "id": 4,
       "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 4",
+      "name": "Samsung Galaxy A54 04",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Celulares",
@@ -129,7 +129,7 @@
     {
       "id": 5,
       "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 5",
+      "name": "Notebook HP 15.6” Ryzen 5 05",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Laptops",
@@ -141,7 +141,7 @@
     {
       "id": 6,
       "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 6",
+      "name": "Samsung Galaxy S23 06",
       "suplierId": 1,
       "suplier": "Cetrogar",
       "category": "Celulares",
@@ -153,7 +153,7 @@
     {
       "id": 7,
       "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 7",
+      "name": "Notebook Dell 15.6” Intell I7 07",
       "suplier": "Cetrogar",
       "suplierId": 1,
       "category": "Laptops",
@@ -165,7 +165,7 @@
     {
       "id": 8,
       "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 8",
+      "name": "Samsung Galaxy A54 08",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Celulares",
@@ -177,7 +177,7 @@
     {
       "id": 9,
       "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 9",
+      "name": "Notebook HP 15.6” Ryzen 5 09",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Laptops",

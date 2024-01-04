@@ -8,7 +8,7 @@ import {
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-product-info',
@@ -20,7 +20,7 @@ export class ProductInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
 
-    private confirmService: ModalsService,
+    private confirmService: ModalService,
     private productService: ProductsService
   ) {}
 

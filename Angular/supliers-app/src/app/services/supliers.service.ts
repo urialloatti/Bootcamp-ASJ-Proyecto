@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { suplierMockData } from '../data/mock-data';
 import { SuplierInterface } from '../interfaces/suplierInterface';
+import { ProductsService } from './products.service';
 
 @Injectable({
   providedIn: 'root',

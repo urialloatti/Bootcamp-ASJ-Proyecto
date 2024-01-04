@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
 import { Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 export class PurchaseListComponent implements OnInit {
   constructor(
     private purchaseService: PurchaseOrdersService,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
 
   purchaseArray: PurchaseOrderInterface[] = [];

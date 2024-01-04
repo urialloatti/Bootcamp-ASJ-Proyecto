@@ -8,7 +8,7 @@ import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-suplier-info',
@@ -18,7 +18,7 @@ import { ModalsService } from '../../../services/modal-confirm.service';
 export class SuplierInfoComponent {
   constructor(
     private route: ActivatedRoute,
-    private confirmService: ModalsService,
+    private confirmService: ModalService,
     private suplierService: SupliersService,
     private titleService: Title
   ) {}

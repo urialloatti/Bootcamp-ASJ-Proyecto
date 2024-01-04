@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 export class SupliersListComponent implements OnInit {
   constructor(
     private supliersService: SupliersService,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
   supliersArray!: SuplierInterface[];
   suplierList$!: Observable<SuplierInterface[]>;

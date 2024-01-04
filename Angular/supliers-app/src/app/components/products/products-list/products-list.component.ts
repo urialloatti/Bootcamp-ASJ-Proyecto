@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 export class ProductsListComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
 
   productsArray!: ProductInterface[];
