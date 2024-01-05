@@ -2,15 +2,12 @@
   "supliers": [
     {
       "id": 0,
-      "code": "Tec0",
       "brand": "Fravega SA",
       "category": "Tecnología",
+      "code": "Tec0",
       "cuit": "30526874249",
       "iva": "IVA Responsable Inscripto",
-      "phone": {
-        "country": 54,
-        "number": 800322156521
-      },
+      "phone": { "country": 54, "number": 800322156521 },
       "web": "fravega.com",
       "fullAddress": {
         "address": "9 de Julio",
@@ -24,10 +21,7 @@
         "name": "Jorge",
         "surname": "Amparo",
         "mail": "jamparo@fravega.com",
-        "phone": {
-          "country": 54,
-          "number": 3516305067
-        },
+        "phone": { "country": 54, "number": 3516305067 },
         "rol": "Encargado de compras"
       },
       "isAvailable": true
@@ -39,10 +33,7 @@
       "category": "Tecnología",
       "cuit": "30592845748",
       "iva": "IVA Responsable Inscripto",
-      "phone": {
-        "country": 54,
-        "number": 800322663597
-      },
+      "phone": { "country": 54, "number": 800322663597 },
       "web": "cetrogar.com",
       "fullAddress": {
         "address": "Rivera Indarte",
@@ -56,13 +47,36 @@
         "name": "Ana Clara",
         "surname": "Suarez",
         "mail": "asuarez@cetrogar.com",
-        "phone": {
-          "country": 54,
-          "number": 3516523678
-        },
+        "phone": { "country": 54, "number": 3516523678 },
         "rol": "Encargado de compras"
       },
       "isAvailable": true
+    },
+    {
+      "brand": "Logitech SA",
+      "category": "Tecnología",
+      "web": "logi.com",
+      "phone": { "country": 54, "number": 3426352468 },
+      "fullAddress": {
+        "address": "Av Colón",
+        "addressNumber": 5632,
+        "country": "Argentina",
+        "district": "Córdoba",
+        "state": "Córdoba",
+        "zipCode": "5000"
+      },
+      "cuit": "31566554815",
+      "iva": "IVA Responsable Inscripto",
+      "contact": {
+        "mail": "ualloatti@logi.com",
+        "name": "Uriel",
+        "phone": { "country": 54, "number": 3426304069 },
+        "rol": "Gerente de Ventas",
+        "surname": "Alloatti"
+      },
+      "isAvailable": true,
+      "id": 2,
+      "code": "Tec2"
     }
   ],
   "products": [
@@ -297,7 +311,7 @@
     {
       "id": 19,
       "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 1 19",
+      "name": "Samsung Galaxy A54 19",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Celulares",
@@ -345,7 +359,7 @@
     {
       "id": 23,
       "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 1 23",
+      "name": "Samsung Galaxy A54 23",
       "suplierId": 0,
       "suplier": "Fravega SA",
       "category": "Celulares",
@@ -353,6 +367,18 @@
       "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
       "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
       "isAvailable": true
+    },
+    {
+      "category": "Pequeños",
+      "description": "Mouse",
+      "name": "Mouse Logitech Ergo Fit",
+      "picture": "",
+      "price": 85000,
+      "suplierId": "2",
+      "suplier": "Logitech SA",
+      "isAvailable": true,
+      "code": "bf8d02dd-8a82-44ca-ac12-593a88b696d4",
+      "id": 24
     }
   ],
   "purchaseOrders": [
@@ -379,6 +405,24 @@
       "suplierName": "Cetrogar",
       "total": 3179997,
       "id": 0
+    },
+    {
+      "dateArriving": "2024-01-07",
+      "dateEmited": "2024-01-05T01:30:32.722Z",
+      "isAvailable": true,
+      "products": [
+        {
+          "productId": "6",
+          "productName": "Samsung Galaxy S23 06",
+          "price": 939999,
+          "productQuantity": 1
+        }
+      ],
+      "shippingRequirements": "Traerlo rápido",
+      "suplierId": "1",
+      "suplierName": "Cetrogar",
+      "total": 939999,
+      "id": 2
     }
   ]
 }

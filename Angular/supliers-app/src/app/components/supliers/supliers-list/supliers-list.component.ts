@@ -63,32 +63,36 @@ export class SupliersListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((confirmation) => {
-        this.modalConfirmFlag = false;
-        if (confirmation) {
-          deleted.isAvailable = false;
-          this.supliersService.cancelElementById(id).subscribe(
-            (response) => {
-              this.modalMessageObject = {
-                message: `Proveedor ${response.brand} eliminado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.supliersService.getList().subscribe((response) => {
-                this.supliersArray = response;
-              });
-            },
-            (error) => {
-              this.modalMessageObject = {
-                message: `El proveedor ya no existe en la base de datos.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.log(error);
-            }
-          );
+      let subscription = this.confirmService.confirm$.subscribe(
+        (confirmation) => {
+          this.modalConfirmFlag = false;
+          if (confirmation) {
+            deleted.isAvailable = false;
+            this.supliersService.cancelElementById(id).subscribe(
+              (response) => {
+                this.modalMessageObject = {
+                  message: `Proveedor ${response.brand} eliminado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.supliersService.getList().subscribe((response) => {
+                  this.supliersArray = response;
+                });
+              },
+              (error) => {
+                this.modalMessageObject = {
+                  message: `El proveedor ya no existe en la base de datos.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.log(error);
+              }
+            );
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 

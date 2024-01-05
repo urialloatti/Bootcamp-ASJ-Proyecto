@@ -159,14 +159,14 @@
   <div class="col d-none d-sm-block"></div>
 </section>
 <section>
-  <shared-modal-redirect
-    *ngIf="flagNewProductCreated"
-    [modalData]="{ message: 'Producto cargado con éxito.', path: '/products' }"
-  ></shared-modal-redirect>
   <shared-modal-message
     *ngIf="modalMessageFlag"
     [modalData]="modalMessageObject"
     (modalViewed)="hideModal()"
   >
   </shared-modal-message>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
 </section>

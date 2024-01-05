@@ -5,7 +5,10 @@ import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
-import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import {
+  ModalMessageInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -41,6 +44,8 @@ export class ProductsNewComponent implements OnInit {
   flagNewProductCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
   isUpdating: boolean = false;
 
   ngOnInit(): void {
@@ -50,14 +55,22 @@ export class ProductsNewComponent implements OnInit {
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== undefined) {
-        this.productService
-          .getElementById(parseInt(id!))
-          .subscribe((response) => {
+      if (id !== null) {
+        this.productService.getElementById(parseInt(id!)).subscribe(
+          (response) => {
             this.currentProduct = response;
             this.titleService.setTitle(`Editar ${response.name}`);
             this.isUpdating = true;
-          });
+          },
+          (error) => {
+            this.modalRedirectObject = {
+              message: 'Producto no encontrado',
+              path: '/products',
+            };
+            this.modalRedirectFlag = true;
+            console.error(error);
+          }
+        );
       }
     });
   }
@@ -87,7 +100,11 @@ export class ProductsNewComponent implements OnInit {
         this.currentProduct.isAvailable = true;
         this.productService.addElement(this.currentProduct).subscribe();
       }
-      this.flagNewProductCreated = true;
+      this.modalRedirectObject = {
+        message: 'Producto cargado con éxito.',
+        path: '/products',
+      };
+      this.modalRedirectFlag = true;
     }
   }
 

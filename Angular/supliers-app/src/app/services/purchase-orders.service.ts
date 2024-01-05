@@ -1,18 +1,24 @@
-import { Injectable } from '@angular/core';
-import { PurchaseOrderInterface } from '../interfaces/purchaseOrderInterface';
-import { purchaseOrdersMockData } from '../data/mock-data';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
+
+import { PurchaseOrderInterface } from '../interfaces/purchaseOrderInterface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PurchaseOrdersService {
+export class PurchaseOrdersService implements OnInit {
   constructor(private http: HttpClient) {}
-  private URL_API: string = 'http://localhost:3000/purchaseOrders';
-  private counter: number = 2;
 
-  private list: PurchaseOrderInterface[] = purchaseOrdersMockData || [];
+  private URL_API: string = 'http://localhost:3000/purchaseOrders';
+  private counter!: number;
+
+  ngOnInit(): void {
+    let subscription = this.getList().subscribe(
+      (response) => (this.counter = response.length)
+    );
+    subscription.unsubscribe();
+  }
 
   // GET methods
   public getList(): Observable<PurchaseOrderInterface[]> {

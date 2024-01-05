@@ -69,12 +69,14 @@ export class PurchaseListComponent implements OnInit {
         confirm: 'Cancelar órden de compra',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((response) => {
+      let subscription = this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
           this.purchaseService
             .cancelElementById(id)
             .subscribe(() => this.loadList());
+        } else {
+          subscription.unsubscribe();
         }
       });
     });

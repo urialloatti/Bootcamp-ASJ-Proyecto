@@ -1,1 +1,57 @@
-<p>login works!</p>
+<div class="container-fluid h-100 p-5" id="main">
+  <div class="row">
+    <div class="col-1 col-sm-2 col-md-3"></div>
+    <div class="col">
+      <section class="container login-container rounded p-3">
+        <article class="bg-light-subtle rounded p-4">
+          <div class="row mb-3">
+            <div class="col text-center">
+              <h1 class="title">Ingrese al sistema</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <form #myForm="ngForm" (ngSubmit)="login()">
+                <div class="mb-3">
+                  <label class="form-label">Nombre de usuario</label>
+                  <input
+                    type="text"
+                    name="username"
+                    #username="ngModel"
+                    [(ngModel)]="credentials.username"
+                    required
+                    minlength="4"
+                    maxlength="15"
+                    [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
+                    class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    name="password"
+                    #password="ngModel"
+                    [(ngModel)]="credentials.password"
+                    required
+                    [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
+                    class="form-control"
+                  />
+                  <div class="form-text" *ngIf="isCredentialInvalid">
+                    <p>El nombre de usuario o la contraseña son incorrectos.</p>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button class="btn btn-secondary" type="submit">
+                    Ingresar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+    <div class="col-1 col-sm-2 col-md-3"></div>
+  </div>
+</div>

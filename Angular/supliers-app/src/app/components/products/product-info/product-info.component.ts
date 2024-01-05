@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
@@ -19,12 +19,14 @@ export class ProductInfoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private titleService: Title,
+    private router: Router,
 
     private confirmService: ModalService,
     private productService: ProductsService
   ) {}
 
   currentProduct!: ProductInterface;
+  isLoaded: boolean = false;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalRedirectFlag: boolean = false;
@@ -34,12 +36,18 @@ export class ProductInfoComponent implements OnInit {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id) {
-        this.productService
-          .getElementById(parseInt(id))
-          .subscribe((response) => {
+        this.productService.getElementById(parseInt(id)).subscribe(
+          (response) => {
             this.currentProduct = response;
+            this.isLoaded = true;
             this.titleService.setTitle(response.name);
-          });
+          },
+          (error) => {
+            console.log('Producto no encontrado.');
+            console.error(error);
+            this.router.navigateByUrl('/404');
+          }
+        );
       }
     });
   }

@@ -58,7 +58,7 @@ export class ProductsListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((response) => {
+      let subscription = this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
           deleted.isAvailable = false;
@@ -82,6 +82,8 @@ export class ProductsListComponent implements OnInit {
               console.log(error);
             }
           );
+        } else {
+          subscription.unsubscribe();
         }
       });
     });

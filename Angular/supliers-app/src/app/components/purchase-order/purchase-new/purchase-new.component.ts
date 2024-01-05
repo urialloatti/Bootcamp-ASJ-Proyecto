@@ -168,6 +168,7 @@ export class PurchaseNewComponent implements OnInit {
   emptyCart() {
     this.currentPurchaseOrder.products = [];
     this.currentPurchaseOrder.total = 0;
+    this.isSuplierSelected = false;
   }
 
   removeItemFromCart(id: number) {
@@ -176,6 +177,9 @@ export class PurchaseNewComponent implements OnInit {
     );
     this.currentPurchaseOrder.products = filtered;
     this.calculateTotal();
+    if (this.currentPurchaseOrder.products.length == 0) {
+      this.isSuplierSelected = false;
+    }
   }
 
   calculateTotal(): void {

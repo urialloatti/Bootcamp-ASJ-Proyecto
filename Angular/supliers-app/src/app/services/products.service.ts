@@ -1,26 +1,23 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, filter, map, pipe } from 'rxjs';
+import { Injectable, OnInit } from '@angular/core';
+import { Observable, map } from 'rxjs';
 
-import { productsMockData } from '../data/mock-data';
 import { ProductInterface } from '../interfaces/productInterface';
-import { SupliersService } from './supliers.service';
-import { __makeTemplateObject } from 'tslib';
-
-// const data: ProductInterface[] = productsMockData;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
-  private counter: number = 4;
+export class ProductsService implements OnInit {
+  private counter!: number;
   private URL_API = 'http://localhost:3000/products';
-  private list: ProductInterface[] = productsMockData || [];
 
-  constructor(
-    private supliersService: SupliersService,
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
+  ngOnInit(): void {
+    let subscription = this.getList().subscribe((response) => {
+      this.counter = response.length;
+      subscription.unsubscribe();
+    });
+  }
 
   // GET methods
   public getList(): Observable<ProductInterface[]> {
