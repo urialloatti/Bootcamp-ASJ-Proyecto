@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { UsersService } from './services/users.service';
+import { UserCredentialsInterface } from './interfaces/userInterface';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +23,9 @@ export class AppComponent implements OnInit {
   }
 
   checkCredentials() {
-    let credentials: CredentialInterface = JSON.parse(
+    let credentials: UserCredentialsInterface = JSON.parse(
       localStorage.getItem('credentials') || '{}'
-    ) as CredentialInterface;
+    ) as UserCredentialsInterface;
     if (credentials.password !== 'admin' && credentials.password !== 'admin') {
       this.isLogedIn = false;
       this.route.navigateByUrl('/login');
@@ -31,9 +33,4 @@ export class AppComponent implements OnInit {
       this.isLogedIn = true;
     }
   }
-}
-
-interface CredentialInterface {
-  username: string;
-  password: string;
 }

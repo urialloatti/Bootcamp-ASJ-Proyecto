@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalService } from '../../services/modal.service';
+
 import { UsersService } from '../../services/users.service';
+import { UserCredentialsInterface } from '../../interfaces/userInterface';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { UsersService } from '../../services/users.service';
 })
 export class LoginComponent {
   constructor(private route: Router, private users: UsersService) {}
-  public credentials: CredentialInterface = {
+  public credentials: UserCredentialsInterface = {
     username: '',
     password: '',
   };
@@ -30,8 +31,4 @@ export class LoginComponent {
       this.credentials.password = '';
     }
   }
-}
-interface CredentialInterface {
-  username: string;
-  password: string;
 }
