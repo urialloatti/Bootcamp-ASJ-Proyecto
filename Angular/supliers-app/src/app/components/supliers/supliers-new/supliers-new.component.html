@@ -309,6 +309,7 @@
                 name="iva"
                 aria-label="Condición IVA"
                 [(ngModel)]="currentSuplier.iva"
+                [ngClass]="isSuplierInvalid.iva ? 'is-invalid' : ''"
               >
                 <option value="Otro" disabled>Seleccione una opción</option>
                 <option value="IVA Responsable Inscripto">

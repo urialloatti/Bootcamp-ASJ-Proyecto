@@ -223,17 +223,13 @@ export class PurchaseNewComponent implements OnInit {
   }
 
   validateForm() {
-    this.getDateObject(this.currentPurchaseOrder.dateArriving).getTime() <
-    this.getMinDateShipping().getTime()
-      ? (this.isDateInvalid = true)
-      : (this.isDateInvalid = false);
-    this.currentPurchaseOrder.products.length < 1
-      ? (this.isCartEmpty = true)
-      : (this.isCartEmpty = false);
-    this.currentPurchaseOrder.shippingRequirements.length < 1 ||
-    this.currentPurchaseOrder.shippingRequirements.length > 500
-      ? (this.isDescriptionInvalid = true)
-      : (this.isDescriptionInvalid = false);
+    this.isDateInvalid =
+      this.getDateObject(this.currentPurchaseOrder.dateArriving).getTime() <
+      this.getMinDateShipping().getTime();
+    this.isCartEmpty = this.currentPurchaseOrder.products.length < 1;
+    this.isDescriptionInvalid =
+      this.currentPurchaseOrder.shippingRequirements.length < 1 ||
+      this.currentPurchaseOrder.shippingRequirements.length > 500;
   }
 
   hideModal(): void {
