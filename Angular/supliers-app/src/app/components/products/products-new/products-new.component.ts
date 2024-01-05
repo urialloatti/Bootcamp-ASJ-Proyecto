@@ -5,7 +5,11 @@ import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
-import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import {
+  ModalMessageInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'products-new',
@@ -14,8 +18,10 @@ import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 })
 export class ProductsNewComponent implements OnInit {
   constructor(
-    private productService: ProductsService,
     private route: ActivatedRoute,
+    private titleService: Title,
+
+    private productService: ProductsService,
     private suplierService: SupliersService
   ) {}
 
@@ -27,7 +33,7 @@ export class ProductsNewComponent implements OnInit {
     price: 0,
     suplierId: -1,
   };
-  productValidator: any = {
+  isProductInvalid: any = {
     category: false,
     description: false,
     name: false,
@@ -38,6 +44,8 @@ export class ProductsNewComponent implements OnInit {
   flagNewProductCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
   isUpdating: boolean = false;
 
   ngOnInit(): void {
@@ -47,13 +55,22 @@ export class ProductsNewComponent implements OnInit {
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id != undefined) {
-        this.productService
-          .getElementById(parseInt(id))
-          .subscribe((response) => {
+      if (id !== null) {
+        this.productService.getElementById(parseInt(id!)).subscribe(
+          (response) => {
             this.currentProduct = response;
-          });
-        this.isUpdating = true;
+            this.titleService.setTitle(`Editar ${response.name}`);
+            this.isUpdating = true;
+          },
+          (error) => {
+            this.modalRedirectObject = {
+              message: 'Producto no encontrado',
+              path: '/products',
+            };
+            this.modalRedirectFlag = true;
+            console.error(error);
+          }
+        );
       }
     });
   }
@@ -61,8 +78,8 @@ export class ProductsNewComponent implements OnInit {
   saveProduct() {
     let isFormValid = true;
     this.validateSubmite();
-    Object.keys(this.productValidator).forEach((key) => {
-      if (isFormValid && this.productValidator[key]) {
+    Object.keys(this.isProductInvalid).forEach((key) => {
+      if (isFormValid && this.isProductInvalid[key]) {
         this.modalMessageObject = {
           message: `Hay errores en el formulario.`,
           confirm: 'Continuar editando',
@@ -83,27 +100,24 @@ export class ProductsNewComponent implements OnInit {
         this.currentProduct.isAvailable = true;
         this.productService.addElement(this.currentProduct).subscribe();
       }
-      this.flagNewProductCreated = true;
+      this.modalRedirectObject = {
+        message: 'Producto cargado con éxito.',
+        path: '/products',
+      };
+      this.modalRedirectFlag = true;
     }
   }
 
   validateSubmite() {
-    this.currentProduct.name.length < 4 || this.currentProduct.name.length > 40
-      ? (this.productValidator.name = true)
-      : (this.productValidator.name = false);
-    this.currentProduct.description.length < 1 ||
-    this.currentProduct.description.length > 500
-      ? (this.productValidator.description = true)
-      : (this.productValidator.description = false);
-    this.currentProduct.price < 1
-      ? (this.productValidator.price = true)
-      : (this.productValidator.price = false);
-    this.currentProduct.category == 'Otro'
-      ? (this.productValidator.category = true)
-      : (this.productValidator.category = false);
-    this.currentProduct.suplierId == -1
-      ? (this.productValidator.suplierId = true)
-      : (this.productValidator.suplierId = false);
+    this.isProductInvalid.name =
+      this.currentProduct.name.length < 4 ||
+      this.currentProduct.name.length > 40;
+    this.isProductInvalid.description =
+      this.currentProduct.description.length < 1 ||
+      this.currentProduct.description.length > 500;
+    this.isProductInvalid.price = this.currentProduct.price < 1;
+    this.isProductInvalid.category = this.currentProduct.category == 'Otro';
+    this.isProductInvalid.suplierId = this.currentProduct.suplierId == -1;
   }
 
   hideModal(): void {

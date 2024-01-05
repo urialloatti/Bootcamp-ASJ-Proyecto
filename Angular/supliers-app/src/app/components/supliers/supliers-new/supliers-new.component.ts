@@ -1,6 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 import { SupliersService } from '../../../services/supliers.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
@@ -14,8 +15,9 @@ import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 })
 export class SupliersNewComponent implements OnInit {
   constructor(
+    private route: ActivatedRoute,
     private suplierService: SupliersService,
-    private route: ActivatedRoute
+    private titleService: Title
   ) {}
 
   currentSuplier: SuplierInterface = {
@@ -32,7 +34,7 @@ export class SupliersNewComponent implements OnInit {
       zipCode: '',
     },
     cuit: '',
-    iva: 'Proveedor del Exterior',
+    iva: 'Otro',
     contact: {
       mail: '',
       name: '',
@@ -75,6 +77,7 @@ export class SupliersNewComponent implements OnInit {
           .getElementById(parseInt(id))
           .subscribe((response) => {
             this.currentSuplier = response;
+            this.titleService.setTitle(`Editar ${response.brand}`);
           });
         this.isUpdating = true;
       } else {
@@ -150,63 +153,50 @@ export class SupliersNewComponent implements OnInit {
   }
 
   validateSubmite() {
-    this.currentSuplier.brand.length < 4 ||
-    this.currentSuplier.brand.length > 60
-      ? (this.isSuplierInvalid.brand = true)
-      : (this.isSuplierInvalid.brand = false);
-    this.currentSuplier.category.length < 4 ||
-    this.currentSuplier.category.length > 60
-      ? (this.isSuplierInvalid.category = true)
-      : (this.isSuplierInvalid.category = false);
-    !this.currentSuplier.contact.phone?.number ||
-    this.currentSuplier.contact.phone.number < 0
-      ? (this.isSuplierInvalid.phone = true)
-      : (this.isSuplierInvalid.phone = false);
-    this.currentSuplier.web.length < 4 || this.currentSuplier.web.length > 60
-      ? (this.isSuplierInvalid.web = true)
-      : (this.isSuplierInvalid.web = false);
-    this.currentSuplier.fullAddress.address.length < 4 ||
-    this.currentSuplier.fullAddress.address.length > 60
-      ? (this.isSuplierInvalid.fullAddressAddress = true)
-      : (this.isSuplierInvalid.fullAddressAddress = false);
-    !this.currentSuplier.fullAddress.addressNumber ||
-    this.currentSuplier.fullAddress.addressNumber < 0
-      ? (this.isSuplierInvalid.fullAddressAddressNumber = true)
-      : (this.isSuplierInvalid.fullAddressAddressNumber = false);
-    this.currentSuplier.fullAddress.district.length < 4 ||
-    this.currentSuplier.fullAddress.district.length > 60
-      ? (this.isSuplierInvalid.fullAddressDistrict = true)
-      : (this.isSuplierInvalid.fullAddressDistrict = false);
-    this.currentSuplier.fullAddress.zipCode.length < 3 ||
-    this.currentSuplier.fullAddress.zipCode.length > 6
-      ? (this.isSuplierInvalid.fullAddressZIP = true)
-      : (this.isSuplierInvalid.fullAddressZIP = false);
-    !this.validateCuit(this.currentSuplier.cuit) ||
-    this.currentSuplier.cuit.length < 10 ||
-    this.currentSuplier.cuit.length > 13
-      ? (this.isSuplierInvalid.cuit = true)
-      : (this.isSuplierInvalid.cuit = false);
-    this.currentSuplier.contact.name.length < 4 ||
-    this.currentSuplier.contact.name.length > 30
-      ? (this.isSuplierInvalid.contactName = true)
-      : (this.isSuplierInvalid.contactName = false);
-    this.currentSuplier.contact.surname.length < 4 ||
-    this.currentSuplier.contact.surname.length > 30
-      ? (this.isSuplierInvalid.contactSurname = true)
-      : (this.isSuplierInvalid.contactSurname = false);
-    !this.currentSuplier.contact.phone?.number ||
-    this.currentSuplier.contact.phone.number < 0
-      ? (this.isSuplierInvalid.contactPhone = true)
-      : (this.isSuplierInvalid.contactPhone = false);
-    this.currentSuplier.contact.mail.length < 4 ||
-    this.currentSuplier.contact.mail.length > 40 ||
-    !this.validateMail(this.currentSuplier.contact.mail)
-      ? (this.isSuplierInvalid.contactMail = true)
-      : (this.isSuplierInvalid.contactMail = false);
-    this.currentSuplier.contact.rol.length < 4 ||
-    this.currentSuplier.contact.rol.length > 40
-      ? (this.isSuplierInvalid.contactRol = true)
-      : (this.isSuplierInvalid.contactRol = false);
+    this.isSuplierInvalid.brand =
+      this.currentSuplier.brand.length < 4 ||
+      this.currentSuplier.brand.length > 60;
+    this.isSuplierInvalid.category =
+      this.currentSuplier.category.length < 4 ||
+      this.currentSuplier.category.length > 60;
+    this.isSuplierInvalid.phone =
+      !this.currentSuplier.contact.phone?.number ||
+      this.currentSuplier.contact.phone.number < 0;
+    this.isSuplierInvalid.web =
+      this.currentSuplier.web.length < 4 || this.currentSuplier.web.length > 60;
+    this.isSuplierInvalid.fullAddressAddress =
+      this.currentSuplier.fullAddress.address.length < 4 ||
+      this.currentSuplier.fullAddress.address.length > 60;
+    this.isSuplierInvalid.fullAddressAddressNumber =
+      !this.currentSuplier.fullAddress.addressNumber ||
+      this.currentSuplier.fullAddress.addressNumber < 0;
+    this.isSuplierInvalid.fullAddressDistrict =
+      this.currentSuplier.fullAddress.district.length < 4 ||
+      this.currentSuplier.fullAddress.district.length > 60;
+    this.isSuplierInvalid.fullAddressZIP =
+      this.currentSuplier.fullAddress.zipCode.length < 3 ||
+      this.currentSuplier.fullAddress.zipCode.length > 6;
+    this.isSuplierInvalid.cuit =
+      !this.validateCuit(this.currentSuplier.cuit) ||
+      this.currentSuplier.cuit.length < 10 ||
+      this.currentSuplier.cuit.length > 13;
+    this.isSuplierInvalid.iva = this.currentSuplier.iva === 'Otro';
+    this.isSuplierInvalid.contactName =
+      this.currentSuplier.contact.name.length < 4 ||
+      this.currentSuplier.contact.name.length > 30;
+    this.isSuplierInvalid.contactSurname =
+      this.currentSuplier.contact.surname.length < 4 ||
+      this.currentSuplier.contact.surname.length > 30;
+    this.isSuplierInvalid.contactPhone =
+      !this.currentSuplier.contact.phone?.number ||
+      this.currentSuplier.contact.phone.number < 0;
+    this.isSuplierInvalid.contactMail =
+      this.currentSuplier.contact.mail.length < 4 ||
+      this.currentSuplier.contact.mail.length > 40 ||
+      !this.validateMail(this.currentSuplier.contact.mail);
+    this.isSuplierInvalid.contactRol =
+      this.currentSuplier.contact.rol.length < 4 ||
+      this.currentSuplier.contact.rol.length > 40;
   }
 
   hideModal(): void {

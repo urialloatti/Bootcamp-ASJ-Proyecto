@@ -34,6 +34,7 @@ import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     ShowContactPipe,
     ShowMailPipe,
     TableTransformPipe,
+    LoginComponent,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [

@@ -19,7 +19,7 @@
               [(ngModel)]="currentProduct.suplierId"
               class="form-select"
               [disabled]="isUpdating"
-              [ngClass]="productValidator.suplierId ? 'is-invalid' : ''"
+              [ngClass]="isProductInvalid.suplierId ? 'is-invalid' : ''"
               [ngClass]="currentProduct.suplierId != -1 ? 'is-valid' : ''"
             >
               <option value="-1" disabled>Seleccione un proveedor</option>
@@ -33,7 +33,7 @@
             <div
               class="form-text"
               *ngIf="
-                productValidator.suplierId && currentProduct.suplierId == -1
+                isProductInvalid.suplierId && currentProduct.suplierId == -1
               "
             >
               <p>Debe seleccionar una opción.</p>
@@ -48,7 +48,7 @@
               #category="ngModel"
               [(ngModel)]="currentProduct.category"
               class="form-select"
-              [ngClass]="productValidator.category ? 'is-invalid' : ''"
+              [ngClass]="isProductInvalid.category ? 'is-invalid' : ''"
               [ngClass]="currentProduct.category != 'Otro' ? 'is-valid' : ''"
             >
               <option disabled value="Otro">Seleccione una opción</option>
@@ -61,7 +61,7 @@
             <div
               class="form-text"
               *ngIf="
-                productValidator.category && currentProduct.category == 'Otro'
+                isProductInvalid.category && currentProduct.category == 'Otro'
               "
             >
               <p>Debe seleccionar una opción.</p>
@@ -80,10 +80,10 @@
               minlength="4"
               maxlength="40"
               [ngClass]="name.errors ? '' : 'is-valid'"
-              [ngClass]="productValidator.name ? 'is-invalid' : ''"
+              [ngClass]="isProductInvalid.name ? 'is-invalid' : ''"
               class="form-control"
             />
-            <div class="form-text" *ngIf="productValidator.name && name.errors">
+            <div class="form-text" *ngIf="isProductInvalid.name && name.errors">
               <p>Debe tener entre 4 y 40 caracteres.</p>
             </div>
           </div>
@@ -97,19 +97,19 @@
               [(ngModel)]="currentProduct.description"
               required
               [ngClass]="description.errors ? '' : 'is-valid'"
-              [ngClass]="productValidator.description ? 'is-invalid' : ''"
+              [ngClass]="isProductInvalid.description ? 'is-invalid' : ''"
               class="form-control"
             ></textarea>
             <div
               class="form-text"
-              *ngIf="productValidator.description && description.errors"
+              *ngIf="isProductInvalid.description && description.errors"
             >
               <p>Debe tener entre 1 y 500 caracteres.</p>
             </div>
           </div>
           <div class="mb-3">
             <div class="row">
-              <div class="col-7">
+              <div class="col-12 col-sm-8">
                 <label class="form-label">Link de la imagen</label>
                 <input
                   type="text"
@@ -132,12 +132,12 @@
                   min="1"
                   max="999999999"
                   [ngClass]="price.errors ? '' : 'is-valid'"
-                  [ngClass]="productValidator.price ? 'is-invalid' : ''"
+                  [ngClass]="isProductInvalid.price ? 'is-invalid' : ''"
                   class="form-control"
                 />
                 <div
                   class="form-text"
-                  *ngIf="productValidator.price && price.errors"
+                  *ngIf="isProductInvalid.price && price.errors"
                 >
                   <p>Debe ser un número mayor de 0.</p>
                 </div>
@@ -159,14 +159,14 @@
   <div class="col d-none d-sm-block"></div>
 </section>
 <section>
-  <shared-modal-redirect
-    *ngIf="flagNewProductCreated"
-    [modalData]="{ message: 'Producto cargado con éxito.', path: '/products' }"
-  ></shared-modal-redirect>
   <shared-modal-message
     *ngIf="modalMessageFlag"
     [modalData]="modalMessageObject"
     (modalViewed)="hideModal()"
   >
   </shared-modal-message>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
 </section>

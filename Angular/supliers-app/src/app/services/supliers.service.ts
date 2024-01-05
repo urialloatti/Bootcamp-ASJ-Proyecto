@@ -1,18 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { suplierMockData } from '../data/mock-data';
 import { SuplierInterface } from '../interfaces/suplierInterface';
+import { ProductsService } from './products.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SupliersService {
+export class SupliersService implements OnInit {
   constructor(private http: HttpClient) {}
 
   URL_API: string = 'http://localhost:3000/supliers';
-  private counter: number = 2;
+  private counter!: number;
+
+  ngOnInit(): void {
+    let subscription = this.getList().subscribe(
+      (response) => (this.counter = response.length)
+    );
+    subscription.unsubscribe();
+  }
 
   public getList(): Observable<SuplierInterface[]> {
     return this.http.get<SuplierInterface[]>(this.URL_API).pipe(

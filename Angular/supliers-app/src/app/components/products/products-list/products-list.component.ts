@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'products-list',
@@ -17,7 +18,7 @@ import {
 export class ProductsListComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
 
   productsArray!: ProductInterface[];
@@ -36,8 +37,10 @@ export class ProductsListComponent implements OnInit {
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   isListLoaded: boolean = false;
+  productsList$!: Observable<ProductInterface[]>;
 
   ngOnInit(): void {
+    this.productsList$ = this.productsService.getList();
     this.productsService.getList().subscribe((response) => {
       this.productsArray = response;
       this.isListLoaded = true;
@@ -55,7 +58,7 @@ export class ProductsListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((response) => {
+      let subscription = this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
           deleted.isAvailable = false;
@@ -79,6 +82,8 @@ export class ProductsListComponent implements OnInit {
               console.log(error);
             }
           );
+        } else {
+          subscription.unsubscribe();
         }
       });
     });

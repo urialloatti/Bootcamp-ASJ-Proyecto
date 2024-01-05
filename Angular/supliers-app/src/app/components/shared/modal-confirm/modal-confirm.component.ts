@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'shared-modal-confirm',
@@ -9,7 +9,7 @@ import { ModalsService } from '../../../services/modal-confirm.service';
   styleUrl: './modal-confirm.component.css',
 })
 export class ModalConfirmComponent {
-  constructor(private confirmService: ModalsService) {}
+  constructor(private confirmService: ModalService) {}
 
   @Input()
   modalData!: ModalConfirmInterface;

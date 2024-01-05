@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { SupliersService } from '../../../services/supliers.service';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'supliers-list',
@@ -17,9 +18,10 @@ import {
 export class SupliersListComponent implements OnInit {
   constructor(
     private supliersService: SupliersService,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
   supliersArray!: SuplierInterface[];
+  suplierList$!: Observable<SuplierInterface[]>;
   supliersFields: ListTemplateInterface = {
     section: 'supliers',
     label: 'proveedores',
@@ -43,6 +45,7 @@ export class SupliersListComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
 
   ngOnInit(): void {
+    this.suplierList$ = this.supliersService.getList();
     this.supliersService.getList().subscribe((response) => {
       this.supliersArray = response;
       this.isListLoaded = true;
@@ -60,32 +63,36 @@ export class SupliersListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((confirmation) => {
-        this.modalConfirmFlag = false;
-        if (confirmation) {
-          deleted.isAvailable = false;
-          this.supliersService.cancelElementById(id).subscribe(
-            (response) => {
-              this.modalMessageObject = {
-                message: `Proveedor ${response.brand} eliminado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.supliersService.getList().subscribe((response) => {
-                this.supliersArray = response;
-              });
-            },
-            (error) => {
-              this.modalMessageObject = {
-                message: `El proveedor ya no existe en la base de datos.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.log(error);
-            }
-          );
+      let subscription = this.confirmService.confirm$.subscribe(
+        (confirmation) => {
+          this.modalConfirmFlag = false;
+          if (confirmation) {
+            deleted.isAvailable = false;
+            this.supliersService.cancelElementById(id).subscribe(
+              (response) => {
+                this.modalMessageObject = {
+                  message: `Proveedor ${response.brand} eliminado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.supliersService.getList().subscribe((response) => {
+                  this.supliersArray = response;
+                });
+              },
+              (error) => {
+                this.modalMessageObject = {
+                  message: `El proveedor ya no existe en la base de datos.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.log(error);
+              }
+            );
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
-import { ModalsService } from '../../../services/modal-confirm.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalRedirectInterface,
@@ -18,7 +18,7 @@ export class PurchaseInfoComponent {
   constructor(
     private purchaseService: PurchaseOrdersService,
     private route: ActivatedRoute,
-    private confirmService: ModalsService
+    private confirmService: ModalService
   ) {}
 
   pageLoadedFlag: boolean = false;

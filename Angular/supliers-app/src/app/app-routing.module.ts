@@ -12,13 +12,22 @@ import { PurchaseNewComponent } from './components/purchase-order/purchase-new/p
 import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
     path: 'supliers',
     children: [
-      { path: '', component: SupliersListComponent },
-      { path: 'new', component: SupliersNewComponent },
+      {
+        path: '',
+        component: SupliersListComponent,
+        title: 'Lista de proveedores',
+      },
+      {
+        path: 'new',
+        component: SupliersNewComponent,
+        title: 'Nuevo proveedor',
+      },
       { path: 'u/:id', component: SupliersNewComponent },
       { path: ':id', component: SuplierInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
@@ -27,8 +36,12 @@ const routes: Routes = [
   {
     path: 'products',
     children: [
-      { path: '', component: ProductsListComponent },
-      { path: 'new', component: ProductsNewComponent },
+      {
+        path: '',
+        component: ProductsListComponent,
+        title: 'Lista de productos',
+      },
+      { path: 'new', component: ProductsNewComponent, title: 'Nuevo producto' },
       { path: 'u/:id', component: ProductsNewComponent },
       { path: ':id', component: ProductInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
@@ -37,21 +50,43 @@ const routes: Routes = [
   {
     path: 'purchase-orders',
     children: [
-      { path: '', component: PurchaseListComponent },
-      { path: 'new', component: PurchaseNewComponent },
-      { path: 'u/:id', component: PurchaseNewComponent },
-      { path: ':id', component: PurchaseInfoComponent },
+      {
+        path: '',
+        component: PurchaseListComponent,
+        title: 'Lista de órdenes de compra',
+      },
+      {
+        path: 'new',
+        component: PurchaseNewComponent,
+        title: 'Nueva órden de compra',
+      },
+      {
+        path: 'u/:id',
+        component: PurchaseNewComponent,
+        title: 'Editar órden de compra',
+      },
+      {
+        path: ':id',
+        component: PurchaseInfoComponent,
+        title: 'Órden de compra',
+      },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
   {
     path: '',
     component: MainComponent,
+    title: 'Gestión de compras',
     pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: '404',
     component: NotFoundComponent,
+    title: 'Algo salió mal...',
   },
   {
     path: '**',
