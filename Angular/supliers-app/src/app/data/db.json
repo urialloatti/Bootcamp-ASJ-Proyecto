@@ -3,11 +3,14 @@
     {
       "id": 0,
       "brand": "Fravega SA",
-      "category": "Tecnología",
+      "sector": "Tecnología",
       "code": "Tec0",
       "cuit": "30526874249",
       "iva": "IVA Responsable Inscripto",
-      "phone": { "country": 54, "number": 800322156521 },
+      "phone": {
+        "country": 54,
+        "number": 800322156521
+      },
       "web": "fravega.com",
       "fullAddress": {
         "address": "9 de Julio",
@@ -21,7 +24,10 @@
         "name": "Jorge",
         "surname": "Amparo",
         "mail": "jamparo@fravega.com",
-        "phone": { "country": 54, "number": 3516305067 },
+        "phone": {
+          "country": 54,
+          "number": 3516305067
+        },
         "rol": "Encargado de compras"
       },
       "isAvailable": true
@@ -30,10 +36,13 @@
       "id": 1,
       "code": "Tec1",
       "brand": "Cetrogar",
-      "category": "Tecnología",
+      "sector": "Tecnología",
       "cuit": "30592845748",
       "iva": "IVA Responsable Inscripto",
-      "phone": { "country": 54, "number": 800322663597 },
+      "phone": {
+        "country": 54,
+        "number": 800322663597
+      },
       "web": "cetrogar.com",
       "fullAddress": {
         "address": "Rivera Indarte",
@@ -47,16 +56,22 @@
         "name": "Ana Clara",
         "surname": "Suarez",
         "mail": "asuarez@cetrogar.com",
-        "phone": { "country": 54, "number": 3516523678 },
+        "phone": {
+          "country": 54,
+          "number": 3516523678
+        },
         "rol": "Encargado de compras"
       },
       "isAvailable": true
     },
     {
       "brand": "Logitech SA",
-      "category": "Tecnología",
+      "sector": "Tecnología",
       "web": "logi.com",
-      "phone": { "country": 54, "number": 3426352468 },
+      "phone": {
+        "country": 54,
+        "number": 3426352468
+      },
       "fullAddress": {
         "address": "Av Colón",
         "addressNumber": 5632,
@@ -70,7 +85,10 @@
       "contact": {
         "mail": "ualloatti@logi.com",
         "name": "Uriel",
-        "phone": { "country": 54, "number": 3426304069 },
+        "phone": {
+          "country": 54,
+          "number": 3426304069
+        },
         "rol": "Gerente de Ventas",
         "surname": "Alloatti"
       },
@@ -98,7 +116,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 01",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -122,7 +140,7 @@
       "name": "Notebook Dell 15.6” Intell I7 03",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -146,7 +164,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 05",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -170,7 +188,7 @@
       "name": "Notebook Dell 15.6” Intell I7 07",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -194,7 +212,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 09",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -218,7 +236,7 @@
       "name": "Notebook Dell 15.6” Intell I7 11",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -230,7 +248,7 @@
       "name": "Notebook Dell 15.6” Intell I7 12",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -254,7 +272,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 14",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -278,7 +296,7 @@
       "name": "Notebook Dell 15.6” Intell I7 16",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -302,7 +320,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 18",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -326,7 +344,7 @@
       "name": "Notebook Dell 15.6” Intell I7 20",
       "suplier": "Cetrogar",
       "suplierId": 1,
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
@@ -350,7 +368,7 @@
       "name": "Notebook HP 15.6” Ryzen 5 22",
       "suplierId": 0,
       "suplier": "Fravega SA",
-      "category": "Laptops",
+      "category": "Notebooks",
       "price": 1299999,
       "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
       "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
@@ -423,6 +441,64 @@
       "suplierName": "Cetrogar",
       "total": 939999,
       "id": 2
+    },
+    {
+      "dateArriving": "2024-01-09",
+      "dateEmited": "2024-01-06T18:24:40.406Z",
+      "isAvailable": false,
+      "products": [
+        {
+          "productId": "3",
+          "productName": "Notebook Dell 15.6” Intell I7 03",
+          "price": 1299999,
+          "productQuantity": 1
+        }
+      ],
+      "shippingRequirements": "wq",
+      "suplierId": "1",
+      "suplierName": "Cetrogar",
+      "total": 1299999,
+      "id": 3
+    }
+  ],
+  "sectors": [
+    {
+      "id": 1,
+      "sector": "Tecnología"
+    },
+    {
+      "id": 2,
+      "sector": "Repuestos"
+    },
+    {
+      "id": 3,
+      "sector": "Descartables"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Notebooks"
+    },
+    {
+      "id": 2,
+      "category": "Celulares"
+    },
+    {
+      "id": 3,
+      "category": "Impresoras"
+    },
+    {
+      "id": 4,
+      "category": "Tintas de impresoras"
+    },
+    {
+      "id": 5,
+      "category": "Pequeños"
+    },
+    {
+      "id": 6,
+      "category": "Audio"
     }
   ]
 }

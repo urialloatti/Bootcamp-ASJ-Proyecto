@@ -56,7 +56,7 @@ export class SupliersService implements OnInit {
 
   public addElement(suplier: SuplierInterface): Observable<SuplierInterface> {
     suplier.id = this.counter;
-    suplier.code = suplier.category.substring(0, 3) + suplier.id.toString();
+    suplier.code = suplier.sector.substring(0, 3) + suplier.id.toString();
     this.counter++;
     return this.http.post<SuplierInterface>(this.URL_API, suplier);
   }

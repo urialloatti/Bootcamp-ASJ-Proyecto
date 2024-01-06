@@ -13,6 +13,7 @@ import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
 import { LoginComponent } from './components/login/login.component';
+import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
 
 const routes: Routes = [
   {
@@ -87,6 +88,10 @@ const routes: Routes = [
     path: '404',
     component: NotFoundComponent,
     title: 'Algo salió mal...',
+  },
+  {
+    path: 'test',
+    component: ModalNewComponent,
   },
   {
     path: '**',

@@ -1,3 +1,5 @@
+import { SectorService } from './../../../services/sector.service';
+import { SectorInterface } from './../../../interfaces/smallCrudsInterfaces';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
@@ -7,6 +9,7 @@ import { SupliersService } from '../../../services/supliers.service';
 import { SuplierInterface } from '../../../interfaces/suplierInterface';
 import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'supliers-new',
@@ -17,12 +20,14 @@ export class SupliersNewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private suplierService: SupliersService,
-    private titleService: Title
+    private sectorService: SectorService,
+    private titleService: Title,
+    private modalService: ModalService
   ) {}
 
   currentSuplier: SuplierInterface = {
     brand: '',
-    category: '',
+    sector: 'Otro',
     web: '',
     phone: { country: 54, number: undefined },
     fullAddress: {
@@ -45,7 +50,7 @@ export class SupliersNewComponent implements OnInit {
   };
   isSuplierInvalid: any = {
     brand: false,
-    category: false,
+    sector: false,
     phone: false,
     web: false,
     fullAddresAddress: false,
@@ -61,6 +66,7 @@ export class SupliersNewComponent implements OnInit {
     contactRol: false,
   };
   countryCodes = phoneCountryCodes;
+  sectors: SectorInterface[] = [];
   cuitList: string[] = [];
   locationOptions = locationDB;
   cuitExistFlag: boolean = false;
@@ -68,8 +74,12 @@ export class SupliersNewComponent implements OnInit {
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   isUpdating: boolean = false;
+  isCreatingSector: boolean = false;
 
   ngOnInit(): void {
+    this.sectorService
+      .getList()
+      .subscribe((secList) => (this.sectors = secList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id != undefined) {
@@ -122,6 +132,17 @@ export class SupliersNewComponent implements OnInit {
     );
   }
 
+  createNewSector() {
+    this.isCreatingSector = true;
+    let subsciption = this.modalService.confirm$.subscribe((response) => {
+      this.sectorService
+        .getList()
+        .subscribe((secList) => (this.sectors = secList));
+      this.isCreatingSector = false;
+      subsciption.unsubscribe();
+    });
+  }
+
   validateMailInput(mail: NgModel): boolean {
     if (mail.valid) {
       return this.validateMail(mail.value);
@@ -156,9 +177,7 @@ export class SupliersNewComponent implements OnInit {
     this.isSuplierInvalid.brand =
       this.currentSuplier.brand.length < 4 ||
       this.currentSuplier.brand.length > 60;
-    this.isSuplierInvalid.category =
-      this.currentSuplier.category.length < 4 ||
-      this.currentSuplier.category.length > 60;
+    this.isSuplierInvalid.sector = this.currentSuplier.sector == 'Otro';
     this.isSuplierInvalid.phone =
       !this.currentSuplier.contact.phone?.number ||
       this.currentSuplier.contact.phone.number < 0;

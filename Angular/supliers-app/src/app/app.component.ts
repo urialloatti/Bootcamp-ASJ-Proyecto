@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     let credentials: UserCredentialsInterface = JSON.parse(
       localStorage.getItem('credentials') || '{}'
     ) as UserCredentialsInterface;
-    if (credentials.password !== 'admin' && credentials.password !== 'admin') {
+    if (credentials.password !== 'user' && credentials.password !== 'admin') {
       this.isLogedIn = false;
       this.route.navigateByUrl('/login');
     } else {

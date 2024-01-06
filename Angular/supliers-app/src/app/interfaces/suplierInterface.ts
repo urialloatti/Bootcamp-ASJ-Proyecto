@@ -2,7 +2,7 @@ export interface SuplierInterface {
   id?: number;
   code?: string;
   brand: string;
-  category: string;
+  sector: string;
   web: string;
   phone: PhoneNumber;
   fullAddress: FullAddress;

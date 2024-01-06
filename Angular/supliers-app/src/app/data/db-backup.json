@@ -4,7 +4,7 @@
       "id": 0,
       "code": "Tec0",
       "brand": "Fravega SA",
-      "category": "Tecnología",
+      "sector": "Tecnología",
       "cuit": "30526874249",
       "iva": "IVA Responsable Inscripto",
       "phone": { "country": 54, "number": 800322156521 },
@@ -30,7 +30,7 @@
       "id": 1,
       "code": "Tec1",
       "brand": "Cetrogar",
-      "category": "Tecnología",
+      "sector": "Tecnología",
       "cuit": "30592845748",
       "iva": "IVA Responsable Inscripto",
       "phone": { "country": 54, "number": 800322663597 },
@@ -153,6 +153,47 @@
         }
       ],
       "isAvailable": true
+    }
+  ],
+
+  "sectors": [
+    {
+      "id": 1,
+      "sector": "Tecnología"
+    },
+    {
+      "id": 2,
+      "sector": "Repuestos"
+    },
+    {
+      "id": 3,
+      "sector": "Descartables"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Notebooks"
+    },
+    {
+      "id": 2,
+      "category": "Celulares"
+    },
+    {
+      "id": 3,
+      "category": "Impresoras"
+    },
+    {
+      "id": 4,
+      "category": "Tintas de impresoras"
+    },
+    {
+      "id": 5,
+      "category": "Pequeños"
+    },
+    {
+      "id": 6,
+      "category": "Audio"
     }
   ]
 }
