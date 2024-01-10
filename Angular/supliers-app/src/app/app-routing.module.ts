@@ -90,10 +90,6 @@ const routes: Routes = [
     title: 'Algo salió mal...',
   },
   {
-    path: 'test',
-    component: ModalNewComponent,
-  },
-  {
     path: '**',
     redirectTo: '404',
   },
