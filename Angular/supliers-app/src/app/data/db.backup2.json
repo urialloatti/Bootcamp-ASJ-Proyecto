@@ -1,0 +1,512 @@
+{
+  "supliers": [
+    {
+      "id": 0,
+      "brand": "Fravega SA",
+      "sector": "Tecnología",
+      "code": "Tec0",
+      "cuit": "30526874249",
+      "iva": "IVA Responsable Inscripto",
+      "phone": {
+        "country": 54,
+        "number": 800322156521
+      },
+      "web": "fravega.com",
+      "fullAddress": {
+        "address": "9 de Julio",
+        "addressNumber": 57,
+        "country": "Argentina",
+        "district": "Córdoba",
+        "state": "Córdoba",
+        "zipCode": "5000"
+      },
+      "contact": {
+        "name": "Jorge",
+        "surname": "Amparo",
+        "mail": "jamparo@fravega.com",
+        "phone": {
+          "country": 54,
+          "number": 3516305067
+        },
+        "rol": "Encargado de compras"
+      },
+      "isAvailable": true
+    },
+    {
+      "id": 1,
+      "code": "Tec1",
+      "brand": "Cetrogar",
+      "sector": "Tecnología",
+      "cuit": "30592845748",
+      "iva": "IVA Responsable Inscripto",
+      "phone": {
+        "country": 54,
+        "number": 800322663597
+      },
+      "web": "cetrogar.com",
+      "fullAddress": {
+        "address": "Rivera Indarte",
+        "addressNumber": 171,
+        "country": "Argentina",
+        "district": "Córdoba",
+        "state": "Córdoba",
+        "zipCode": "5000"
+      },
+      "contact": {
+        "name": "Ana Clara",
+        "surname": "Suarez",
+        "mail": "asuarez@cetrogar.com",
+        "phone": {
+          "country": 54,
+          "number": 3516523678
+        },
+        "rol": "Encargado de compras"
+      },
+      "isAvailable": true
+    },
+    {
+      "brand": "Logitech SA",
+      "sector": "Tecnología",
+      "web": "logi.com",
+      "phone": {
+        "country": 54,
+        "number": 3426352468
+      },
+      "fullAddress": {
+        "address": "Av Colón",
+        "addressNumber": 5632,
+        "country": "Argentina",
+        "district": "Córdoba",
+        "state": "Córdoba",
+        "zipCode": "5000"
+      },
+      "cuit": "31566554815",
+      "iva": "IVA Responsable Inscripto",
+      "contact": {
+        "mail": "ualloatti@logi.com",
+        "name": "Uriel",
+        "phone": {
+          "country": 54,
+          "number": 3426304069
+        },
+        "rol": "Gerente de Ventas",
+        "surname": "Alloatti"
+      },
+      "isAvailable": true,
+      "id": 2,
+      "code": "Tec2"
+    }
+  ],
+  "products": [
+    {
+      "id": 0,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 00",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 1,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 01",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 2,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 02",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 3,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 03",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 4,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 04",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 5,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 05",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 6,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 06",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 7,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 07",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 8,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 08",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 9,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 09",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 10,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 10",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 11,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 11",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 12,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 12",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 13,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 13",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 14,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 14",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 15,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 15",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 16,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 16",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 17,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 17",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 18,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 18",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 19,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 19",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 20,
+      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
+      "name": "Notebook Dell 15.6” Intell I7 20",
+      "suplier": "Cetrogar",
+      "suplierId": 1,
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 21,
+      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
+      "name": "Samsung Galaxy S23 21",
+      "suplierId": 1,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 22,
+      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
+      "name": "Notebook HP 15.6” Ryzen 5 22",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Notebooks",
+      "price": 1299999,
+      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
+      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "id": 23,
+      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
+      "name": "Samsung Galaxy A54 23",
+      "suplierId": 0,
+      "suplier": "Fravega SA",
+      "category": "Celulares",
+      "price": 939999,
+      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
+      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "isAvailable": true
+    },
+    {
+      "category": "Pequeños",
+      "description": "Mouse",
+      "name": "Mouse Logitech Ergo Fit",
+      "picture": "",
+      "price": 85000,
+      "suplierId": "2",
+      "suplier": "Logitech SA",
+      "isAvailable": true,
+      "code": "bf8d02dd-8a82-44ca-ac12-593a88b696d4",
+      "id": 24
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "dateArriving": "2024-01-08",
+      "dateEmited": "2024-01-04T12:49:56.076Z",
+      "isAvailable": true,
+      "products": [
+        {
+          "productId": "3",
+          "productName": "Notebook Dell 15.6” Intell I7",
+          "price": 1299999,
+          "productQuantity": 1
+        },
+        {
+          "productId": "2",
+          "productName": "Samsung Galaxy S23",
+          "price": 939999,
+          "productQuantity": 2
+        }
+      ],
+      "shippingRequirements": "Tocar timbre",
+      "suplierId": "1",
+      "suplierName": "Cetrogar",
+      "total": 3179997,
+      "id": 0
+    },
+    {
+      "dateArriving": "2024-01-07",
+      "dateEmited": "2024-01-05T01:30:32.722Z",
+      "isAvailable": true,
+      "products": [
+        {
+          "productId": "6",
+          "productName": "Samsung Galaxy S23 06",
+          "price": 939999,
+          "productQuantity": 1
+        }
+      ],
+      "shippingRequirements": "Traerlo rápido",
+      "suplierId": "1",
+      "suplierName": "Cetrogar",
+      "total": 939999,
+      "id": 2
+    },
+    {
+      "dateArriving": "2024-01-09",
+      "dateEmited": "2024-01-06T18:24:40.406Z",
+      "isAvailable": true,
+      "products": [
+        {
+          "productId": "3",
+          "productName": "Notebook Dell 15.6” Intell I7 03",
+          "price": 1299999,
+          "productQuantity": 1
+        }
+      ],
+      "shippingRequirements": "wq",
+      "suplierId": "1",
+      "suplierName": "Cetrogar",
+      "total": 1299999,
+      "id": 3
+    }
+  ],
+  "sectors": [
+    {
+      "id": 1,
+      "sector": "Tecnología"
+    },
+    {
+      "id": 2,
+      "sector": "Repuestos"
+    },
+    {
+      "id": 3,
+      "sector": "Descartables"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Notebooks"
+    },
+    {
+      "id": 2,
+      "category": "Celulares"
+    },
+    {
+      "id": 3,
+      "category": "Impresoras"
+    },
+    {
+      "id": 4,
+      "category": "Tintas de impresoras"
+    },
+    {
+      "id": 5,
+      "category": "Pequeños"
+    },
+    {
+      "id": 6,
+      "category": "Audio"
+    },
+    {
+      "category": "Periféricos",
+      "id": 7
+    },
+    {
+      "category": "Sillas de escritorio",
+      "id": 8
+    }
+  ]
+}

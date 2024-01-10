@@ -9,6 +9,8 @@ export interface ProductInterface {
   price: number;
   picture?: string;
   isAvailable?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 type category =

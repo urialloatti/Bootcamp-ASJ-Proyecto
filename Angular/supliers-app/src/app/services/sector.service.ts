@@ -3,12 +3,13 @@ import { Injectable, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { SectorInterface } from '../interfaces/smallCrudsInterfaces';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SectorService implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   private URL_API: string = 'http://localhost:3000/sectors';
   private counter!: number;
@@ -31,7 +32,12 @@ export class SectorService implements OnInit {
   }
 
   public addElement(sector: string): Observable<SectorInterface> {
-    let newSector: SectorInterface = { id: this.counter, sector: sector };
+    let newSector: SectorInterface = {
+      id: this.counter,
+      sector: sector,
+      created_at: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
+      is_available: true,
+    };
     this.counter++;
     return this.http.post<SectorInterface>(this.URL_API, newSector);
   }

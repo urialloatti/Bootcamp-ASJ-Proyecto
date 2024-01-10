@@ -1,13 +1,14 @@
 export interface PurchaseOrderInterface {
   id?: number;
-  dateEmited: Date | string;
   dateArriving: Date | string;
   shippingRequirements: string;
   suplierId: number;
   suplierName?: string;
   products: ProductGroup[];
   total?: number;
-  isAvailable: boolean;
+  isAvailable?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductGroup {

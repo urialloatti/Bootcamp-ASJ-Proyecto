@@ -29,7 +29,7 @@ export class PurchaseNewComponent implements OnInit {
 
   currentPurchaseOrder: PurchaseOrderInterface = {
     dateArriving: new Date(),
-    dateEmited: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
+    createdAt: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
     isAvailable: true,
     products: [],
     shippingRequirements: '',
@@ -112,7 +112,10 @@ export class PurchaseNewComponent implements OnInit {
           suplier = response;
           this.currentPurchaseOrder.suplierName = suplier?.brand;
           if (!this.isUpdating) {
-            this.currentPurchaseOrder.dateEmited = new Date();
+            this.currentPurchaseOrder.createdAt = this.datePipe.transform(
+              new Date(),
+              'yyyy-MM-dd'
+            )!;
             this.purchaseService
               .addElement(this.currentPurchaseOrder)
               .subscribe();
@@ -204,7 +207,7 @@ export class PurchaseNewComponent implements OnInit {
       const day = 1000 * 60 * 60 * 24;
       let daysDelay = 3;
       let dateCreated = this.getDateObject(
-        this.currentPurchaseOrder.dateEmited
+        this.currentPurchaseOrder.createdAt!
       );
       return new Date(day * daysDelay + dateCreated.getTime());
     } else {

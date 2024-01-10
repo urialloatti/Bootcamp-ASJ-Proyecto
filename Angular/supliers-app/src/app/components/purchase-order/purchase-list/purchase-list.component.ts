@@ -34,7 +34,7 @@ export class PurchaseListComponent implements OnInit {
       },
       {
         field: 'Fecha de emisión',
-        keys: [{ key: 'dateEmited', extras: 'FullDate' }],
+        keys: [{ key: 'createdAt', extras: 'FullDate' }],
       },
       {
         field: 'Fecha de arribo',
@@ -64,7 +64,7 @@ export class PurchaseListComponent implements OnInit {
       deleted = dto;
       this.modalConfirmObject = {
         header: `Cancelar órden de compra ${deleted.id}`,
-        message: `Está seguro de cancelar la órden de compra generada el ${deleted.dateEmited}?`,
+        message: `Está seguro de cancelar la órden de compra generada el ${deleted.createdAt}?`,
         cancel: 'Volver atrás',
         confirm: 'Cancelar órden de compra',
       };

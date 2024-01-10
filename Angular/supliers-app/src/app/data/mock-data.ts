@@ -17,7 +17,7 @@ export const suplierMockData: SuplierInterface[] = [
       addressNumber: 57,
       country: 'Argentina',
       district: 'Córdoba',
-      state: 'Córdoba',
+      city: 'Córdoba',
       zipCode: '5000',
     },
     contact: {
@@ -42,7 +42,7 @@ export const suplierMockData: SuplierInterface[] = [
       addressNumber: 171,
       country: 'Argentina',
       district: 'Córdoba',
-      state: 'Córdoba',
+      city: 'Córdoba',
       zipCode: '5000',
     },
     contact: {

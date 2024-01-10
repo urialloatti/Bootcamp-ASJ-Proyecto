@@ -41,8 +41,8 @@ export class ModalNewComponent implements OnInit {
         this.alreadyExistsMessage = 'El rubro ya existe.';
         break;
       case 'category':
-        this.modalTitle = 'Nuevo rubro';
-        this.modalInputLabel = 'Rubro';
+        this.modalTitle = 'Nueva categoría';
+        this.modalInputLabel = 'Categoría';
         this.alreadyExistsMessage = 'La categoría ya existe.';
         break;
     }
@@ -51,6 +51,7 @@ export class ModalNewComponent implements OnInit {
   backClick() {
     this.triedToEscape = true;
     setTimeout(() => (this.triedToEscape = false), 250);
+    console.log(crypto.randomUUID());
   }
 
   addElement(): void {

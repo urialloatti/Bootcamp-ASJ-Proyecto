@@ -9,7 +9,10 @@ import { ProductsService } from './products.service';
   providedIn: 'root',
 })
 export class SupliersService implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private productService: ProductsService
+  ) {}
 
   URL_API: string = 'http://localhost:3000/supliers';
   private counter!: number;
@@ -20,6 +23,8 @@ export class SupliersService implements OnInit {
     );
     subscription.unsubscribe();
   }
+
+  // GET methods
 
   public getList(): Observable<SuplierInterface[]> {
     return this.http.get<SuplierInterface[]>(this.URL_API).pipe(
@@ -36,6 +41,8 @@ export class SupliersService implements OnInit {
     return this.http.get<SuplierInterface>(this.URL_API + '/' + id);
   }
 
+  // Delete methods
+
   public deleteElementById(id: number): Observable<SuplierInterface> {
     return this.http.delete<SuplierInterface>(this.URL_API + '/' + id);
   }
@@ -47,6 +54,11 @@ export class SupliersService implements OnInit {
         this.http
           .put<SuplierInterface>(this.URL_API + '/' + id, dto)
           .subscribe();
+        this.productService.getElementsBySuplierId(id).subscribe((prodList) => {
+          for (let product of prodList) {
+            this.productService.cancelElementById(product.id!).subscribe();
+          }
+        });
         return dto;
       })
     );
@@ -62,12 +74,24 @@ export class SupliersService implements OnInit {
   }
 
   // PUT methods
+
   public updateElement(
     suplier: SuplierInterface
   ): Observable<SuplierInterface> {
-    return this.http.put<SuplierInterface>(
-      this.URL_API + '/' + suplier.id,
-      suplier
-    );
+    return this.http
+      .put<SuplierInterface>(this.URL_API + '/' + suplier.id, suplier)
+      .pipe(
+        map((mapSuplier) => {
+          this.productService
+            .getElementsBySuplierId(mapSuplier.id!)
+            .subscribe((prodList) => {
+              for (let product of prodList) {
+                product.suplier = mapSuplier.brand;
+                this.productService.updateElement(product).subscribe();
+              }
+            });
+          return mapSuplier;
+        })
+      );
   }
 }

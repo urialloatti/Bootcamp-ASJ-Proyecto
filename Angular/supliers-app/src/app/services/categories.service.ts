@@ -3,12 +3,13 @@ import { Injectable, OnInit } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { CategoryInterface } from '../interfaces/smallCrudsInterfaces';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriesService implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   private URL_API: string = 'http://localhost:3000/categories';
   private counter!: number;
@@ -34,6 +35,8 @@ export class CategoriesService implements OnInit {
     let newCategory: CategoryInterface = {
       id: this.counter,
       category: category,
+      created_at: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
+      is_available: true,
     };
     this.counter++;
     return this.http.post<CategoryInterface>(this.URL_API, newCategory);

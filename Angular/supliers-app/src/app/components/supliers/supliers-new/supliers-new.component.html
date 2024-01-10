@@ -41,13 +41,13 @@
           </div>
           <div class="mb-3">
             <label class="form-label"
-              >Categoría <span class="fw-light">*</span></label
+              >Rubro <span class="fw-light">*</span></label
             >
             <div class="row">
               <div class="col-11">
                 <select
-                  name="category"
-                  #category="ngModel"
+                  name="sector"
+                  #sectorElement="ngModel"
                   [(ngModel)]="currentSuplier.sector"
                   class="form-select"
                   [ngClass]="isSuplierInvalid.sector ? 'is-invalid' : ''"
@@ -245,20 +245,20 @@
                 >Provincia <span class="fw-light">*</span></label
               >
               <select
-                name="state"
-                #state="ngModel"
-                [(ngModel)]="currentSuplier.fullAddress.state"
+                name="province"
+                #province="ngModel"
+                [(ngModel)]="currentSuplier.fullAddress.province"
                 class="form-select"
               >
                 <option
-                  value="{{ state }}"
+                  value="{{ province }}"
                   *ngFor="
-                    let state of getProvinces(
+                    let province of getProvinces(
                       currentSuplier.fullAddress.country
                     )
                   "
                 >
-                  {{ state }}
+                  {{ province }}
                 </option>
               </select>
             </div>
@@ -268,21 +268,19 @@
               >
               <input
                 type="text"
-                name="district"
-                #district="ngModel"
-                [(ngModel)]="currentSuplier.fullAddress.district"
+                name="city"
+                #city="ngModel"
+                [(ngModel)]="currentSuplier.fullAddress.city"
                 required
                 minlength="4"
                 maxlength="60"
-                [ngClass]="district.errors ? '' : 'is-valid'"
-                [ngClass]="
-                  isSuplierInvalid.fullAddressDistrict ? 'is-invalid' : ''
-                "
+                [ngClass]="city.errors ? '' : 'is-valid'"
+                [ngClass]="isSuplierInvalid.fullAddressCity ? 'is-invalid' : ''"
                 class="form-control"
               />
               <div
                 class="form-text"
-                *ngIf="isSuplierInvalid.fullAddressDistrict && district.errors"
+                *ngIf="isSuplierInvalid.fullAddressCity && city.errors"
               >
                 <p>Debe tener al menos 4 caracteres.</p>
               </div>
@@ -326,14 +324,16 @@
             </div>
             <div class="col-12 col-sm-7">
               <label class="form-label"
-                >Condición frente al IVA <span class="fw-light">*</span></label
+                >Condición fiscal <span class="fw-light">*</span></label
               >
               <select
                 class="form-select"
-                name="iva"
-                aria-label="Condición IVA"
-                [(ngModel)]="currentSuplier.iva"
-                [ngClass]="isSuplierInvalid.iva ? 'is-invalid' : ''"
+                name="fiscal_condition"
+                aria-label="Condición fiscal"
+                [(ngModel)]="currentSuplier.fiscal_condition"
+                [ngClass]="
+                  isSuplierInvalid.fiscal_condition ? 'is-invalid' : ''
+                "
               >
                 <option value="Otro" disabled>Seleccione una opción</option>
                 <option value="IVA Responsable Inscripto">
