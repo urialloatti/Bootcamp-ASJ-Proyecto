@@ -1,7 +1,14 @@
 <section class="row">
   <div class="col d-none d-sm-block"></div>
   <div class="col col-sm-9 col-md-8 p-5 body">
-    <article class="bg-light-subtle rounded p-4">
+    <article class="bg-light-subtle rounded p-4 pt-2">
+      <div class="row">
+        <div class="col">
+          <a class="text-decoration-none" routerLink="/supliers"
+            >← Ir al listado</a
+          >
+        </div>
+      </div>
       <form #myForm="ngForm" (ngSubmit)="saveSuplier()">
         <fieldset class="px-4">
           <div class="text-center my-4">
@@ -36,23 +43,40 @@
             <label class="form-label"
               >Rubro <span class="fw-light">*</span></label
             >
-            <input
-              type="text"
-              name="category"
-              #category="ngModel"
-              [(ngModel)]="currentSuplier.category"
-              required
-              minlength="4"
-              maxlength="60"
-              [ngClass]="category.errors ? '' : 'is-valid'"
-              [ngClass]="isSuplierInvalid.category ? 'is-invalid' : ''"
-              class="form-control"
-            />
+            <div class="row">
+              <div class="col-11">
+                <select
+                  name="sector"
+                  #sectorElement="ngModel"
+                  [(ngModel)]="currentSuplier.sector"
+                  class="form-select"
+                  [ngClass]="isSuplierInvalid.sector ? 'is-invalid' : ''"
+                  [ngClass]="currentSuplier.sector != 'Otro' ? 'is-valid' : ''"
+                >
+                  <option disabled value="Otro">Seleccione una opción</option>
+                  <option
+                    value="{{ sector.sector }}"
+                    *ngFor="let sector of sectors"
+                  >
+                    {{ sector.sector }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-1">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="createNewSector()"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                </button>
+              </div>
+            </div>
             <div
               class="form-text"
-              *ngIf="isSuplierInvalid.category && category.errors"
+              *ngIf="isSuplierInvalid.sector && currentSuplier.sector == 'Otro'"
             >
-              <p>Debe tener al menos 4 caracteres.</p>
+              <p>Debe seleccionar una opción.</p>
             </div>
           </div>
           <div class="mb-3 row">
@@ -221,20 +245,20 @@
                 >Provincia <span class="fw-light">*</span></label
               >
               <select
-                name="state"
-                #state="ngModel"
-                [(ngModel)]="currentSuplier.fullAddress.state"
+                name="province"
+                #province="ngModel"
+                [(ngModel)]="currentSuplier.fullAddress.province"
                 class="form-select"
               >
                 <option
-                  value="{{ state }}"
+                  value="{{ province }}"
                   *ngFor="
-                    let state of getProvinces(
+                    let province of getProvinces(
                       currentSuplier.fullAddress.country
                     )
                   "
                 >
-                  {{ state }}
+                  {{ province }}
                 </option>
               </select>
             </div>
@@ -244,21 +268,19 @@
               >
               <input
                 type="text"
-                name="district"
-                #district="ngModel"
-                [(ngModel)]="currentSuplier.fullAddress.district"
+                name="city"
+                #city="ngModel"
+                [(ngModel)]="currentSuplier.fullAddress.city"
                 required
                 minlength="4"
                 maxlength="60"
-                [ngClass]="district.errors ? '' : 'is-valid'"
-                [ngClass]="
-                  isSuplierInvalid.fullAddressDistrict ? 'is-invalid' : ''
-                "
+                [ngClass]="city.errors ? '' : 'is-valid'"
+                [ngClass]="isSuplierInvalid.fullAddressCity ? 'is-invalid' : ''"
                 class="form-control"
               />
               <div
                 class="form-text"
-                *ngIf="isSuplierInvalid.fullAddressDistrict && district.errors"
+                *ngIf="isSuplierInvalid.fullAddressCity && city.errors"
               >
                 <p>Debe tener al menos 4 caracteres.</p>
               </div>
@@ -302,14 +324,16 @@
             </div>
             <div class="col-12 col-sm-7">
               <label class="form-label"
-                >Condición frente al IVA <span class="fw-light">*</span></label
+                >Condición fiscal <span class="fw-light">*</span></label
               >
               <select
                 class="form-select"
-                name="iva"
-                aria-label="Condición IVA"
-                [(ngModel)]="currentSuplier.iva"
-                [ngClass]="isSuplierInvalid.iva ? 'is-invalid' : ''"
+                name="fiscal_condition"
+                aria-label="Condición fiscal"
+                [(ngModel)]="currentSuplier.fiscal_condition"
+                [ngClass]="
+                  isSuplierInvalid.fiscal_condition ? 'is-invalid' : ''
+                "
               >
                 <option value="Otro" disabled>Seleccione una opción</option>
                 <option value="IVA Responsable Inscripto">
@@ -505,4 +529,8 @@
     (modalViewed)="hideModal()"
   >
   </shared-modal-message>
+  <app-modal-new
+    *ngIf="isCreatingSector"
+    [currentCreate]="'sector'"
+  ></app-modal-new>
 </section>

@@ -35,6 +35,7 @@ import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
 import { LoginComponent } from './components/login/login.component';
+import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
 
 @NgModule({
   declarations: [
@@ -43,9 +44,11 @@ import { LoginComponent } from './components/login/login.component';
     FooterComponent,
     HeaderComponent,
     ItemsListComponent,
+    LoginComponent,
     MainComponent,
     ModalConfirmComponent,
     ModalMessageComponent,
+    ModalNewComponent,
     ModalRedirectComponent,
     NoItemsAlertComponent,
     NotFoundComponent,
@@ -66,7 +69,6 @@ import { LoginComponent } from './components/login/login.component';
     ShowContactPipe,
     ShowMailPipe,
     TableTransformPipe,
-    LoginComponent,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [

@@ -1,428 +1,1080 @@
 {
   "supliers": [
     {
-      "id": 0,
-      "brand": "Fravega SA",
-      "category": "Tecnología",
-      "code": "Tec0",
-      "cuit": "30526874249",
-      "iva": "IVA Responsable Inscripto",
-      "phone": { "country": 54, "number": 800322156521 },
-      "web": "fravega.com",
-      "fullAddress": {
-        "address": "9 de Julio",
-        "addressNumber": 57,
-        "country": "Argentina",
-        "district": "Córdoba",
-        "state": "Córdoba",
-        "zipCode": "5000"
-      },
-      "contact": {
-        "name": "Jorge",
-        "surname": "Amparo",
-        "mail": "jamparo@fravega.com",
-        "phone": { "country": 54, "number": 3516305067 },
-        "rol": "Encargado de compras"
-      },
-      "isAvailable": true
-    },
-    {
       "id": 1,
-      "code": "Tec1",
-      "brand": "Cetrogar",
-      "category": "Tecnología",
-      "cuit": "30592845748",
-      "iva": "IVA Responsable Inscripto",
-      "phone": { "country": 54, "number": 800322663597 },
-      "web": "cetrogar.com",
+      "code": "tec1",
+      "brand": "Musimundo",
+      "sector": "Tecnología",
+      "web": "musimundo.com",
+      "phone": {
+        "country": 54,
+        "number": 7322568398
+      },
       "fullAddress": {
-        "address": "Rivera Indarte",
-        "addressNumber": 171,
+        "address": "25 de Mayo",
+        "addressNumber": 1542,
+        "city": "Pilar",
+        "province": "Buenos Aires",
         "country": "Argentina",
-        "district": "Córdoba",
-        "state": "Córdoba",
-        "zipCode": "5000"
+        "zipCode": "2400"
       },
+      "cuit": "31761319809",
+      "fiscal_condition": "IVA Responsable Inscripto",
       "contact": {
-        "name": "Ana Clara",
-        "surname": "Suarez",
-        "mail": "asuarez@cetrogar.com",
-        "phone": { "country": 54, "number": 3516523678 },
-        "rol": "Encargado de compras"
+        "name": "Wilmette",
+        "surname": "Greenroa",
+        "mail": "wgreenroa0@scientificamerican.com",
+        "phone": {
+          "country": 54,
+          "number": 2911082338
+        },
+        "rol": "Gerente de compras"
       },
-      "isAvailable": true
-    },
-    {
-      "brand": "Logitech SA",
-      "category": "Tecnología",
-      "web": "logi.com",
-      "phone": { "country": 54, "number": 3426352468 },
-      "fullAddress": {
-        "address": "Av Colón",
-        "addressNumber": 5632,
-        "country": "Argentina",
-        "district": "Córdoba",
-        "state": "Córdoba",
-        "zipCode": "5000"
-      },
-      "cuit": "31566554815",
-      "iva": "IVA Responsable Inscripto",
-      "contact": {
-        "mail": "ualloatti@logi.com",
-        "name": "Uriel",
-        "phone": { "country": 54, "number": 3426304069 },
-        "rol": "Gerente de Ventas",
-        "surname": "Alloatti"
-      },
-      "isAvailable": true,
-      "id": 2,
-      "code": "Tec2"
-    }
-  ],
-  "products": [
-    {
-      "id": 0,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 00",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
-      "isAvailable": true
-    },
-    {
-      "id": 1,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 01",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "createdAt": "2023-11-12",
+      "updatedAt": "2023-11-12",
       "isAvailable": true
     },
     {
       "id": 2,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 02",
-      "suplierId": 1,
-      "suplier": "Cetrogar",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "code": "tec2",
+      "brand": "Rooxo",
+      "sector": "Tecnología",
+      "web": "rooxo.com",
+      "phone": {
+        "country": 56,
+        "number": 2344528623
+      },
+      "fullAddress": {
+        "address": "Av 5 de Abril",
+        "addressNumber": 3652,
+        "city": "Santiago",
+        "province": "Santiago",
+        "country": "Chile",
+        "zipCode": "8320000"
+      },
+      "cuit": "30381720705",
+      "fiscal_condition": "Proveedor del Exterior",
+      "contact": {
+        "name": "Bebe",
+        "surname": "Pedrazzi",
+        "mail": "bpedrazzi1@so-net.ne.jp",
+        "phone": {
+          "country": 56,
+          "number": 9035384032
+        },
+        "rol": "Encargado de compras"
+      },
+      "createdAt": "2023-11-16",
+      "updatedAt": "2023-11-16",
       "isAvailable": true
     },
     {
       "id": 3,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 03",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "code": "rep3",
+      "brand": "Lazz",
+      "sector": "Repuestos",
+      "web": "lazz.com/products",
+      "phone": {
+        "country": 595,
+        "number": 2706401940
+      },
+      "fullAddress": {
+        "address": "Resistencia",
+        "addressNumber": 902,
+        "city": "San Roque",
+        "province": "Asunción",
+        "country": "Paraguay",
+        "zipCode": "1201"
+      },
+      "cuit": "38906168969",
+      "fiscal_condition": "Proveedor del Exterior",
+      "contact": {
+        "name": "Tony",
+        "surname": "Shadbolt",
+        "mail": "tshadbolt2@issuu.com",
+        "phone": {
+          "country": 595,
+          "number": 7458511859
+        },
+        "rol": "Gerente"
+      },
+      "createdAt": "2023-11-17",
+      "updatedAt": "2023-11-17",
       "isAvailable": true
     },
     {
       "id": 4,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 04",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "code": "tec4",
+      "brand": "Fravega",
+      "sector": "Tecnología",
+      "web": "fravega.com",
+      "phone": {
+        "country": 54,
+        "number": 6157965129
+      },
+      "fullAddress": {
+        "address": "Av Colón",
+        "addressNumber": 5042,
+        "city": "Córdoba",
+        "province": "Córdoba",
+        "country": "Argentina",
+        "zipCode": "5000"
+      },
+      "cuit": "37688026725",
+      "fiscal_condition": "IVA Responsable Inscripto",
+      "contact": {
+        "name": "Doug",
+        "surname": "Frankema",
+        "mail": "dfrankema3@mozilla.com",
+        "phone": {
+          "country": 54,
+          "number": 3347151301
+        },
+        "rol": "Contador"
+      },
+      "createdAt": "2023-11-19",
+      "updatedAt": "2023-11-19",
       "isAvailable": true
     },
     {
       "id": 5,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 05",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "code": "ofi5",
+      "brand": "Talane",
+      "sector": "Oficina",
+      "web": "talane.com",
+      "phone": {
+        "country": 54,
+        "number": 1445094795
+      },
+      "fullAddress": {
+        "address": "9 de Julio",
+        "addressNumber": 6491,
+        "city": "Rosario",
+        "province": "Santa Fe",
+        "country": "Argentina",
+        "zipCode": "3100"
+      },
+      "cuit": "32680934717",
+      "fiscal_condition": "Responsable Monotributo",
+      "contact": {
+        "name": "Consalve",
+        "surname": "Sibborn",
+        "mail": "csibborn4@pagesperso-orange.fr",
+        "phone": {
+          "country": 54,
+          "number": 4889567052
+        },
+        "rol": "Encargado de compras"
+      },
+      "createdAt": "2023-11-19",
+      "updatedAt": "2023-11-19",
       "isAvailable": true
     },
     {
       "id": 6,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 06",
-      "suplierId": 1,
-      "suplier": "Cetrogar",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "code": "rep6",
+      "brand": "Meemm",
+      "sector": "Repuestos",
+      "web": "meemm.pl",
+      "phone": {
+        "country": 598,
+        "number": 4445645440
+      },
+      "fullAddress": {
+        "address": "Antonio Rubio",
+        "addressNumber": 4235,
+        "city": "Montevideo",
+        "province": "Montevideo",
+        "country": "Uruguay",
+        "zipCode": "10129"
+      },
+      "cuit": "31464431388",
+      "fiscal_condition": "Proveedor del Exterior",
+      "contact": {
+        "name": "Bruis",
+        "surname": "Belcham",
+        "mail": "bbelcham5@latimes.com",
+        "phone": {
+          "country": 598,
+          "number": 3297268403
+        },
+        "rol": "Gerente de compras"
+      },
+      "createdAt": "2023-11-24",
+      "updatedAt": "2023-11-24",
       "isAvailable": true
     },
     {
       "id": 7,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 07",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "code": "tec7",
+      "brand": "Cetrogar",
+      "sector": "Tecnología",
+      "web": "cetrogar.com",
+      "phone": {
+        "country": 54,
+        "number": 5407805284
+      },
+      "fullAddress": {
+        "address": "Sarmiento",
+        "addressNumber": 1635,
+        "city": "Mar del Plata",
+        "province": "Buenos Aires",
+        "country": "Argentina",
+        "zipCode": "7600"
+      },
+      "cuit": "38040671507",
+      "fiscal_condition": "IVA Responsable Inscripto",
+      "contact": {
+        "name": "Jedd",
+        "surname": "Jacquemot",
+        "mail": "jjacquemot6@ovh.net",
+        "phone": {
+          "country": 54,
+          "number": 1561479666
+        },
+        "rol": "Gerente de compras"
+      },
+      "createdAt": "2023-11-24",
+      "updatedAt": "2023-11-24",
       "isAvailable": true
     },
     {
       "id": 8,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 08",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "code": "rep8",
+      "brand": "Fatz",
+      "sector": "Repuestos",
+      "web": "fatz.com",
+      "phone": {
+        "country": 56,
+        "number": 2936676589
+      },
+      "fullAddress": {
+        "address": "San Pablo",
+        "addressNumber": 9562,
+        "city": "Cerrillo",
+        "province": "Santiago",
+        "country": "Chile",
+        "zipCode": "9200000"
+      },
+      "cuit": "35162101052",
+      "fiscal_condition": "Proveedor del Exterior",
+      "contact": {
+        "name": "Filbert",
+        "surname": "Pikett",
+        "mail": "fpikett7@rakuten.co.jp",
+        "phone": {
+          "country": 56,
+          "number": 2978826251
+        },
+        "rol": "Encargado de compras"
+      },
+      "createdAt": "2023-11-29",
+      "updatedAt": "2023-11-29",
       "isAvailable": true
     },
     {
       "id": 9,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 09",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "code": "tec9",
+      "brand": "Linkbuzz",
+      "sector": "Tecnología",
+      "web": "li-buzz.com",
+      "phone": {
+        "country": 54,
+        "number": 8787570420
+      },
+      "fullAddress": {
+        "address": "Av Alem",
+        "addressNumber": 5044,
+        "city": "La Paz",
+        "province": "Mendoza",
+        "country": "Argentina",
+        "zipCode": "5590"
+      },
+      "cuit": "35628993832",
+      "fiscal_condition": "IVA Responsable Inscripto",
+      "contact": {
+        "name": "Conway",
+        "surname": "Bredbury",
+        "mail": "cbredbury8@aol.com",
+        "phone": {
+          "country": 54,
+          "number": 9623769445
+        },
+        "rol": "Dueño"
+      },
+      "createdAt": "2023-12-01",
+      "updatedAt": "2023-12-01",
       "isAvailable": true
     },
     {
       "id": 10,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 10",
+      "code": "ofi10",
+      "brand": "Twinte",
+      "sector": "Oficina",
+      "web": "twinte.co.jp",
+      "phone": {
+        "country": 595,
+        "number": 2364769171
+      },
+      "fullAddress": {
+        "address": "Alfonso Rodriguez",
+        "addressNumber": 2315,
+        "city": "Arroyito",
+        "province": "Concepción",
+        "country": "Paraguay",
+        "zipCode": "11203"
+      },
+      "cuit": "31860452612",
+      "fiscal_condition": "Proveedor del Exterior",
+      "contact": {
+        "name": "Kathy",
+        "surname": "Hosier",
+        "mail": "khosier9@google.com.hk",
+        "phone": {
+          "country": 595,
+          "number": 5744028677
+        },
+        "rol": "Gerente"
+      },
+      "createdAt": "2023-12-01",
+      "updatedAt": "2023-12-01",
+      "isAvailable": true
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Notebook Hp 15 Quad",
+      "code": "abd101f5",
       "suplierId": 1,
+      "suplier": "MusiMusimundomundo",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/780d49f84c972ea5b6e3927b9be428d9.jpg.webp",
+      "price": 851,
+      "description": "PRESTACIONES TÉCNICAS: - Procesador: Intel® Pentium® Silver N5000 Quadcore (1.1, 2.7 GHz ) 4 MB - Memoria: 8gb Ram - Placa de Video: Intel® UHD Graphics 605 - Disco SOLIDO: 128GB SSD - Pantalla: 15.6\" diagonal HD SVA",
+      "createdAt": "2023-11-12",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 2,
+      "name": "NOTEBOOK HP 240",
+      "code": "682c5702",
+      "suplierId": 2,
+      "suplier": "Rooxo",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/703dd519d1d757cfd0c4712d6e214140.jpg.webp",
+      "price": 1793,
+      "description": "La laptop HP 240 es económica y cuenta con una pantalla de 14,0\"en diagonal, un procesador Intel® y herramientas de colaboración esenciales.",
+      "createdAt": "2023-11-16",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 3,
+      "name": "Notebook HP 14 DQ2505LA",
+      "code": "c0daff0c",
+      "suplierId": 4,
+      "suplier": "Fravega",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/1916a7612e87a914cdc366a4e80d29f6.png.webp",
+      "price": 699,
+      "description": "Su memoria de 4 GB DDR4, 256 GB de almacenamiento SSD y el procesador Intel Core i3, te brindarán un gran rendimiento",
+      "createdAt": "2023-11-17",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 4,
+      "name": "Notebook Dell Negro Carbon 4R52X",
+      "code": "6585f267",
+      "suplierId": 7,
+      "suplier": "Cetrogar",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/5f096608c7a2f2884d77e2eafd78e805.jpg.webp",
+      "price": 899,
+      "description": "Modelo alfanumérico : 4R52X Relación de aspecto : 16:9 Capacidad de la batería : Tipo de batería : Ion de litio Marca : Dell Gama de colores : 45% NTSC Cantidad de núcleos : 6",
+      "createdAt": "2023-11-19",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 5,
+      "name": "Samsung Galaxy A04e",
+      "code": "19860379",
+      "suplierId": 9,
+      "suplier": "Linkbuzz",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/6787d085cbf3956f754c6432d9d2fd33.jpg.webp",
+      "price": 149,
+      "description": "Disfrutá de tu teléfono con una sola carga, gracias a su potente batería de 5000 mAh que te permite trabajar y jugar por más tiempo. Con TurboPowerTM 30, podés cargar el teléfono a gran velocidad.",
+      "createdAt": "2023-11-19",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 6,
+      "name": "Motorola G32 ",
+      "code": "63dc1d85",
+      "suplierId": 1,
+      "suplier": "Musimundo",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/8609ee2c33e809222a82ef7e37a91d16.png.webp",
+      "price": 350,
+      "description": "Disfrutá de tu teléfono con una sola carga, gracias a su potente batería de 5000 mAh que te permite trabajar y jugar por más tiempo. Con TurboPowerTM 30, podés cargar el teléfono a gran velocidad.",
+      "createdAt": "2023-11-24",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 7,
+      "name": "Xiaomi Redmi 12C",
+      "code": "58555384",
+      "suplierId": 2,
+      "suplier": "Rooxo",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/1f8da495e15c2930c43b0e84f67182d6.jpg.webp",
+      "price": 269,
+      "description": "Viene equipado con un procesador Octa-Core de 2,0 GHz, el cuál proporciona un rendimiento fluido y rápido, permitiendo ejecutar aplicaciones y juegos sin problemas. ",
+      "createdAt": "2023-11-24",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 8,
+      "name": "ZTE Blade A33 Plus",
+      "code": "c582def4",
+      "suplierId": 4,
+      "suplier": "Fravega",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/73f3273bdec8d10d5bdaa16c0d551e7e.jpg.webp",
+      "price": 119,
+      "description": "El ZTE Blade A33 Plus posee sistema operativo Android 12 Go Edition, una versión más ligera y optimizada de Android.",
+      "createdAt": "2023-11-29",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 9,
+      "name": "Samsung Galaxy S23 Ultra",
+      "code": "256c8a74",
+      "suplierId": 7,
       "suplier": "Cetrogar",
       "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "picture": "https://images.fravega.com/f300/2570ae3b865a6d96a84beac46c4b92cf.jpg.webp",
+      "price": 2419,
+      "description": "Una batería que no te detiene. Con 5000mAh de capacidad, el celular Samsung Galaxy S23 Ultra te podrá acompañar durante todo el día.",
+      "createdAt": "2023-12-01",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 10,
+      "name": "Motorola Razr 40 Ultra",
+      "code": "943dcdb3",
+      "suplierId": 9,
+      "suplier": "Linkbuzz",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/2308f9c7231f344271ec8923b204a7f1.png.webp",
+      "price": 1299,
+      "description": "Con su potente procesador Snapdragon 8+ vas a tener mucha más velocidad y, además, verás un mejor desempeño junto a su memoria interna de 512 GB y RAM de 12 GB",
+      "createdAt": "2023-12-01",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 11,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 11",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "name": "Impresora Multifunción HP Smart Tank 580",
+      "code": "c09b448e",
+      "suplierId": 9,
+      "suplier": "Linkbuzz",
+      "category": "Impresoras",
+      "picture": "https://images.fravega.com/f300/0e9a52942a8a75343bc922e83ac6b43b.png.webp",
+      "price": 345,
+      "description": "Con la impresora multifunción HP Smart Tank 580 vas a poder imprimir, escanear y copiar documentos y fotos en forma rápida, con colores vibrantes y textos nítidos.",
+      "createdAt": "2023-12-10",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 12,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 12",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
-      "isAvailable": true
+      "name": "Cartucho de Tinta HP 664 Negro Original",
+      "code": "74e23973",
+      "suplierId": 8,
+      "suplier": "Fatz",
+      "category": "Tintas de impresoras",
+      "picture": "https://images.fravega.com/f300/ba1fd6a8a9581584e5dfa21aba58567d.jpg.webp",
+      "price": 23,
+      "description": "Imprima los documentos de todos los días con alta calidad y a un precio accesible con los cartuchos de tinta original HP de bajo costo, diseñados con protección contra fraudes y alertas inteligentes de poca tinta para ofrecer un rendimiento libre de preocupaciones y resultados uniformes en los que puede contar.",
+      "createdAt": "2023-12-13",
+      "updatedAt": "2024-01-09",
+      "isAvailable": false
     },
     {
       "id": 13,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 13",
-      "suplierId": 1,
-      "suplier": "Cetrogar",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "name": "Cartucho de Tinta HP 664 F6V28AL TRICOLOR",
+      "code": "93ae9e1e",
+      "suplierId": 6,
+      "suplier": "Meemm",
+      "category": "Tintas de impresoras",
+      "picture": "https://images.fravega.com/f300/ba1fd6a8a9581584e5dfa21aba58567d.jpg.webp",
+      "price": 23,
+      "description": "Imprima los documentos de todos los días con alta calidad y a un precio accesible con los cartuchos de tinta original HP de bajo costo, diseñados con protección contra fraudes y alertas inteligentes de poca tinta para ofrecer un rendimiento libre de preocupaciones y resultados uniformes en los que puede contar.",
+      "createdAt": "2023-12-15",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 14,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 14",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "name": "Cartucho de Tinta HP 664 F6V28AL TRICOLOR",
+      "code": "0d8d36ec",
+      "suplierId": 3,
+      "suplier": "Lazz",
+      "category": "Tintas de impresoras",
+      "picture": "https://images.fravega.com/f300/ba1fd6a8a9581584e5dfa21aba58567d.jpg.webp",
+      "price": 23,
+      "description": "Imprima los documentos de todos los días con alta calidad y a un precio accesible con los cartuchos de tinta original HP de bajo costo, diseñados con protección contra fraudes y alertas inteligentes de poca tinta para ofrecer un rendimiento libre de preocupaciones y resultados uniformes en los que puede contar.",
+      "createdAt": "2023-12-16",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 15,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 15",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "name": "Botella de Tinta Original Negra HP GT53",
+      "code": "3421ef84",
+      "suplierId": 8,
+      "suplier": "Fatz",
+      "category": "Tintas de impresoras",
+      "picture": "https://images.fravega.com/f300/d0bcef7c727aefc20a4d89f422a37d18.jpg.webp",
+      "price": 22,
+      "description": "Rendimiento de la página(blanco y negro): 4.000 páginas (El rendimiento real varía de acuerdo con el contenido de las páginas impresas y otros factores)",
+      "createdAt": "2023-12-16",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 16,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 16",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "name": "Silla Escritorio Oficina Mesh Ergonomica",
+      "code": "9277e84d",
+      "suplierId": 10,
+      "suplier": "Twinte",
+      "category": "Sillas de escritorio",
+      "picture": "https://images.fravega.com/f300/6680f0434f14cdb3a8951a961fbb2817.jpg.webp",
+      "price": 84,
+      "description": "Respaldo de red con curvatura y refuerzo en la apoyatura lumbar.",
+      "createdAt": "2023-12-18",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 17,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 17",
-      "suplierId": 1,
-      "suplier": "Cetrogar",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "name": "Silla de Oficina Mesh Pilcosa",
+      "code": "9011cf66",
+      "suplierId": 5,
+      "suplier": "Talane",
+      "category": "Sillas de escritorio",
+      "picture": "https://images.fravega.com/f300/4bd4544fc03173253b2dd141b561816a.jpg.webp",
+      "price": 59,
+      "description": "Respaldo con curvatura que se adapta a la forma de la espalda con forma de S cóncava a la altura del tórax y de forma convexa a nivel lumbar.",
+      "createdAt": "2023-12-19",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 18,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 18",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "name": "Silla de Escritorio Alta PILCOSA",
+      "code": "a8b3c577",
+      "suplierId": 5,
+      "suplier": "Talane",
+      "category": "Sillas de escritorio",
+      "picture": "https://images.fravega.com/f300/26a7119e87f0108b571d774d8b717637.jpg.webp",
+      "price": 79,
+      "description": "Sillón ejecutivo elegante y vanguardista con asiento en tela mesh, con cabecera alta en cuero ecológico. Brazo de polipropileno fijo, respaldo de malla de poliéster, asiento grande de espuma; base y pistón cromado.",
+      "createdAt": "2023-12-25",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 19,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 19",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "name": "Auricular In-ear Inalámbrico Jbl Wave",
+      "code": "48af8b5d",
+      "suplierId": 1,
+      "suplier": "Musimundo",
+      "category": "Audio",
+      "picture": "https://images.fravega.com/f300/2877a6fff83042d42b36f6c5f3104354.jpg.webp",
+      "price": 116,
+      "description": "Al ser in-ear, mejoran la calidad del audio y son de tamaño pequeño para poder insertarse en tu oreja. Son ideales para acompañarte a la hora de hacer ejercicio mientras te sumergís en el mejor sonido envolvente.",
+      "createdAt": "2023-12-30",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 20,
-      "code": "2f83a21e-f4Ac-45b0-95f4-afacf1c1047b",
-      "name": "Notebook Dell 15.6” Intell I7 20",
-      "suplier": "Cetrogar",
-      "suplierId": 1,
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador Intell I 7, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "name": "Auriculares Inalámbricos On Ear Philips TAH1205BK/00",
+      "code": "f95c72a4",
+      "suplierId": 2,
+      "suplier": "Rooxo",
+      "category": "Audio",
+      "picture": "https://images.fravega.com/f300/eff092d0da8ba6b78012a3f158243bd0.jpg.webp",
+      "price": 47,
+      "description": "El modelo TAH1205BK/00 de Philips cuenta con un diseño ligero y cómodo. A su vez, los auriculares Philips presentan una banda ajustable y almohadillas acolchadas que brindan un mayor confort. Auriculares On Ear.",
+      "createdAt": "2024-01-02",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 21,
-      "code": "4a9110db-94bf-4446-ae80-21f0bF9c1cbe",
-      "name": "Samsung Galaxy S23 21",
-      "suplierId": 1,
-      "suplier": "Cetrogar",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/666e2242c10ff688c3d369472eb5946a.jpg.webp",
+      "name": "Auriculares Bluetooth TWS Daewoo DW-NO441KI",
+      "code": "a86058e6",
+      "suplierId": 4,
+      "suplier": "Fravega",
+      "category": "Audio",
+      "picture": "https://images.fravega.com/f300/744030779a79d659bf516497fb90fdec.jpg.webp",
+      "price": 14,
+      "description": "Rango de frecuencia 20 HZ- 20 KHz",
+      "createdAt": "2024-01-03",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 22,
-      "code": "1f83a21e-f48c-45b0-95f4-afacf1c1047b",
-      "name": "Notebook HP 15.6” Ryzen 5 22",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Laptops",
-      "price": 1299999,
-      "description": "Está equipada con un procesador AMD Ryzen 5, que ofrece un rendimiento potente y eficaz, capaz de manejar tareas exigentes y ejecutar aplicaciones de manera fluida. Además, cuenta con 8GB de RAM, lo que permite una multitarea eficiente y una respuesta rápida del sistema. La SSD de 256GB proporciona un almacenamiento rápido y amplio para todos tus archivos",
-      "picture": "https://images.fravega.com/f300/eb13d2a225b8c4b938363d8f8791c555.jpg.webp",
+      "name": "Auriculares Inalámbricos JBL Tune 510BT",
+      "code": "04ca1012",
+      "suplierId": 7,
+      "suplier": "Cetrogar",
+      "category": "Audio",
+      "picture": "https://images.fravega.com/f300/8b96c9872eb0b216043edc5635eafc41.jpg.webp",
+      "price": 83,
+      "description": "Al ser on-ear se apoyan en tus orejas cómodamente y ofrecen una gran calidad de sonido. Usalos en viajes largos o actividades al aire libre.",
+      "createdAt": "2024-01-03",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
       "id": 23,
-      "code": "8a9110db-94bf-4446-ae80-21f0ba9c1cbe",
-      "name": "Samsung Galaxy A54 23",
-      "suplierId": 0,
-      "suplier": "Fravega SA",
-      "category": "Celulares",
-      "price": 939999,
-      "description": "Android | 50 MP / 4K | Octa-Core 2.4, 2.0 GHZ | 8 GB RAM | 256 GB ALMACENAMIENTO | 6.4\" | Super AMOLED | IP67 INSPIRADO EN LA SIMPLEZA Con un acabado premium en cristal, un módulo de cámara con un diseño elegante y colores que transmiten energía, el Galaxy A54 5G lleva inscrita su identidad Awesome en su aspecto elegante y minimalista.",
-      "picture": "https://images.fravega.com/f300/aa338ec461172138f935e56ef0abf9c2.jpg.webp",
+      "name": "Smartwatch Suono HOG0032",
+      "code": "b31ad81f",
+      "suplierId": 9,
+      "suplier": "Linkbuzz",
+      "category": "Pequeños",
+      "picture": "https://images.fravega.com/f300/9830da28c2c8d9a341beddbaa78c2703.jpg.webp",
+      "price": 8,
+      "description": "El smartwatch cuenta con pantalla táctil a color de gran tamaño de alta resolución: las teclas táctiles sensibles brindan una operación rápida y fácil Ideal para ejercicio.",
+      "createdAt": "2024-01-06",
+      "updatedAt": "2024-01-09",
       "isAvailable": true
     },
     {
+      "id": 24,
+      "name": "Samsung Galaxy Watch6 40MM",
+      "code": "0801b49e",
+      "suplierId": 1,
+      "suplier": "Musimundo",
       "category": "Pequeños",
-      "description": "Mouse",
-      "name": "Mouse Logitech Ergo Fit",
-      "picture": "",
-      "price": 85000,
-      "suplierId": "2",
-      "suplier": "Logitech SA",
-      "isAvailable": true,
-      "code": "bf8d02dd-8a82-44ca-ac12-593a88b696d4",
-      "id": 24
+      "picture": "https://images.fravega.com/f300/fbe7e16e9bc0cd6d88b3adb3396576d1.jpg.webp",
+      "price": 413,
+      "description": "El Galaxy Watch6 viene con un paquete de monitorización cardíaca que te aporta tranquilidad para que puedas concentrarte en tu día. El sensor PPG integrado mide periódicamente la frecuencia cardíaca y el ritmo cardíaco y te avisará si la frecuencia cardíaca es demasiado alta o demasiado baja.",
+      "createdAt": "2024-01-07",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 25,
+      "name": "Reloj Inteligente M6 Smartwatch Suono",
+      "code": "0f0bc3fe",
+      "suplierId": 1,
+      "suplier": "Musimundo",
+      "category": "Pequeños",
+      "picture": "https://images.fravega.com/f300/962f68dcade0c65d7de473a007bffe72.jpg.webp",
+      "price": 19,
+      "description": "Con esta Pulsera/Reloj Inteligente además de hacer deportes al aire libre y controlar todos tus ejercicios podrás responder llamadas.",
+      "createdAt": "2024-01-07",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 26,
+      "name": "Malla de goma silicona para Mi Band 5 y Miband 6 Xiaomi",
+      "code": "2cca2792",
+      "suplierId": 8,
+      "suplier": "Fatz",
+      "category": "Pequeños",
+      "picture": "https://images.fravega.com/f300/37674d1bf61239de58b6586cfd0ce4eb.jpg.webp",
+      "price": 6,
+      "description": "Pulsera de goma de repuesto para Mi Band 5 y 6 Material de la malla: TPU Material de la hebilla: Plástico",
+      "createdAt": "2024-01-08",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 27,
+      "name": "Celular Samsung Galaxy S23 FE",
+      "code": "24890f3d",
+      "suplierId": 7,
+      "suplier": "Cetrogar",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/a82eba64d454a282d0339c93521dbee0.jpg.webp",
+      "price": 849,
+      "description": "El nuevo Galaxy S23 FE cuenta con un procesador Samsung Exynos 2200 con una velocidad de CPU: 2.8GHz, 2.5GHz, 1.8GHz. A su vez, tiene un espacio de almacenamiento de 128 GB.",
+      "createdAt": "2024-01-10",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 28,
+      "name": "Lenovo IdeaPad 1 15,6”",
+      "code": "1b9160bd",
+      "suplierId": 4,
+      "suplier": "Fravega",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/e8d7c01f2e2effe6a265da75befb8372.jpg.webp",
+      "price": 949,
+      "description": "Su procesador AMD Ryzen 5, junto con su memoria RAM de 8GB y su disco SSD de 256GB, logran ofrecer el almacenamiento que necesitás y un rendimiento óptimo.",
+      "createdAt": "2024-01-10",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 29,
+      "name": "Notebook Dell Gaming 15,6\" AMD Ryzen 5",
+      "code": "9d1da242",
+      "suplierId": 2,
+      "suplier": "Rooxo",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/6c234aac346afbecebb11d2593d28748.jpg.webp",
+      "price": 1029,
+      "description": "Gracias a su memoria de 8GB, su almacenamiento de 512GB y el procesador AMD Ryzen 5 disfrutarás de un gran rendimiento, eficiencia y velocidad para vivir una experiencia mucho más rápida.",
+      "createdAt": "2024-01-11",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 30,
+      "name": "Lenovo 14” Core i3 8GB 256GB SSD IdeaPad Slim 3",
+      "code": "01f28f38",
+      "suplierId": 1,
+      "suplier": "Musimundo",
+      "category": "Notebooks",
+      "picture": "https://images.fravega.com/f300/4d200697730a5f74b7ed558179362e1f.jpg.webp",
+      "price": 929,
+      "description": "Su procesador es un Intel Core i3, que cuenta con 8 núcleos y 8 hilos. Tiene una frecuencia base de 1.8 GHz y puede alcanzar una frecuencia turbo de hasta 3.8 GHz, lo que lo hace adecuado para tareas diarias y multitarea eficiente.",
+      "createdAt": "2024-01-12",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
+    },
+    {
+      "id": 31,
+      "name": "Motorola Edge 40 Neo",
+      "code": "0fabff58",
+      "suplierId": 2,
+      "suplier": "Rooxo",
+      "category": "Celulares",
+      "picture": "https://images.fravega.com/f300/0d4369708daf8dfa8819d97dec700c28.jpg.webp",
+      "price": 600,
+      "description": "Experimentá conexiones veloces 5G gracias a la potencia del procesador y su configuración de memoria. Con 8GB de RAM y 256GB de almacenamiento interno.",
+      "createdAt": "2024-01-12",
+      "updatedAt": "2024-01-09",
+      "isAvailable": true
     }
   ],
   "purchaseOrders": [
     {
-      "dateArriving": "2024-01-08",
-      "dateEmited": "2024-01-04T12:49:56.076Z",
-      "isAvailable": true,
+      "id": 1,
+      "dateArriving": "2023-11-24",
+      "shippingRequirements": "Tocar timbre al arribar.",
       "products": [
         {
-          "productId": "3",
-          "productName": "Notebook Dell 15.6” Intell I7",
-          "price": 1299999,
-          "productQuantity": 1
-        },
-        {
-          "productId": "2",
-          "productName": "Samsung Galaxy S23",
-          "price": 939999,
+          "productId": 1,
+          "productName": "Notebook Hp 15 Quad",
+          "price": 715,
           "productQuantity": 2
         }
       ],
-      "shippingRequirements": "Tocar timbre",
-      "suplierId": "1",
-      "suplierName": "Cetrogar",
-      "total": 3179997,
-      "id": 0
+      "suplierId": 1,
+      "suplierName": "Musimundo",
+      "isAvailable": true,
+      "createdAt": "2023-11-19",
+      "updatedAt": "2023-11-19"
     },
     {
-      "dateArriving": "2024-01-07",
-      "dateEmited": "2024-01-05T01:30:32.722Z",
-      "isAvailable": true,
+      "id": 2,
+      "dateArriving": "2023-12-07",
+      "shippingRequirements": "Llamar al llegar.",
       "products": [
         {
-          "productId": "6",
-          "productName": "Samsung Galaxy S23 06",
-          "price": 939999,
+          "productId": 3,
+          "productName": "Notebook HP 14 DQ2505LA",
+          "price": 566,
+          "productQuantity": 1
+        },
+        {
+          "productId": 7,
+          "productName": "Xiaomi Redmi 12C",
+          "price": 269,
+          "productQuantity": 3
+        }
+      ],
+      "suplierId": 2,
+      "suplierName": "Rooxo",
+      "isAvailable": true,
+      "createdAt": "2023-12-01",
+      "updatedAt": "2023-12-01"
+    },
+    {
+      "id": 3,
+      "dateArriving": "2023-12-20",
+      "shippingRequirements": "Pasar por la mañana.",
+      "products": [
+        {
+          "productId": 12,
+          "productName": "Cartucho de Tinta HP 664 Negro Original",
+          "price": 18,
+          "productQuantity": 4
+        },
+        {
+          "productId": 15,
+          "productName": "Botella de Tinta Original Negra HP GT53",
+          "price": 17,
+          "productQuantity": 5
+        }
+      ],
+      "suplierId": 8,
+      "suplierName": "Fatz",
+      "isAvailable": true,
+      "createdAt": "2023-12-16",
+      "updatedAt": "2023-12-16"
+    },
+    {
+      "id": 4,
+      "dateArriving": "2023-12-30",
+      "shippingRequirements": "-",
+      "products": [
+        {
+          "productId": 5,
+          "productName": "Samsung Galaxy A04e",
+          "price": 130,
+          "productQuantity": 3
+        },
+        {
+          "productId": 10,
+          "productName": "Motorola Razr 40 Ultra",
+          "price": 1100,
+          "productQuantity": 1
+        },
+        {
+          "productId": 11,
+          "productName": "Impresora Multifunción HP Smart Tank 580",
+          "price": 330,
+          "productQuantity": 2
+        }
+      ],
+      "suplierId": 9,
+      "suplierName": "Linkbuzz",
+      "isAvailable": true,
+      "createdAt": "2023-12-25",
+      "updatedAt": "2023-12-25"
+    },
+    {
+      "id": 5,
+      "dateArriving": "2024-01-07",
+      "shippingRequirements": "Reja Negra.",
+      "products": [
+        {
+          "productId": 4,
+          "productName": "Notebook Dell Negro Carbon 4R52X",
+          "price": 850,
+          "productQuantity": 2
+        },
+        {
+          "productId": 9,
+          "productName": "Samsung Galaxy S23 Ultra",
+          "price": 2100,
+          "productQuantity": 1
+        },
+        {
+          "productId": 22,
+          "productName": "Auriculares Inalámbricos JBL Tune 510BT",
+          "price": 78,
+          "productQuantity": 3
+        }
+      ],
+      "suplierId": 7,
+      "suplierName": "Cetrogar",
+      "isAvailable": true,
+      "createdAt": "2024-01-03",
+      "updatedAt": "2024-01-03"
+    },
+    {
+      "id": 6,
+      "dateArriving": "2024-01-17",
+      "shippingRequirements": "Timbre de arriba.",
+      "products": [
+        {
+          "productId": 5,
+          "productName": "Samsung Galaxy A04e",
+          "price": 149,
+          "productQuantity": 2
+        },
+        {
+          "productId": 10,
+          "productName": "Motorola Razr 40 Ultra",
+          "price": 1299,
+          "productQuantity": 1
+        },
+        {
+          "productId": 11,
+          "productName": "Impresora Multifunción HP Smart Tank 580",
+          "price": 345,
+          "productQuantity": 3
+        },
+        {
+          "productId": 23,
+          "productName": "Smartwatch Suono HOG0032",
+          "price": 8,
+          "productQuantity": 8
+        }
+      ],
+      "suplierId": 9,
+      "suplierName": "Linkbuzz",
+      "isAvailable": true,
+      "createdAt": "2024-01-10",
+      "updatedAt": "2024-01-10"
+    },
+    {
+      "id": 7,
+      "dateArriving": "2024-01-15",
+      "shippingRequirements": "Llamar al llegar.",
+      "products": [
+        {
+          "productId": 25,
+          "productName": "Reloj Inteligente M6 Smartwatch Suono",
+          "price": 19,
+          "productQuantity": 3
+        }
+      ],
+      "suplierId": 1,
+      "suplierName": "Musimundo",
+      "isAvailable": true,
+      "createdAt": "2024-01-11",
+      "updatedAt": "2024-01-11"
+    },
+    {
+      "id": 8,
+      "dateArriving": "2024-01-16",
+      "shippingRequirements": "Pasar por la mañana.",
+      "products": [
+        {
+          "productId": 17,
+          "productName": "Silla de Oficina Mesh Pilcosa",
+          "price": 59,
+          "productQuantity": 12
+        },
+        {
+          "productId": 18,
+          "productName": "Silla de Escritorio Alta PILCOSA",
+          "price": 79,
+          "productQuantity": 5
+        }
+      ],
+      "suplierId": 5,
+      "suplierName": "Talane",
+      "isAvailable": true,
+      "createdAt": "2024-01-12",
+      "updatedAt": "2024-01-12"
+    },
+    {
+      "id": 9,
+      "dateArriving": "2024-01-17",
+      "shippingRequirements": "-",
+      "products": [
+        {
+          "productId": 8,
+          "productName": "ZTE Blade A33 Plus",
+          "price": 119,
+          "productQuantity": 3
+        },
+        {
+          "productId": 21,
+          "productName": "Auriculares Bluetooth TWS Daewoo DW-NO441KI",
+          "price": 14,
+          "productQuantity": 2
+        },
+        {
+          "productId": 28,
+          "productName": "Lenovo IdeaPad 1 15,6”",
+          "price": 949,
           "productQuantity": 1
         }
       ],
-      "shippingRequirements": "Traerlo rápido",
-      "suplierId": "1",
-      "suplierName": "Cetrogar",
-      "total": 939999,
-      "id": 2
+      "suplierId": 4,
+      "suplierName": "Fravega",
+      "isAvailable": true,
+      "createdAt": "2024-01-12",
+      "updatedAt": "2024-01-12"
+    }
+  ],
+  "sectors": [
+    {
+      "id": 1,
+      "sector": "Tecnología",
+      "createdAt": "2023-11-12",
+      "isAvailAle": true
+    },
+    {
+      "id": 2,
+      "sector": "Repuestos",
+      "createdAt": "2023-11-16",
+      "isAvailAle": true
+    },
+    {
+      "id": 3,
+      "sector": "Oficina",
+      "createdAt": "2023-11-17",
+      "isAvailAle": true
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "category": "Notebooks",
+      "createdAt": "2023-11-12",
+      "isAvailAle": true
+    },
+    {
+      "id": 2,
+      "category": "Celulares",
+      "createdAt": "2023-11-16",
+      "isAvailAle": true
+    },
+    {
+      "id": 3,
+      "category": "Impresoras",
+      "createdAt": "2023-11-17",
+      "isAvailAle": true
+    },
+    {
+      "id": 4,
+      "category": "Tintas de impresoras",
+      "createdAt": "2023-11-19",
+      "isAvailAle": true
+    },
+    {
+      "id": 5,
+      "category": "Pequeños",
+      "createdAt": "2023-11-19",
+      "isAvailAle": true
+    },
+    {
+      "id": 6,
+      "category": "Audio",
+      "createdAt": "2023-11-24",
+      "isAvailAle": true
+    },
+    {
+      "id": 7,
+      "category": "Sillas de escritorio",
+      "createdAt": "2023-11-24",
+      "isAvailAle": true
     }
   ]
 }

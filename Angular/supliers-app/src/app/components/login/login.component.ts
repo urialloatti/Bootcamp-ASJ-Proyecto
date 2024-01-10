@@ -19,7 +19,7 @@ export class LoginComponent {
 
   login() {
     if (
-      this.credentials.username == 'admin' &&
+      this.credentials.username == 'user' &&
       this.credentials.password == 'admin'
     ) {
       this.isCredentialInvalid = false;

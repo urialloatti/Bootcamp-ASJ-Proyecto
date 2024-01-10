@@ -43,7 +43,7 @@ export class PurchaseInfoComponent {
       deleted = dto;
       this.modalConfirmObject = {
         header: `Cancelar órden de compra ${deleted.id}`,
-        message: `Está seguro de cancelar la órden de compra generada el ${deleted.dateEmited}?`,
+        message: `Está seguro de cancelar la órden de compra generada el ${deleted.createdAt}?`,
         cancel: 'Volver atrás',
         confirm: 'Cancelar órden de compra',
       };

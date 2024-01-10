@@ -20,6 +20,7 @@ export class ProductsService implements OnInit {
   }
 
   // GET methods
+
   public getList(): Observable<ProductInterface[]> {
     return this.http.get<ProductInterface[]>(this.URL_API).pipe(
       map((list: ProductInterface[]) => {
@@ -46,7 +47,19 @@ export class ProductsService implements OnInit {
     );
   }
 
+  public getElementsByCategory(
+    category: string
+  ): Observable<ProductInterface[]> {
+    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
+      map((list: ProductInterface[]) => {
+        const filtered = list.filter((product) => product.category == category);
+        return filtered;
+      })
+    );
+  }
+
   // DELETE methods
+
   public deleteElementById(id: number): Observable<ProductInterface> {
     return this.http.delete<ProductInterface>(this.URL_API + '/' + id);
   }
@@ -64,6 +77,7 @@ export class ProductsService implements OnInit {
   }
 
   // POST methods
+
   public addElement(product: ProductInterface): Observable<ProductInterface> {
     product.id = this.counter;
     product.code = crypto.randomUUID();
@@ -72,6 +86,7 @@ export class ProductsService implements OnInit {
   }
 
   // UPDATE methods
+
   public updateElement(
     product: ProductInterface
   ): Observable<ProductInterface> {

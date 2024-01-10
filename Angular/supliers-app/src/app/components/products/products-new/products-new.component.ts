@@ -10,6 +10,9 @@ import {
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { Title } from '@angular/platform-browser';
+import { ModalService } from '../../../services/modal.service';
+import { CategoriesService } from '../../../services/categories.service';
+import { CategoryInterface } from '../../../interfaces/smallCrudsInterfaces';
 
 @Component({
   selector: 'products-new',
@@ -21,6 +24,8 @@ export class ProductsNewComponent implements OnInit {
     private route: ActivatedRoute,
     private titleService: Title,
 
+    private modalService: ModalService,
+    private categoryService: CategoriesService,
     private productService: ProductsService,
     private suplierService: SupliersService
   ) {}
@@ -41,18 +46,22 @@ export class ProductsNewComponent implements OnInit {
     suplierId: false,
   };
   supliersList: SuplierInterface[] = [];
+  categories: CategoryInterface[] = [];
   flagNewProductCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
   isUpdating: boolean = false;
+  isCreatingCategory: boolean = false;
 
   ngOnInit(): void {
-    this.suplierService.getList().subscribe((response) => {
-      this.supliersList = response;
+    this.suplierService.getList().subscribe((supList) => {
+      this.supliersList = supList;
     });
-
+    this.categoryService
+      .getList()
+      .subscribe((catList) => (this.categories = catList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
       if (id !== null) {
@@ -108,6 +117,16 @@ export class ProductsNewComponent implements OnInit {
     }
   }
 
+  createNewCategory() {
+    this.isCreatingCategory = true;
+    let subsciption = this.modalService.confirm$.subscribe(() => {
+      this.categoryService
+        .getList()
+        .subscribe((catList) => (this.categories = catList));
+      this.isCreatingCategory = false;
+      subsciption.unsubscribe();
+    });
+  }
   validateSubmite() {
     this.isProductInvalid.name =
       this.currentProduct.name.length < 4 ||

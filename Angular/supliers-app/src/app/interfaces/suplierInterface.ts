@@ -2,23 +2,25 @@ export interface SuplierInterface {
   id?: number;
   code?: string;
   brand: string;
-  category: string;
+  sector: string;
   web: string;
   phone: PhoneNumber;
   fullAddress: FullAddress;
   cuit: string;
-  iva: IVAOptions;
+  fiscal_condition: IVAOptions;
   contact: Contact;
   logo?: string;
   isAvailable?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface FullAddress {
   address: string;
   addressNumber: number | undefined;
-  state: string;
+  city: string;
   country: string;
-  district: string;
+  province: string;
   zipCode: string;
 }
 

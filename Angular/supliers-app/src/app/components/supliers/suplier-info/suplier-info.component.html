@@ -18,7 +18,7 @@
         <div class="row mb-3 d-flex align-items-center">
           <div class="col mb-3">
             <h2 class="h3 text-body-tertiary">
-              Categoría: {{ currentSuplier.category }}
+              Rubro: {{ currentSuplier.sector }}
             </h2>
           </div>
           <div class="col-12 col-md-5">
@@ -28,7 +28,7 @@
             >
               <div class="row">
                 <div class="col">
-                  <p>{{ currentSuplier.iva }}</p>
+                  <p>{{ currentSuplier.fiscal_condition }}</p>
                 </div>
               </div>
               <div class="row">
@@ -57,8 +57,8 @@
                 <div class="col">
                   <p>
                     {{ currentSuplier.fullAddress.country }} -
-                    {{ currentSuplier.fullAddress.state }} -
-                    {{ currentSuplier.fullAddress.district }}
+                    {{ currentSuplier.fullAddress.province }} -
+                    {{ currentSuplier.fullAddress.city }}
                   </p>
                 </div>
               </div>

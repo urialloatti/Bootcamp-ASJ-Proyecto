@@ -1,7 +1,14 @@
 <section class="row">
   <div class="col d-none d-sm-block"></div>
   <div class="col col-sm-9 col-md-8 p-5 body">
-    <article class="bg-light-subtle rounded p-4">
+    <article class="bg-light-subtle rounded p-4 pt-2">
+      <div class="row">
+        <div class="col">
+          <a class="text-decoration-none" routerLink="/products"
+            >← Ir al listado</a
+          >
+        </div>
+      </div>
       <form #myForm="ngForm" (ngSubmit)="saveProduct()">
         <fieldset class="px-4">
           <div class="text-center my-4">
@@ -43,21 +50,37 @@
             <label class="form-label"
               >Categoría <span class="fw-light">*</span></label
             >
-            <select
-              name="category"
-              #category="ngModel"
-              [(ngModel)]="currentProduct.category"
-              class="form-select"
-              [ngClass]="isProductInvalid.category ? 'is-invalid' : ''"
-              [ngClass]="currentProduct.category != 'Otro' ? 'is-valid' : ''"
-            >
-              <option disabled value="Otro">Seleccione una opción</option>
-              <option value="Celulares">Celulares</option>
-              <option value="Laptops">Laptops</option>
-              <option value="Pequeños">Pequeños</option>
-              <option value="Periféricos">Periféricos</option>
-              <option value="Audio">Audio</option>
-            </select>
+            <div class="row">
+              <div class="col-11">
+                <select
+                  name="category"
+                  #category="ngModel"
+                  [(ngModel)]="currentProduct.category"
+                  class="form-select"
+                  [ngClass]="isProductInvalid.category ? 'is-invalid' : ''"
+                  [ngClass]="
+                    currentProduct.category != 'Otro' ? 'is-valid' : ''
+                  "
+                >
+                  <option disabled value="Otro">Seleccione una opción</option>
+                  <option
+                    value="{{ category.category }}"
+                    *ngFor="let category of categories"
+                  >
+                    {{ category.category }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-1">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="createNewCategory()"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                </button>
+              </div>
+            </div>
             <div
               class="form-text"
               *ngIf="
@@ -169,4 +192,8 @@
     *ngIf="modalRedirectFlag"
     [modalData]="modalRedirectObject"
   ></shared-modal-redirect>
+  <app-modal-new
+    *ngIf="isCreatingCategory"
+    [currentCreate]="'category'"
+  ></app-modal-new>
 </section>
