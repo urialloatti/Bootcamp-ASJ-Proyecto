@@ -59,9 +59,10 @@ export class PurchaseNewComponent implements OnInit {
   isUpdating: boolean = false;
 
   ngOnInit(): void {
-    this.suplierService.getList().subscribe((response) => {
-      this.supliersList = response;
-    });
+    this.purchaseService.updateCounter();
+    this.suplierService
+      .getList()
+      .subscribe((supList) => (this.supliersList = supList));
     this.currentPurchaseOrder.dateArriving = this.getMinDateShippingTemplate();
 
     this.route.paramMap.subscribe((response) => {
@@ -69,8 +70,8 @@ export class PurchaseNewComponent implements OnInit {
       if (id != undefined) {
         this.purchaseService
           .getElementById(parseInt(id))
-          .subscribe((response) => {
-            this.currentPurchaseOrder = response;
+          .subscribe((purchaseDTO) => {
+            this.currentPurchaseOrder = purchaseDTO;
             this.dateShipping = this.getDateObject(
               this.currentPurchaseOrder.dateArriving
             );
@@ -83,8 +84,8 @@ export class PurchaseNewComponent implements OnInit {
   }
 
   getSuplierProducts(id: number): void {
-    this.productService.getElementsBySuplierId(id).subscribe((response) => {
-      this.suplierProducts = response;
+    this.productService.getElementsBySuplierId(id).subscribe((prodList) => {
+      this.suplierProducts = prodList;
     });
     this.currentProduct.productId = -1;
   }

@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
 
 import { SuplierInterface } from '../interfaces/suplierInterface';
 import { ProductsService } from './products.service';
@@ -8,7 +8,7 @@ import { ProductsService } from './products.service';
 @Injectable({
   providedIn: 'root',
 })
-export class SupliersService implements OnInit {
+export class SupliersService {
   constructor(
     private http: HttpClient,
     private productService: ProductsService
@@ -16,13 +16,6 @@ export class SupliersService implements OnInit {
 
   URL_API: string = 'http://localhost:3000/supliers';
   private counter!: number;
-
-  ngOnInit(): void {
-    let subscription = this.getList().subscribe(
-      (response) => (this.counter = response.length)
-    );
-    subscription.unsubscribe();
-  }
 
   // GET methods
 
@@ -35,6 +28,10 @@ export class SupliersService implements OnInit {
         );
       })
     );
+  }
+
+  public getFullList(): Observable<SuplierInterface[]> {
+    return this.http.get<SuplierInterface[]>(this.URL_API);
   }
 
   public getElementById(id: number): Observable<SuplierInterface> {
@@ -93,5 +90,11 @@ export class SupliersService implements OnInit {
           return mapSuplier;
         })
       );
+  }
+
+  public updateCounter() {
+    this.getFullList().subscribe(
+      (response) => (this.counter = response.length)
+    );
   }
 }

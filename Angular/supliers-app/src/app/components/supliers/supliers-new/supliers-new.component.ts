@@ -77,6 +77,7 @@ export class SupliersNewComponent implements OnInit {
   isCreatingSector: boolean = false;
 
   ngOnInit(): void {
+    this.suplierService.updateCounter();
     this.sectorService
       .getList()
       .subscribe((secList) => (this.sectors = secList));

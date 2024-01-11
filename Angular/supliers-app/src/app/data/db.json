@@ -1076,5 +1076,18 @@
       "createdAt": "2023-11-24",
       "isAvailAle": true
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "user",
+      "passwordHash": "admin",
+      "email": "ualloatti@asjservicios.com",
+      "name": "Uriel",
+      "surname": "Alloatti",
+      "createdAt": "2023-11-12",
+      "updatedAt": "2023-11-12",
+      "isAvailable": true
+    }
   ]
 }

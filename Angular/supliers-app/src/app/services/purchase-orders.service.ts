@@ -57,4 +57,8 @@ export class PurchaseOrdersService implements OnInit {
       pOrder
     );
   }
+
+  public updateCounter() {
+    this.getList().subscribe((response) => (this.counter = response.length));
+  }
 }

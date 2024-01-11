@@ -57,6 +57,13 @@ export class HeaderComponent {
   checkActive(path: string): boolean {
     return this.route.url.startsWith(path);
   }
+
+  logOut() {
+    if (localStorage.getItem('credentials')) {
+      localStorage.removeItem('credentials');
+      location.reload();
+    }
+  }
 }
 
 type Section = {

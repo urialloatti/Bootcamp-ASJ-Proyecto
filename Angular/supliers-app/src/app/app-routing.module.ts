@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MainComponent } from './components/main/main.component';
@@ -12,8 +12,9 @@ import { PurchaseNewComponent } from './components/purchase-order/purchase-new/p
 import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier-info.component';
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/users/login/login.component';
 import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
+import { NewUserComponent } from './components/users/new-user/new-user.component';
 
 const routes: Routes = [
   {
@@ -82,7 +83,10 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
+    children: [
+      { path: '', component: LoginComponent },
+      { path: 'register', component: NewUserComponent },
+    ],
   },
   {
     path: '404',

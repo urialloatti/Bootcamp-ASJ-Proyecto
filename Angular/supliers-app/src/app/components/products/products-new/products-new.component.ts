@@ -56,6 +56,7 @@ export class ProductsNewComponent implements OnInit {
   isCreatingCategory: boolean = false;
 
   ngOnInit(): void {
+    this.productService.updateCounter();
     this.suplierService.getList().subscribe((supList) => {
       this.supliersList = supList;
     });

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ProductInterface } from '../interfaces/productInterface';
@@ -7,24 +7,23 @@ import { ProductInterface } from '../interfaces/productInterface';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService implements OnInit {
+export class ProductsService {
   private counter!: number;
   private URL_API = 'http://localhost:3000/products';
 
   constructor(private http: HttpClient) {}
-  ngOnInit(): void {
-    let subscription = this.getList().subscribe((response) => {
-      this.counter = response.length;
-      subscription.unsubscribe();
-    });
-  }
 
   // GET methods
+
+  public getFullList(): Observable<ProductInterface[]> {
+    return this.http.get<ProductInterface[]>(this.URL_API);
+  }
 
   public getList(): Observable<ProductInterface[]> {
     return this.http.get<ProductInterface[]>(this.URL_API).pipe(
       map((list: ProductInterface[]) => {
         const filtered_list = list.filter((product) => product.isAvailable);
+        this.counter = list.length;
         return filtered_list.sort((a, b) =>
           a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         );
@@ -80,9 +79,13 @@ export class ProductsService implements OnInit {
 
   public addElement(product: ProductInterface): Observable<ProductInterface> {
     product.id = this.counter;
-    product.code = crypto.randomUUID();
-    this.counter++;
-    return this.http.post<ProductInterface>(this.URL_API, product);
+
+    return this.http.post<ProductInterface>(this.URL_API, product).pipe(
+      map((updatedProduct) => {
+        updatedProduct.code = crypto.randomUUID();
+        return updatedProduct;
+      })
+    );
   }
 
   // UPDATE methods
@@ -93,6 +96,12 @@ export class ProductsService implements OnInit {
     return this.http.put<ProductInterface>(
       this.URL_API + '/' + product.id,
       product
+    );
+  }
+
+  public updateCounter() {
+    this.getFullList().subscribe(
+      (response) => (this.counter = response.length)
     );
   }
 }
