@@ -8,12 +8,17 @@ import {
   UserInterface,
   userDataInterface,
 } from '../interfaces/userInterface';
+import { Router, UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private http: HttpClient, private datePipe: DatePipe) {}
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe,
+    private router: Router
+  ) {}
   private URL_API: string = 'http://localhost:3000/users';
 
   private userCredentialsSubject: Subject<boolean> = new Subject<boolean>();
@@ -23,6 +28,35 @@ export class UsersService {
   public checkUserExists$ = this.userExistsSubject.asObservable();
   private counter!: number;
   private userDTO!: userDataInterface;
+
+  private isLoggedIn: boolean = false;
+
+  public get isLoggedInGuard$(): Observable<boolean> {
+    return this.http.get<UserInterface[]>(this.URL_API).pipe(
+      map((list: UserInterface[]) => {
+        let userCredentialsDTO: UserCredentialsInterface = JSON.parse(
+          localStorage.getItem('credentials') || '{}'
+        ) as UserCredentialsInterface;
+        const isUserValid: boolean = list.some(
+          (user) =>
+            user.username == userCredentialsDTO.username &&
+            user.passwordHash == userCredentialsDTO.password
+        );
+        if (isUserValid) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
+  public checkLoggedIn(): void {
+    let userCredentialsDTO: UserCredentialsInterface = JSON.parse(
+      localStorage.getItem('credentials') || '{}'
+    ) as UserCredentialsInterface;
+    this.checkCredentials(userCredentialsDTO);
+  }
 
   public checkCredentials(userCredentialsDTO: UserCredentialsInterface): void {
     this.getList().subscribe((userList) => {
@@ -81,10 +115,7 @@ export class UsersService {
     );
   }
 
-  public getCurrentUser(): userDataInterface {
-    return this.userDTO;
-  }
-
+  // CRUD
   public addElement(user: UserInterface): Observable<UserInterface> {
     user.id = this.counter;
     user.isAvailable = true;
@@ -98,6 +129,10 @@ export class UsersService {
     )!;
     this.counter++;
     return this.http.post<UserInterface>(this.URL_API, user);
+  }
+
+  public getCurrentUser(): userDataInterface {
+    return this.userDTO;
   }
 
   public updateCounter() {

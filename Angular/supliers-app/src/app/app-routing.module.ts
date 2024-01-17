@@ -1,5 +1,5 @@
-import { NgModule, Component } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes, CanActivateChildFn } from '@angular/router';
 
 import { MainComponent } from './components/main/main.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -13,12 +13,13 @@ import { SuplierInfoComponent } from './components/supliers/suplier-info/suplier
 import { SupliersListComponent } from './components/supliers/supliers-list/supliers-list.component';
 import { SupliersNewComponent } from './components/supliers/supliers-new/supliers-new.component';
 import { LoginComponent } from './components/users/login/login.component';
-import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
 import { NewUserComponent } from './components/users/new-user/new-user.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'supliers',
+    canActivateChild: [authGuard],
     children: [
       {
         path: '',
@@ -37,6 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'products',
+    canActivateChild: [authGuard],
     children: [
       {
         path: '',
@@ -51,6 +53,7 @@ const routes: Routes = [
   },
   {
     path: 'purchase-orders',
+    canActivateChild: [authGuard],
     children: [
       {
         path: '',
@@ -80,6 +83,7 @@ const routes: Routes = [
     component: MainComponent,
     title: 'Gestión de compras',
     pathMatch: 'full',
+    canActivate: [authGuard],
   },
   {
     path: 'login',

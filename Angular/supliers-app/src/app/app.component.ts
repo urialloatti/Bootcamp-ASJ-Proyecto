@@ -24,13 +24,6 @@ export class AppComponent implements OnInit {
         this.route.navigateByUrl('/login');
       }
     });
-    this.checkCredentials();
-  }
-
-  checkCredentials() {
-    let credentials: UserCredentialsInterface = JSON.parse(
-      localStorage.getItem('credentials') || '{}'
-    ) as UserCredentialsInterface;
-    this.users.checkCredentials(credentials);
+    this.users.checkLoggedIn();
   }
 }

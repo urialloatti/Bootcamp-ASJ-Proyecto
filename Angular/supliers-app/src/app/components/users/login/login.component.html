@@ -19,6 +19,7 @@
                     name="username"
                     #username="ngModel"
                     [(ngModel)]="credentials.username"
+                    autocomplete="username"
                     required
                     minlength="4"
                     maxlength="15"
@@ -33,6 +34,7 @@
                     name="password"
                     #password="ngModel"
                     [(ngModel)]="credentials.password"
+                    autocomplete="current-password"
                     required
                     [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
                     class="form-control"

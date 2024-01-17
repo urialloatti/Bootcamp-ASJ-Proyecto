@@ -119,10 +119,11 @@
                 <div class="mb-3">
                   <label class="form-label">Contraseña</label>
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     #password="ngModel"
                     [(ngModel)]="currentUser.passwordHash"
+                    autocomplete="current-password"
                     required
                     minlength="7"
                     maxlength="25"
@@ -142,10 +143,11 @@
                     >Vuelva a ingresar la contraseña</label
                   >
                   <input
-                    type="text"
+                    type="password"
                     name="repitedPass"
                     #secondPass="ngModel"
                     [(ngModel)]="repitedPass"
+                    autocomplete="new-password"
                     required
                     minlength="7"
                     maxlength="25"
