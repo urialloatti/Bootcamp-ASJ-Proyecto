@@ -27,10 +27,7 @@ export class PurchaseListComponent implements OnInit {
     listFields: [
       {
         field: 'Proveedor',
-        keys: [
-          { key: 'suplierName' },
-          { key: 'isAvailable', extras: 'PurchaseOrder' },
-        ],
+        keys: [{ key: 'suplierName' }, { key: 'state' }],
       },
       {
         field: 'Fecha de emisión',

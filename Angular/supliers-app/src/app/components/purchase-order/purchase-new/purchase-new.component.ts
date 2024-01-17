@@ -113,10 +113,6 @@ export class PurchaseNewComponent implements OnInit {
           suplier = response;
           this.currentPurchaseOrder.suplierName = suplier?.brand;
           if (!this.isUpdating) {
-            this.currentPurchaseOrder.createdAt = this.datePipe.transform(
-              new Date(),
-              'yyyy-MM-dd'
-            )!;
             this.purchaseService
               .addElement(this.currentPurchaseOrder)
               .subscribe();

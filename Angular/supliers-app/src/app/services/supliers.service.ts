@@ -4,12 +4,14 @@ import { Observable, map } from 'rxjs';
 
 import { SuplierInterface } from '../interfaces/suplierInterface';
 import { ProductsService } from './products.service';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SupliersService {
   constructor(
+    private datePipe: DatePipe,
     private http: HttpClient,
     private productService: ProductsService
   ) {}
@@ -66,6 +68,15 @@ export class SupliersService {
   public addElement(suplier: SuplierInterface): Observable<SuplierInterface> {
     suplier.id = this.counter;
     suplier.code = suplier.sector.substring(0, 3) + suplier.id.toString();
+    suplier.createdAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+    suplier.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+    suplier.isAvailable = true;
     this.counter++;
     return this.http.post<SuplierInterface>(this.URL_API, suplier);
   }
@@ -75,6 +86,10 @@ export class SupliersService {
   public updateElement(
     suplier: SuplierInterface
   ): Observable<SuplierInterface> {
+    suplier.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
     return this.http
       .put<SuplierInterface>(this.URL_API + '/' + suplier.id, suplier)
       .pipe(
@@ -94,7 +109,7 @@ export class SupliersService {
 
   public updateCounter() {
     this.getFullList().subscribe(
-      (response) => (this.counter = response.length)
+      (response) => (this.counter = response.length + 1)
     );
   }
 }

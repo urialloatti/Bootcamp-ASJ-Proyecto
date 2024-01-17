@@ -94,6 +94,7 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
+                    [disabled]="!item.isAvailable"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>

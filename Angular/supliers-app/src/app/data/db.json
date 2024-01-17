@@ -508,7 +508,7 @@
       "description": "Imprima los documentos de todos los días con alta calidad y a un precio accesible con los cartuchos de tinta original HP de bajo costo, diseñados con protección contra fraudes y alertas inteligentes de poca tinta para ofrecer un rendimiento libre de preocupaciones y resultados uniformes en los que puede contar.",
       "createdAt": "2023-12-13",
       "updatedAt": "2024-01-09",
-      "isAvailable": false
+      "isAvailable": true
     },
     {
       "id": 13,
@@ -782,6 +782,7 @@
       "id": 1,
       "dateArriving": "2023-11-24",
       "shippingRequirements": "Tocar timbre al arribar.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 1,
@@ -792,14 +793,15 @@
       ],
       "suplierId": 1,
       "suplierName": "Musimundo",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2023-11-19",
-      "updatedAt": "2023-11-19"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 2,
       "dateArriving": "2023-12-07",
       "shippingRequirements": "Llamar al llegar.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 3,
@@ -816,14 +818,15 @@
       ],
       "suplierId": 2,
       "suplierName": "Rooxo",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2023-12-01",
-      "updatedAt": "2023-12-01"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 3,
       "dateArriving": "2023-12-20",
       "shippingRequirements": "Pasar por la mañana.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 12,
@@ -840,14 +843,15 @@
       ],
       "suplierId": 8,
       "suplierName": "Fatz",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2023-12-16",
-      "updatedAt": "2023-12-16"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 4,
       "dateArriving": "2023-12-30",
       "shippingRequirements": "-",
+      "state": "Entregado",
       "products": [
         {
           "productId": 5,
@@ -870,14 +874,15 @@
       ],
       "suplierId": 9,
       "suplierName": "Linkbuzz",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2023-12-25",
-      "updatedAt": "2023-12-25"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 5,
       "dateArriving": "2024-01-07",
       "shippingRequirements": "Reja Negra.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 4,
@@ -900,14 +905,15 @@
       ],
       "suplierId": 7,
       "suplierName": "Cetrogar",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2024-01-03",
-      "updatedAt": "2024-01-03"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 6,
       "dateArriving": "2024-01-17",
       "shippingRequirements": "Timbre de arriba.",
+      "state": "Cancelado",
       "products": [
         {
           "productId": 5,
@@ -936,14 +942,15 @@
       ],
       "suplierId": 9,
       "suplierName": "Linkbuzz",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2024-01-10",
-      "updatedAt": "2024-01-10"
+      "updatedAt": "2024-01-16 21:46:40"
     },
     {
       "id": 7,
       "dateArriving": "2024-01-15",
       "shippingRequirements": "Llamar al llegar.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 25,
@@ -954,14 +961,15 @@
       ],
       "suplierId": 1,
       "suplierName": "Musimundo",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2024-01-11",
-      "updatedAt": "2024-01-11"
+      "updatedAt": "2024-01-16 21:48:21"
     },
     {
       "id": 8,
       "dateArriving": "2024-01-16",
       "shippingRequirements": "Pasar por la mañana.",
+      "state": "Entregado",
       "products": [
         {
           "productId": 17,
@@ -978,14 +986,15 @@
       ],
       "suplierId": 5,
       "suplierName": "Talane",
-      "isAvailable": true,
+      "isAvailable": false,
       "createdAt": "2024-01-12",
-      "updatedAt": "2024-01-12"
+      "updatedAt": "2024-01-17 08:27:13"
     },
     {
       "id": 9,
       "dateArriving": "2024-01-17",
       "shippingRequirements": "-",
+      "state": "Disponible",
       "products": [
         {
           "productId": 8,
@@ -1010,7 +1019,7 @@
       "suplierName": "Fravega",
       "isAvailable": true,
       "createdAt": "2024-01-12",
-      "updatedAt": "2024-01-12"
+      "updatedAt": "2024-01-16 21:46:40"
     }
   ],
   "sectors": [
@@ -1088,6 +1097,17 @@
       "createdAt": "2023-11-12",
       "updatedAt": "2023-11-12",
       "isAvailable": true
+    },
+    {
+      "name": "Agostina",
+      "surname": "Acosta",
+      "email": "aacosta@asjservicios.com",
+      "passwordHash": "abc1234",
+      "username": "aacosta",
+      "id": 2,
+      "isAvailable": true,
+      "createdAt": "2024-01-16 19:47:26",
+      "updatedAt": "2024-01-16 19:47:26"
     }
   ]
 }

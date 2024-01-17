@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ProductInterface } from '../interfaces/productInterface';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class ProductsService {
   private counter!: number;
   private URL_API = 'http://localhost:3000/products';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
   // GET methods
 
@@ -79,7 +80,14 @@ export class ProductsService {
 
   public addElement(product: ProductInterface): Observable<ProductInterface> {
     product.id = this.counter;
-
+    product.createdAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+    product.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
     return this.http.post<ProductInterface>(this.URL_API, product).pipe(
       map((updatedProduct) => {
         updatedProduct.code = crypto.randomUUID();
@@ -93,6 +101,10 @@ export class ProductsService {
   public updateElement(
     product: ProductInterface
   ): Observable<ProductInterface> {
+    product.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
     return this.http.put<ProductInterface>(
       this.URL_API + '/' + product.id,
       product
@@ -101,7 +113,7 @@ export class ProductsService {
 
   public updateCounter() {
     this.getFullList().subscribe(
-      (response) => (this.counter = response.length)
+      (response) => (this.counter = response.length + 1)
     );
   }
 }
