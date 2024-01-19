@@ -31,8 +31,12 @@ export class ItemsListComponent implements OnInit {
   public currentPage: number = 0;
   public fromPage: number = 0;
   public toPage: number = 3;
+  isOrdered: Order[] = [];
 
   ngOnInit(): void {
+    for (let field of this.listTemplate.listFields) {
+      this.isOrdered.push('unordered');
+    }
     this.loadPages();
   }
 
@@ -79,6 +83,7 @@ export class ItemsListComponent implements OnInit {
 
   loadPages() {
     this.itemsArray$.subscribe((response: any[]) => {
+      // response = response.sort((obj1, obj2) => obj1[this.listTemplate.listFields[0].keys[0].key].localeCompare(obj2[this.listTemplate.listFields[0].keys[0].key]))
       this.pageList = [];
       let page = [];
       let counter = 0;
@@ -111,3 +116,5 @@ interface pageInterface {
   index: number;
   page: any[];
 }
+
+type Order = 'unordered' | 'ascendent' | 'descendent';

@@ -52,10 +52,10 @@
             </th>
             <th
               scope="col"
-              class="text-center"
+              class="text-start"
               *ngFor="let headers of listTemplate.listFields"
             >
-              {{ headers.field }}
+              {{ headers.field }} <i class="bi bi-caret-down-fill"></i>
             </th>
             <th scope="col" class="text-center last-column">
               <i class="bi bi-gear-fill"></i>

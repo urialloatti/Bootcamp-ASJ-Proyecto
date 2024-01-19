@@ -26,10 +26,13 @@ export class ProductsListComponent implements OnInit {
     section: 'products',
     label: 'productos',
     listFields: [
-      { field: 'Nombre', keys: [{ key: 'name' }] },
-      { field: 'Categoría', keys: [{ key: 'category' }] },
-      { field: 'Proveedor', keys: [{ key: 'suplier' }] },
-      { field: 'Precio', keys: [{ key: 'price', extras: 'Currency' }] },
+      { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },
+      { field: 'Categoría', keys: [{ key: 'category', isNumeric: false }] },
+      { field: 'Proveedor', keys: [{ key: 'suplier', isNumeric: false }] },
+      {
+        field: 'Precio',
+        keys: [{ key: 'price', extras: 'Currency', isNumeric: false }],
+      },
     ],
   };
   modalConfirmFlag: boolean = false;

@@ -12,6 +12,7 @@ interface ListField {
 interface keyValue {
   key: string;
   extras?: PipeExtra;
+  isNumeric: boolean;
 }
 
 export type PipeExtra =

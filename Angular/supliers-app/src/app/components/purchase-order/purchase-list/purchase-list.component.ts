@@ -27,17 +27,21 @@ export class PurchaseListComponent implements OnInit {
     listFields: [
       {
         field: 'Proveedor',
-        keys: [{ key: 'suplierName' }, { key: 'state' }],
+        keys: [{ key: 'suplierName', isNumeric: false }],
       },
       {
         field: 'Fecha de emisión',
-        keys: [{ key: 'createdAt', extras: 'FullDate' }],
+        keys: [{ key: 'createdAt', extras: 'FullDate', isNumeric: false }],
       },
       {
         field: 'Fecha de arribo',
-        keys: [{ key: 'dateArriving', extras: 'Date' }],
+        keys: [{ key: 'dateArriving', extras: 'Date', isNumeric: false }],
       },
-      { field: 'Total', keys: [{ key: 'total', extras: 'Currency' }] },
+      {
+        field: 'Total',
+        keys: [{ key: 'total', extras: 'Currency', isNumeric: true }],
+      },
+      { field: 'Estado', keys: [{ key: 'state', isNumeric: false }] },
     ],
   };
   modalConfirmFlag: boolean = false;
