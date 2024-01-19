@@ -11,10 +11,13 @@ import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { ItemsListComponent } from './components/shared/items-list/items-list.component';
+import { LoginComponent } from './components/users/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { ModalConfirmComponent } from './components/shared/modal-confirm/modal-confirm.component';
 import { ModalMessageComponent } from './components/shared/modal-message/modal-message.component';
+import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
 import { ModalRedirectComponent } from './components/shared/modal-redirect/modal-redirect.component';
+import { NewUserComponent } from './components/users/new-user/new-user.component';
 import { NoItemsAlertComponent } from './components/shared/no-items-alert/no-items-alert.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductInfoComponent } from './components/products/product-info/product-info.component';
@@ -34,8 +37,6 @@ import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
-import { LoginComponent } from './components/login/login.component';
-import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.
     ModalMessageComponent,
     ModalNewComponent,
     ModalRedirectComponent,
+    NewUserComponent,
     NoItemsAlertComponent,
     NotFoundComponent,
     ProductInfoComponent,

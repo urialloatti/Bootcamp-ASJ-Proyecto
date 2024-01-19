@@ -1,28 +1,23 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
 
 import { SuplierInterface } from '../interfaces/suplierInterface';
 import { ProductsService } from './products.service';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SupliersService implements OnInit {
+export class SupliersService {
   constructor(
+    private datePipe: DatePipe,
     private http: HttpClient,
     private productService: ProductsService
   ) {}
 
   URL_API: string = 'http://localhost:3000/supliers';
   private counter!: number;
-
-  ngOnInit(): void {
-    let subscription = this.getList().subscribe(
-      (response) => (this.counter = response.length)
-    );
-    subscription.unsubscribe();
-  }
 
   // GET methods
 
@@ -35,6 +30,10 @@ export class SupliersService implements OnInit {
         );
       })
     );
+  }
+
+  public getFullList(): Observable<SuplierInterface[]> {
+    return this.http.get<SuplierInterface[]>(this.URL_API);
   }
 
   public getElementById(id: number): Observable<SuplierInterface> {
@@ -69,6 +68,15 @@ export class SupliersService implements OnInit {
   public addElement(suplier: SuplierInterface): Observable<SuplierInterface> {
     suplier.id = this.counter;
     suplier.code = suplier.sector.substring(0, 3) + suplier.id.toString();
+    suplier.createdAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+    suplier.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+    suplier.isAvailable = true;
     this.counter++;
     return this.http.post<SuplierInterface>(this.URL_API, suplier);
   }
@@ -78,6 +86,10 @@ export class SupliersService implements OnInit {
   public updateElement(
     suplier: SuplierInterface
   ): Observable<SuplierInterface> {
+    suplier.updatedAt = this.datePipe.transform(
+      new Date(),
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
     return this.http
       .put<SuplierInterface>(this.URL_API + '/' + suplier.id, suplier)
       .pipe(
@@ -93,5 +105,11 @@ export class SupliersService implements OnInit {
           return mapSuplier;
         })
       );
+  }
+
+  public updateCounter() {
+    this.getFullList().subscribe(
+      (response) => (this.counter = response.length + 1)
+    );
   }
 }

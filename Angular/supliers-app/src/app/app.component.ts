@@ -16,21 +16,14 @@ export class AppComponent implements OnInit {
   public isLogedIn: boolean = false;
 
   ngOnInit(): void {
-    this.checkCredentials();
-    this.users.checkCredentials$.subscribe(() => {
-      this.checkCredentials();
+    this.users.checkCredentials$.subscribe((isUserValid) => {
+      if (isUserValid) {
+        this.isLogedIn = true;
+      } else {
+        this.isLogedIn = false;
+        this.route.navigateByUrl('/login');
+      }
     });
-  }
-
-  checkCredentials() {
-    let credentials: UserCredentialsInterface = JSON.parse(
-      localStorage.getItem('credentials') || '{}'
-    ) as UserCredentialsInterface;
-    if (credentials.password !== 'user' && credentials.password !== 'admin') {
-      this.isLogedIn = false;
-      this.route.navigateByUrl('/login');
-    } else {
-      this.isLogedIn = true;
-    }
+    this.users.checkLoggedIn();
   }
 }

@@ -101,6 +101,29 @@ CREATE TABLE
     updated_at DATETIME NULL,
   );
 
+-- users rols
+CREATE TABLE
+  user_rols (
+    id INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
+    rol VARCHAR(50) NOT NULL
+  );
+
+-- Users
+CREATE TABLE 
+  users (
+    id INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
+    username VARCHAR(20) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    rol_id INT NOT NULL,
+    FOREIGN KEY (rol_id) REFERENCES user_rols(id),
+    is_available BIT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NULL,
+);
+
 -- Purchase orders
 CREATE TABLE
   purchase_orders (
@@ -109,6 +132,8 @@ CREATE TABLE
     requirements TEXT NOT NULL,
     suplier_id INT NOT NULL,
     FOREIGN KEY (suplier_id) REFERENCES supliers (id),
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
     is_available BIT NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NULL,
@@ -377,21 +402,33 @@ INSERT INTO products (name, code, suplier_id, category_id, picture, price, descr
 ('Abrochadora Brazo Largo Para Revistas', 'dfc3902a', 3, 5, NULL, 12, 'La abrochadora de brazo largo para revistas 330 mm es una herramienta que se utiliza para unir hojas de papel, folletos o revistas. Tiene un brazo largo que le permite abarcar una gran cantidad de papel, lo que la hace ideal para revistas y otros documentos de gran tamaño.', '2024-01-11', GETDATE(), 1);
 
 
+-- TABLE USER_ROLS
+INSERT INTO 
+  user_rols (rol) 
+VALUES
+  ('admin');
+
+-- TABLE USERS
+INSERT INTO 
+  users (username, password_hash, email, name, surname, rol_id, created_at, updated_at) 
+VALUES 
+  ('user', 'admin', 'ualloatti@asjservicios.com', 'Uriel', 'Alloatti', 1, '2023-11-12', '2023-11-12');
+
+
 -- TABLE PURCHASE-ORDERS
 INSERT INTO 
-  purchase_orders (date_arrives, requirements, suplier_id, created_at, updated_at) 
+  purchase_orders (date_arrives, requirements, suplier_id, user_id, created_at, updated_at)
 VALUES 
-  ('2023-11-24', 'Tocar timbre al arribar.', 1, '2023-11-19', '2023-11-19'),
-  ('2023-12-07', 'Llamar al llegar.', 2, '2023-12-01', '2023-12-01'),
-  ('2023-12-20', 'Pasar por la mañana.', 8, '2023-12-16', '2023-12-16'),
-  ('2023-12-30', '-', 9, '2023-12-25', '2023-12-25'),
-  ('2024-01-07', 'Reja Negra.', 7, '2024-01-03', '2024-01-03'),
-  ('2024-01-17', 'Timbre de arriba.', 9, '2024-01-10', '2024-01-10'),
-  ('2024-01-15', 'Llamar al llegar.', 1, '2024-01-11', '2024-01-11'),
-  ('2024-01-16', 'Pasar por la mañana.', 5, '2024-01-12', '2024-01-12'),
-  ('2024-01-17', '-', 4, '2024-01-12', '2024-01-12'),
-  ('2024-01-17', '-', 3, '2024-01-12', '2024-01-12');
-
+  ('2023-11-24', 'Tocar timbre al arribar.', 1, 1, '2023-11-19', '2023-11-19'),
+  ('2023-12-07', 'Llamar al llegar.', 2, 1, '2023-12-01', '2023-12-01'),
+  ('2023-12-20', 'Pasar por la mañana.', 8, 1, '2023-12-16', '2023-12-16'),
+  ('2023-12-30', '-', 9, 1, '2023-12-25', '2023-12-25'),
+  ('2024-01-07', 'Reja Negra.', 7, 1, '2024-01-03', '2024-01-03'),
+  ('2024-01-17', 'Timbre de arriba.', 9, 1, '2024-01-10', '2024-01-10'),
+  ('2024-01-15', 'Llamar al llegar.', 1, 1, '2024-01-11', '2024-01-11'),
+  ('2024-01-16', 'Pasar por la mañana.', 5, 1, '2024-01-12', '2024-01-12'),
+  ('2024-01-17', '-', 4, 1, '2024-01-12', '2024-01-12'),
+  ('2024-01-17', '-', 3, 1, '2024-01-12', '2024-01-12');
 
 -- TABLE PRODUCT-CART
 INSERT INTO
@@ -420,3 +457,4 @@ VALUES
   (9, 28, 949, 1),
   (10, 32, 14, 3),
   (10, 33, 12, 2);
+  

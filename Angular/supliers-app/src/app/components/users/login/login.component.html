@@ -19,6 +19,7 @@
                     name="username"
                     #username="ngModel"
                     [(ngModel)]="credentials.username"
+                    autocomplete="username"
                     required
                     minlength="4"
                     maxlength="15"
@@ -33,6 +34,7 @@
                     name="password"
                     #password="ngModel"
                     [(ngModel)]="credentials.password"
+                    autocomplete="current-password"
                     required
                     [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
                     class="form-control"
@@ -47,6 +49,17 @@
                   </button>
                 </div>
               </form>
+              <hr class="mx-5 mt-3" />
+              <div class="form-text text-center">
+                <p>
+                  ¿No tiene una cuenta?
+                  <a
+                    class="text-decoration-none text-dark fw-bold ps-3 new-account"
+                    routerLink="register"
+                    >Registrarse</a
+                  >
+                </p>
+              </div>
             </div>
           </div>
         </article>

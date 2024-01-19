@@ -63,7 +63,7 @@ FROM supliers s
 WHERE 
 	sp.number LIKE '351%' OR
 	a.province_id IN (
-		SELECT TOP 3 COUNT(a.id) 
+		SELECT TOP 3 a.province_id 
 		FROM address a 
 		GROUP BY a.province_id 
 		ORDER BY COUNT(a.id) DESC

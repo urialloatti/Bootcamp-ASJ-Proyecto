@@ -6,9 +6,6 @@ a {
   text-decoration: none;
 }
 
-.hide {
-  color: #288596;
-}
 .footer-link {
   color: var(--color-accent);
   border: 0px;

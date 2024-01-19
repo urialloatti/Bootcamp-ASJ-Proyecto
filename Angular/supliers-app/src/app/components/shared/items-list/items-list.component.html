@@ -52,10 +52,10 @@
             </th>
             <th
               scope="col"
-              class="text-center"
+              class="text-start"
               *ngFor="let headers of listTemplate.listFields"
             >
-              {{ headers.field }}
+              {{ headers.field }} <i class="bi bi-caret-down-fill"></i>
             </th>
             <th scope="col" class="text-center last-column">
               <i class="bi bi-gear-fill"></i>
@@ -94,6 +94,7 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
+                    [disabled]="!item.isAvailable"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>

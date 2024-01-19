@@ -28,7 +28,7 @@
             </div>
             <div class="col col-md-4 text-center">
               <h5 class="text-body-tertiary">
-                Estado: {{ currentPurchase.isAvailable | purchaseState }}
+                Estado: {{ currentPurchase.state }}
               </h5>
             </div>
           </div>
@@ -79,7 +79,7 @@
               <p>ID: {{ currentPurchase.id }}</p>
             </div>
           </div>
-          <div class="row my-3">
+          <div class="row my-3" *ngIf="currentPurchase.isAvailable">
             <div class="col text-center">
               <button
                 class="btn btn-secondary"

@@ -792,6 +792,7 @@
       ],
       "suplierId": 1,
       "suplierName": "Musimundo",
+      "isAvailable": true,
       "createdAt": "2023-11-19",
       "updatedAt": "2023-11-19"
     },
@@ -815,6 +816,7 @@
       ],
       "suplierId": 2,
       "suplierName": "Rooxo",
+      "isAvailable": true,
       "createdAt": "2023-12-01",
       "updatedAt": "2023-12-01"
     },
@@ -838,6 +840,7 @@
       ],
       "suplierId": 8,
       "suplierName": "Fatz",
+      "isAvailable": true,
       "createdAt": "2023-12-16",
       "updatedAt": "2023-12-16"
     },
@@ -867,6 +870,7 @@
       ],
       "suplierId": 9,
       "suplierName": "Linkbuzz",
+      "isAvailable": true,
       "createdAt": "2023-12-25",
       "updatedAt": "2023-12-25"
     },
@@ -896,6 +900,7 @@
       ],
       "suplierId": 7,
       "suplierName": "Cetrogar",
+      "isAvailable": true,
       "createdAt": "2024-01-03",
       "updatedAt": "2024-01-03"
     },
@@ -931,6 +936,7 @@
       ],
       "suplierId": 9,
       "suplierName": "Linkbuzz",
+      "isAvailable": true,
       "createdAt": "2024-01-10",
       "updatedAt": "2024-01-10"
     },
@@ -948,6 +954,7 @@
       ],
       "suplierId": 1,
       "suplierName": "Musimundo",
+      "isAvailable": true,
       "createdAt": "2024-01-11",
       "updatedAt": "2024-01-11"
     },
@@ -971,6 +978,7 @@
       ],
       "suplierId": 5,
       "suplierName": "Talane",
+      "isAvailable": true,
       "createdAt": "2024-01-12",
       "updatedAt": "2024-01-12"
     },
@@ -1000,6 +1008,7 @@
       ],
       "suplierId": 4,
       "suplierName": "Fravega",
+      "isAvailable": true,
       "createdAt": "2024-01-12",
       "updatedAt": "2024-01-12"
     }
@@ -1066,6 +1075,19 @@
       "category": "Sillas de escritorio",
       "createdAt": "2023-11-24",
       "isAvailAle": true
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "user",
+      "passwordHash": "admin",
+      "email": "ualloatti@asjservicios.com",
+      "name": "Uriel",
+      "surname": "Alloatti",
+      "createdAt": "2023-11-12",
+      "updatedAt": "2023-11-12",
+      "isAvailable": true
     }
   ]
 }

@@ -26,14 +26,17 @@ export class SupliersListComponent implements OnInit {
     section: 'supliers',
     label: 'proveedores',
     listFields: [
-      { field: 'Razón social', keys: [{ key: 'brand' }] },
-      { field: 'Nombre', keys: [{ key: 'contact', extras: 'contactName' }] },
+      { field: 'Razón social', keys: [{ key: 'brand', isNumeric: false }] },
+      {
+        field: 'Nombre',
+        keys: [{ key: 'contact', extras: 'contactName', isNumeric: false }],
+      },
       {
         field: 'Datos de contacto',
         keys: [
-          { key: 'contact', extras: 'contactPhone' },
-          { key: 'contact', extras: 'contactMails' },
-          { key: 'web' },
+          { key: 'contact', extras: 'contactPhone', isNumeric: false },
+          { key: 'contact', extras: 'contactMails', isNumeric: false },
+          { key: 'web', isNumeric: false },
         ],
       },
     ],

@@ -1,0 +1,199 @@
+<div class="container-fluid h-100 p-5" id="main">
+  <section class="row">
+    <div class="col-1 col-sm-2 col-md-3"></div>
+    <div class="col">
+      <section class="container login-container rounded p-3">
+        <article class="bg-light-subtle rounded p-4">
+          <div class="row mb-3">
+            <div class="col text-center">
+              <h1 class="title">Registrarse</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <form #myForm="ngForm" (ngSubmit)="createUser()">
+                <div class="mb-3">
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <label class="form-label">Nombre</label>
+                      <input
+                        type="text"
+                        name="name"
+                        #name="ngModel"
+                        [(ngModel)]="currentUser.name"
+                        required
+                        minlength="3"
+                        maxlength="25"
+                        [ngClass]="name.errors ? '' : 'is-valid'"
+                        [ngClass]="isUserInvalid.name ? 'is-invalid' : ''"
+                        class="form-control"
+                      />
+                      <div
+                        class="form-text"
+                        *ngIf="name.errors && isUserInvalid.name"
+                      >
+                        <p>El nombre debe tener entre 3 y 20 carácteres.</p>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <input
+                          type="text"
+                          name="surname"
+                          #surname="ngModel"
+                          [(ngModel)]="currentUser.surname"
+                          required
+                          minlength="3"
+                          maxlength="25"
+                          [ngClass]="surname.errors ? '' : 'is-valid'"
+                          [ngClass]="isUserInvalid.surname ? 'is-invalid' : ''"
+                          class="form-control"
+                        />
+                        <div
+                          class="form-text"
+                          *ngIf="surname.errors && isUserInvalid.surname"
+                        >
+                          <p>El apellido debe tener entre 3 y 25 carácteres.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <div class="row">
+                      <div class="col-12 col-md-6">
+                        <label class="form-label">Nombre de usuario</label>
+                        <input
+                          type="text"
+                          name="username"
+                          #username="ngModel"
+                          [(ngModel)]="currentUser.username"
+                          required
+                          minlength="4"
+                          maxlength="20"
+                          [ngClass]="username.errors ? '' : 'is-valid'"
+                          [ngClass]="isUserInvalid.username ? 'is-invalid' : ''"
+                          class="form-control"
+                        />
+                        <div
+                          class="form-text"
+                          *ngIf="username.errors && isUserInvalid.username"
+                        >
+                          <p>
+                            El nombre de usuario debe tener entre 5 y 20
+                            carácteres.
+                          </p>
+                        </div>
+                        <div class="form-text" *ngIf="userAlreadyExists">
+                          <p>El nombre de usuario ya existe.</p>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                          <label class="form-label">Correo electrónico</label>
+                          <input
+                            type="text"
+                            name="email"
+                            #email="ngModel"
+                            [(ngModel)]="currentUser.email"
+                            required
+                            minlength="3"
+                            maxlength="40"
+                            [ngClass]="email.errors ? '' : 'is-valid'"
+                            [ngClass]="isUserInvalid.email ? 'is-invalid' : ''"
+                            class="form-control"
+                          />
+                          <div
+                            class="form-text"
+                            *ngIf="email.errors && isUserInvalid.email"
+                          >
+                            <p>El correo no tiene un formato válido.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    name="password"
+                    #password="ngModel"
+                    [(ngModel)]="currentUser.passwordHash"
+                    autocomplete="current-password"
+                    required
+                    minlength="7"
+                    maxlength="25"
+                    [ngClass]="password.errors ? '' : 'is-valid'"
+                    [ngClass]="isUserInvalid.passwordHash ? 'is-invalid' : ''"
+                    class="form-control"
+                  />
+                  <div
+                    class="form-text"
+                    *ngIf="password.errors && isUserInvalid.passwordHash"
+                  >
+                    <p>El nombre de usuario o la contraseña son incorrectos.</p>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"
+                    >Vuelva a ingresar la contraseña</label
+                  >
+                  <input
+                    type="password"
+                    name="repitedPass"
+                    #secondPass="ngModel"
+                    [(ngModel)]="repitedPass"
+                    autocomplete="new-password"
+                    required
+                    minlength="7"
+                    maxlength="25"
+                    [ngClass]="secondPass ? '' : 'is-valid'"
+                    [ngClass]="arePasswordsNotEqual ? 'is-invalid' : ''"
+                    class="form-control"
+                  />
+
+                  <div class="form-text" *ngIf="arePasswordsNotEqual">
+                    <p>Las contraseñas no coinciden.</p>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button class="btn btn-secondary" type="submit">
+                    Registrarse
+                  </button>
+                </div>
+              </form>
+              <hr class="mx-5 mt-3" />
+              <div class="form-text text-center">
+                <p>
+                  ¿Ya tiene una cuenta?
+                  <a
+                    class="text-decoration-none text-dark fw-bold ps-3 new-account"
+                    routerLink="../"
+                    >Ingresar</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+    <div class="col-1 col-sm-2 col-md-3"></div>
+  </section>
+  <section>
+    <shared-modal-redirect
+      *ngIf="flagNewUserCreated"
+      [modalData]="{ message: 'Usuario creado con éxito.', path: '/login' }"
+    ></shared-modal-redirect>
+    <shared-modal-message
+      *ngIf="modalMessageFlag"
+      [modalData]="modalMessageObject"
+      (modalViewed)="hideModal()"
+    >
+    </shared-modal-message>
+  </section>
+</div>
