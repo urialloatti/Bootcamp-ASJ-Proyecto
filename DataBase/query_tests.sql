@@ -7,7 +7,7 @@ SELECT
 	s.cuit AS 'CUIT', 
 	co.name AS 'País', 
 	CONCAT(ct.name, ' ', ct.surname) AS 'Nombre de contacto' 
-FROM supliers s
+FROM suppliers s
 	INNER JOIN sector sc ON sc.id = s.sector_id
 	INNER JOIN fiscal_condition fc ON fc.id = s.fiscal_c_id
 	INNER JOIN contacts ct ON ct.id = s.contact_id
@@ -17,8 +17,8 @@ FROM supliers s
 ORDER BY s.brand;
 
 SELECT COUNT(p.id) AS 'Cantidad de productos', s.brand AS 'Proveedor' 
-FROM supliers s
-	INNER JOIN products p ON p.suplier_id = s.id
+FROM suppliers s
+	INNER JOIN products p ON p.supplier_id = s.id
 GROUP BY s.brand;
 
 
@@ -26,7 +26,7 @@ GROUP BY s.brand;
 SELECT p.name AS 'Nombre', c.category AS 'Categoría', s.brand AS 'Proveedor', CONCAT('$', p.price) AS 'Precio unitario' 
 FROM products p
 	INNER JOIN categories c ON p.category_id = c.id
-	INNER JOIN supliers s ON s.id = p.suplier_id
+	INNER JOIN suppliers s ON s.id = p.supplier_id
 ORDER BY p.name ASC, s.brand ASC;
 
 -- En el listado anterior, además de los datos mostrados, traer el campo imagen aunque el producto NO tenga una. Sino tiene imagen, mostrar "-".
@@ -38,7 +38,7 @@ SELECT
 	ISNULL(p.picture, '-') AS 'URL de imagen' -- Ignorar que son todas robadas de frávega please :)
 FROM products p
 	INNER JOIN categories c ON p.category_id = c.id
-	INNER JOIN supliers s ON s.id = p.suplier_id
+	INNER JOIN suppliers s ON s.id = p.supplier_id
 ORDER BY p.name ASC, s.brand ASC;
 
 -- Mostrar los datos que se pueden modificar (en el front) del producto con ID = 2.
@@ -51,13 +51,13 @@ SELECT
 	p.price AS 'Precio'
 FROM products p
 	INNER JOIN categories c ON p.category_id = c.id
-	INNER JOIN supliers s ON s.id = p.suplier_id
+	INNER JOIN suppliers s ON s.id = p.supplier_id
 WHERE p.id = 2;
 
 -- Listar todo los proveedores cuyo teléfono tenga la característica de Córdoba o que la provincia sea igual a alguna de las 3 con más proveedores.
 SELECT 
 	s.brand AS 'Proveedor'
-FROM supliers s
+FROM suppliers s
 	INNER JOIN phones sp ON sp.id = s.phone_id
 	INNER JOIN address a ON a.id = s.address_id
 WHERE 
@@ -73,7 +73,7 @@ SELECT
 	s.brand AS 'Razón social',
 	CONCAT(c.name, ' ', c.surname) AS 'Nombre',
 	CONCAT('+', p.country_code, '-', p.number, ' | ', c.mail, ' | ', s.web) AS 'Datos de contacto'
-FROM supliers s
+FROM suppliers s
 	INNER JOIN contacts c ON c.id = s.contact_id
 	INNER JOIN phones p ON p.id = c.phone_id
 WHERE s.is_available = 1;
@@ -88,14 +88,14 @@ SELECT
 	CONCAT(c.name, ' ', c.surname) AS 'Nombre de contacto',
 	c.mail AS 'Email de contacto',
 	CONCAT('+', cp.country_code, '-', cp.number) AS 'Teléfono de contacto'
-FROM supliers s
+FROM suppliers s
 	INNER JOIN contacts c ON c.id = s.contact_id
 	INNER JOIN phones sp ON sp.id = s.phone_id
 	INNER JOIN phones cp ON cp.id = c.phone_id
 WHERE s.id IN (
-				SELECT TOP(1) WITH TIES po.suplier_id 
+				SELECT TOP(1) WITH TIES po.supplier_id 
 				FROM purchase_orders po 
-				GROUP BY po.suplier_id 
+				GROUP BY po.supplier_id 
 				ORDER BY COUNT(po.id) DESC
 				)
 
@@ -112,7 +112,7 @@ SELECT
 	WHERE pp.purchase_id = po.id
 	) AS 'Cantidad de productos' 
 FROM purchase_orders po
-	INNER JOIN supliers s ON s.id = po.suplier_id
+	INNER JOIN suppliers s ON s.id = po.supplier_id
 GROUP BY po.id, po.created_at, s.code, s.brand
 ORDER BY [Fecha de emisión] DESC, [Cantidad de productos] DESC
 
@@ -137,7 +137,7 @@ SELECT
 		WHEN 0 THEN 'Cancelada'
 	END AS 'Estado'
 FROM purchase_orders po
-	INNER JOIN supliers s ON s.id = po.suplier_id
+	INNER JOIN suppliers s ON s.id = po.supplier_id
 ORDER BY [Fecha de emisión] DESC, [Cantidad de productos] DESC
 
 -- Mostrar el detalle de una orden de compra del proveedor 3, trayendo: SKU del producto, nombre producto, cantidad y subtotal.
@@ -152,7 +152,7 @@ FROM purchase_orders po
 WHERE po.id = (
 				SELECT TOP 1 po.id
 				FROM purchase_orders po
-				WHERE po.suplier_id = 3
+				WHERE po.supplier_id = 3
 				ORDER BY po.created_at DESC
 				)
 ORDER BY p.name ASC

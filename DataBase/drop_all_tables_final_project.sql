@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS purchase_products;
 DROP TABLE IF EXISTS purchase_orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS supliers;
+DROP TABLE IF EXISTS suppliers;
 DROP TABLE IF EXISTS sector;
 DROP TABLE IF EXISTS fiscal_condition;
 DROP TABLE IF EXISTS contacts;

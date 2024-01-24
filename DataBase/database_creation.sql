@@ -4,7 +4,7 @@ USE final_project;
 
 -- CREATE TABLES
 
--- Supliers tables
+-- suppliers tables
 CREATE TABLE
   countries (id INT NOT NULL PRIMARY KEY IDENTITY (1, 1), name VARCHAR(75) NOT NULL);
 
@@ -53,7 +53,7 @@ CREATE TABLE
   );
 
 CREATE TABLE
-  supliers (
+  suppliers (
     id INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
     code VARCHAR(75) NOT NULL,
     brand VARCHAR(75) NOT NULL,
@@ -89,8 +89,8 @@ CREATE TABLE
     id INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
     name VARCHAR(100) NOT NULL,
     code VARCHAR(75) NOT NULL,
-    suplier_id INT NOT NULL,
-    FOREIGN KEY (suplier_id) REFERENCES supliers (id),
+    supplier_id INT NOT NULL,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers (id),
     category_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories (id),
     description TEXT NOT NULL,
@@ -130,8 +130,8 @@ CREATE TABLE
     id INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
     date_arrives DATE NOT NULL,
     requirements TEXT NOT NULL,
-    suplier_id INT NOT NULL,
-    FOREIGN KEY (suplier_id) REFERENCES supliers (id),
+    supplier_id INT NOT NULL,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers (id),
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
     is_available BIT NOT NULL DEFAULT 1,
@@ -337,9 +337,9 @@ VALUES
   ('Av Alem', 5044, '5590', 'La Paz', 13),
   ('Alfonso Rodriguez', 2315, '11203', 'Arroyito', 68);
 
--- TABLE SUPLIERS
+-- TABLE supplierS
 INSERT INTO
-  supliers (
+  suppliers (
     code,
     brand,
     sector_id,
@@ -366,7 +366,7 @@ VALUES
   ('ofi10', 'Twinte', 3, 'twinte.co.jp', 20, 10, '31860452612', 8, 10, '2023-12-01', GETDATE (), 1);
 
 -- TABLE PRODUCTS
-INSERT INTO products (name, code, suplier_id, category_id, picture, price, description, created_at, updated_at, is_available) VALUES 
+INSERT INTO products (name, code, supplier_id, category_id, picture, price, description, created_at, updated_at, is_available) VALUES 
 ('Notebook Hp 15 Quad', 'abd101f5', 1, 1, 'https://images.fravega.com/f300/780d49f84c972ea5b6e3927b9be428d9.jpg.webp', 851, 'PRESTACIONES TÉCNICAS: - Procesador: Intel® Pentium® Silver N5000 Quadcore (1.1, 2.7 GHz ) 4 MB - Memoria: 8gb Ram - Placa de Video: Intel® UHD Graphics 605 - Disco SOLIDO: 128GB SSD - Pantalla: 15.6" diagonal HD SVA', '2023-11-12', GETDATE(), 1),
 ('NOTEBOOK HP 240', '682c5702', 2, 1, 'https://images.fravega.com/f300/703dd519d1d757cfd0c4712d6e214140.jpg.webp', 1793, 'La laptop HP 240 es económica y cuenta con una pantalla de 14,0"en diagonal, un procesador Intel® y herramientas de colaboración esenciales.', '2023-11-16', GETDATE(), 1),
 ('Notebook HP 14 DQ2505LA', 'c0daff0c', 4, 1, 'https://images.fravega.com/f300/1916a7612e87a914cdc366a4e80d29f6.png.webp', 699, 'Su memoria de 4 GB DDR4, 256 GB de almacenamiento SSD y el procesador Intel Core i3, te brindarán un gran rendimiento', '2023-11-17', GETDATE(), 1),
@@ -417,7 +417,7 @@ VALUES
 
 -- TABLE PURCHASE-ORDERS
 INSERT INTO 
-  purchase_orders (date_arrives, requirements, suplier_id, user_id, created_at, updated_at)
+  purchase_orders (date_arrives, requirements, supplier_id, user_id, created_at, updated_at)
 VALUES 
   ('2023-11-24', 'Tocar timbre al arribar.', 1, 1, '2023-11-19', '2023-11-19'),
   ('2023-12-07', 'Llamar al llegar.', 2, 1, '2023-12-01', '2023-12-01'),

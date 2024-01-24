@@ -1,0 +1,116 @@
+<div *ngIf="pageLoadedFlag">
+  <div class="container py-4 rounded h-100 body">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-12 col-md-9">
+        <article class="bg-body-tertiary rounded p-4 px-5">
+          <div class="row">
+            <div class="col">
+              <a class="fs-7" routerLink="/purchase-orders">← Ir al listado</a>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12 text-center">
+              <h1 class="title">
+                Proveedor: {{ currentPurchase.supplierName }}
+              </h1>
+            </div>
+          </div>
+          <div class="row mb-3 d-flex align-items-center">
+            <div class="col">
+              <h2 class="h3 text-body-tertiary">
+                Emitida: {{ currentPurchase.createdAt | date : "dd/MM/yyyy" }}
+              </h2>
+              <h2 class="h3 text-body-tertiary">
+                Llegada estimada:
+                {{ currentPurchase.dateArriving | date : "dd/MM/yyyy" }}
+              </h2>
+            </div>
+            <div class="col col-md-4 text-center">
+              <h5 class="text-body-tertiary">
+                Estado: {{ currentPurchase.state }}
+              </h5>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col pe-2 pe-md-5">
+              <h5 class="text-body-tertiary">Aclaraciones:</h5>
+              <div
+                class="bg-white px-4 pt-3 rounded border border-secondary-subtle text-start"
+              >
+                <p>{{ currentPurchase.shippingRequirements }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col text-start pe-2 pe-md-5">
+              <h5 class="text-body-tertiary">Productos:</h5>
+              <div
+                class="bg-white px-4 pt-3 rounded border border-secondary-subtle text-start"
+              >
+                <div
+                  class="row"
+                  *ngFor="let product of currentPurchase.products"
+                >
+                  <div class="col">
+                    <p>
+                      {{ product.productName }}
+                    </p>
+                  </div>
+                  <div class="col text-end">
+                    <p>
+                      ({{ product.productQuantity }}) x
+                      {{ product.price | currency : "USD" }}
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col text-start"><p>Total</p></div>
+                  <div class="col text-end">
+                    <p>{{ currentPurchase.total | currency : "USD" }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row pe-5">
+            <div class="col text-end">
+              <p>ID: {{ currentPurchase.id }}</p>
+            </div>
+          </div>
+          <div class="row my-3" *ngIf="currentPurchase.isAvailable">
+            <div class="col text-center">
+              <button
+                class="btn btn-secondary"
+                [routerLink]="'/purchase-orders/u/' + currentPurchase.id"
+              >
+                Modificar
+              </button>
+            </div>
+            <div class="col text-center">
+              <button
+                class="btn btn-secondary"
+                (click)="deletePurchase(currentPurchase.id!)"
+                [disabled]="!currentPurchase.isAvailable"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+  <section>
+    <shared-modal-confirm
+      *ngIf="modalConfirmFlag"
+      [modalData]="modalConfirmObject"
+    ></shared-modal-confirm>
+    <shared-modal-redirect
+      *ngIf="modalRedirectFlag"
+      [modalData]="modalRedirectObject"
+    ></shared-modal-redirect>
+  </section>
+</div>
