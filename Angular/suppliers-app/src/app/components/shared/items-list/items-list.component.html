@@ -103,7 +103,7 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
-                    [disabled]="!item.isAvailable"
+                    [disabled]="!item.available"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
@@ -112,7 +112,7 @@
                   <button
                     class="btn btn-secondary pb-2"
                     (click)="deleteElement(item.id)"
-                    [disabled]="!item.isAvailable"
+                    [disabled]="!item.available"
                   >
                     <i class="bi bi-trash3"></i>
                   </button>

@@ -8,7 +8,10 @@ import {
 } from '../../../interfaces/modalInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
+import {
+  SupplierResponseDTO,
+  supplierInterface,
+} from '../../../interfaces/supplierInterface';
 
 import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
@@ -46,7 +49,7 @@ export class ProductsNewComponent implements OnInit {
     price: false,
     supplierId: false,
   };
-  suppliersList: supplierInterface[] = [];
+  suppliersList: SupplierResponseDTO[] = [];
   categories: SmallCrudInterface[] = [];
   flagNewProductCreated: boolean = false;
   modalMessageFlag: boolean = false;

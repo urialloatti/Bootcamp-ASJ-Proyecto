@@ -16,22 +16,33 @@ export class SmallCrudsService implements OnInit {
 
   private URL_API_SECTOR: string = 'http://localhost:3000/sectors';
   private URL_API_CATEGORY: string = 'http://localhost:3000/categories';
-  private sectorCounter!: number;
-  private categoryCounter!: number;
+
+  private URL_TEST_SECTOR: string = 'http://localhost:8080/app/sectors';
+  private URL_TEST_CATEGORY: string = 'http://localhost:8080/app/categories';
 
   ngOnInit(): void {}
 
   public getList(crudType: smallCrudsType): Observable<SmallCrudInterface[]> {
     let URL_API =
-      crudType == 'category' ? this.URL_API_CATEGORY : this.URL_API_SECTOR;
-    return this.http.get<SmallCrudInterface[]>(URL_API).pipe(
-      map((list: SmallCrudInterface[]) => {
-        const filteredList = list.filter((item) => item.isAvailable);
-        return filteredList.sort((a, b) =>
-          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        );
-      })
-    );
+      crudType == 'category' ? this.URL_TEST_CATEGORY : this.URL_TEST_SECTOR;
+    return this.http
+      .get<SmallCrudInterface[]>(URL_API)
+      .pipe(
+        map((list: SmallCrudInterface[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
+  }
+
+  public addElement(
+    crudType: smallCrudsType,
+    name: string
+  ): Observable<SmallCrudInterface> {
+    let URL_API =
+      crudType == 'category' ? this.URL_TEST_CATEGORY : this.URL_TEST_SECTOR;
+    return this.http.post<SmallCrudInterface>(URL_API, { name: name });
   }
 
   public getElementById(
@@ -39,63 +50,18 @@ export class SmallCrudsService implements OnInit {
     crudType: smallCrudsType
   ): Observable<SmallCrudInterface> {
     let URL_API =
-      crudType == 'category' ? this.URL_API_CATEGORY : this.URL_API_SECTOR;
+      crudType == 'category' ? this.URL_TEST_CATEGORY : this.URL_TEST_SECTOR;
     return this.http.get<SmallCrudInterface>(URL_API + '/' + id);
   }
 
-  public addElement(
-    name: string,
-    crudType: smallCrudsType
-  ): Observable<SmallCrudInterface> {
-    let URL_API =
-      crudType == 'category' ? this.URL_API_CATEGORY : this.URL_API_SECTOR;
-    let counter =
-      crudType == 'category' ? this.categoryCounter : this.sectorCounter;
-    let newName: SmallCrudInterface = {
-      id: counter,
-      name: name,
-      createdAt: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
-      isAvailable: true,
-    };
-    if (crudType == 'category') {
-      this.categoryCounter = counter;
-    } else this.sectorCounter = counter;
-
-    return this.http.post<SmallCrudInterface>(URL_API, newName);
-  }
-
-  public deleteElement(
+  public cancelElementByIdBack(
     id: number,
     crudType: smallCrudsType
   ): Observable<SmallCrudInterface> {
     let URL_API =
-      crudType == 'category' ? this.URL_API_CATEGORY : this.URL_API_SECTOR;
-
-    return this.http.delete<SmallCrudInterface>(URL_API + '/' + id);
-  }
-
-  public cancelElementById(
-    id: number,
-    crudType: smallCrudsType
-  ): Observable<SmallCrudInterface> {
-    let URL_API =
-      crudType == 'category' ? this.URL_API_CATEGORY : this.URL_API_SECTOR;
-
-    return this.http.get<SmallCrudInterface>(URL_API + '/' + id).pipe(
-      map((item: SmallCrudInterface) => {
-        item.isAvailable = false;
-        this.http.put<SmallCrudInterface>(URL_API + '/' + id, item).subscribe();
-        return item;
-      })
-    );
-  }
-
-  public updateCounters(): void {
-    this.http
-      .get<SmallCrudInterface[]>(this.URL_API_CATEGORY)
-      .subscribe((list) => (this.categoryCounter = list.length + 1));
-    this.http
-      .get<SmallCrudInterface[]>(this.URL_API_SECTOR)
-      .subscribe((list) => (this.sectorCounter = list.length + 1));
+      crudType == 'category' ? this.URL_TEST_CATEGORY : this.URL_TEST_SECTOR;
+    return this.http.patch<SmallCrudInterface>(URL_API + '/delete/' + id, {
+      available: false,
+    });
   }
 }

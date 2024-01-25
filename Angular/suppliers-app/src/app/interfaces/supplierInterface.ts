@@ -10,12 +10,27 @@ export interface supplierInterface {
   fiscalCondition: IVAOptions;
   contact: Contact;
   logo?: string;
-  isAvailable?: boolean;
+  available?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface supplierCreateDTOInterface {
+export interface SupplierResponseDTO {
+  id: number;
+  code: string;
+  brand: string;
+  sector: string;
+  web: string;
+  phone: PhoneNumber;
+  fullAddress: AddressResponseDTO;
+  cuit: string;
+  fiscalCondition: string;
+  contact: ContactResponseDTO;
+  logo: string;
+  available: boolean;
+}
+
+export interface SupplierCreateDTO {
   brand: string;
   sectorId: number;
   web: string;
@@ -36,11 +51,28 @@ interface FullAddress {
   zipCode: string;
 }
 
+interface AddressResponseDTO {
+  address: string;
+  addressNumber: number;
+  city: string;
+  country: string;
+  province: string;
+  zipCode: string;
+}
+
+export interface ContactResponseDTO {
+  name: string;
+  surname: string;
+  phone: PhoneNumber;
+  mail: string;
+  rol: string;
+}
+
 interface AddressCreateDTO {
   address: string;
   addressNumber: number | undefined;
   city: string;
-  provinceId: string;
+  provinceId: number;
   zipCode: string;
 }
 

@@ -1,25 +1,35 @@
 package com.asj.suppliersApp.dto.request;
 
-import com.asj.suppliersApp.dto.bidirectional.ContactDTO;
-import com.asj.suppliersApp.dto.bidirectional.PhoneDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SupplierRequestDTO {
+
+
+    @NotBlank
     private String brand;
+    @NotNull
     private Integer sectorId;
+    @NotBlank
     private String web;
-    private PhoneDTO phone;
+    @NotNull
+    private PhoneRequestDTO phone;
+    @NotNull
     private AddressRequestDTO fullAddress;
+    @NotBlank
     private String cuit;
+    @NotNull
     private Integer fiscalConditionId;
-    private ContactDTO contact;
+    @NotNull
+    private ContactRequestDTO contact;
     private String logo;
 
     public SupplierRequestDTO() {
     }
 
-    public SupplierRequestDTO(String brand, Integer sectorId, String web, PhoneDTO phone, AddressRequestDTO fullAddress, String cuit, Integer fiscalConditionId, ContactDTO contact, String logo) {
+    public SupplierRequestDTO(String brand, Integer sectorId, String web, PhoneRequestDTO phone, AddressRequestDTO fullAddress, String cuit, Integer fiscalConditionId, ContactRequestDTO contact, String logo) {
         this.brand = brand;
         this.sectorId = sectorId;
         this.web = web;
@@ -55,11 +65,11 @@ public class SupplierRequestDTO {
         this.web = web;
     }
 
-    public PhoneDTO getPhone() {
+    public PhoneRequestDTO getPhone() {
         return phone;
     }
 
-    public void setPhone(PhoneDTO phone) {
+    public void setPhone(PhoneRequestDTO phone) {
         this.phone = phone;
     }
 
@@ -87,11 +97,11 @@ public class SupplierRequestDTO {
         this.fiscalConditionId = fiscalConditionId;
     }
 
-    public ContactDTO getContact() {
+    public ContactRequestDTO getContact() {
         return contact;
     }
 
-    public void setContact(ContactDTO contact) {
+    public void setContact(ContactRequestDTO contact) {
         this.contact = contact;
     }
 

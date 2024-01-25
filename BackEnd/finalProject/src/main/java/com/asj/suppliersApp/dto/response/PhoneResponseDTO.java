@@ -1,16 +1,16 @@
-package com.asj.suppliersApp.dto.bidirectional;
+package com.asj.suppliersApp.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PhoneDTO {
+public class PhoneResponseDTO {
     private int country;
     private String number;
 
-    public PhoneDTO() {
+    public PhoneResponseDTO() {
     }
 
-    public PhoneDTO(int country, String number) {
+    public PhoneResponseDTO(int country, String number) {
         this.country = country;
         this.number = number;
     }

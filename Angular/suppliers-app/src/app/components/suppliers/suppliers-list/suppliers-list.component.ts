@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
+import {
+  supplierInterface,
+  SupplierResponseDTO,
+} from '../../../interfaces/supplierInterface';
 import { suppliersService } from '../../../services/suppliers.service';
 import { ModalService } from '../../../services/modal.service';
 import {
@@ -20,8 +23,9 @@ export class suppliersListComponent implements OnInit {
     private suppliersService: suppliersService,
     private confirmService: ModalService
   ) {}
-  suppliersArray!: supplierInterface[];
-  supplierList$!: Observable<supplierInterface[]>;
+
+  suppliersArray!: SupplierResponseDTO[];
+  supplierList$!: Observable<SupplierResponseDTO[]>;
   suppliersFields: ListTemplateInterface = {
     section: 'suppliers',
     label: 'proveedores',
@@ -56,7 +60,7 @@ export class suppliersListComponent implements OnInit {
   }
 
   deletesupplier(id: number): void {
-    let deleted: supplierInterface;
+    let deleted: SupplierResponseDTO;
     this.suppliersService.getElementById(id).subscribe((response) => {
       deleted = response;
       this.modalConfirmObject = {
@@ -70,7 +74,7 @@ export class suppliersListComponent implements OnInit {
         (confirmation) => {
           this.modalConfirmFlag = false;
           if (confirmation) {
-            deleted.isAvailable = false;
+            deleted.available = false;
             this.suppliersService.cancelElementById(id).subscribe(
               (response) => {
                 this.modalMessageObject = {

@@ -4,19 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductResponseDTO {
-    private String id;
+    private int id;
     private String code;
     private String supplier;
     private String category;
     private String name;
     private String description;
-    private String price;
+    private double price;
     private String picture;
 
     public ProductResponseDTO() {
     }
 
-    public ProductResponseDTO(String id, String code, String supplier, String category, String name, String description, String price, String picture) {
+    public ProductResponseDTO(int id, String code, String supplier, String category, String name, String description, double price, String picture) {
         this.id = id;
         this.code = code;
         this.supplier = supplier;
@@ -27,11 +27,11 @@ public class ProductResponseDTO {
         this.picture = picture;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -75,11 +75,11 @@ public class ProductResponseDTO {
         this.description = description;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -36,7 +36,6 @@ export class SmallListComponent implements OnInit {
   ngOnInit(): void {
     this.loadList('Categoría');
     this.loadList('Rubro');
-    this.smallCrudsService.updateCounters();
   }
 
   loadList(page: Page) {
@@ -78,7 +77,7 @@ export class SmallListComponent implements OnInit {
           this.modalConfirmFlag = false;
           if (confirmation) {
             this.smallCrudsService
-              .cancelElementById(id, crudType)
+              .cancelElementByIdBack(id, crudType)
               .subscribe((response) => {
                 let deletedWord =
                   page == 'Categoría' ? 'eliminada' : 'eliminado';

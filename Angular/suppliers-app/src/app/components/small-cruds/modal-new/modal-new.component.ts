@@ -65,7 +65,7 @@ export class ModalNewComponent implements OnInit {
         }
         if (!this.elementExist) {
           this.smallCrudsService
-            .addElement(capitalizedName, this.currentCreate)
+            .addElement(this.currentCreate, capitalizedName)
             .subscribe((r) => {
               this.elementAddedMessage =
                 this.currentCreate == 'sector'

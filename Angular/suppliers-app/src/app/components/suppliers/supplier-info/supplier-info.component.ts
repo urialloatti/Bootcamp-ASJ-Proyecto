@@ -2,7 +2,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { supplierInterface } from '../../../interfaces/supplierInterface';
+import {
+  SupplierResponseDTO,
+  supplierInterface,
+} from '../../../interfaces/supplierInterface';
 import { suppliersService } from '../../../services/suppliers.service';
 import {
   ModalConfirmInterface,
@@ -23,7 +26,7 @@ export class supplierInfoComponent {
     private titleService: Title
   ) {}
 
-  currentsupplier!: supplierInterface;
+  currentsupplier!: SupplierResponseDTO;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalRedirectFlag: boolean = false;
@@ -54,7 +57,7 @@ export class supplierInfoComponent {
     this.confirmService.confirm$.subscribe((confirmation) => {
       this.modalConfirmFlag = false;
       if (confirmation) {
-        this.currentsupplier.isAvailable = false;
+        this.currentsupplier.available = false;
         this.supplierService.cancelElementById(id).subscribe(
           (response) => {
             this.modalRedirectObject = {

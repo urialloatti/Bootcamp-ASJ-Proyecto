@@ -1,19 +1,27 @@
-package com.asj.suppliersApp.dto.bidirectional;
+package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContactDTO {
+
+public class ContactRequestDTO {
+    @NotBlank
     private String name;
+    @NotBlank
     private String surname;
-    private PhoneDTO phone;
+    @NotNull
+    private PhoneRequestDTO phone;
+    @NotBlank
     private String mail;
+    @NotBlank
     private String rol;
 
-    public ContactDTO() {
+    public ContactRequestDTO() {
     }
 
-    public ContactDTO(String name, String surname, PhoneDTO phone, String mail, String rol) {
+    public ContactRequestDTO(String name, String surname, PhoneRequestDTO phone, String mail, String rol) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
@@ -37,11 +45,11 @@ public class ContactDTO {
         this.surname = surname;
     }
 
-    public PhoneDTO getPhone() {
+    public PhoneRequestDTO getPhone() {
         return phone;
     }
 
-    public void setPhone(PhoneDTO phone) {
+    public void setPhone(PhoneRequestDTO phone) {
         this.phone = phone;
     }
 

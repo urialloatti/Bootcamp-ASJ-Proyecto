@@ -38,6 +38,7 @@ import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { SupplierMapperPipe } from './pipes/supplier-mapper.pipe';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     ShowMailPipe,
     TableTransformPipe,
     SmallListComponent,
+    SupplierMapperPipe,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [

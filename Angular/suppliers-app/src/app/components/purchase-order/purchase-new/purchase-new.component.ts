@@ -9,7 +9,10 @@ import {
   ProductGroup,
   PurchaseOrderInterface,
 } from '../../../interfaces/purchaseOrderInterface';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
+import {
+  SupplierResponseDTO,
+  supplierInterface,
+} from '../../../interfaces/supplierInterface';
 import { ProductInterface } from '../../../interfaces/productInterface';
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
@@ -43,7 +46,7 @@ export class PurchaseNewComponent implements OnInit {
     price: 0,
     productQuantity: 1,
   };
-  suppliersList: supplierInterface[] = [];
+  suppliersList: SupplierResponseDTO[] = [];
   supplierProducts: ProductInterface[] = [];
   dateShipping: Date = new Date();
   flagNewPurchaseOrderCreated: boolean = false;
@@ -106,7 +109,7 @@ export class PurchaseNewComponent implements OnInit {
       };
       this.modalMessageFlag = true;
     } else {
-      let supplier: supplierInterface;
+      let supplier: SupplierResponseDTO;
       this.supplierService
         .getElementById(this.currentPurchaseOrder.supplierId)
         .subscribe((response) => {

@@ -1,10 +1,14 @@
 package com.asj.suppliersApp.controllers;
 
 import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
+import com.asj.suppliersApp.dto.request.CheckCuitRequestDTO;
 import com.asj.suppliersApp.dto.request.SupplierRequestDTO;
 import com.asj.suppliersApp.dto.response.SupplierResponseDTO;
 import com.asj.suppliersApp.services.SuppliersService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +27,21 @@ public class SuppliersController {
 
     @GetMapping()
     public List<SupplierResponseDTO> getAll() {
-        return  suppliersService.findAvailables();
+        return  suppliersService.findAllAvailables();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SupplierResponseDTO> getById(@PathVariable Integer id) {
         Optional<SupplierResponseDTO> response = suppliersService.findById(id);
+        if (response.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(response.get());
+    }
+
+    @GetMapping("u/{id}")
+    public ResponseEntity<SupplierRequestDTO> getUpdateById(@PathVariable Integer id) {
+        Optional<SupplierRequestDTO> response = suppliersService.findByIdUpdate(id);
         if (response.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -45,11 +58,35 @@ public class SuppliersController {
     }
 
     @PostMapping()
-    public ResponseEntity<SupplierResponseDTO> postSupplier(@RequestBody SupplierRequestDTO requestDTO) {
+    public ResponseEntity<SupplierResponseDTO> postSupplier(@Valid @RequestBody SupplierRequestDTO requestDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error: bindingResult.getFieldErrors()) {
+                System.out.println(error.toString());
+            }
+        }
         Optional<SupplierResponseDTO> response = suppliersService.create(requestDTO);
         if (response.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().body(response.get());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SupplierResponseDTO> updateSupplier(@PathVariable Integer id, @Valid @RequestBody SupplierRequestDTO requestDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError error: bindingResult.getFieldErrors()) {
+                System.out.println(error.toString());
+            }
+        }
+        Optional<SupplierResponseDTO> response = suppliersService.update(requestDTO, id);
+        if (response.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(response.get());
+    }
+
+    @PatchMapping("/check-cuit")
+    public ResponseEntity<Boolean> checkCuit(@RequestBody CheckCuitRequestDTO requestDTO) {
+        return ResponseEntity.ok().body(this.suppliersService.checkCuitExists(requestDTO.getCuit()));
     }
 }

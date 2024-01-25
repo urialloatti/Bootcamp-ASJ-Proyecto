@@ -40,7 +40,7 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
-    public List<SupplierResponseDTO> findAvailables() {
+    public List<SupplierResponseDTO> findAllAvailables() {
         List<Supplier> supplierList = this.supplierRep.findByAvailableTrue();
         List<SupplierResponseDTO> response = new ArrayList<SupplierResponseDTO>();
         for (Supplier supplier : supplierList) {
@@ -56,6 +56,15 @@ public class SuppliersServiceImp implements SuppliersService {
             return Optional.empty();
         }
         return Optional.of(SupplierMapper.getSupplierResponseDTO(supplier.get()));
+    }
+
+    @Override
+    public Optional<SupplierRequestDTO> findByIdUpdate(Integer id) {
+        Optional<Supplier> supplier = this.supplierRep.findById(id);
+        if (supplier.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(SupplierMapper.getRequestDTO(supplier.get()));
     }
 
     @Override
@@ -76,6 +85,17 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
+    public Optional<SupplierResponseDTO> update(SupplierRequestDTO supplierRequestDTO, Integer id) {
+        Optional<Supplier> optSupplier = this.supplierRep.findById(id);
+        optSupplier = this.updateSupplier(optSupplier, supplierRequestDTO);
+        if (optSupplier.isEmpty()) {
+        return Optional.empty();
+        }
+        SupplierResponseDTO response = SupplierMapper.getSupplierResponseDTO(optSupplier.get());
+        return Optional.of(response);
+    }
+
+    @Override
     public Optional<SupplierResponseDTO> cancelById(Integer id, CancelItemRequestDTO setAvailable) {
         Optional<Supplier> OpToDelete = this.supplierRep.findById(id);
         if (OpToDelete.isEmpty()) {
@@ -88,6 +108,30 @@ public class SuppliersServiceImp implements SuppliersService {
         return Optional.of(SupplierMapper.getSupplierResponseDTO(toDelete));
     }
 
+    @Override
+    public boolean checkCuitExists(String cuit) {
+        return this.supplierRep.existsByCuit(cuit);
+    }
+
+    private Optional<Supplier> updateSupplier(Optional<Supplier> optSupplier, SupplierRequestDTO requestDTO) {
+        if (optSupplier.isEmpty()) {
+            return optSupplier;
+        }
+        Supplier supplier = optSupplier.get();
+        supplier = SupplierMapper.updateSupplierFromRequest(supplier, requestDTO);
+        Optional<Sector> sector = this.sectorRep.findById(requestDTO.getSectorId());
+        Optional<FiscalCondition> fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId());
+        Optional<Province> province = this.provinceRep.findById(requestDTO.getFullAddress().getProvinceId());
+        if (sector.isEmpty() || province.isEmpty() || fiscalCondition.isEmpty()) {
+            return Optional.empty();
+        }
+        supplier.setSector(sector.get());
+        supplier.setAddress(SupplierMapper.updateAddress(supplier.getAddress(), requestDTO.getFullAddress(), province.get()));
+        supplier.setFiscalCondition(fiscalCondition.get());
+        supplier.setCode(this.getSupplierCode(supplier));
+        supplier.setUpdatedAt(new Date());
+        return Optional.of(supplier);
+    }
     private Optional<Supplier> getNewSupplier(SupplierRequestDTO requestDTO) {
         Supplier supplier = SupplierMapper.getSupplierFromRequest(requestDTO);
         Optional<Sector> sector = this.sectorRep.findById(requestDTO.getSectorId());
@@ -98,19 +142,18 @@ public class SuppliersServiceImp implements SuppliersService {
         }
         supplier.setSector(sector.get());
         supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province.get()));
+        supplier.setAddress(this.addressRep.save(supplier.getAddress()));
         supplier.setFiscalCondition(fiscalCondition.get());
         supplier.setPhone(this.phoneRep.save(supplier.getPhone()));
         supplier.getContact().setPhone(this.phoneRep.save(supplier.getContact().getPhone()));
-        supplier.setAddress(this.addressRep.save(supplier.getAddress()));
         supplier.setContact(this.contactRep.save(supplier.getContact()));
         supplier.setCode("");
-
         return Optional.of(supplier);
 
     }
 
     private String getSupplierCode(Supplier supplier) {
-        return supplier.getSector().getSector().substring(0,4) + supplier.getId();
+        return supplier.getSector().getSector().substring(0,3) + supplier.getId();
     }
 
 

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
     List<Supplier> findByAvailableTrue();
+    boolean existsByCuit(String cuit);
+
 }

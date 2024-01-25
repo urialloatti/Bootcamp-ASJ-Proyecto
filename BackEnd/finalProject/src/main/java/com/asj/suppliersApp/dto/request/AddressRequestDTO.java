@@ -1,19 +1,26 @@
 package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressRequestDTO {
+    @NotBlank
     private String address;
-    private int addressNumber;
+    @NotNull
+    private Integer addressNumber;
+    @NotBlank
     private String city;
+    @NotNull
     private Integer provinceId;
+    @NotBlank
     private String zipCode;
 
     public AddressRequestDTO() {
     }
 
-    public AddressRequestDTO(String address, int addressNumber, String city, Integer provinceId, String zipCode) {
+    public AddressRequestDTO(String address, Integer addressNumber, String city, Integer provinceId, String zipCode) {
         this.address = address;
         this.addressNumber = addressNumber;
         this.city = city;
@@ -33,7 +40,7 @@ public class AddressRequestDTO {
         return addressNumber;
     }
 
-    public void setAddressNumber(int addressNumber) {
+    public void setAddressNumber(Integer addressNumber) {
         this.addressNumber = addressNumber;
     }
 

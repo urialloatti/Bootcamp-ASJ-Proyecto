@@ -1,3 +1,4 @@
+import { SupplierCreateDTO } from './../../../interfaces/supplierInterface';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
@@ -12,6 +13,9 @@ import { supplierInterface } from '../../../interfaces/supplierInterface';
 import { ModalService } from '../../../services/modal.service';
 import { SmallCrudsService } from '../../../services/small-cruds.service';
 import { suppliersService } from '../../../services/suppliers.service';
+import { LocationResponseDTO } from '../../../interfaces/locationInterface';
+import { LocationService } from '../../../services/location.service';
+import { FiscalConditionService } from '../../../services/fiscal-condition.service';
 
 @Component({
   selector: 'suppliers-new',
@@ -24,24 +28,26 @@ export class suppliersNewComponent implements OnInit {
     private route: ActivatedRoute,
     private smallCrudsService: SmallCrudsService,
     private supplierService: suppliersService,
+    private locationService: LocationService,
+    private fiscalService: FiscalConditionService,
     private titleService: Title
   ) {}
 
-  currentsupplier: supplierInterface = {
+  currentSupplierId!: number;
+  currentsupplier: SupplierCreateDTO = {
     brand: '',
-    sector: 'Otro',
+    sectorId: -1,
     web: '',
     phone: { country: 54, number: '' },
     fullAddress: {
       address: '',
       addressNumber: undefined,
-      country: 'Argentina',
-      province: '',
+      provinceId: -1,
       city: 'Córdoba',
       zipCode: '',
     },
     cuit: '',
-    fiscalCondition: 'Otro',
+    fiscalConditionId: -1,
     contact: {
       mail: '',
       name: '',
@@ -67,10 +73,12 @@ export class suppliersNewComponent implements OnInit {
     contactMail: false,
     contactRol: false,
   };
+  selectedCountry: number = -1;
   countryCodes = phoneCountryCodes;
   sectors: SmallCrudInterface[] = [];
+  fiscalConditions: SmallCrudInterface[] = [];
   cuitList: string[] = [];
-  locationOptions = locationDB;
+  locationOptions: LocationResponseDTO[] = [];
   cuitExistFlag: boolean = false;
   flagNewsupplierCreated: boolean = false;
   modalMessageFlag: boolean = false;
@@ -79,16 +87,27 @@ export class suppliersNewComponent implements OnInit {
   isCreatingSector: boolean = false;
 
   ngOnInit(): void {
-    this.supplierService.updateCounter();
+    this.locationService
+      .getList()
+      .subscribe((list) => (this.locationOptions = list));
+
+    this.fiscalService
+      .getList()
+      .subscribe((list) => (this.fiscalConditions = list));
+
     this.smallCrudsService
       .getList('sector')
       .subscribe((secList) => (this.sectors = secList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id != undefined) {
+      if (id !== null && !isNaN(Number(id))) {
+        this.currentSupplierId = Number(id);
         this.supplierService
-          .getElementById(parseInt(id))
+          .getElementForUpdate(parseInt(id))
           .subscribe((response) => {
+            this.locationService
+              .getCountryId(response.fullAddress.provinceId)
+              .subscribe((countryId) => (this.selectedCountry = countryId));
             this.currentsupplier = response;
             this.titleService.setTitle(`Editar ${response.brand}`);
           });
@@ -118,7 +137,9 @@ export class suppliersNewComponent implements OnInit {
     });
     if (isFormValid) {
       if (this.isUpdating) {
-        this.supplierService.updateElement(this.currentsupplier).subscribe();
+        this.supplierService
+          .updateElement(this.currentSupplierId, this.currentsupplier)
+          .subscribe();
       } else {
         this.supplierService.addElement(this.currentsupplier).subscribe();
       }
@@ -127,9 +148,9 @@ export class suppliersNewComponent implements OnInit {
     }
   }
 
-  getProvinces(country: string): string[] {
+  getProvinces(countryId: number): SmallCrudInterface[] {
     return (
-      this.locationOptions.find((location) => location.country == country)
+      this.locationOptions.find((location) => location.countryId == countryId)
         ?.provinces || []
     );
   }
@@ -187,7 +208,7 @@ export class suppliersNewComponent implements OnInit {
     this.issupplierInvalid.brand =
       this.currentsupplier.brand.length < 4 ||
       this.currentsupplier.brand.length > 60;
-    this.issupplierInvalid.sector = this.currentsupplier.sector == 'Otro';
+    this.issupplierInvalid.sector = this.currentsupplier.sectorId == -1;
     this.issupplierInvalid.phone = !this.validatePhoneNumber(
       this.currentsupplier.phone.number
     );
@@ -210,8 +231,7 @@ export class suppliersNewComponent implements OnInit {
       !this.validateCuit(this.currentsupplier.cuit) ||
       this.currentsupplier.cuit.length < 10 ||
       this.currentsupplier.cuit.length > 13;
-    this.issupplierInvalid.iva =
-      this.currentsupplier.fiscalCondition === 'Otro';
+    this.issupplierInvalid.iva = this.currentsupplier.fiscalConditionId === -1;
     this.issupplierInvalid.contactName =
       this.currentsupplier.contact.name.length < 4 ||
       this.currentsupplier.contact.name.length > 30;

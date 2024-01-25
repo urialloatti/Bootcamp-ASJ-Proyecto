@@ -30,7 +30,7 @@ public class Supplier {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fiscal_c_id", referencedColumnName = "id", nullable = false)
     private FiscalCondition fiscalCondition;
-    @Column(name = "logo", nullable = true)
+    @Column(name = "logo", nullable = true, columnDefinition = "TEXT")
     private String logo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", referencedColumnName = "id", nullable = false)

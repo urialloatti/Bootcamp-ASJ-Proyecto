@@ -1,13 +1,15 @@
 package com.asj.suppliersApp.controllers;
 
+import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
+import com.asj.suppliersApp.dto.request.SmallCrudRequestDTO;
+import com.asj.suppliersApp.dto.response.SmallCrudResponseDTO;
 import com.asj.suppliersApp.entities.Sector;
 import com.asj.suppliersApp.services.SectorsService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -21,8 +23,34 @@ public class SectorsController {
     }
 
     @GetMapping()
-    public List<Sector> getAll(){
-        return this.sectorsService.findAll();
+    public ResponseEntity<List<SmallCrudResponseDTO>> getAll(){
+        return ResponseEntity.ok().body(this.sectorsService.findAll());
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<SmallCrudResponseDTO> getById(@PathVariable Integer id) {
+        Optional<SmallCrudResponseDTO> response = sectorsService.findById(id);
+        if (response.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(response.get());
+    }
+
+    @PostMapping()
+    public ResponseEntity<SmallCrudResponseDTO> postSector(@RequestBody SmallCrudRequestDTO request) {
+        Optional<SmallCrudResponseDTO> response = this.sectorsService.createSector(request);
+        if (response.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(response.get());
+    }
+
+    @PatchMapping("/delete/{id}")
+    public ResponseEntity<SmallCrudResponseDTO> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancelRequest) {
+        Optional<SmallCrudResponseDTO> response = this.sectorsService.CancelById(id, cancelRequest);
+        if (response.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(response.get());
     }
 
 }
