@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import {
-  supplierInterface,
-  SupplierResponseDTO,
-} from '../../../interfaces/supplierInterface';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 import { suppliersService } from '../../../services/suppliers.service';
 import { ModalService } from '../../../services/modal.service';
 import {
@@ -45,7 +42,6 @@ export class suppliersListComponent implements OnInit {
       },
     ],
   };
-  isListLoaded: boolean = false;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalMessageFlag: boolean = false;
@@ -53,10 +49,6 @@ export class suppliersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.supplierList$ = this.suppliersService.getList();
-    this.suppliersService.getList().subscribe((response) => {
-      this.suppliersArray = response;
-      this.isListLoaded = true;
-    });
   }
 
   deletesupplier(id: number): void {
@@ -82,9 +74,7 @@ export class suppliersListComponent implements OnInit {
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                this.suppliersService.getList().subscribe((response) => {
-                  this.suppliersArray = response;
-                });
+                this.suppliersService.getList().subscribe();
               },
               (error) => {
                 this.modalMessageObject = {

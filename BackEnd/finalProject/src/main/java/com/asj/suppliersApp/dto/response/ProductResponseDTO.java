@@ -12,11 +12,12 @@ public class ProductResponseDTO {
     private String description;
     private double price;
     private String picture;
+    private boolean available;
 
     public ProductResponseDTO() {
     }
 
-    public ProductResponseDTO(int id, String code, String supplier, String category, String name, String description, double price, String picture) {
+    public ProductResponseDTO(int id, String code, String supplier, String category, String name, String description, double price, String picture, boolean available) {
         this.id = id;
         this.code = code;
         this.supplier = supplier;
@@ -25,6 +26,7 @@ public class ProductResponseDTO {
         this.description = description;
         this.price = price;
         this.picture = picture;
+        this.available = available;
     }
 
     public int getId() {
@@ -89,5 +91,13 @@ public class ProductResponseDTO {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

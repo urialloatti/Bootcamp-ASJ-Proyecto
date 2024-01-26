@@ -77,7 +77,7 @@ export class SmallListComponent implements OnInit {
           this.modalConfirmFlag = false;
           if (confirmation) {
             this.smallCrudsService
-              .cancelElementByIdBack(id, crudType)
+              .cancelElementById(id, crudType)
               .subscribe((response) => {
                 let deletedWord =
                   page == 'Categoría' ? 'eliminada' : 'eliminado';
@@ -97,7 +97,7 @@ export class SmallListComponent implements OnInit {
   createNew(page: Page) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.isCreatingNew = true;
-    let subsciption = this.modalService.confirm$.subscribe((response) => {
+    let subsciption = this.modalService.confirm$.subscribe(() => {
       this.loadList(page);
       this.isCreatingNew = false;
       subsciption.unsubscribe();

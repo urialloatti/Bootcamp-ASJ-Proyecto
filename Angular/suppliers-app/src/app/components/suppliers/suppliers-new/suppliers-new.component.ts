@@ -1,14 +1,13 @@
-import { SupplierCreateDTO } from './../../../interfaces/supplierInterface';
+import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
-import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
+import { phoneCountryCodes } from '../../../data/locationDatabase';
 
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
 
 import { ModalService } from '../../../services/modal.service';
 import { SmallCrudsService } from '../../../services/small-cruds.service';
@@ -16,6 +15,7 @@ import { suppliersService } from '../../../services/suppliers.service';
 import { LocationResponseDTO } from '../../../interfaces/locationInterface';
 import { LocationService } from '../../../services/location.service';
 import { FiscalConditionService } from '../../../services/fiscal-condition.service';
+import { Subject, Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'suppliers-new',
@@ -33,8 +33,7 @@ export class suppliersNewComponent implements OnInit {
     private titleService: Title
   ) {}
 
-  currentSupplierId!: number;
-  currentsupplier: SupplierCreateDTO = {
+  currentsupplier: SupplierRequestDTO = {
     brand: '',
     sectorId: -1,
     web: '',
@@ -43,7 +42,7 @@ export class suppliersNewComponent implements OnInit {
       address: '',
       addressNumber: undefined,
       provinceId: -1,
-      city: 'Córdoba',
+      city: '',
       zipCode: '',
     },
     cuit: '',
@@ -56,6 +55,16 @@ export class suppliersNewComponent implements OnInit {
       surname: '',
     },
   };
+
+  currentSupplierId!: number;
+  selectedCountry: number = -1;
+
+  countryCodes = phoneCountryCodes;
+  fiscalConditions: SmallCrudInterface[] = [];
+  locationOptions: LocationResponseDTO[] = [];
+  sectors: SmallCrudInterface[] = [];
+  isCreatingSector: boolean = false;
+
   issupplierInvalid: any = {
     brand: false,
     sector: false,
@@ -73,18 +82,16 @@ export class suppliersNewComponent implements OnInit {
     contactMail: false,
     contactRol: false,
   };
-  selectedCountry: number = -1;
-  countryCodes = phoneCountryCodes;
-  sectors: SmallCrudInterface[] = [];
-  fiscalConditions: SmallCrudInterface[] = [];
-  cuitList: string[] = [];
-  locationOptions: LocationResponseDTO[] = [];
   cuitExistFlag: boolean = false;
+
   flagNewsupplierCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+
   isUpdating: boolean = false;
-  isCreatingSector: boolean = false;
+
+  private debouncer: Subject<void> = new Subject<void>();
+  private debouncerSubscription?: Subscription;
 
   ngOnInit(): void {
     this.locationService
@@ -112,13 +119,13 @@ export class suppliersNewComponent implements OnInit {
             this.titleService.setTitle(`Editar ${response.brand}`);
           });
         this.isUpdating = true;
-      } else {
-        this.supplierService.getList().subscribe((response) => {
-          for (let supplier of response) {
-            this.cuitList.push(supplier.cuit);
-          }
-        });
       }
+
+      this.debouncerSubscription = this.debouncer
+        .pipe(debounceTime(1000))
+        .subscribe((value) => {
+          this.checkCuitExists();
+        });
     });
   }
 
@@ -135,7 +142,7 @@ export class suppliersNewComponent implements OnInit {
         isFormValid = false;
       }
     });
-    if (isFormValid) {
+    if (isFormValid && !this.cuitExistFlag) {
       if (this.isUpdating) {
         this.supplierService
           .updateElement(this.currentSupplierId, this.currentsupplier)
@@ -145,6 +152,7 @@ export class suppliersNewComponent implements OnInit {
       }
       console.log(this.currentsupplier);
       this.flagNewsupplierCreated = true;
+      this.debouncerSubscription!.unsubscribe();
     }
   }
 
@@ -187,13 +195,17 @@ export class suppliersNewComponent implements OnInit {
 
   validateCuit(cuit: string): boolean {
     // returns true if valid.
-    for (let compareCuit of this.cuitList) {
-      if (cuit == compareCuit) {
-        this.cuitExistFlag = true;
-        return false;
-      }
-    }
     return !/[^0-9]/.test(cuit);
+  }
+
+  checkCuitExists(): void {
+    this.supplierService
+      .checkCuitExists(this.currentsupplier.cuit)
+      .subscribe((exists) => (this.cuitExistFlag = exists));
+  }
+
+  onKeyPressCuit(): void {
+    this.debouncer.next();
   }
 
   validatePhoneNumber(number: string | undefined): boolean {
@@ -205,6 +217,10 @@ export class suppliersNewComponent implements OnInit {
     );
   }
   validateSubmite() {
+    if (!this.isUpdating) {
+      this.checkCuitExists();
+    }
+
     this.issupplierInvalid.brand =
       this.currentsupplier.brand.length < 4 ||
       this.currentsupplier.brand.length > 60;

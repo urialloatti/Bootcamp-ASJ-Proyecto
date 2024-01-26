@@ -6,12 +6,12 @@ import {
   ModalMessageInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import { ProductInterface } from '../../../interfaces/productInterface';
-import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
 import {
-  SupplierResponseDTO,
-  supplierInterface,
-} from '../../../interfaces/supplierInterface';
+  ProductInterface,
+  ProductRequestDTO,
+} from '../../../interfaces/productInterface';
+import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 
 import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
@@ -34,8 +34,9 @@ export class ProductsNewComponent implements OnInit {
     private supplierService: suppliersService
   ) {}
 
-  currentProduct: ProductInterface = {
-    category: 'Otro',
+  currentProductId!: number;
+  currentProduct: ProductRequestDTO = {
+    categoryId: -1,
     description: '',
     name: '',
     picture: '',
@@ -49,18 +50,20 @@ export class ProductsNewComponent implements OnInit {
     price: false,
     supplierId: false,
   };
+
   suppliersList: SupplierResponseDTO[] = [];
   categories: SmallCrudInterface[] = [];
+
+  isUpdating: boolean = false;
+  isCreatingCategory: boolean = false;
+
   flagNewProductCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
-  isUpdating: boolean = false;
-  isCreatingCategory: boolean = false;
 
   ngOnInit(): void {
-    this.productService.updateCounter();
     this.supplierService.getList().subscribe((supList) => {
       this.suppliersList = supList;
     });
@@ -69,8 +72,9 @@ export class ProductsNewComponent implements OnInit {
       .subscribe((catList) => (this.categories = catList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null) {
-        this.productService.getElementById(parseInt(id!)).subscribe(
+      if (id !== null && !isNaN(Number(id))) {
+        this.currentProductId = Number(id);
+        this.productService.getElementForUpdate(parseInt(id!)).subscribe(
           (response) => {
             this.currentProduct = response;
             this.titleService.setTitle(`Editar ${response.name}`);
@@ -103,16 +107,12 @@ export class ProductsNewComponent implements OnInit {
       }
     });
     if (isFormValid) {
-      let supplierName =
-        this.suppliersList.find(
-          (supplier) => supplier.id == this.currentProduct.supplierId
-        )?.brand || 'Otro';
-      this.currentProduct.supplier = supplierName;
       if (this.isUpdating) {
-        this.productService.updateElement(this.currentProduct).subscribe();
+        this.productService
+          .updateElementB(this.currentProductId, this.currentProduct)
+          .subscribe();
       } else {
-        this.currentProduct.isAvailable = true;
-        this.productService.addElement(this.currentProduct).subscribe();
+        this.productService.addElementB(this.currentProduct).subscribe();
       }
       this.modalRedirectObject = {
         message: 'Producto cargado con éxito.',
@@ -139,8 +139,9 @@ export class ProductsNewComponent implements OnInit {
     this.isProductInvalid.description =
       this.currentProduct.description.length < 1 ||
       this.currentProduct.description.length > 500;
-    this.isProductInvalid.price = this.currentProduct.price < 1;
-    this.isProductInvalid.category = this.currentProduct.category == 'Otro';
+    this.isProductInvalid.price =
+      this.currentProduct.price === undefined || this.currentProduct.price < 1;
+    this.isProductInvalid.category = this.currentProduct.categoryId == -1;
     this.isProductInvalid.supplierId = this.currentProduct.supplierId == -1;
   }
 

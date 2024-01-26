@@ -19,10 +19,10 @@ public class Supplier {
     private Sector sector;
     @Column(name = "web", nullable = false)
     private String web;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false)
     private Phone phone;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
     @Column(name = "cuit", nullable = false)
@@ -32,7 +32,7 @@ public class Supplier {
     private FiscalCondition fiscalCondition;
     @Column(name = "logo", nullable = true, columnDefinition = "TEXT")
     private String logo;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id", referencedColumnName = "id", nullable = false)
     private Contact contact;
     @Column(name = "is_available", nullable = false)

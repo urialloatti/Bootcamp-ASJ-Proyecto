@@ -9,10 +9,10 @@ public class PurchaseProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "purchase_id", referencedColumnName = "id", nullable = false)
     private PurchaseOrder purchase;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
     @Column(name = "price", nullable = false)

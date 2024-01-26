@@ -14,7 +14,7 @@ public class Contact {
     private String name;
     @Column(name = "surname", nullable = false)
     private String surname;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false)
     private Phone phone;
     @Column(name = "mail", nullable = false)

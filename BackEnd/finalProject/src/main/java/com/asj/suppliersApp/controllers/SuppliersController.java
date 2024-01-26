@@ -39,7 +39,7 @@ public class SuppliersController {
         return ResponseEntity.ok().body(response.get());
     }
 
-    @GetMapping("u/{id}")
+    @GetMapping("/u/{id}")
     public ResponseEntity<SupplierRequestDTO> getUpdateById(@PathVariable Integer id) {
         Optional<SupplierRequestDTO> response = suppliersService.findByIdUpdate(id);
         if (response.isEmpty()) {

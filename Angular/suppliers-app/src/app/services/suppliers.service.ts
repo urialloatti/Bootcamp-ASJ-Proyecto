@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import {
-  SupplierCreateDTO,
-  supplierInterface,
+  SupplierRequestDTO,
   SupplierResponseDTO,
 } from '../interfaces/supplierInterface';
 import { ProductsService } from './products.service';
@@ -39,8 +38,8 @@ export class suppliersService {
     return this.http.get<SupplierResponseDTO>(this.URL_API + '/' + id);
   }
 
-  public getElementForUpdate(id: number): Observable<SupplierCreateDTO> {
-    return this.http.get<SupplierCreateDTO>(this.URL_API + '/u/' + id);
+  public getElementForUpdate(id: number): Observable<SupplierRequestDTO> {
+    return this.http.get<SupplierRequestDTO>(this.URL_API + '/u/' + id);
   }
 
   // Delete methods
@@ -55,17 +54,25 @@ export class suppliersService {
   // POST methods
 
   public addElement(
-    supplier: SupplierCreateDTO
+    supplier: SupplierRequestDTO
   ): Observable<SupplierResponseDTO> {
     return this.http.post<SupplierResponseDTO>(this.URL_API, supplier);
   }
 
   // PUT methods
 
-  public updateElement(id: number, supplier: SupplierCreateDTO) {
+  public updateElement(id: number, supplier: SupplierRequestDTO) {
     return this.http.put<SupplierResponseDTO>(
       this.URL_API + '/' + id,
       supplier
     );
+  }
+
+  // Other methods
+
+  public checkCuitExists(cuit: string): Observable<boolean> {
+    return this.http.patch<boolean>(`${this.URL_API}/check-cuit`, {
+      cuit: cuit,
+    });
   }
 }

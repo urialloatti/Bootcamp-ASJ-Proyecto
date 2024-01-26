@@ -21,7 +21,7 @@ export class ItemsListComponent implements OnInit {
   public itemsArray$!: Observable<any[]>;
 
   @Input()
-  public isLoaded!: boolean;
+  public isLoaded: boolean = false;
 
   @Input()
   public hasPicture!: boolean;
@@ -51,33 +51,40 @@ export class ItemsListComponent implements OnInit {
   }
 
   loadPages(orderBy: number = 0, order: Order = 'ascendent') {
-    this.itemsArray$.subscribe((response: any[]) => {
-      response = this.orderList(response, orderBy, order);
-      this.pageList = [];
-      let page = [];
-      let counter = 0;
-      let pageCounter = 0;
-      for (const obj of response) {
-        if (counter < 10) {
-          page.push(obj);
-        } else if (counter == 10) {
-          this.pageList.push({ index: pageCounter, page: page });
-          page = [];
-          counter = 0;
-          pageCounter++;
+    this.itemsArray$.subscribe(
+      (response: any[]) => {
+        response = this.orderList(response, orderBy, order);
+        this.pageList = [];
+        let page = [];
+        let counter = 0;
+        let pageCounter = 0;
+        for (const obj of response) {
+          if (counter < 10) {
+            page.push(obj);
+          } else if (counter == 10) {
+            this.pageList.push({ index: pageCounter, page: page });
+            page = [];
+            counter = 0;
+            pageCounter++;
+          }
+          counter++;
         }
-        counter++;
+        if (page.length > 0) {
+          this.pageList.push({ index: pageCounter, page: page });
+        }
+        this.itemsShowed = [];
+        if (this.currentPage >= this.pageList.length) {
+          this.currentPage = this.pageList.length - 1;
+        }
+        this.itemsShowed = this.pageList[this.currentPage].page;
+        this.hasPagination = this.pageList.length > 1;
+        this.isLoaded = true;
+      },
+      (error) => {
+        console.log(error);
+        this.isLoaded = true;
       }
-      if (page.length > 0) {
-        this.pageList.push({ index: pageCounter, page: page });
-      }
-      this.itemsShowed = [];
-      if (this.currentPage >= this.pageList.length) {
-        this.currentPage = this.pageList.length - 1;
-      }
-      this.itemsShowed = this.pageList[this.currentPage].page;
-      this.hasPagination = this.pageList.length > 1;
-    });
+    );
   }
 
   selectPage(index: number) {

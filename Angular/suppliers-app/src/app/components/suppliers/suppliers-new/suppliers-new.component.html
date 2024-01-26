@@ -295,7 +295,9 @@
           <div
             class="row mb-1 d-flex"
             [ngClass]="
-              issupplierInvalid.cuit ? 'align-items-start' : 'align-items-end'
+              issupplierInvalid.cuit || cuitExistFlag
+                ? 'align-items-start'
+                : 'align-items-end'
             "
           >
             <div class="col-12 col-sm-5">
@@ -311,10 +313,13 @@
                 minlength="11"
                 maxlength="13"
                 [ngClass]="validateCuitInput(cuit) ? 'is-valid' : ''"
-                [ngClass]="issupplierInvalid.cuit ? 'is-invalid' : ''"
+                [ngClass]="
+                  issupplierInvalid.cuit || cuitExistFlag ? 'is-invalid' : ''
+                "
                 placeholder="00-00000000-0"
                 class="form-control"
                 [disabled]="isUpdating"
+                (keyup)="onKeyPressCuit()"
               />
               <div
                 class="form-text"

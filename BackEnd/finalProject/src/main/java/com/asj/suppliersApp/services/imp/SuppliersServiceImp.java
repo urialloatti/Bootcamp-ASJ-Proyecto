@@ -68,8 +68,8 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
-    public Optional<SupplierResponseDTO> create(SupplierRequestDTO requestDTO) {
-        Optional<Supplier> optSupplier = this.getNewSupplier(requestDTO);
+    public Optional<SupplierResponseDTO> create(SupplierRequestDTO request) {
+        Optional<Supplier> optSupplier = this.getNewSupplier(request);
         if (optSupplier.isEmpty()) {
             return Optional.empty();
         }
@@ -85,13 +85,13 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
-    public Optional<SupplierResponseDTO> update(SupplierRequestDTO supplierRequestDTO, Integer id) {
+    public Optional<SupplierResponseDTO> update(SupplierRequestDTO request, Integer id) {
         Optional<Supplier> optSupplier = this.supplierRep.findById(id);
-        optSupplier = this.updateSupplier(optSupplier, supplierRequestDTO);
+        optSupplier = this.updateSupplier(optSupplier, request);
         if (optSupplier.isEmpty()) {
         return Optional.empty();
         }
-        SupplierResponseDTO response = SupplierMapper.getSupplierResponseDTO(optSupplier.get());
+        SupplierResponseDTO response = SupplierMapper.getSupplierResponseDTO(this.supplierRep.save(optSupplier.get()));
         return Optional.of(response);
     }
 
@@ -142,11 +142,11 @@ public class SuppliersServiceImp implements SuppliersService {
         }
         supplier.setSector(sector.get());
         supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province.get()));
-        supplier.setAddress(this.addressRep.save(supplier.getAddress()));
+        supplier.setAddress(supplier.getAddress());
         supplier.setFiscalCondition(fiscalCondition.get());
-        supplier.setPhone(this.phoneRep.save(supplier.getPhone()));
-        supplier.getContact().setPhone(this.phoneRep.save(supplier.getContact().getPhone()));
-        supplier.setContact(this.contactRep.save(supplier.getContact()));
+        supplier.setPhone(supplier.getPhone());
+        supplier.getContact().setPhone(supplier.getContact().getPhone());
+        supplier.setContact(supplier.getContact());
         supplier.setCode("");
         return Optional.of(supplier);
 

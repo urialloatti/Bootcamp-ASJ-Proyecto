@@ -2,10 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import {
-  SupplierResponseDTO,
-  supplierInterface,
-} from '../../../interfaces/supplierInterface';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 import { suppliersService } from '../../../services/suppliers.service';
 import {
   ModalConfirmInterface,

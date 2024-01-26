@@ -7,7 +7,10 @@ import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import { ProductInterface } from '../../../interfaces/productInterface';
+import {
+  ProductInterface,
+  ProductResponseDTO,
+} from '../../../interfaces/productInterface';
 import { ModalService } from '../../../services/modal.service';
 
 @Component({
@@ -25,7 +28,7 @@ export class ProductInfoComponent implements OnInit {
     private productService: ProductsService
   ) {}
 
-  currentProduct!: ProductInterface;
+  currentProduct!: ProductResponseDTO;
   isLoaded: boolean = false;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
@@ -63,8 +66,7 @@ export class ProductInfoComponent implements OnInit {
     this.confirmService.confirm$.subscribe((confirmation) => {
       this.modalConfirmFlag = false;
       if (confirmation) {
-        this.currentProduct.isAvailable = false;
-        this.productService.cancelElementById(id).subscribe(
+        this.productService.cancelElementByIdB(id).subscribe(
           (response) => {
             this.modalRedirectObject = {
               message: `Producto ${response.name} eliminado con éxito.`,

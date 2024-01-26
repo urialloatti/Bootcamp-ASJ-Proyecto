@@ -12,7 +12,8 @@ public interface ProductsService {
     List<ProductResponseDTO> findAllAvailables();
     List<ProductResponseDTO> findAllBySupplierId(Integer id);
     Optional<ProductResponseDTO> findById(Integer id);
-    Optional<ProductResponseDTO> create(ProductRequestDTO product);
-    Optional<ProductResponseDTO> update(ProductRequestDTO product, Integer id);
+    Optional<ProductRequestDTO> findByIdUpdate(Integer id);
+    Optional<ProductResponseDTO> create(ProductRequestDTO request);
+    Optional<ProductResponseDTO> update(ProductRequestDTO request, Integer id);
     Optional<ProductResponseDTO> cancelById(Integer id, CancelItemRequestDTO setAvailable);
 }

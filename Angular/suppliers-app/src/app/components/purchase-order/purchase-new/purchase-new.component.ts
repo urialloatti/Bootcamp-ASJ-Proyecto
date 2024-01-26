@@ -9,11 +9,11 @@ import {
   ProductGroup,
   PurchaseOrderInterface,
 } from '../../../interfaces/purchaseOrderInterface';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 import {
-  SupplierResponseDTO,
-  supplierInterface,
-} from '../../../interfaces/supplierInterface';
-import { ProductInterface } from '../../../interfaces/productInterface';
+  ProductInterface,
+  ProductResponseDTO,
+} from '../../../interfaces/productInterface';
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
 @Component({
@@ -47,7 +47,7 @@ export class PurchaseNewComponent implements OnInit {
     productQuantity: 1,
   };
   suppliersList: SupplierResponseDTO[] = [];
-  supplierProducts: ProductInterface[] = [];
+  supplierProducts: ProductResponseDTO[] = [];
   dateShipping: Date = new Date();
   flagNewPurchaseOrderCreated: boolean = false;
   isCartEmpty: boolean = false;
@@ -87,7 +87,7 @@ export class PurchaseNewComponent implements OnInit {
   }
 
   getsupplierProducts(id: number): void {
-    this.productService.getElementsBysupplierId(id).subscribe((prodList) => {
+    this.productService.getElementsBySupplierId(id).subscribe((prodList) => {
       this.supplierProducts = prodList;
     });
     this.currentProduct.productId = -1;
@@ -136,7 +136,7 @@ export class PurchaseNewComponent implements OnInit {
       this.currentProduct.productId != -1
     ) {
       this.issupplierSelected = true;
-      let product: ProductInterface;
+      let product: ProductResponseDTO;
       this.productService
         .getElementById(this.currentProduct.productId)
         .subscribe((response) => {
