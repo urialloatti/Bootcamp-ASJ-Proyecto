@@ -23,7 +23,9 @@
                     required
                     minlength="4"
                     maxlength="15"
-                    [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
+                    [ngClass]="
+                      isCredentialInvalid && triedToLogIn ? 'is-invalid' : ''
+                    "
                     class="form-control"
                   />
                 </div>
@@ -33,13 +35,18 @@
                     type="password"
                     name="password"
                     #password="ngModel"
-                    [(ngModel)]="credentials.password"
+                    [(ngModel)]="credentials.passwordHash"
                     autocomplete="current-password"
                     required
-                    [ngClass]="isCredentialInvalid ? 'is-invalid' : ''"
+                    [ngClass]="
+                      isCredentialInvalid && triedToLogIn ? 'is-invalid' : ''
+                    "
                     class="form-control"
                   />
-                  <div class="form-text" *ngIf="isCredentialInvalid">
+                  <div
+                    class="form-text"
+                    *ngIf="isCredentialInvalid && triedToLogIn"
+                  >
                     <p>El nombre de usuario o la contraseña son incorrectos.</p>
                   </div>
                 </div>

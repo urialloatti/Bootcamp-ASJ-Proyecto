@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
-import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
+import {
+  PurchaseOrderInterface,
+  PurchaseOrderResponseDTO,
+} from '../../../interfaces/purchaseOrderInterface';
 import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
@@ -22,7 +25,7 @@ export class PurchaseInfoComponent {
   ) {}
 
   pageLoadedFlag: boolean = false;
-  currentPurchase!: PurchaseOrderInterface;
+  currentPurchase!: PurchaseOrderResponseDTO;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalRedirectFlag: boolean = false;
@@ -38,7 +41,7 @@ export class PurchaseInfoComponent {
   }
 
   deletePurchase(id: number): void {
-    let deleted: PurchaseOrderInterface;
+    let deleted: PurchaseOrderResponseDTO;
     this.purchaseService.getElementById(id).subscribe((dto) => {
       deleted = dto;
       this.modalConfirmObject = {

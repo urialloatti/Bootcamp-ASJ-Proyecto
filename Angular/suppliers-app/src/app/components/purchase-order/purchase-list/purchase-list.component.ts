@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
+import {
+  PurchaseOrderInterface,
+  PurchaseOrderResponseDTO,
+} from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ModalService } from '../../../services/modal.service';
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
@@ -18,8 +21,7 @@ export class PurchaseListComponent implements OnInit {
     private confirmService: ModalService
   ) {}
 
-  purchaseArray: PurchaseOrderInterface[] = [];
-  purchaseList$!: Observable<PurchaseOrderInterface[]>;
+  purchaseList$!: Observable<PurchaseOrderResponseDTO[]>;
 
   purchaseFields: ListTemplateInterface = {
     section: 'purchase-orders',
@@ -50,17 +52,14 @@ export class PurchaseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.purchaseList$ = this.purchaseService.getList();
-    this.loadList();
   }
 
   loadList() {
-    this.purchaseService.getList().subscribe((response) => {
-      this.purchaseArray = response;
-    });
+    this.purchaseService.getList().subscribe();
   }
 
   deletePurchase(id: number): void {
-    let deleted: PurchaseOrderInterface;
+    let deleted: PurchaseOrderResponseDTO;
     this.purchaseService.getElementById(id).subscribe((dto) => {
       deleted = dto;
       this.modalConfirmObject = {

@@ -1,7 +1,8 @@
 import { LocationResponseDTO } from './../interfaces/locationInterface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,14 @@ export class LocationService {
   }
 
   public getCountryId(provinceId: number): Observable<number> {
-    return this.http.get<number>(this.URL_API + '/country-id/' + provinceId);
+    return this.http
+      .get<ApiResponse<number>>(this.URL_API + '/country-id/' + provinceId)
+      .pipe(
+        map((response) => response.data),
+        catchError((error) => {
+          console.error(error);
+          return of(-1);
+        })
+      );
   }
 }

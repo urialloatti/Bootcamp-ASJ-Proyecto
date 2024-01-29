@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ProductsService } from '../../../services/products.service';
 import { suppliersService } from '../../../services/suppliers.service';
+
 import {
-  ProductGroup,
-  PurchaseOrderInterface,
+  PurchaseProductResponseDTO,
+  PurchaseOrderRequestDTO,
 } from '../../../interfaces/purchaseOrderInterface';
 import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
+import { ProductResponseDTO } from '../../../interfaces/productInterface';
 import {
-  ProductInterface,
-  ProductResponseDTO,
-} from '../../../interfaces/productInterface';
-import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+  ModalMessageInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'app-purchase-new',
@@ -27,42 +28,49 @@ export class PurchaseNewComponent implements OnInit {
     private productService: ProductsService,
     private supplierService: suppliersService,
     private route: ActivatedRoute,
+    private router: Router,
     private datePipe: DatePipe
   ) {}
 
-  currentPurchaseOrder: PurchaseOrderInterface = {
-    dateArriving: new Date(),
+  currentOrderId!: number;
+  currentPurchaseOrder: PurchaseOrderRequestDTO = {
+    dateArriving: '',
     createdAt: this.datePipe.transform(new Date(), 'yyyy-MM-dd')!,
-    isAvailable: true,
     products: [],
     shippingRequirements: '',
     supplierId: -1,
-    supplierName: '',
-    total: 0,
+    userId: 1,
   };
-  currentProduct: ProductGroup = {
-    productId: -1,
-    productName: undefined,
-    price: 0,
-    productQuantity: 1,
-  };
+  dateShipping: Date = new Date();
+
+  selectedProductId: number = -1;
+  selectedQuantity: number = 1;
+  selectedPrice: number = 0;
+
+  orderProductsList: PurchaseProductResponseDTO[] = [];
+  currentOrderTotal: number = 0;
+
   suppliersList: SupplierResponseDTO[] = [];
   supplierProducts: ProductResponseDTO[] = [];
-  dateShipping: Date = new Date();
-  flagNewPurchaseOrderCreated: boolean = false;
+
+  issupplierSelected: boolean = false;
+  isProductAdded: boolean = false;
   isCartEmpty: boolean = false;
+
+  isProductEmpty: boolean = false;
+  isProductQuantityInvalid: boolean = false;
   isDateInvalid: boolean = false;
   isDescriptionInvalid: boolean = false;
-  isProductAdded: boolean = false;
-  isProductQuantityInvalid: boolean = false;
-  isProductEmpty: boolean = false;
-  issupplierSelected: boolean = false;
+
+  flagNewPurchaseOrderCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
+
   isUpdating: boolean = false;
 
   ngOnInit(): void {
-    this.purchaseService.updateCounter();
     this.supplierService
       .getList()
       .subscribe((supList) => (this.suppliersList = supList));
@@ -70,32 +78,25 @@ export class PurchaseNewComponent implements OnInit {
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id != undefined) {
-        this.purchaseService
-          .getElementById(parseInt(id))
-          .subscribe((purchaseDTO) => {
-            this.currentPurchaseOrder = purchaseDTO;
-            this.dateShipping = this.getDateObject(
-              this.currentPurchaseOrder.dateArriving
-            );
-            console.log(this.dateShipping);
-          });
+      if (id !== null && !isNaN(Number(id))) {
+        this.currentOrderId = Number(id);
+        this.getUpdateOrder();
         this.isUpdating = true;
         this.issupplierSelected = true;
       }
     });
   }
 
-  getsupplierProducts(id: number): void {
+  public getsupplierProducts(id: number): void {
     this.productService.getElementsBySupplierId(id).subscribe((prodList) => {
       this.supplierProducts = prodList;
     });
-    this.currentProduct.productId = -1;
+    this.selectedProductId = -1;
   }
 
-  getProductPrice(id: number): void {
+  public getProductPrice(id: number): void {
     this.productService.getElementById(id).subscribe((response) => {
-      this.currentProduct.price = response.price;
+      this.selectedPrice = response.price;
     });
     this.isProductEmpty = false;
   }
@@ -109,59 +110,63 @@ export class PurchaseNewComponent implements OnInit {
       };
       this.modalMessageFlag = true;
     } else {
-      let supplier: SupplierResponseDTO;
-      this.supplierService
-        .getElementById(this.currentPurchaseOrder.supplierId)
-        .subscribe((response) => {
-          supplier = response;
-          this.currentPurchaseOrder.supplierName = supplier?.brand;
-          if (!this.isUpdating) {
-            this.purchaseService
-              .addElement(this.currentPurchaseOrder)
-              .subscribe();
-          } else {
-            this.purchaseService
-              .updateElement(this.currentPurchaseOrder)
-              .subscribe();
-          }
-          this.flagNewPurchaseOrderCreated = true;
-        });
+      if (!this.isUpdating) {
+        this.purchaseService.addElement(this.currentPurchaseOrder).subscribe();
+      } else {
+        this.purchaseService
+          .updateElement(this.currentOrderId, this.currentPurchaseOrder)
+          .subscribe();
+      }
+      this.modalRedirectObject = {
+        message: 'Órden de compra cargada con éxito',
+        path: '/purchase-orders',
+      };
+      this.modalRedirectFlag = true;
     }
   }
 
   addProduct() {
     this.isProductQuantityInvalid = false;
-    if (
-      this.currentProduct.productQuantity > 0 &&
-      this.currentProduct.productId != -1
-    ) {
+    if (this.selectedQuantity > 0 && this.selectedProductId != -1) {
       this.issupplierSelected = true;
-      let product: ProductResponseDTO;
+      // let product: ProductResponseDTO;
       this.productService
-        .getElementById(this.currentProduct.productId)
+        .getElementById(this.selectedProductId)
         .subscribe((response) => {
-          product = response;
-          let productSearched = this.currentPurchaseOrder.products.find(
-            (prod) => prod.productId == this.currentProduct.productId
-          );
-          let price = product?.price;
-          let total = price * this.currentProduct.productQuantity;
-          if (productSearched) {
-            productSearched.productQuantity +=
-              this.currentProduct.productQuantity;
-          } else {
-            this.currentProduct.productName = product?.name;
-            this.currentProduct.price = price;
-            this.currentPurchaseOrder.products.push(
-              structuredClone(this.currentProduct)
-            );
+          // product = response;
+
+          let productAlreadyAdded: boolean = false;
+          for (let i = 0; i < this.currentPurchaseOrder.products.length; i++) {
+            if (
+              this.currentPurchaseOrder.products[i].productId ==
+              this.selectedProductId
+            ) {
+              this.currentPurchaseOrder.products[i].productQuantity +=
+                this.selectedQuantity;
+              this.orderProductsList[i].productQuantity +=
+                this.selectedQuantity;
+              productAlreadyAdded = true;
+              break;
+            }
+          }
+          if (!productAlreadyAdded) {
+            this.currentPurchaseOrder.products.push({
+              productId: this.selectedProductId,
+              productQuantity: this.selectedQuantity,
+            });
+            this.orderProductsList.push({
+              productId: response.id,
+              price: response.price,
+              productName: response.name,
+              productQuantity: this.selectedQuantity,
+            });
           }
           this.calculateTotal();
-          this.currentProduct.productQuantity = 1;
+          this.selectedQuantity = 1;
           this.isProductAdded = true;
           setTimeout(() => (this.isProductAdded = false), 2000);
         });
-    } else if (this.currentProduct.productQuantity < 1) {
+    } else if (this.selectedQuantity < 1) {
       this.isProductQuantityInvalid = true;
     } else {
       this.isProductEmpty = true;
@@ -170,15 +175,19 @@ export class PurchaseNewComponent implements OnInit {
 
   emptyCart() {
     this.currentPurchaseOrder.products = [];
-    this.currentPurchaseOrder.total = 0;
+    this.orderProductsList = [];
+    this.currentOrderTotal = 0;
     this.issupplierSelected = false;
   }
 
   removeItemFromCart(id: number) {
-    const filtered = this.currentPurchaseOrder.products.filter(
-      (product) => product.productId != id
-    );
-    this.currentPurchaseOrder.products = filtered;
+    for (let i = 0; i < this.currentPurchaseOrder.products.length; i++) {
+      if (this.orderProductsList[i].productId == id) {
+        this.currentPurchaseOrder.products.splice(i, 1);
+        this.orderProductsList.splice(i, 1);
+        break;
+      }
+    }
     this.calculateTotal();
     if (this.currentPurchaseOrder.products.length == 0) {
       this.issupplierSelected = false;
@@ -187,10 +196,10 @@ export class PurchaseNewComponent implements OnInit {
 
   calculateTotal(): void {
     let total: number = 0;
-    for (const product of this.currentPurchaseOrder.products) {
+    for (const product of this.orderProductsList) {
       total += product.price * product.productQuantity;
     }
-    this.currentPurchaseOrder.total = total;
+    this.currentOrderTotal = total;
   }
 
   getMinDateShippingTemplate(): string {
@@ -222,6 +231,38 @@ export class PurchaseNewComponent implements OnInit {
       +dateCreatedArray[0],
       +dateCreatedArray[1] - 1,
       +dateCreatedArray[2]
+    );
+  }
+
+  private getUpdateOrder() {
+    this.purchaseService.getElementForUpdate(this.currentOrderId).subscribe(
+      (purchaseDTO) => {
+        this.currentPurchaseOrder = purchaseDTO;
+        (this.currentPurchaseOrder.createdAt = this.datePipe.transform(
+          purchaseDTO.createdAt,
+          'yyyy-MM-dd'
+        )!),
+          (this.currentPurchaseOrder.dateArriving = this.datePipe.transform(
+            purchaseDTO.dateArriving,
+            'yyyy-MM-dd'
+          )!),
+          (this.dateShipping = this.getDateObject(
+            this.currentPurchaseOrder.dateArriving
+          ));
+        this.purchaseService
+          .getElementById(this.currentOrderId)
+          .subscribe((response) => {
+            this.orderProductsList = response.products;
+          });
+      },
+      (error) => {
+        this.modalRedirectObject = {
+          message: 'Órden de compra no encontrado',
+          path: '/purchase-orders',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      }
     );
   }
 

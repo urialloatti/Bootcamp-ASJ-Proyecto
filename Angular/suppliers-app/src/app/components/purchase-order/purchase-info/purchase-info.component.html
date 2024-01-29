@@ -79,7 +79,7 @@
               <p>ID: {{ currentPurchase.id }}</p>
             </div>
           </div>
-          <div class="row my-3" *ngIf="currentPurchase.isAvailable">
+          <div class="row my-3" *ngIf="currentPurchase.available">
             <div class="col text-center">
               <button
                 class="btn btn-secondary"
@@ -92,7 +92,7 @@
               <button
                 class="btn btn-secondary"
                 (click)="deletePurchase(currentPurchase.id!)"
-                [disabled]="!currentPurchase.isAvailable"
+                [disabled]="!currentPurchase.available"
               >
                 Eliminar
               </button>

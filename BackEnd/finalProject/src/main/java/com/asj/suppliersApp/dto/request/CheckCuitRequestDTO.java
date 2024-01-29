@@ -2,6 +2,7 @@ package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckCuitRequestDTO {
     @NotBlank

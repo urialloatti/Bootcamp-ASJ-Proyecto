@@ -1,12 +1,12 @@
-import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, Subject, catchError, map, of } from 'rxjs';
 
 import {
-  UserCredentialsInterface,
-  UserInterface,
-  userDataInterface,
+  UserCredentialsDTO,
+  UserValidationResponseDTO,
+  UserResponseDTO,
+  UserRequestDTO,
 } from '../interfaces/userInterface';
 import { Router, UrlTree } from '@angular/router';
 
@@ -14,128 +14,98 @@ import { Router, UrlTree } from '@angular/router';
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(
-    private http: HttpClient,
-    private datePipe: DatePipe,
-    private router: Router
-  ) {}
-  private URL_API: string = 'http://localhost:3000/users';
+  constructor(private http: HttpClient, private router: Router) {}
+
+  private URL_API_TEST: string = 'http://localhost:8080/app/users';
 
   private userCredentialsSubject: Subject<boolean> = new Subject<boolean>();
   public checkCredentials$: Observable<boolean> =
     this.userCredentialsSubject.asObservable();
   private userExistsSubject: Subject<boolean> = new Subject<boolean>();
   public checkUserExists$ = this.userExistsSubject.asObservable();
-  private counter!: number;
-  private userDTO!: userDataInterface;
 
-  private isLoggedIn: boolean = false;
-
-  public get isLoggedInGuard$(): Observable<boolean> {
-    return this.http.get<UserInterface[]>(this.URL_API).pipe(
-      map((list: UserInterface[]) => {
-        let userCredentialsDTO: UserCredentialsInterface = JSON.parse(
-          localStorage.getItem('credentials') || '{}'
-        ) as UserCredentialsInterface;
-        const isUserValid: boolean = list.some(
-          (user) =>
-            user.username == userCredentialsDTO.username &&
-            user.passwordHash == userCredentialsDTO.password
-        );
-        if (isUserValid) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    );
+  public get isLoggedInGuard$(): Observable<boolean | UrlTree> {
+    let userCredentialsDTO = this.getCredentials();
+    return this.http
+      .post<UserValidationResponseDTO>(
+        this.URL_API_TEST + '/check-credentials',
+        userCredentialsDTO
+      )
+      .pipe(
+        map((value) => {
+          return value.valid;
+        }),
+        catchError((error) => {
+          console.error(error);
+          if (error.status === 0) {
+            alert('El servidor se encuentra caído');
+          }
+          return of(this.router.parseUrl('/login'));
+        })
+      );
   }
 
   public checkLoggedIn(): void {
-    let userCredentialsDTO: UserCredentialsInterface = JSON.parse(
-      localStorage.getItem('credentials') || '{}'
-    ) as UserCredentialsInterface;
+    let userCredentialsDTO = this.getCredentials();
     this.checkCredentials(userCredentialsDTO);
   }
 
-  public checkCredentials(userCredentialsDTO: UserCredentialsInterface): void {
-    this.getList().subscribe((userList) => {
-      const isUserValid: boolean = userList.some(
-        (user) =>
-          user.username == userCredentialsDTO.username &&
-          user.password == userCredentialsDTO.password
-      );
-      if (isUserValid) {
-        this.getUserData(userCredentialsDTO.username).subscribe((user) => {
-          this.userDTO = user;
-          this.userCredentialsSubject.next(isUserValid);
-        });
-      } else {
-        this.userCredentialsSubject.next(isUserValid);
-      }
-    });
+  public checkCredentials(userCredentialsDTO: UserCredentialsDTO): void {
+    this.http
+      .post<UserValidationResponseDTO>(
+        this.URL_API_TEST + '/check-credentials',
+        userCredentialsDTO
+      )
+      .subscribe((value) => {
+        this.userCredentialsSubject.next(value.valid);
+      });
   }
 
-  public checkUsername(username: string): void {
-    this.getList().subscribe((userList) => {
-      const userAlreadyExists: boolean = userList.some(
-        (user) => user.username == username
-      );
-      this.userExistsSubject.next(userAlreadyExists);
-    });
-  }
-
-  private getList(): Observable<UserCredentialsInterface[]> {
-    return this.http.get<UserInterface[]>(this.URL_API).pipe(
-      map((list: UserInterface[]) => {
-        const usersCredentials: UserCredentialsInterface[] = [];
-        for (const user of list) {
-          usersCredentials.push({
-            username: user.username,
-            password: user.passwordHash,
-          });
-        }
-        return usersCredentials;
-      })
-    );
-  }
-
-  private getUserData(username: string): Observable<userDataInterface> {
-    return this.http.get<UserInterface[]>(this.URL_API).pipe(
-      map((list: UserInterface[]) => {
-        const fullUser = list.find((user) => user.username == username)!;
-        const userData: userDataInterface = {
-          email: fullUser.email,
-          name: fullUser.name,
-          surname: fullUser.surname,
-          username: fullUser.username,
-        };
-        return userData;
-      })
+  public checkUsername(username: string): Observable<boolean> {
+    let userCredentialsDTO: UserCredentialsDTO = {
+      username: username,
+      passwordHash: '',
+    };
+    return this.http.patch<boolean>(
+      this.URL_API_TEST + '/check-username',
+      userCredentialsDTO
     );
   }
 
   // CRUD
-  public addElement(user: UserInterface): Observable<UserInterface> {
-    user.id = this.counter;
-    user.isAvailable = true;
-    user.createdAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    user.updatedAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    this.counter++;
-    return this.http.post<UserInterface>(this.URL_API, user);
+  public addElement(user: UserRequestDTO): Observable<UserRequestDTO> {
+    return this.http.post<UserRequestDTO>(this.URL_API_TEST + '/signup', user);
   }
 
-  public getCurrentUser(): userDataInterface {
-    return this.userDTO;
+  public getCurrentUser(): Observable<UserResponseDTO> {
+    let userCredentialsDTO = this.getCredentials();
+    return this.http.post<UserResponseDTO>(
+      `${this.URL_API_TEST}/login`,
+      userCredentialsDTO
+    );
   }
 
-  public updateCounter() {
-    this.getList().subscribe((list) => (this.counter = list.length + 1));
+  private getCredentials(): UserCredentialsDTO {
+    return JSON.parse(
+      localStorage.getItem('credentials') || '{}'
+    ) as UserCredentialsDTO;
   }
+
+  // private handleError(error: HttpErrorResponse) {
+  //   if (error.status === 0) {
+  //     // A client-side or network error occurred. Handle it accordingly.
+  //     console.error('An error occurred:', error.error);
+  //   } else {
+  //     // The backend returned an unsuccessful response code.
+  //     // The response body may contain clues as to what went wrong.
+  //     console.error(
+  //       `Backend returned code ${error.status}, body was: `,
+  //       error.error
+  //     );
+  //   }
+  //   // Return an observable with a user-facing error message.
+  //   return throwError(
+  //     () => new Error('Something bad happened; please try again later.')
+  //   );
+  // }
 }

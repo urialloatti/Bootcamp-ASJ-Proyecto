@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { UserInterface } from '../../../interfaces/userInterface';
+import { Component } from '@angular/core';
+import { UserRequestDTO } from '../../../interfaces/userInterface';
 import { UsersService } from '../../../services/users.service';
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
 
@@ -8,10 +8,10 @@ import { ModalMessageInterface } from '../../../interfaces/modalInterface';
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.css',
 })
-export class NewUserComponent implements OnInit {
+export class NewUserComponent {
   constructor(private userService: UsersService) {}
 
-  public currentUser: UserInterface = {
+  public currentUser: UserRequestDTO = {
     name: '',
     surname: '',
     email: '',
@@ -29,13 +29,10 @@ export class NewUserComponent implements OnInit {
   arePasswordsNotEqual: boolean = false;
   userAlreadyExists: boolean = false;
   isFormValid: boolean = true;
+
   flagNewUserCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
-
-  ngOnInit(): void {
-    this.userService.updateCounter();
-  }
 
   createUser() {
     this.isFormValid = true;
@@ -61,11 +58,9 @@ export class NewUserComponent implements OnInit {
   }
 
   validateUsername() {
-    this.userService.checkUserExists$.subscribe(
-      (response) => (this.userAlreadyExists = response)
-    );
-
-    this.userService.checkUsername(this.currentUser.username);
+    this.userService
+      .checkUsername(this.currentUser.username)
+      .subscribe((response) => (this.userAlreadyExists = response));
   }
 
   validateForm(): void {

@@ -1,98 +1,63 @@
+import { PurchaseOrderRequestDTO } from './../interfaces/purchaseOrderInterface';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-import { PurchaseOrderInterface } from '../interfaces/purchaseOrderInterface';
-import { UserCredentialsInterface } from '../interfaces/userInterface';
+import {
+  PurchaseOrderInterface,
+  PurchaseOrderResponseDTO,
+} from '../interfaces/purchaseOrderInterface';
+import { UserCredentialsDTO } from '../interfaces/userInterface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PurchaseOrdersService implements OnInit {
+export class PurchaseOrdersService {
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
 
-  private URL_API: string = 'http://localhost:3000/purchaseOrders';
   private counter!: number;
-
-  ngOnInit(): void {
-    let subscription = this.getList().subscribe(
-      (response) => (this.counter = response.length)
-    );
-    subscription.unsubscribe();
-  }
+  private URL_API: string = 'http://localhost:3000/purchaseOrders';
+  private URL_API_TEST: string = 'http://localhost:8080/app/purchase-orders';
 
   // GET methods
-  public getList(): Observable<PurchaseOrderInterface[]> {
-    const currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')!;
-    return this.http.get<PurchaseOrderInterface[]>(this.URL_API).pipe(
-      map((list: PurchaseOrderInterface[]) => {
-        return list.map((DTO) => {
-          if (DTO.isAvailable && DTO.dateArriving < currentDate) {
-            DTO.state = 'Entregado';
-            DTO.isAvailable = false;
-            this.updateElement(DTO).subscribe();
-          }
-          return DTO;
-        });
-      })
+
+  public getList(): Observable<PurchaseOrderResponseDTO[]> {
+    return this.http.get<PurchaseOrderResponseDTO[]>(this.URL_API_TEST);
+  }
+
+  public getElementById(id: number): Observable<PurchaseOrderResponseDTO> {
+    return this.http.get<PurchaseOrderResponseDTO>(
+      `${this.URL_API_TEST}/${id}`
     );
   }
 
-  public getElementById(id: number): Observable<PurchaseOrderInterface> {
-    return this.http.get<PurchaseOrderInterface>(this.URL_API + '/' + id);
+  public getElementForUpdate(id: number): Observable<PurchaseOrderRequestDTO> {
+    return this.http.get<PurchaseOrderRequestDTO>(
+      `${this.URL_API_TEST}/u/${id}`
+    );
   }
 
-  public cancelElementById(id: number): Observable<PurchaseOrderInterface> {
-    return this.http.get<PurchaseOrderInterface>(this.URL_API + '/' + id).pipe(
-      map((DTO) => {
-        DTO.isAvailable = false;
-        DTO.state = 'Cancelado';
-        this.http
-          .put<PurchaseOrderInterface>(this.URL_API + '/' + id, DTO)
-          .subscribe();
-        return DTO;
-      })
+  public cancelElementById(id: number): Observable<PurchaseOrderResponseDTO> {
+    return this.http.patch<PurchaseOrderResponseDTO>(
+      `${this.URL_API_TEST}/delete/${id}`,
+      { available: false }
     );
   }
 
   public addElement(
-    pOrder: PurchaseOrderInterface
-  ): Observable<PurchaseOrderInterface> {
-    pOrder.id = this.counter;
-    pOrder.createdAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    pOrder.updatedAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    let credentials: UserCredentialsInterface = JSON.parse(
-      localStorage.getItem('credentials') || '{}'
-    ) as UserCredentialsInterface;
-    pOrder.createdBy = credentials.username;
-    pOrder.state = 'Pendiente';
-    this.counter++;
-    return this.http.post<PurchaseOrderInterface>(this.URL_API, pOrder);
+    order: PurchaseOrderRequestDTO
+  ): Observable<PurchaseOrderResponseDTO> {
+    return this.http.post<PurchaseOrderResponseDTO>(this.URL_API_TEST, order);
   }
 
   public updateElement(
-    pOrder: PurchaseOrderInterface
-  ): Observable<PurchaseOrderInterface> {
-    pOrder.updatedAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    return this.http.put<PurchaseOrderInterface>(
-      this.URL_API + '/' + pOrder.id,
-      pOrder
-    );
-  }
-
-  public updateCounter() {
-    this.getList().subscribe(
-      (response) => (this.counter = response.length + 1)
+    id: number,
+    order: PurchaseOrderRequestDTO
+  ): Observable<PurchaseOrderResponseDTO> {
+    return this.http.put<PurchaseOrderResponseDTO>(
+      `${this.URL_API_TEST}/${id}`,
+      order
     );
   }
 }

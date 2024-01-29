@@ -1,23 +1,28 @@
-export interface UserInterface {
+export interface UserResponseDTO {
   id?: number;
+  username: string;
+  email: string;
+  name: string;
+  surname: string;
+  rol: rol;
+}
+
+export interface UserValidationResponseDTO {
+  valid: boolean;
+}
+
+export interface UserRequestDTO {
   username: string;
   passwordHash: string;
   email: string;
   name: string;
   surname: string;
-  createdAt?: string;
-  updatedAt?: string;
-  isAvailable?: boolean;
+  rolId?: number;
 }
 
-export interface UserCredentialsInterface {
+export interface UserCredentialsDTO {
   username: string;
-  password: string;
+  passwordHash: string;
 }
 
-export interface userDataInterface {
-  username: string;
-  email: string;
-  name: string;
-  surname: string;
-}
+type rol = 'admin' | 'user';

@@ -2,6 +2,7 @@ package com.asj.suppliersApp.controllers;
 
 import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
 import com.asj.suppliersApp.dto.request.SmallCrudRequestDTO;
+import com.asj.suppliersApp.dto.response.ApiResponse;
 import com.asj.suppliersApp.dto.response.SmallCrudResponseDTO;
 import com.asj.suppliersApp.services.CategoriesService;
 import org.springframework.http.HttpHeaders;
@@ -30,30 +31,32 @@ public class CategoriesController {
         return ResponseEntity.ok().body(this.categoriesService.findAll());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<SmallCrudResponseDTO> getById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<SmallCrudResponseDTO>> getById(@PathVariable Integer id) {
         Optional<SmallCrudResponseDTO> response = categoriesService.findById(id);
         if (response.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new ApiResponse<>("No se encontró la categoría con el id " + id));
         }
-        return ResponseEntity.ok().body(response.get());
+        return ResponseEntity.ok().body(new ApiResponse<>(response.get()));
     }
 
     @PostMapping()
-    public ResponseEntity<SmallCrudResponseDTO> postSector(@RequestBody SmallCrudRequestDTO request) {
+    public ResponseEntity<ApiResponse<SmallCrudResponseDTO>> postSector(@RequestBody SmallCrudRequestDTO request) {
         Optional<SmallCrudResponseDTO> response = this.categoriesService.createSector(request);
         if (response.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(400).body(new ApiResponse<>("Error de mensaje."));
         }
-        return new ResponseEntity<SmallCrudResponseDTO>(response.get(), HttpStatusCode.valueOf(201) );
+        ApiResponse<SmallCrudResponseDTO> apiResponse = new ApiResponse<>(response.get());
+        return ResponseEntity.status(201).body(apiResponse);
     }
 
     @PatchMapping("/delete/{id}")
-    public ResponseEntity<SmallCrudResponseDTO> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancelRequest) {
+    public ResponseEntity<ApiResponse<SmallCrudResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancelRequest) {
         Optional<SmallCrudResponseDTO> response = this.categoriesService.CancelById(id, cancelRequest);
         if (response.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new ApiResponse<>("No se encontró la categoría con el id " + id));
         }
-        return ResponseEntity.ok().body(response.get());
+        ApiResponse<SmallCrudResponseDTO> apiResponse = new ApiResponse<>("Categoria con id " + id + " eliminada correctamente.",response.get());
+        return ResponseEntity.ok().body(apiResponse);
     }
 
 }

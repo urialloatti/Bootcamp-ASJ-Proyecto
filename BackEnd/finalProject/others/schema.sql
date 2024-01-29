@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS provinces;
 DROP TABLE IF EXISTS countries;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_rols;
+
 -- suppliers tables
 CREATE TABLE
   countries (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(75) NOT NULL);
@@ -143,6 +144,7 @@ CREATE TABLE
     FOREIGN KEY (supplier_id) REFERENCES suppliers (id),
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
+    state VARCHAR(50) NOT NULL,
     is_available BIT NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NULL

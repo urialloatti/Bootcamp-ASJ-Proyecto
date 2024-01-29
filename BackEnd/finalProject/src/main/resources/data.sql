@@ -26,9 +26,8 @@ VALUES
   (1, 'La Pampa'),
   (1, 'La Rioja'),
   (1, 'Mendoza'),
-  (1, 'Misiones'),
   (1, 'Neuquén'),
-  (1, 'Río Negro'),
+  (1, 'Rio Negro'),
   (1, 'Salta'),
   (1, 'San Juan'),
   (1, 'San Luis'),
@@ -37,6 +36,7 @@ VALUES
   (1, 'Santiago del Estero'),
   (1, 'Tierra del Fuego'),
   (1, 'Tucumán'),
+  (1, 'Misionsaes'),
   (2, 'Antofagasta'),
   (2, 'Arica y Parinacota'),
   (2, 'Atacama'),
@@ -254,29 +254,30 @@ INSERT INTO products (name, code, supplier_id, category_id, picture, price, desc
 INSERT INTO
   user_rols (rol)
 VALUES
-  ('admin');
+  ('admin'), ('user');
 
 -- TABLE USERS
 INSERT INTO
-  users (username, password_hash, email, name, surname, rol_id, created_at, updated_at)
+  users (username, password_hash, email, name, surname, rol_id, created_at, updated_at, is_available)
 VALUES
-  ('user', 'admin', 'ualloatti@asjservicios.com', 'Uriel', 'Alloatti', 1, '2023-11-12', '2023-11-12');
+  ('ualloatti', 'useradmin', 'ualloatti@asjservicios.com', 'Uriel', 'Alloatti', 1, '2023-11-12', '2023-11-12', 1),
+  ('aacosta', '12345', 'aacosta@asjservicios.com', 'Agostina', 'Acosta', 2, '2023-11-12', '2023-11-12', 1);
 
 
 -- TABLE PURCHASE-ORDERS
 INSERT INTO
-  purchase_orders (date_arrives, requirements, supplier_id, user_id, created_at, updated_at)
+  purchase_orders (date_arrives, requirements, supplier_id, state, user_id, created_at, updated_at, is_available)
 VALUES
-  ('2023-11-24', 'Tocar timbre al arribar.', 1, 1, '2023-11-19', '2023-11-19'),
-  ('2023-12-07', 'Llamar al llegar.', 2, 1, '2023-12-01', '2023-12-01'),
-  ('2023-12-20', 'Pasar por la mañana.', 8, 1, '2023-12-16', '2023-12-16'),
-  ('2023-12-30', '-', 9, 1, '2023-12-25', '2023-12-25'),
-  ('2024-01-07', 'Reja Negra.', 7, 1, '2024-01-03', '2024-01-03'),
-  ('2024-01-17', 'Timbre de arriba.', 9, 1, '2024-01-10', '2024-01-10'),
-  ('2024-01-15', 'Llamar al llegar.', 1, 1, '2024-01-11', '2024-01-11'),
-  ('2024-01-16', 'Pasar por la mañana.', 5, 1, '2024-01-12', '2024-01-12'),
-  ('2024-01-17', '-', 4, 1, '2024-01-12', '2024-01-12'),
-  ('2024-01-17', '-', 3, 1, '2024-01-12', '2024-01-12');
+  ('2023-11-24', 'Tocar timbre al arribar.', 1, 'Pendiente', 1, '2023-11-19', '2023-11-19', 1),
+  ('2023-12-07', 'Llamar al llegar.', 2, 'Pendiente', 1, '2023-12-01', '2023-12-01', 1),
+  ('2023-12-20', 'Pasar por la mañana.', 8, 'Pendiente', 1, '2023-12-16', '2023-12-16', 1),
+  ('2023-12-30', '-', 9, 'Pendiente', 1, '2023-12-25', '2023-12-25', 1),
+  ('2024-01-07', 'Reja Negra.', 7, 'Pendiente', 1, '2024-01-03', '2024-01-03', 1),
+  ('2024-01-17', 'Timbre de arriba.', 9, 'Pendiente', 1, '2024-01-10', '2024-01-10', 1),
+  ('2024-01-15', 'Llamar al llegar.', 1, 'Pendiente', 1, '2024-01-11', '2024-01-11', 1),
+  ('2024-01-16', 'Pasar por la mañana.', 5, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1),
+  ('2024-01-17', '-', 4, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1),
+  ('2024-01-17', '-', 3, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1);
 
 -- TABLE PRODUCT-CART
 INSERT INTO

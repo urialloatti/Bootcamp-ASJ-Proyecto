@@ -3,10 +3,7 @@ package com.asj.suppliersApp.services.imp;
 import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
 import com.asj.suppliersApp.dto.request.SupplierRequestDTO;
 import com.asj.suppliersApp.dto.response.SupplierResponseDTO;
-import com.asj.suppliersApp.entities.FiscalCondition;
-import com.asj.suppliersApp.entities.Province;
-import com.asj.suppliersApp.entities.Sector;
-import com.asj.suppliersApp.entities.Supplier;
+import com.asj.suppliersApp.entities.*;
 import com.asj.suppliersApp.mappers.SupplierMapper;
 import com.asj.suppliersApp.repositories.*;
 import org.springframework.stereotype.Service;
@@ -24,19 +21,15 @@ public class SuppliersServiceImp implements SuppliersService {
     private final SupplierRepository supplierRep;
     private final SectorRepository sectorRep;
     private final FiscalConditionRepository fiscalCondRep;
-    private final PhoneReposiroty phoneRep;
-    private final AddressRepository addressRep;
-    private final ContactRepository contactRep;
     private final ProvinceRepository provinceRep;
+    private final ProductRepository productRep;
 
-    public SuppliersServiceImp(SupplierRepository supplierRep, SectorRepository sectorRep, FiscalConditionRepository fiscalCondRep, PhoneReposiroty phoneRep, AddressRepository addressRep, ContactRepository contactRep, ProvinceRepository provinceRep) {
+    public SuppliersServiceImp(SupplierRepository supplierRep, SectorRepository sectorRep, FiscalConditionRepository fiscalCondRep, ProvinceRepository provinceRep, ProductRepository productRep) {
         this.supplierRep = supplierRep;
         this.sectorRep = sectorRep;
         this.fiscalCondRep = fiscalCondRep;
-        this.phoneRep = phoneRep;
-        this.addressRep = addressRep;
-        this.contactRep = contactRep;
         this.provinceRep = provinceRep;
+        this.productRep = productRep;
     }
 
     @Override
@@ -105,6 +98,7 @@ public class SuppliersServiceImp implements SuppliersService {
         toDelete.setAvailable(setAvailable.isAvailable());
         toDelete.setUpdatedAt(new Date());
         this.supplierRep.save(toDelete);
+        this.cancelSupplierProducts(id);
         return Optional.of(SupplierMapper.getSupplierResponseDTO(toDelete));
     }
 
@@ -156,5 +150,11 @@ public class SuppliersServiceImp implements SuppliersService {
         return supplier.getSector().getSector().substring(0,3) + supplier.getId();
     }
 
-
+    private void cancelSupplierProducts(Integer id) {
+        List<Product> suplierProducts = this.productRep.findByAvailableTrueAndSupplierId(id);
+        for (Product product: suplierProducts) {
+            product.setAvailable(false);
+            this.productRep.save(product);
+        }
+    }
 }

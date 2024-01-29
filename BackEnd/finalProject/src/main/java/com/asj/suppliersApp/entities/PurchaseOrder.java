@@ -19,11 +19,13 @@ public class PurchaseOrder {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id", nullable = false)
     private Supplier supplier;
-    @OneToMany(mappedBy = "purchase")
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<PurchaseProduct> products;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
+    @Column(name = "state", nullable = false)
+    private String state;
     @Column(name = "is_available", nullable = false)
     private Boolean available;
     @Column(name = "created_at", nullable = false)
@@ -34,13 +36,14 @@ public class PurchaseOrder {
     public PurchaseOrder() {
     }
 
-    public PurchaseOrder(Integer id, Date dateArrives, String requirements, Supplier supplier, List<PurchaseProduct> products, User user, Boolean available, Date createdAt, Date updatedAt) {
+    public PurchaseOrder(Integer id, Date dateArrives, String requirements, Supplier supplier, List<PurchaseProduct> products, User user, String state, Boolean available, Date createdAt, Date updatedAt) {
         this.id = id;
         this.dateArrives = dateArrives;
         this.requirements = requirements;
         this.supplier = supplier;
         this.products = products;
         this.user = user;
+        this.state = state;
         this.available = available;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -94,6 +97,14 @@ public class PurchaseOrder {
         this.user = user;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public Boolean getAvailable() {
         return available;
     }
@@ -116,5 +127,22 @@ public class PurchaseOrder {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "PurchaseOrder {" +
+                "\n\tid=" + id +
+                ", \n\tdateArrives=" + dateArrives +
+                ", \n\trequirements='" + requirements + '\'' +
+                ", \n\tsupplier=" + supplier +
+                ", \n\tproducts=" + products +
+                ", \n\tuser=" + user +
+                ", \n\tstate='" + state + '\'' +
+                ", \n\tavailable=" + available +
+                ", \n\tcreatedAt=" + createdAt +
+                ", \n\tupdatedAt=" + updatedAt +
+                "\n} product lenght: " + products.size()
+                 ;
     }
 }

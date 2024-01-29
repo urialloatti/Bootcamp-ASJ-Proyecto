@@ -6,7 +6,10 @@ import { Title } from '@angular/platform-browser';
 
 import { phoneCountryCodes } from '../../../data/locationDatabase';
 
-import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import {
+  ModalMessageInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
 
 import { ModalService } from '../../../services/modal.service';
@@ -87,6 +90,8 @@ export class suppliersNewComponent implements OnInit {
   flagNewsupplierCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
 
   isUpdating: boolean = false;
 
@@ -109,15 +114,23 @@ export class suppliersNewComponent implements OnInit {
       let id = response.get('id');
       if (id !== null && !isNaN(Number(id))) {
         this.currentSupplierId = Number(id);
-        this.supplierService
-          .getElementForUpdate(parseInt(id))
-          .subscribe((response) => {
+        this.supplierService.getElementForUpdate(parseInt(id)).subscribe(
+          (response) => {
             this.locationService
               .getCountryId(response.fullAddress.provinceId)
               .subscribe((countryId) => (this.selectedCountry = countryId));
             this.currentsupplier = response;
             this.titleService.setTitle(`Editar ${response.brand}`);
-          });
+          },
+          (error) => {
+            this.modalRedirectObject = {
+              message: 'Proveedor no encontrado',
+              path: '/suppliers',
+            };
+            this.modalRedirectFlag = true;
+            console.error(error);
+          }
+        );
         this.isUpdating = true;
       }
 
@@ -151,7 +164,11 @@ export class suppliersNewComponent implements OnInit {
         this.supplierService.addElement(this.currentsupplier).subscribe();
       }
       console.log(this.currentsupplier);
-      this.flagNewsupplierCreated = true;
+      this.modalRedirectObject = {
+        message: 'Proveedor cargado con éxito',
+        path: '/suppliers',
+      };
+      this.modalRedirectFlag = true;
       this.debouncerSubscription!.unsubscribe();
     }
   }

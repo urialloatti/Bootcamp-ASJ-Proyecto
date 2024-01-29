@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PurchaseProductResponseDTO {
+    private Integer id;
     private String productName;
     private double price;
     private int productQuantity;
@@ -11,10 +12,19 @@ public class PurchaseProductResponseDTO {
     public PurchaseProductResponseDTO() {
     }
 
-    public PurchaseProductResponseDTO(String productName, double price, int productQuantity) {
+    public PurchaseProductResponseDTO(Integer id, String productName, double price, int productQuantity) {
+        this.id = id;
         this.productName = productName;
         this.price = price;
         this.productQuantity = productQuantity;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getProductName() {
