@@ -38,19 +38,25 @@ export class ProductInfoComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id) {
+      if (id !== null && !isNaN(Number(id))) {
         this.productService.getElementById(parseInt(id)).subscribe(
           (response) => {
-            this.currentProduct = response;
+            this.currentProduct = response.data;
             this.isLoaded = true;
-            this.titleService.setTitle(response.name);
+            this.titleService.setTitle(response.data.name);
           },
           (error) => {
-            console.log('Producto no encontrado.');
+            this.modalRedirectObject = {
+              header: 'Error',
+              message: error.error.message,
+              path: '/products',
+            };
+            this.modalRedirectFlag = true;
             console.error(error);
-            this.router.navigateByUrl('/404');
           }
         );
+      } else {
+        this.router.navigateByUrl('404');
       }
     });
   }
@@ -69,18 +75,19 @@ export class ProductInfoComponent implements OnInit {
         this.productService.cancelElementByIdB(id).subscribe(
           (response) => {
             this.modalRedirectObject = {
-              message: `Producto ${response.name} eliminado con éxito.`,
+              header: `Producto ${response.data.name} eliminado con éxito.`,
               path: '/products',
             };
             this.modalRedirectFlag = true;
           },
           (error) => {
             this.modalRedirectObject = {
-              message: `Producto ${this.currentProduct.name} ya no se encuentra en la base de datos.`,
+              header: 'Error',
+              message: error.error.message,
               path: '/products',
             };
             this.modalRedirectFlag = true;
-            console.log(error);
+            console.error(error);
           }
         );
       }

@@ -2,10 +2,17 @@ package com.asj.suppliersApp.controllers;
 
 import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
 import com.asj.suppliersApp.dto.request.ProductRequestDTO;
+import com.asj.suppliersApp.dto.response.ApiResponse;
 import com.asj.suppliersApp.dto.response.ProductResponseDTO;
+import com.asj.suppliersApp.exceptions.BadRequestBodyChecker;
+import com.asj.suppliersApp.exceptions.BadRequestException;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.services.ProductsService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,52 +32,85 @@ public class ProductsController {
     public ResponseEntity<List<ProductResponseDTO>> getList() {
         return ResponseEntity.ok().body(this.productsService.findAllAvailables());
     }
+
     @GetMapping("/supplier/{id}")
     public ResponseEntity<List<ProductResponseDTO>> getList(@PathVariable Integer id) {
         return ResponseEntity.ok().body(this.productsService.findAllBySupplierId(id));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Integer id) {
-        Optional<ProductResponseDTO> response = this.productsService.findById(id);
-        if (response.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> getProductById(@PathVariable Integer id) {
+        try {
+            ProductResponseDTO response = this.productsService.findById(id);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
-        return ResponseEntity.ok().body(response.get());
     }
+
     @GetMapping("/u/{id}")
-    public ResponseEntity<ProductRequestDTO> getProductForUpdateById(@PathVariable Integer id) {
-        Optional<ProductRequestDTO> optRequest = this.productsService.findByIdUpdate(id);
-        if (optRequest.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<ProductRequestDTO>> getProductForUpdateById(@PathVariable Integer id) {
+        try {
+            ProductRequestDTO request = this.productsService.findByIdUpdate(id);
+            return ResponseEntity.ok().body(new ApiResponse<>(request));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
-        return ResponseEntity.ok().body(optRequest.get());
+    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCount() {
+        return ResponseEntity.status(200).body(this.productsService.countAvailables());
     }
 
     @PostMapping()
-    public ResponseEntity<ProductResponseDTO> postNewProduct(@RequestBody ProductRequestDTO product) {
-        Optional<ProductResponseDTO> response = this.productsService.create(product);
-        if (response.isEmpty()) {
-            return  ResponseEntity.badRequest().build();
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> postNewProduct(@Valid @RequestBody ProductRequestDTO product, BindingResult bindingResult) {
+        try {
+            BadRequestBodyChecker.checkBody(bindingResult);
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
-        return  new ResponseEntity<>(response.get(), HttpStatusCode.valueOf(201));
+        try {
+            ProductResponseDTO response = this.productsService.create(product);
+            return ResponseEntity.status(201).body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductRequestDTO product) {
-        Optional<ProductResponseDTO> response = this.productsService.update(product, id);
-        if (response.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductRequestDTO product, BindingResult bindingResult) {
+        try {
+            BadRequestBodyChecker.checkBody(bindingResult);
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
-        return new ResponseEntity<>(response.get(), HttpStatusCode.valueOf(201));
+        try {
+            ProductResponseDTO response = this.productsService.update(product, id);
+            return ResponseEntity.status(201).body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        }
     }
 
-    @PatchMapping("/delete/{id}")
-    public ResponseEntity<ProductResponseDTO> cancelProductById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancel) {
-        Optional<ProductResponseDTO> response = this.productsService.cancelById(id, cancel);
-        if (response.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/deleted")
+    public ResponseEntity<List<ProductResponseDTO>> getAllDeleted() {
+        return ResponseEntity.ok().body(this.productsService.findAllDeleted());
+    }
+
+    @PatchMapping("/deleted/{id}")
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> cancelProductById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancel) {
+        try {
+            ProductResponseDTO response = this.productsService.cancelById(id, cancel);
+            return ResponseEntity.status(201).body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
-        return ResponseEntity.ok().body(response.get());
     }
 }

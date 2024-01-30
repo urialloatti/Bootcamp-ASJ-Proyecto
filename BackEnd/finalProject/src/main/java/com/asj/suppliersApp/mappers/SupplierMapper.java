@@ -122,7 +122,7 @@ public class SupplierMapper {
         response.setCuit(supplier.getCuit());
         response.setFiscalCondition(supplier.getFiscalCondition().getCondition());
         response.setContact(getContactDTO(supplier.getContact()));
-        response.setLogo(supplier.getLogo());
+        response.setPicture(supplier.getLogo());
         response.setAvailable(supplier.getAvailable());
         return response;
     }

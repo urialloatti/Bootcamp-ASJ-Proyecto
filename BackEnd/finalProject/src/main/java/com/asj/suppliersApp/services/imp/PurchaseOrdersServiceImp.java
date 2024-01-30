@@ -6,6 +6,7 @@ import com.asj.suppliersApp.dto.request.PurchaseProductRequestDTO;
 import com.asj.suppliersApp.dto.response.PurchaseOrderResponseDTO;
 import com.asj.suppliersApp.dto.response.PurchaseProductResponseDTO;
 import com.asj.suppliersApp.entities.*;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.PurchaseOrderMapper;
 import com.asj.suppliersApp.repositories.*;
 import com.asj.suppliersApp.services.PurchaseOrdersService;
@@ -43,101 +44,85 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
     }
 
     @Override
-    public Optional<PurchaseOrderResponseDTO> getById(Integer id) {
-        Optional<PurchaseOrder> optOrder = this.orderRep.findById(id);
-        if (optOrder.isEmpty()) {
-        return Optional.empty();
-        }
-        return Optional.of(PurchaseOrderMapper.getResponseFromOrder(optOrder.get()));
+    public PurchaseOrderResponseDTO getById(Integer id) throws ResourceNotFoundException {
+        PurchaseOrder order = this.getOrderIfExists(id);
+        return PurchaseOrderMapper.getResponseFromOrder(order);
     }
 
     @Override
-    public Optional<PurchaseOrderRequestDTO> getPurchaseForUpdate(Integer id) {
-        Optional<PurchaseOrder> optOrder = this.orderRep.findById(id);
-        if (optOrder.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(PurchaseOrderMapper.getRequestFromOrder(optOrder.get()));
+    public PurchaseOrderRequestDTO getPurchaseForUpdate(Integer id) throws ResourceNotFoundException{
+        PurchaseOrder order = this.getOrderIfExists(id);
+        return PurchaseOrderMapper.getRequestFromOrder(order);
     }
 
     @Override
-    public Optional<PurchaseOrderResponseDTO> createPurchase(PurchaseOrderRequestDTO request) {
-        Optional<PurchaseOrder> optOrder = this.getOrderFromRequest(request);
-        if (optOrder.isEmpty()) {
-        return Optional.empty();
-        }
-        PurchaseOrder order = optOrder.get();
+    public PurchaseOrderResponseDTO createPurchase(PurchaseOrderRequestDTO request) throws ResourceNotFoundException{
+        PurchaseOrder order = this.getOrderFromRequest(request);
         order.setAvailable(true);
         order.setCreatedAt(new Date());
         order.setUpdatedAt(new Date());
         order.setState("Pendiente");
         order.setProducts(new ArrayList<>());
         order = this.orderRep.save(order);
-        optOrder = this.fillOrderProducts(order, request);
-        if (optOrder.isEmpty()) {
-            return Optional.empty();
-        }
+        order = this.fillOrderProducts(order, request);
         order = this.orderRep.save(order);
-        return Optional.of(PurchaseOrderMapper.getResponseFromOrder(order));
+        return PurchaseOrderMapper.getResponseFromOrder(order);
     }
 
     @Override
-    public Optional<PurchaseOrderResponseDTO> updateById(Integer id, PurchaseOrderRequestDTO request) {
-        Optional<PurchaseOrder> optOrder = this.orderRep.findById(id);
-        if (optOrder.isEmpty()) {
-            return Optional.empty();
-        }
-        PurchaseOrder order = optOrder.get();
+    public PurchaseOrderResponseDTO updateById(Integer id, PurchaseOrderRequestDTO request) throws ResourceNotFoundException{
+        PurchaseOrder order = this.getOrderIfExists(id);
         order.setRequirements(request.getShippingRequirements());
         order.setDateArrives(request.getDateArriving());
         order.setCreatedAt(request.getCreatedAt());
         order.setUpdatedAt(new Date());
         order = this.orderRep.save(order);
-        return Optional.of(PurchaseOrderMapper.getResponseFromOrder(order));
+        return PurchaseOrderMapper.getResponseFromOrder(order);
     }
 
     @Override
-    public Optional<PurchaseOrderResponseDTO> cancelById(Integer id, CancelItemRequestDTO setAvailable) {
-        Optional<PurchaseOrder> optOrder = this.orderRep.findById(id);
-        if (optOrder.isEmpty()) {
-            return Optional.empty();
-        }
-        PurchaseOrder order = optOrder.get();
+    public PurchaseOrderResponseDTO cancelById(Integer id, CancelItemRequestDTO setAvailable) throws ResourceNotFoundException{
+        PurchaseOrder order = this.getOrderIfExists(id);
         order.setAvailable(setAvailable.isAvailable());
         order.setUpdatedAt(new Date());
         order.setState("Cancelado");
         order = this.orderRep.save(order);
-        return Optional.of(PurchaseOrderMapper.getResponseFromOrder(order));
+        return PurchaseOrderMapper.getResponseFromOrder(order);
     }
 
-    private Optional<PurchaseOrder> getOrderFromRequest(PurchaseOrderRequestDTO request) {
+    @Override
+    public long countAvailables() {
+        return this.orderRep.countByAvailableTrue();
+    }
+
+    private PurchaseOrder getOrderIfExists(Integer id) throws ResourceNotFoundException {
+        return this.orderRep.findById(id).orElseThrow(()-> new RuntimeException("Órden de compra con el Id " + id + " no encontrada."));
+    }
+    private PurchaseOrder getOrderFromRequest(PurchaseOrderRequestDTO request) throws ResourceNotFoundException {
         PurchaseOrder order = new PurchaseOrder();
         order.setRequirements(request.getShippingRequirements());
         order.setDateArrives(request.getDateArriving());
         order.setCreatedAt(request.getCreatedAt());
-        Optional<Supplier> optSupplier = this.supplierRep.findById(request.getSupplierId());
-        Optional<User> optUser = this.userRep.findById(request.getUserId());
-        if( optUser.isEmpty() || optSupplier.isEmpty()) {
-            return Optional.empty();
-        }
-        order.setSupplier(optSupplier.get());
-        order.setUser(optUser.get());
-        return Optional.of(order);
+        Supplier supplier = this.supplierRep.findById(request.getSupplierId())
+                .orElseThrow(()-> new ResourceNotFoundException("Proveedor con el Id " + request.getSupplierId() + " no encontrado."));
+        User user = this.userRep.findById(request.getUserId())
+                .orElseThrow(()-> new ResourceNotFoundException("Usuario con el Id " + request.getUserId() + " no encontrado."));
+        order.setSupplier(supplier);
+        order.setUser(user);
+        return order;
     }
-    private Optional<PurchaseOrder> fillOrderProducts(PurchaseOrder order, PurchaseOrderRequestDTO request) {
+    private PurchaseOrder fillOrderProducts(PurchaseOrder order, PurchaseOrderRequestDTO request) throws ResourceNotFoundException {
         order.setProducts(new ArrayList<>());
         for (PurchaseProductRequestDTO productRequest: request.getProducts()) {
-            PurchaseProduct product = new PurchaseProduct();
-            Optional<Product> optProduct = this.productRep.findById(productRequest.getProductId());
-            if (optProduct.isEmpty()) {
-                return Optional.empty();
-            }
-            product.setProduct(optProduct.get());
-            product.setPrice(optProduct.get().getPrice());
-            product.setQuantity(productRequest.getProductQuantity());
-            product.setPurchase(order);
-            order.getProducts().add(product);
+            PurchaseProduct orderProduct = new PurchaseProduct();
+            Product product = this.productRep.findById(productRequest.getProductId())
+                    .orElseThrow(()-> new ResourceNotFoundException("Producto con el Id " + productRequest.getProductId() + " no encontrado."));
+            orderProduct.setProduct(product);
+            orderProduct.setPrice(product.getPrice());
+            orderProduct.setQuantity(productRequest.getProductQuantity());
+            orderProduct.setPurchase(order);
+            order.getProducts().add(orderProduct);
         }
-        return Optional.of(order);
+        return order;
     }
 }

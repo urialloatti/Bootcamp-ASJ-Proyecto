@@ -79,6 +79,16 @@
               <p>Debe seleccionar una opción.</p>
             </div>
           </div>
+          <div class="mb-3">
+            <label class="form-label">Link del logo</label>
+            <input
+              type="text"
+              name="picture"
+              #picture="ngModel"
+              [(ngModel)]="currentsupplier.logo"
+              class="form-control"
+            />
+          </div>
           <div class="mb-3 row">
             <div class="col-12 col-lg-6 mb-1">
               <label class="form-label"
@@ -529,13 +539,6 @@
   <shared-modal-redirect
     *ngIf="modalRedirectFlag"
     [modalData]="modalRedirectObject"
-  ></shared-modal-redirect>
-  <shared-modal-redirect
-    *ngIf="flagNewsupplierCreated"
-    [modalData]="{
-      message: 'Proveedor cargado con éxito.',
-      path: '/suppliers'
-    }"
   ></shared-modal-redirect>
   <shared-modal-message
     *ngIf="modalMessageFlag"

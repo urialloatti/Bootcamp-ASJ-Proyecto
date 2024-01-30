@@ -4,12 +4,47 @@
   </div>
 </div>
 <div *ngIf="isLoaded" class="container-fluid">
-  <section *ngIf="itemsShowed.length > 0">
-    <div class="row mb-2">
+  <section>
+    <article class="row mb-2">
       <div class="col text-start">
-        <button class="btn btn-secondary" routerLink="new">
+        <button class="btn btn-secondary" routerLink="new" *ngIf="!isDeleted">
           Cargar {{ listTemplate.label }}
         </button>
+      </div>
+      <div class="col text-start">
+        <div class="row">
+          <div class="col input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="filterArg"
+              *ngIf="filterIndex != -1"
+            />
+            <select name="filter" class="form-select" [(ngModel)]="filterIndex">
+              <option value="-1">Sin filtro</option>
+              <option
+                value="{{ i }}"
+                *ngFor="let key of listTemplate.listFields; index as i"
+              >
+                {{ key.field }}
+              </option>
+            </select>
+            <button
+              class="btn btn-secondary"
+              (click)="filterList()"
+              *ngIf="filterIndex != -1"
+            >
+              Filtrar
+            </button>
+            <button
+              class="btn btn-secondary"
+              (click)="loadPages()"
+              *ngIf="filterIndex == -1"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
       </div>
       <div class="col text-end" *ngIf="hasPagination">
         <div class="btn-group btn-group-sm me-2" role="group">
@@ -42,12 +77,16 @@
           </button>
         </div>
       </div>
-    </div>
-    <article class="items-table rounded">
+    </article>
+    <article class="items-table rounded" *ngIf="itemsShowed.length > 0">
       <table class="table table-striped table-hover">
         <thead class="table-light">
           <tr>
-            <th scope="col" *ngIf="hasPicture" class="text-center picture-col">
+            <th
+              scope="col"
+              *ngIf="hasPicture"
+              class="text-start picture-col ps-4"
+            >
               <i class="bi bi-image-fill"></i>
             </th>
             <th
@@ -95,6 +134,7 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="{{ item.id }}"
+                    *ngIf="!isDeleted"
                   >
                     <i class="bi bi-box-arrow-in-up-right"></i>
                   </button>
@@ -104,6 +144,7 @@
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
                     [disabled]="!item.available"
+                    *ngIf="!isDeleted"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
@@ -113,8 +154,19 @@
                     class="btn btn-secondary pb-2"
                     (click)="deleteElement(item.id)"
                     [disabled]="!item.available"
+                    *ngIf="!isDeleted"
                   >
                     <i class="bi bi-trash3"></i>
+                  </button>
+                </span>
+                <span class="mx-1 bg-transparent">
+                  <button
+                    class="btn btn-secondary pb-2"
+                    (click)="deleteElement(item.id)"
+                    [disabled]="item.available"
+                    *ngIf="isDeleted"
+                  >
+                    <i class="bi bi-recycle"></i>
                   </button>
                 </span>
               </div>
@@ -128,12 +180,5 @@
     <shared-no-items-alert
       alerLabel="{{ listTemplate.label }}"
     ></shared-no-items-alert>
-    <div class="row mb-2">
-      <div class="col text-center">
-        <button class="btn btn-secondary" routerLink="new">
-          Cargar {{ listTemplate.label }}
-        </button>
-      </div>
-    </div>
   </section>
 </div>

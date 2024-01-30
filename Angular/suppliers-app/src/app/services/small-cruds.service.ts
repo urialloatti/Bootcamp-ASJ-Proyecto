@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import {
   SmallCrudInterface,
@@ -33,32 +33,29 @@ export class SmallCrudsService {
   public addElement(
     name: string,
     crudType: smallCrudsType
-  ): Observable<SmallCrudInterface> {
+  ): Observable<ApiResponse<SmallCrudInterface>> {
     let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
-    return this.http
-      .post<ApiResponse<SmallCrudInterface>>(URL_API, { name: name })
-      .pipe(map((response) => response.data));
+    return this.http.post<ApiResponse<SmallCrudInterface>>(URL_API, {
+      name: name,
+    });
   }
 
   public getElementById(
     id: number,
     crudType: smallCrudsType
-  ): Observable<SmallCrudInterface> {
+  ): Observable<ApiResponse<SmallCrudInterface>> {
     let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
-    return this.http
-      .get<ApiResponse<SmallCrudInterface>>(URL_API + '/' + id)
-      .pipe(map((response) => response.data));
+    return this.http.get<ApiResponse<SmallCrudInterface>>(URL_API + '/' + id);
   }
 
   public cancelElementById(
     id: number,
     crudType: smallCrudsType
-  ): Observable<SmallCrudInterface> {
+  ): Observable<ApiResponse<SmallCrudInterface>> {
     let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
-    return this.http
-      .patch<ApiResponse<SmallCrudInterface>>(URL_API + '/delete/' + id, {
-        available: false,
-      })
-      .pipe(map((response) => response.data));
+    return this.http.patch<ApiResponse<SmallCrudInterface>>(
+      URL_API + '/delete/' + id,
+      { available: false }
+    );
   }
 }

@@ -1,24 +1,24 @@
-import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { Subject, Subscription, debounceTime } from 'rxjs';
+import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { Title } from '@angular/platform-browser';
 
 import { phoneCountryCodes } from '../../../data/locationDatabase';
 
+import { FiscalConditionService } from '../../../services/fiscal-condition.service';
+import { LocationService } from '../../../services/location.service';
+import { ModalService } from '../../../services/modal.service';
+import { SmallCrudsService } from '../../../services/small-cruds.service';
+import { SuppliersService } from '../../../services/suppliers.service';
+
+import { LocationResponseDTO } from '../../../interfaces/locationInterface';
 import {
   ModalMessageInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
-
-import { ModalService } from '../../../services/modal.service';
-import { SmallCrudsService } from '../../../services/small-cruds.service';
-import { suppliersService } from '../../../services/suppliers.service';
-import { LocationResponseDTO } from '../../../interfaces/locationInterface';
-import { LocationService } from '../../../services/location.service';
-import { FiscalConditionService } from '../../../services/fiscal-condition.service';
-import { Subject, Subscription, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'suppliers-new',
@@ -27,12 +27,13 @@ import { Subject, Subscription, debounceTime } from 'rxjs';
 })
 export class suppliersNewComponent implements OnInit {
   constructor(
-    private modalService: ModalService,
-    private route: ActivatedRoute,
-    private smallCrudsService: SmallCrudsService,
-    private supplierService: suppliersService,
-    private locationService: LocationService,
     private fiscalService: FiscalConditionService,
+    private locationService: LocationService,
+    private modalService: ModalService,
+    private smallCrudsService: SmallCrudsService,
+    private supplierService: SuppliersService,
+
+    private route: ActivatedRoute,
     private titleService: Title
   ) {}
 
@@ -40,6 +41,7 @@ export class suppliersNewComponent implements OnInit {
     brand: '',
     sectorId: -1,
     web: '',
+    logo: '',
     phone: { country: 54, number: '' },
     fullAddress: {
       address: '',
@@ -58,7 +60,6 @@ export class suppliersNewComponent implements OnInit {
       surname: '',
     },
   };
-
   currentSupplierId!: number;
   selectedCountry: number = -1;
 
@@ -87,7 +88,6 @@ export class suppliersNewComponent implements OnInit {
   };
   cuitExistFlag: boolean = false;
 
-  flagNewsupplierCreated: boolean = false;
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
@@ -115,7 +115,8 @@ export class suppliersNewComponent implements OnInit {
       if (id !== null && !isNaN(Number(id))) {
         this.currentSupplierId = Number(id);
         this.supplierService.getElementForUpdate(parseInt(id)).subscribe(
-          (response) => {
+          (apiResponse) => {
+            let response = apiResponse.data;
             this.locationService
               .getCountryId(response.fullAddress.provinceId)
               .subscribe((countryId) => (this.selectedCountry = countryId));
@@ -124,7 +125,8 @@ export class suppliersNewComponent implements OnInit {
           },
           (error) => {
             this.modalRedirectObject = {
-              message: 'Proveedor no encontrado',
+              header: 'Error',
+              message: error.error.message,
               path: '/suppliers',
             };
             this.modalRedirectFlag = true;
@@ -136,7 +138,7 @@ export class suppliersNewComponent implements OnInit {
 
       this.debouncerSubscription = this.debouncer
         .pipe(debounceTime(1000))
-        .subscribe((value) => {
+        .subscribe(() => {
           this.checkCuitExists();
         });
     });
@@ -156,20 +158,48 @@ export class suppliersNewComponent implements OnInit {
       }
     });
     if (isFormValid && !this.cuitExistFlag) {
+      this.completeUrl;
       if (this.isUpdating) {
         this.supplierService
           .updateElement(this.currentSupplierId, this.currentsupplier)
-          .subscribe();
+          .subscribe(
+            (response) => {
+              this.modalRedirectObject = {
+                header: `Proveedor ${response.data.brand} actualizado con éxito.`,
+                path: '/suppliers',
+              };
+              this.modalRedirectFlag = true;
+              this.debouncerSubscription!.unsubscribe();
+            },
+            (error) => {
+              this.modalMessageObject = {
+                message: `${error.error.message}`,
+                confirm: 'Continuar editando',
+              };
+              this.modalMessageFlag = true;
+              isFormValid = false;
+            }
+          );
       } else {
-        this.supplierService.addElement(this.currentsupplier).subscribe();
+        this.supplierService.addElement(this.currentsupplier).subscribe(
+          (response) => {
+            this.modalRedirectObject = {
+              header: `Proveedor ${response.data.brand} cargado con éxito.`,
+              path: '/suppliers',
+            };
+            this.modalRedirectFlag = true;
+            this.debouncerSubscription!.unsubscribe();
+          },
+          (error) => {
+            this.modalMessageObject = {
+              message: `${error.error.message}`,
+              confirm: 'Continuar editando',
+            };
+            this.modalMessageFlag = true;
+            isFormValid = false;
+          }
+        );
       }
-      console.log(this.currentsupplier);
-      this.modalRedirectObject = {
-        message: 'Proveedor cargado con éxito',
-        path: '/suppliers',
-      };
-      this.modalRedirectFlag = true;
-      this.debouncerSubscription!.unsubscribe();
     }
   }
 
@@ -198,7 +228,7 @@ export class suppliersNewComponent implements OnInit {
     return false;
   }
 
-  validateMail(mail: string): boolean {
+  private validateMail(mail: string): boolean {
     // Returns true if valid
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
   }
@@ -215,7 +245,7 @@ export class suppliersNewComponent implements OnInit {
     return !/[^0-9]/.test(cuit);
   }
 
-  checkCuitExists(): void {
+  private checkCuitExists(): void {
     this.supplierService
       .checkCuitExists(this.currentsupplier.cuit)
       .subscribe((exists) => (this.cuitExistFlag = exists));
@@ -225,7 +255,7 @@ export class suppliersNewComponent implements OnInit {
     this.debouncer.next();
   }
 
-  validatePhoneNumber(number: string | undefined): boolean {
+  private validatePhoneNumber(number: string | undefined): boolean {
     return (
       number !== undefined &&
       /^[1-9][0-9]*$/.test(number) &&
@@ -233,7 +263,18 @@ export class suppliersNewComponent implements OnInit {
       number.length < 14
     );
   }
-  validateSubmite() {
+
+  private completeUrl(): void {
+    let url: string = this.currentsupplier.web;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      !url.startsWith('www.')
+        ? (url = 'https://www.' + url)
+        : (url = 'https://' + url);
+    }
+    this.currentsupplier.web = url;
+  }
+
+  private validateSubmite() {
     if (!this.isUpdating) {
       this.checkCuitExists();
     }

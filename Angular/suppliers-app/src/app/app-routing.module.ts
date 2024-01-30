@@ -16,6 +16,8 @@ import { LoginComponent } from './components/users/login/login.component';
 import { NewUserComponent } from './components/users/new-user/new-user.component';
 import { authGuard } from './guards/auth.guard';
 import { SmallListComponent } from './components/small-cruds/small-list/small-list.component';
+import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
+import { ProductsRecycleBinComponent } from './components/products/products-recycle-bin/products-recycle-bin.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,11 @@ const routes: Routes = [
         component: suppliersNewComponent,
         title: 'Nuevo proveedor',
       },
+      {
+        path: 'recycle-bin',
+        component: SuppliersRecycleBinComponent,
+        title: 'Restaurar proveedores',
+      },
       { path: 'u/:id', component: suppliersNewComponent },
       { path: ':id', component: supplierInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
@@ -47,6 +54,11 @@ const routes: Routes = [
         title: 'Lista de productos',
       },
       { path: 'new', component: ProductsNewComponent, title: 'Nuevo producto' },
+      {
+        path: 'recycle-bin',
+        component: ProductsRecycleBinComponent,
+        title: 'Restaurar productos',
+      },
       { path: 'u/:id', component: ProductsNewComponent },
       { path: ':id', component: ProductInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
@@ -91,6 +103,10 @@ const routes: Routes = [
     title: 'Gestión de compras',
     pathMatch: 'full',
     canActivate: [authGuard],
+  },
+  {
+    path: 'test',
+    component: SuppliersRecycleBinComponent,
   },
   {
     path: 'login',

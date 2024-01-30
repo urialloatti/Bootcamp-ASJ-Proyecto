@@ -1,21 +1,30 @@
 package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class ContactRequestDTO {
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío.")
+    @Size(min = 3, max = 75, message = "El nombre debe tener entre 3 y 75 caracteres.")
     private String name;
-    @NotBlank
+    @NotBlank(message = "El apellido no puede estar vacío.")
+    @Size(min = 3, max = 75, message = "El apellido debe tener entre 3 y 75 caracteres.")
     private String surname;
-    @NotNull
+    @NotNull(message = "El teléfono del contacto no puede ser nulo.")
+    @Valid
     private PhoneRequestDTO phone;
-    @NotBlank
+    @NotBlank(message = "El mail no puede estar vacío.")
+    @Size(max = 75, message = "El mail no puede tener más de 75 carácteres.")
+    @Email(message = "El mail debe tener un formato válido.")
     private String mail;
-    @NotBlank
+    @NotBlank(message = "El rol no puede estar vacío.")
+    @Size(min = 3, max = 75, message = "El rol debe tener entre 3 y 75 caracteres.")
     private String rol;
 
     public ContactRequestDTO() {

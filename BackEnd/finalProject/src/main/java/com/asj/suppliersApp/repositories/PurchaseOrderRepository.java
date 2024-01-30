@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Integer> {
     List<PurchaseOrder> findByAvailableTrue();
+    long countByAvailableTrue();
 }

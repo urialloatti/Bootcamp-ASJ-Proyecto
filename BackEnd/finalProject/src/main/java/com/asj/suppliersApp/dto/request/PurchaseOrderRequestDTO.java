@@ -1,17 +1,29 @@
 package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PurchaseOrderRequestDTO {
+    @NotNull(message = "La fecha de entrega no puede estar vacía.")
     private Date dateArriving;
+    @NotBlank(message = "Los requerimientos no pueden estar vacíos.")
     private String shippingRequirements;
+    @NotNull(message = "El Id del proveedor no puede ser nulo.")
+    @Min(value = 1, message = "El Id del proveedor debe ser un número positivo.")
     private Integer supplierId;
+    @Valid
+    @NotEmpty(message = "Debe cargar al menos un producto en la órden de compra.")
     private List<PurchaseProductRequestDTO> products;
     private Date createdAt;
+    @Min(value = 1, message = "El Id del usuario debe ser un número positivo.")
     private Integer userId;
 
     public PurchaseOrderRequestDTO() {

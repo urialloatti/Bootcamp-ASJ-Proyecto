@@ -3,25 +3,36 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import {
-  ProductInterface,
   ProductRequestDTO,
   ProductResponseDTO,
 } from '../interfaces/productInterface';
-import { DatePipe } from '@angular/common';
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private URL_API_TEST = 'http://localhost:8080/app/products';
+  private URL_API = 'http://localhost:8080/app/products';
 
-  constructor(private http: HttpClient, private datePipe: DatePipe) {}
+  constructor(private http: HttpClient) {}
 
   // GET methods
 
   public getList(): Observable<ProductResponseDTO[]> {
     return this.http
-      .get<ProductResponseDTO[]>(this.URL_API_TEST)
+      .get<ProductResponseDTO[]>(this.URL_API)
+      .pipe(
+        map((list: ProductResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
+  }
+
+  public getDeletedList(): Observable<ProductResponseDTO[]> {
+    return this.http
+      .get<ProductResponseDTO[]>(this.URL_API + '/deleted')
       .pipe(
         map((list: ProductResponseDTO[]) =>
           list.sort((a, b) =>
@@ -33,7 +44,7 @@ export class ProductsService {
 
   public getElementsBySupplierId(id: number): Observable<ProductResponseDTO[]> {
     return this.http
-      .get<ProductResponseDTO[]>(`${this.URL_API_TEST}/supplier/${id}`)
+      .get<ProductResponseDTO[]>(`${this.URL_API}/supplier/${id}`)
       .pipe(
         map((list: ProductResponseDTO[]) =>
           list.sort((a, b) =>
@@ -45,7 +56,7 @@ export class ProductsService {
 
   public getElementsByCategoryId(id: number): Observable<ProductResponseDTO[]> {
     return this.http
-      .get<ProductResponseDTO[]>(`${this.URL_API_TEST}/category/${id}`)
+      .get<ProductResponseDTO[]>(`${this.URL_API}/category/${id}`)
       .pipe(
         map((list: ProductResponseDTO[]) =>
           list.sort((a, b) =>
@@ -55,41 +66,68 @@ export class ProductsService {
       );
   }
 
-  public getElementById(id: number): Observable<ProductResponseDTO> {
-    return this.http.get<ProductResponseDTO>(`${this.URL_API_TEST}/${id}`);
+  public getElementById(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.get<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/${id}`
+    );
   }
 
-  public getElementForUpdate(id: number): Observable<ProductRequestDTO> {
-    return this.http.get<ProductRequestDTO>(`${this.URL_API_TEST}/u/${id}`);
+  public getElementForUpdate(
+    id: number
+  ): Observable<ApiResponse<ProductRequestDTO>> {
+    return this.http.get<ApiResponse<ProductRequestDTO>>(
+      `${this.URL_API}/u/${id}`
+    );
+  }
+  public getCount(): Observable<number> {
+    return this.http.get<number>(this.URL_API + '/count');
   }
 
   // DELETE methods
 
-  public cancelElementByIdB(id: number): Observable<ProductResponseDTO> {
-    return this.http.patch<ProductResponseDTO>(
-      `${this.URL_API_TEST}/delete/${id}`,
+  public cancelElementByIdB(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.patch<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/deleted/${id}`,
       {
         available: false,
       }
     );
   }
 
+  public restoreElementByIdB(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.patch<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/deleted/${id}`,
+      {
+        available: true,
+      }
+    );
+  }
+
   // POST methods
 
-  public addElementB(
+  public addElement(
     product: ProductRequestDTO
-  ): Observable<ProductResponseDTO> {
-    return this.http.post<ProductResponseDTO>(this.URL_API_TEST, product);
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.post<ApiResponse<ProductResponseDTO>>(
+      this.URL_API,
+      product
+    );
   }
 
   // UPDATE methods
 
-  public updateElementB(
+  public updateElement(
     id: number,
     product: ProductRequestDTO
-  ): Observable<ProductResponseDTO> {
-    return this.http.put<ProductResponseDTO>(
-      `${this.URL_API_TEST}/${id}`,
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.put<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/${id}`,
       product
     );
   }

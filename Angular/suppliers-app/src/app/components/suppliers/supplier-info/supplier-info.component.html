@@ -2,7 +2,10 @@
   <div class="row">
     <div class="col d-none d-sm-block"></div>
     <div class="col col-sm-10 col-md-9">
-      <article class="bg-body-tertiary rounded p-4 px-5">
+      <article
+        class="bg-body-tertiary rounded p-4 px-5"
+        *ngIf="isSupplierLoaded"
+      >
         <div class="row">
           <div class="col">
             <a class="text-decoration-none" routerLink="/suppliers"
@@ -17,9 +20,20 @@
         </div>
         <div class="row mb-3 d-flex align-items-center">
           <div class="col mb-3">
-            <h2 class="h3 text-body-tertiary">
-              Rubro: {{ currentsupplier.sector }}
-            </h2>
+            <div class="row d-flex flex-column text-center">
+              <div class="col mb-2">
+                <img
+                  class="img-thumbnail"
+                  src="{{ currentsupplier.picture }}"
+                  alt="{{ currentsupplier.brand }}"
+                />
+              </div>
+              <div class="col">
+                <h2 class="h3 text-body-tertiary">
+                  Rubro: {{ currentsupplier.sector }}
+                </h2>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-5">
             <h5 class="text-body-tertiary">Información fiscal:</h5>
@@ -132,7 +146,9 @@
         <div class="row">
           <div class="col"></div>
           <div class="col text-end">
-            <p class="text-body-tertiary">Código: {{ currentsupplier.code }}</p>
+            <p class="text-body-tertiary fs-3">
+              Código: {{ currentsupplier.code }}
+            </p>
           </div>
         </div>
         <div class="row">

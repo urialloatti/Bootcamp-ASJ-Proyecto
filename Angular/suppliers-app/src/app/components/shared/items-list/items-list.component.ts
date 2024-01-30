@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import { Observable } from 'rxjs';
 import { TableTransformPipe } from '../../../pipes/table-transform.pipe';
+import { FilterListPipe } from '../../../pipes/filter-list.pipe';
 
 @Component({
   selector: 'shared-items-list',
@@ -12,7 +13,8 @@ import { TableTransformPipe } from '../../../pipes/table-transform.pipe';
 export class ItemsListComponent implements OnInit {
   constructor(
     private modalService: ModalService,
-    private tablePipe: TableTransformPipe
+    private tablePipe: TableTransformPipe,
+    private filterPipe: FilterListPipe
   ) {}
   @Input()
   public listTemplate!: ListTemplateInterface;
@@ -21,21 +23,26 @@ export class ItemsListComponent implements OnInit {
   public itemsArray$!: Observable<any[]>;
 
   @Input()
-  public isLoaded: boolean = false;
+  public hasPicture!: boolean;
 
   @Input()
-  public hasPicture!: boolean;
+  public isDeleted: boolean = false;
 
   @Output()
   private deletedId: EventEmitter<number> = new EventEmitter();
 
+  public fullItemsLiist: any[] = [];
   public itemsShowed: any[] = [];
   public pageList: pageInterface[] = [];
   public hasPagination: boolean = false;
   public currentPage: number = 0;
   public fromPage: number = 0;
   public toPage: number = 3;
-  isOrdered: Order[] = [];
+  public isOrdered: Order[] = [];
+  public isLoaded: boolean = false;
+
+  public filterIndex: number = -1;
+  public filterArg: string = '';
 
   ngOnInit(): void {
     for (let i = 0; i < this.listTemplate.listFields.length; i++) {
@@ -50,34 +57,12 @@ export class ItemsListComponent implements OnInit {
       '../../../../assets/image-not-found.jpg';
   }
 
-  loadPages(orderBy: number = 0, order: Order = 'ascendent') {
+  loadPages() {
+    this.isLoaded = false;
     this.itemsArray$.subscribe(
       (response: any[]) => {
-        response = this.orderList(response, orderBy, order);
-        this.pageList = [];
-        let page = [];
-        let counter = 0;
-        let pageCounter = 0;
-        for (const obj of response) {
-          if (counter < 10) {
-            page.push(obj);
-          } else if (counter == 10) {
-            this.pageList.push({ index: pageCounter, page: page });
-            page = [];
-            counter = 0;
-            pageCounter++;
-          }
-          counter++;
-        }
-        if (page.length > 0) {
-          this.pageList.push({ index: pageCounter, page: page });
-        }
-        this.itemsShowed = [];
-        if (this.currentPage >= this.pageList.length) {
-          this.currentPage = this.pageList.length - 1;
-        }
-        this.itemsShowed = this.pageList[this.currentPage].page;
-        this.hasPagination = this.pageList.length > 1;
+        this.fullItemsLiist = response;
+        this.makePagination();
         this.isLoaded = true;
       },
       (error) => {
@@ -87,7 +72,40 @@ export class ItemsListComponent implements OnInit {
     );
   }
 
-  selectPage(index: number) {
+  private makePagination(): void {
+    if (this.fullItemsLiist.length == 0) {
+      this.itemsShowed = [];
+      return;
+    }
+    this.pageList = [];
+    let page = [];
+    let counter = 0;
+    let pageCounter = 0;
+    this.hasPagination = false;
+    for (const obj of this.fullItemsLiist) {
+      if (counter < 10) {
+        page.push(obj);
+      } else if (counter == 10) {
+        this.pageList.push({ index: pageCounter, page: page });
+        page = [];
+        counter = 0;
+        pageCounter++;
+      }
+      counter++;
+    }
+    if (page.length > 0) {
+      this.pageList.push({ index: pageCounter, page: page });
+    }
+    this.itemsShowed = [];
+    if (this.currentPage >= this.pageList.length) {
+      this.currentPage = this.pageList.length - 1;
+    }
+    this.itemsShowed = this.pageList[this.currentPage].page;
+    this.hasPagination = this.pageList.length > 1;
+    this.isLoaded = true;
+  }
+
+  public selectPage(index: number) {
     this.itemsShowed = this.pageList[index].page;
     this.currentPage = index;
     index - 2 > 0 ? (this.fromPage = index - 2) : (this.fromPage = 0);
@@ -96,7 +114,7 @@ export class ItemsListComponent implements OnInit {
       : (this.toPage = this.pageList.length);
   }
 
-  changePage(direction: number) {
+  public changePage(direction: number) {
     if (
       !(
         (direction == -1 && this.currentPage == 0) ||
@@ -118,17 +136,17 @@ export class ItemsListComponent implements OnInit {
     switch (this.isOrdered[fieldIndex]) {
       case 'unordered':
         this.isOrdered[fieldIndex] = 'ascendent';
-        this.loadPages(fieldIndex, 'ascendent');
+        this.orderList(fieldIndex, 'ascendent');
         this.selectPage(0);
         break;
       case 'ascendent':
         this.isOrdered[fieldIndex] = 'descendent';
-        this.loadPages(fieldIndex, 'descendent');
+        this.orderList(fieldIndex, 'descendent');
         this.selectPage(0);
         break;
       case 'descendent':
         this.isOrdered[fieldIndex] = 'unordered';
-        this.loadPages(fieldIndex, 'unordered');
+        this.orderList(fieldIndex, 'unordered');
         this.selectPage(0);
         break;
     }
@@ -137,18 +155,18 @@ export class ItemsListComponent implements OnInit {
     }
   }
 
-  private orderList(
-    list: any[],
-    orderBy: number = 0,
-    order: Order = 'ascendent'
-  ): any[] {
+  private orderList(orderBy: number = 0, order: Order = 'ascendent'): void {
     if (order == 'unordered') {
-      return list.sort((obj1, obj2) => obj1['id'] - obj2['id']);
+      this.fullItemsLiist = this.fullItemsLiist.sort(
+        (obj1, obj2) => obj1['id'] - obj2['id']
+      );
+      this.makePagination();
+      return;
     }
     let extra = this.listTemplate.listFields[orderBy].keys[0].extras;
     if (extra !== undefined && extra !== 'Currency') {
       if (order == 'ascendent') {
-        return list.sort((obj1, obj2) =>
+        this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
           this.tablePipe
             .transform(
               obj1[this.listTemplate.listFields[orderBy].keys[0].key],
@@ -161,8 +179,10 @@ export class ItemsListComponent implements OnInit {
               )
             )
         );
+        this.makePagination();
+        return;
       }
-      return list.sort((obj1, obj2) =>
+      this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
         this.tablePipe
           .transform(
             obj2[this.listTemplate.listFields[orderBy].keys[0].key],
@@ -175,43 +195,70 @@ export class ItemsListComponent implements OnInit {
             )
           )
       );
+      this.makePagination();
+      return;
     }
     if (this.listTemplate.listFields[orderBy].keys[0].isNumeric) {
       if (order == 'descendent') {
-        return list.sort(
+        this.fullItemsLiist = this.fullItemsLiist.sort(
           (obj1, obj2) =>
             obj2[this.listTemplate.listFields[orderBy].keys[0].key] -
             obj1[this.listTemplate.listFields[orderBy].keys[0].key]
         );
+        this.makePagination();
+        return;
       }
-      return list.sort(
+      this.fullItemsLiist = this.fullItemsLiist.sort(
         (obj1, obj2) =>
           obj1[this.listTemplate.listFields[orderBy].keys[0].key] -
           obj2[this.listTemplate.listFields[orderBy].keys[0].key]
       );
+      this.makePagination();
+      return;
     } else {
       if (order == 'descendent') {
-        return list.sort((obj1, obj2) =>
+        this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
           obj2[this.listTemplate.listFields[orderBy].keys[0].key].localeCompare(
             obj1[this.listTemplate.listFields[orderBy].keys[0].key]
           )
         );
+        this.makePagination();
+        return;
       }
-      return list.sort((obj1, obj2) =>
+      this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
         obj1[this.listTemplate.listFields[orderBy].keys[0].key].localeCompare(
           obj2[this.listTemplate.listFields[orderBy].keys[0].key]
         )
       );
+      this.makePagination();
+      return;
     }
   }
 
-  deleteElement(id: number): void {
+  public deleteElement(id: number): void {
     this.deletedId.emit(id);
     this.modalService.confirm$.subscribe(() => {
       setTimeout(() => {
         this.loadPages();
       }, 200);
     });
+  }
+
+  public filterList(): void {
+    this.fullItemsLiist = this.filterPipe.transform(
+      this.fullItemsLiist,
+      this.filterArg,
+      this.listTemplate.listFields[this.filterIndex].keys
+    );
+    this.makePagination();
+    this.itemsArray$.subscribe(
+      (response: any[]) => {
+        this.fullItemsLiist = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
 

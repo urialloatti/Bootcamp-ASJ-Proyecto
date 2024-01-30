@@ -1,21 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Observable } from 'rxjs';
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
-import { SuppliersService } from '../../../services/suppliers.service';
-import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
-import { Observable } from 'rxjs';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
+import { SuppliersService } from './../../../services/suppliers.service';
+import { Component, OnInit } from '@angular/core';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
-  selector: 'suppliers-list',
-  templateUrl: './suppliers-list.component.html',
-  styleUrl: './suppliers-list.component.css',
+  selector: 'suppliers-recycle-bin',
+  templateUrl: './suppliers-recycle-bin.component.html',
+  styleUrl: './suppliers-recycle-bin.component.css',
 })
-export class suppliersListComponent implements OnInit {
+export class SuppliersRecycleBinComponent implements OnInit {
   constructor(
     private suppliersService: SuppliersService,
     private confirmService: ModalService
@@ -25,20 +24,12 @@ export class suppliersListComponent implements OnInit {
   supplierList$!: Observable<SupplierResponseDTO[]>;
   suppliersFields: ListTemplateInterface = {
     section: 'suppliers',
-    label: 'proveedores',
+    label: 'proveedores eliminados',
     listFields: [
       { field: 'Razón social', keys: [{ key: 'brand', isNumeric: false }] },
       {
         field: 'Nombre',
         keys: [{ key: 'contact', extras: 'contactName', isNumeric: false }],
-      },
-      {
-        field: 'Datos de contacto',
-        keys: [
-          { key: 'contact', extras: 'contactPhone', isNumeric: false },
-          { key: 'contact', extras: 'contactMails', isNumeric: false },
-          { key: 'web', isNumeric: false },
-        ],
       },
     ],
   };
@@ -48,7 +39,7 @@ export class suppliersListComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
 
   ngOnInit(): void {
-    this.supplierList$ = this.suppliersService.getList();
+    this.supplierList$ = this.suppliersService.getListDeleted();
   }
 
   deletesupplier(id: number): void {
@@ -57,9 +48,9 @@ export class suppliersListComponent implements OnInit {
       deleted = response.data;
       this.modalConfirmObject = {
         header: `Eliminando proveedor ${deleted.code}`,
-        message: `Está seguro de eliminar el proveedor ${deleted.brand}?`,
+        message: `Está seguro de restaurar el proveedor ${deleted.brand}?`,
         cancel: 'Cancelar',
-        confirm: 'Eliminar',
+        confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
       let subscription = this.confirmService.confirm$.subscribe(
@@ -67,11 +58,11 @@ export class suppliersListComponent implements OnInit {
           this.modalConfirmFlag = false;
           if (confirmation) {
             deleted.available = false;
-            this.suppliersService.cancelElementById(id).subscribe(
+            this.suppliersService.restoreElementById(id).subscribe(
               (apiResponse) => {
                 let response = apiResponse.data;
                 this.modalMessageObject = {
-                  message: `Proveedor ${response.brand} eliminado con éxito.`,
+                  message: `Proveedor ${response.brand} recuperado con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;

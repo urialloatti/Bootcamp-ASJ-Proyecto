@@ -1,28 +1,37 @@
 package com.asj.suppliersApp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.URL;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SupplierRequestDTO {
 
 
-    @NotBlank
+    @NotBlank(message = "El nombre del proveedor no puede ser nulo.")
+    @Size(min = 4, max = 50, message = "El nombre del proveedor debe tener entre 4 y 50 caracteres.")
     private String brand;
-    @NotNull
+    @NotNull(message = "Debe seleccionar un rubro.")
     private Integer sectorId;
-    @NotBlank
+    @NotBlank(message = "La web no puede ser nula.")
+    @URL(message = "La web debe tener un formato válido.")
     private String web;
-    @NotNull
+    @NotNull(message = "El teléfono del provedor no puede ser nulo.")
+    @Valid
     private PhoneRequestDTO phone;
-    @NotNull
+    @NotNull(message = "La dirección del provedor no puede ser nulo.")
+    @Valid
     private AddressRequestDTO fullAddress;
     @NotBlank
+    @Size(min=10, max = 12, message = "El cuit debe tener 11 caracteres.")
+    @Pattern(regexp = "^[0-9]+$", message = "El cuit debe contener solo números, no inserte los guiones.")
     private String cuit;
-    @NotNull
+    @NotNull(message = "La condición fiscal no puede ser nula.")
+    @Min(value = 1, message = "El Id de la condición fiscal no puede ser menor a 1.")
     private Integer fiscalConditionId;
-    @NotNull
+    @NotNull(message = "El contacto no puede ser nulo.")
+    @Valid
     private ContactRequestDTO contact;
     private String logo;
 

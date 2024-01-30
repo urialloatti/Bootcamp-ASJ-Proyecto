@@ -9,7 +9,7 @@ interface ListField {
   keys: keyValue[];
 }
 
-interface keyValue {
+export interface keyValue {
   key: string;
   extras?: PipeExtra;
   isNumeric: boolean;

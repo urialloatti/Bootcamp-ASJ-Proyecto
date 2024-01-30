@@ -9,7 +9,7 @@ export interface SupplierResponseDTO {
   cuit: string;
   fiscalCondition: string;
   contact: ContactResponseDTO;
-  logo: string;
+  picture: string;
   available: boolean;
 }
 

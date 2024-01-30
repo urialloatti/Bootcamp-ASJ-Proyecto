@@ -187,7 +187,7 @@
   <section>
     <shared-modal-redirect
       *ngIf="flagNewUserCreated"
-      [modalData]="{ message: 'Usuario creado con éxito.', path: '/login' }"
+      [modalData]="{ header: 'Usuario creado con éxito.', path: '/login' }"
     ></shared-modal-redirect>
     <shared-modal-message
       *ngIf="modalMessageFlag"

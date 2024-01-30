@@ -197,21 +197,22 @@ INSERT INTO
     cuit,
     fiscal_c_id,
     contact_id,
+    logo,
     created_at,
     updated_at,
     is_available
   )
 VALUES
-  ('tec1', 'Musimundo', 1, 'musimundo.com', 2, 1, '31761319809', 1, 1, '2023-11-12', LOCALTIMESTAMP(3), 1),
-  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '30381720705', 8, 2, '2023-11-16', LOCALTIMESTAMP(3), 1),
-  ('rep3', 'Lazz', 2, 'lazz.com/products', 6, 3, '38906168969', 8, 3, '2023-11-17', LOCALTIMESTAMP(3), 1),
-  ('tec4', 'Fravega', 1, 'fravega.com', 8, 4, '37688026725', 1, 4, '2023-11-19', LOCALTIMESTAMP(3), 1),
-  ('ofi5', 'Talane', 3, 'talane.com', 10, 5, '32680934717', 6, 5, '2023-11-19', LOCALTIMESTAMP(3), 1),
-  ('rep6', 'Meemm', 2, 'meemm.pl', 12, 6, '31464431388', 8, 6, '2023-11-24', LOCALTIMESTAMP(3), 1),
-  ('tec7', 'Cetrogar', 1, 'cetrogar.com', 14, 7, '38040671507', 1, 7, '2023-11-24', LOCALTIMESTAMP(3), 1),
-  ('rep8', 'Fatz', 2, 'fatz.com', 16, 8, '35162101052', 8, 8, '2023-11-29', LOCALTIMESTAMP(3), 1),
-  ('tec9', 'Linkbuzz', 1, 'li-buzz.com', 18, 9, '35628993832', 1, 9, '2023-12-01', LOCALTIMESTAMP(3), 1),
-  ('ofi10', 'Twinte', 3, 'twinte.co.jp', 20, 10, '31860452612', 8, 10, '2023-12-01', LOCALTIMESTAMP(3), 1);
+  ('tec1', 'Musimundo', 1, 'musimundo.com', 2, 1, '31761319809', 1, 1, 'https://seeklogo.com/images/M/Musimundo-logo-5581634F5D-seeklogo.com.png', '2023-11-12', LOCALTIMESTAMP(3), 1),
+  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '30381720705', 8, 2, 'https://www.shutterstock.com/image-vector/heart-vector-symbol-valentines-day-260nw-569390800.jpg', '2023-11-16', LOCALTIMESTAMP(3), 1),
+  ('rep3', 'Lazz', 2, 'lazz.com/products', 6, 3, '38906168969', 8, 3, 'https://www.shutterstock.com/shutterstock/photos/1676106757/display_1500/stock-vector-letter-b-logo-design-with-modern-concept-icon-letter-b-vector-illustration-1676106757.jpg', '2023-11-17', LOCALTIMESTAMP(3), 1),
+  ('tec4', 'Fravega', 1, 'fravega.com', 8, 4, '37688026725', 1, 4, 'https://sf.ezoiccdn.com/ezoimgfmt/www.vectorlogo.es/wp-content/uploads/2019/09/logo-vector-fravega.jpg?ezimgfmt=rs:630x320/rscb1/ngcb1/notWebP', '2023-11-19', LOCALTIMESTAMP(3), 1),
+  ('ofi5', 'Talane', 3, 'talane.com', 10, 5, '32680934717', 6, 5, 'https://www.shutterstock.com/image-vector/abstract-crown-people-colorful-logo-260nw-1828733366.jpg', '2023-11-19', LOCALTIMESTAMP(3), 1),
+  ('rep6', 'Meemm', 2, 'meemm.pl', 12, 6, '31464431388', 8, 6, 'https://www.shutterstock.com/image-vector/abstract-leaf-water-drop-logo-260nw-2192183077.jpg', '2023-11-24', LOCALTIMESTAMP(3), 1),
+  ('tec7', 'Cetrogar', 1, 'cetrogar.com', 14, 7, '38040671507', 1, 7, 'https://media.licdn.com/dms/image/C560BAQGS-JhB6JH8fg/company-logo_200_200/0/1680189555740/grupo_cetrogar_logo?e=2147483647&v=beta&t=-0kQ94CqNVspe_yZFmljSoP4Zt4QaUq7-ZySKquW3uo', '2023-11-24', LOCALTIMESTAMP(3), 1),
+  ('rep8', 'Fatz', 2, 'fatz.com', 16, 8, '35162101052', 8, 8, 'https://www.shutterstock.com/image-vector/tree-vector-icon-nature-trees-260nw-1691582557.jpg', '2023-11-29', LOCALTIMESTAMP(3), 1),
+  ('tec9', 'Linkbuzz', 1, 'li-buzz.com', 18, 9, '35628993832', 1, 9, 'https://www.shutterstock.com/image-vector/abstract-people-symbol-togetherness-community-260nw-1890637207.jpg', '2023-12-01', LOCALTIMESTAMP(3), 1),
+  ('ofi10', 'Twinte', 3, 'twinte.co.jp', 20, 10, '31860452612', 8, 10, 'https://www.shutterstock.com/image-vector/safe-hands-logo-design-illustration-260nw-2080579351.jpg', '2023-12-01', LOCALTIMESTAMP(3), 1);
 
 -- TABLE PRODUCTS
 INSERT INTO products (name, code, supplier_id, category_id, picture, price, description, created_at, updated_at, is_available) VALUES

@@ -4,7 +4,7 @@ import { DatePipe } from '@angular/common';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ProductsService } from '../../../services/products.service';
-import { suppliersService } from '../../../services/suppliers.service';
+import { SuppliersService } from '../../../services/suppliers.service';
 
 import {
   PurchaseProductResponseDTO,
@@ -26,7 +26,7 @@ export class PurchaseNewComponent implements OnInit {
   constructor(
     private purchaseService: PurchaseOrdersService,
     private productService: ProductsService,
-    private supplierService: suppliersService,
+    private supplierService: SuppliersService,
     private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe
@@ -96,7 +96,7 @@ export class PurchaseNewComponent implements OnInit {
 
   public getProductPrice(id: number): void {
     this.productService.getElementById(id).subscribe((response) => {
-      this.selectedPrice = response.price;
+      this.selectedPrice = response.data.price;
     });
     this.isProductEmpty = false;
   }
@@ -111,17 +111,34 @@ export class PurchaseNewComponent implements OnInit {
       this.modalMessageFlag = true;
     } else {
       if (!this.isUpdating) {
-        this.purchaseService.addElement(this.currentPurchaseOrder).subscribe();
+        this.purchaseService.addElement(this.currentPurchaseOrder).subscribe(
+          (response) => {
+            this.modalRedirectObject = {
+              header: `Órden de compra cargada con Id ${response.data.id}`,
+              path: '/purchase-orders',
+            };
+            this.modalRedirectFlag = true;
+          },
+          (error) => {
+            console.error(error.error.message);
+          }
+        );
       } else {
         this.purchaseService
           .updateElement(this.currentOrderId, this.currentPurchaseOrder)
-          .subscribe();
+          .subscribe(
+            (response) => {
+              this.modalRedirectObject = {
+                header: `Órden de compra cargada con Id ${response.data.id}`,
+                path: '/purchase-orders',
+              };
+              this.modalRedirectFlag = true;
+            },
+            (error) => {
+              console.error(error.error.message);
+            }
+          );
       }
-      this.modalRedirectObject = {
-        message: 'Órden de compra cargada con éxito',
-        path: '/purchase-orders',
-      };
-      this.modalRedirectFlag = true;
     }
   }
 
@@ -130,11 +147,9 @@ export class PurchaseNewComponent implements OnInit {
     if (this.selectedQuantity > 0 && this.selectedProductId != -1) {
       this.issupplierSelected = true;
       // let product: ProductResponseDTO;
-      this.productService
-        .getElementById(this.selectedProductId)
-        .subscribe((response) => {
-          // product = response;
-
+      this.productService.getElementById(this.selectedProductId).subscribe(
+        (apiResponse) => {
+          let response = apiResponse.data;
           let productAlreadyAdded: boolean = false;
           for (let i = 0; i < this.currentPurchaseOrder.products.length; i++) {
             if (
@@ -165,7 +180,11 @@ export class PurchaseNewComponent implements OnInit {
           this.selectedQuantity = 1;
           this.isProductAdded = true;
           setTimeout(() => (this.isProductAdded = false), 2000);
-        });
+        },
+        (error) => {
+          console.log(error.error.message);
+        }
+      );
     } else if (this.selectedQuantity < 1) {
       this.isProductQuantityInvalid = true;
     } else {
@@ -237,13 +256,13 @@ export class PurchaseNewComponent implements OnInit {
   private getUpdateOrder() {
     this.purchaseService.getElementForUpdate(this.currentOrderId).subscribe(
       (purchaseDTO) => {
-        this.currentPurchaseOrder = purchaseDTO;
+        this.currentPurchaseOrder = purchaseDTO.data;
         (this.currentPurchaseOrder.createdAt = this.datePipe.transform(
-          purchaseDTO.createdAt,
+          purchaseDTO.data.createdAt,
           'yyyy-MM-dd'
         )!),
           (this.currentPurchaseOrder.dateArriving = this.datePipe.transform(
-            purchaseDTO.dateArriving,
+            purchaseDTO.data.dateArriving,
             'yyyy-MM-dd'
           )!),
           (this.dateShipping = this.getDateObject(
@@ -252,12 +271,12 @@ export class PurchaseNewComponent implements OnInit {
         this.purchaseService
           .getElementById(this.currentOrderId)
           .subscribe((response) => {
-            this.orderProductsList = response.products;
+            this.orderProductsList = response.data.products;
           });
       },
       (error) => {
         this.modalRedirectObject = {
-          message: 'Órden de compra no encontrado',
+          header: 'Órden de compra no encontrado',
           path: '/purchase-orders',
         };
         this.modalRedirectFlag = true;

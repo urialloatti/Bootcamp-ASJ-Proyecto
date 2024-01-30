@@ -6,17 +6,13 @@ import {
   SupplierRequestDTO,
   SupplierResponseDTO,
 } from '../interfaces/supplierInterface';
-import { ProductsService } from './products.service';
-import { DatePipe } from '@angular/common';
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class suppliersService {
-  constructor(
-    private http: HttpClient,
-    private productService: ProductsService
-  ) {}
+export class SuppliersService {
+  constructor(private http: HttpClient) {}
 
   URL_API: string = 'http://localhost:8080/app/suppliers';
 
@@ -34,20 +30,55 @@ export class suppliersService {
       );
   }
 
-  public getElementById(id: number): Observable<SupplierResponseDTO> {
-    return this.http.get<SupplierResponseDTO>(this.URL_API + '/' + id);
+  public getListDeleted(): Observable<SupplierResponseDTO[]> {
+    return this.http
+      .get<SupplierResponseDTO[]>(this.URL_API + '/deleted')
+      .pipe(
+        map((list: SupplierResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.brand.toLowerCase().localeCompare(b.brand.toLowerCase())
+          )
+        )
+      );
   }
 
-  public getElementForUpdate(id: number): Observable<SupplierRequestDTO> {
-    return this.http.get<SupplierRequestDTO>(this.URL_API + '/u/' + id);
+  public getElementById(
+    id: number
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.get<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API + '/' + id
+    );
+  }
+
+  public getElementForUpdate(
+    id: number
+  ): Observable<ApiResponse<SupplierRequestDTO>> {
+    return this.http.get<ApiResponse<SupplierRequestDTO>>(
+      this.URL_API + '/u/' + id
+    );
+  }
+
+  public getCount(): Observable<number> {
+    return this.http.get<number>(this.URL_API + '/count');
   }
 
   // Delete methods
 
-  public cancelElementById(id: number): Observable<SupplierResponseDTO> {
-    return this.http.patch<SupplierResponseDTO>(
-      this.URL_API + '/delete/' + id,
+  public cancelElementById(
+    id: number
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.patch<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API + '/deleted/' + id,
       { available: false }
+    );
+  }
+
+  public restoreElementById(
+    id: number
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.patch<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API + '/deleted/' + id,
+      { available: true }
     );
   }
 
@@ -55,14 +86,20 @@ export class suppliersService {
 
   public addElement(
     supplier: SupplierRequestDTO
-  ): Observable<SupplierResponseDTO> {
-    return this.http.post<SupplierResponseDTO>(this.URL_API, supplier);
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.post<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API,
+      supplier
+    );
   }
 
   // PUT methods
 
-  public updateElement(id: number, supplier: SupplierRequestDTO) {
-    return this.http.put<SupplierResponseDTO>(
+  public updateElement(
+    id: number,
+    supplier: SupplierRequestDTO
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.put<ApiResponse<SupplierResponseDTO>>(
       this.URL_API + '/' + id,
       supplier
     );
