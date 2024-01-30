@@ -21,9 +21,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private Category category;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
-    @Column(name = "picture", nullable = false)
+    @Column(name = "picture", nullable = true, columnDefinition = "TEXT")
     private String picture;
     @Column(name = "price", nullable = false)
     private double price;

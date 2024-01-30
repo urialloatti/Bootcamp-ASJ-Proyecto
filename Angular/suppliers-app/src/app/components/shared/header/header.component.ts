@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UsersService } from '../../../services/users.service';
-import {
-  UserCredentialsInterface,
-  userDataInterface,
-} from '../../../interfaces/userInterface';
+import { UserResponseDTO } from '../../../interfaces/userInterface';
 
 @Component({
   selector: 'shared-header',
@@ -60,10 +57,14 @@ export class HeaderComponent implements OnInit {
     },
   ];
 
-  userData!: userDataInterface;
+  userData!: UserResponseDTO;
+  isUserLoaded: boolean = false;
 
   ngOnInit(): void {
-    this.userData = this.userService.getCurrentUser();
+    this.userService.getCurrentUser().subscribe((response) => {
+      this.userData = response;
+      this.isUserLoaded = true;
+    });
   }
 
   checkActive(path: string): boolean {

@@ -2,7 +2,6 @@
   <shared-items-list
     [listTemplate]="productsFields"
     [itemsArray$]="productsList$"
-    [isLoaded]="isListLoaded"
     [hasPicture]="true"
     (deletedId)="deleteProduct($event)"
   ></shared-items-list>

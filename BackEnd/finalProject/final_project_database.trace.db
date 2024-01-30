@@ -1,0 +1,6 @@
+2024-01-25 07:58:40.211487-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PURCHASE" not found (this database is empty); SQL statement:
+select * from purchase-orders [42104-224]
+2024-01-25 07:58:46.895374-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PURCHASE_ORDERS" not found (this database is empty); SQL statement:
+select * from purchase_orders [42104-224]

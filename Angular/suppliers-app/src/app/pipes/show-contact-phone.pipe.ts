@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Contact } from '../interfaces/supplierInterface';
+import { ContactResponseDTO } from '../interfaces/supplierInterface';
 import { PhoneNumberPipe } from './phone-number.pipe';
 
 @Pipe({
@@ -8,7 +8,7 @@ import { PhoneNumberPipe } from './phone-number.pipe';
 export class ShowContactPhonePipe implements PipeTransform {
   constructor(private phonePipe: PhoneNumberPipe) {}
 
-  transform(value: Contact): string {
+  transform(value: ContactResponseDTO): string {
     return this.phonePipe.transform(value.phone);
   }
 }

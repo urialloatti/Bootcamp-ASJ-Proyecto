@@ -32,12 +32,15 @@ import { suppliersListComponent } from './components/suppliers/suppliers-list/su
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 
 import { CuitPipePipe } from './pipes/cuit-pipe.pipe';
+import { FilterListPipe } from './pipes/filter-list.pipe';
 import { PhoneNumberPipe } from './pipes/phone-number.pipe';
 import { PurchaseStatePipe } from './pipes/purchase-state.pipe';
 import { ShowContactPhonePipe } from './pipes/show-contact-phone.pipe';
 import { ShowContactPipe } from './pipes/show-contact.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
+import { ProductsRecycleBinComponent } from './components/products/products-recycle-bin/products-recycle-bin.component';
 
 @NgModule({
   declarations: [
@@ -66,19 +69,23 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     suppliersNewComponent,
 
     CuitPipePipe,
+    FilterListPipe,
     PhoneNumberPipe,
     PurchaseStatePipe,
     ShowContactPhonePipe,
     ShowContactPipe,
     ShowMailPipe,
-    TableTransformPipe,
     SmallListComponent,
+    TableTransformPipe,
+    SuppliersRecycleBinComponent,
+    ProductsRecycleBinComponent,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
   providers: [
     CuitPipePipe,
     CurrencyPipe,
     DatePipe,
+    FilterListPipe,
     JsonPipe,
     PhoneNumberPipe,
     ShowContactPhonePipe,

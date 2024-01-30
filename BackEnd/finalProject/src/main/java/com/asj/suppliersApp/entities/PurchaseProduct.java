@@ -12,7 +12,7 @@ public class PurchaseProduct {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "purchase_id", referencedColumnName = "id", nullable = false)
     private PurchaseOrder purchase;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
     @Column(name = "price", nullable = false)
@@ -69,5 +69,16 @@ public class PurchaseProduct {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "PurchaseProduct{" +
+                "id=" + id +
+                ", purchase=" + purchase +
+                ", product=" + product +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

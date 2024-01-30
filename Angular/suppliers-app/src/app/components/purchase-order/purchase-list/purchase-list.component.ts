@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { PurchaseOrderInterface } from '../../../interfaces/purchaseOrderInterface';
+import {
+  PurchaseOrderInterface,
+  PurchaseOrderResponseDTO,
+} from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ModalService } from '../../../services/modal.service';
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-purchase-list',
@@ -15,11 +19,11 @@ import { Observable } from 'rxjs';
 export class PurchaseListComponent implements OnInit {
   constructor(
     private purchaseService: PurchaseOrdersService,
+    private datePipe: DatePipe,
     private confirmService: ModalService
   ) {}
 
-  purchaseArray: PurchaseOrderInterface[] = [];
-  purchaseList$!: Observable<PurchaseOrderInterface[]>;
+  purchaseList$!: Observable<PurchaseOrderResponseDTO[]>;
 
   purchaseFields: ListTemplateInterface = {
     section: 'purchase-orders',
@@ -50,22 +54,22 @@ export class PurchaseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.purchaseList$ = this.purchaseService.getList();
-    this.loadList();
   }
 
   loadList() {
-    this.purchaseService.getList().subscribe((response) => {
-      this.purchaseArray = response;
-    });
+    this.purchaseService.getList().subscribe();
   }
 
   deletePurchase(id: number): void {
-    let deleted: PurchaseOrderInterface;
+    let deleted: PurchaseOrderResponseDTO;
     this.purchaseService.getElementById(id).subscribe((dto) => {
-      deleted = dto;
+      deleted = dto.data;
       this.modalConfirmObject = {
         header: `Cancelar órden de compra ${deleted.id}`,
-        message: `Está seguro de cancelar la órden de compra generada el ${deleted.createdAt}?`,
+        message: `Está seguro de cancelar la órden de compra generada el ${this.datePipe.transform(
+          deleted.createdAt,
+          'yyyy/MM/dd HH:mm'
+        )}?`,
         cancel: 'Volver atrás',
         confirm: 'Cancelar órden de compra',
       };

@@ -13,14 +13,14 @@ public class Sector {
     @Column(name = "sector", nullable = false)
     private String sector;
     @Column(name = "is_available", nullable = false)
-    private Integer available;
+    private boolean available;
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
     public Sector() {
     }
 
-    public Sector(Integer id, String sector, Integer available, Date createdAt) {
+    public Sector(Integer id, String sector, boolean available, Date createdAt) {
         this.id = id;
         this.sector = sector;
         this.available = available;
@@ -43,11 +43,11 @@ public class Sector {
         this.sector = sector;
     }
 
-    public Integer getAvailable() {
+    public boolean getAvailable() {
         return available;
     }
 
-    public void setAvailable(Integer available) {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
 

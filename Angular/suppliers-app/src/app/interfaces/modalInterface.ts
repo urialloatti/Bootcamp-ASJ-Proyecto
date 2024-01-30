@@ -1,5 +1,6 @@
 export interface ModalRedirectInterface {
-  message: string;
+  header: string;
+  message?: string;
   path: string;
 }
 

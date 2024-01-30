@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { ProductInterface } from '../../../interfaces/productInterface';
+import {
+  ProductInterface,
+  ProductResponseDTO,
+} from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { ModalService } from '../../../services/modal.service';
 import {
@@ -21,13 +24,13 @@ export class ProductsListComponent implements OnInit {
     private confirmService: ModalService
   ) {}
 
-  productsArray!: ProductInterface[];
   productsFields: ListTemplateInterface = {
     section: 'products',
     label: 'productos',
     listFields: [
       { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },
       { field: 'Categoría', keys: [{ key: 'category', isNumeric: false }] },
+      { field: 'SKU', keys: [{ key: 'code', isNumeric: false }] },
       { field: 'Proveedor', keys: [{ key: 'supplier', isNumeric: false }] },
       {
         field: 'Precio',
@@ -40,20 +43,16 @@ export class ProductsListComponent implements OnInit {
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
   isListLoaded: boolean = false;
-  productsList$!: Observable<ProductInterface[]>;
+  productsList$!: Observable<ProductResponseDTO[]>;
 
   ngOnInit(): void {
     this.productsList$ = this.productsService.getList();
-    this.productsService.getList().subscribe((response) => {
-      this.productsArray = response;
-      this.isListLoaded = true;
-    });
   }
 
   deleteProduct(id: number): void {
-    let deleted: ProductInterface;
+    let deleted: ProductResponseDTO;
     this.productsService.getElementById(id).subscribe((response) => {
-      deleted = response;
+      deleted = response.data;
       this.modalConfirmObject = {
         header: `Eliminando producto`,
         message: `Está seguro de que desea eliminar ${deleted.name}?`,
@@ -64,17 +63,14 @@ export class ProductsListComponent implements OnInit {
       let subscription = this.confirmService.confirm$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
-          deleted.isAvailable = false;
-          this.productsService.cancelElementById(id).subscribe(
+          this.productsService.cancelElementByIdB(id).subscribe(
             (response) => {
               this.modalMessageObject = {
-                message: `Producto ${response.name} eliminado con éxito.`,
+                message: `Producto ${response.data.name} eliminado con éxito.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
-              this.productsService.getList().subscribe((response) => {
-                this.productsArray = response;
-              });
+              this.productsService.getList().subscribe();
             },
             (error) => {
               this.modalMessageObject = {

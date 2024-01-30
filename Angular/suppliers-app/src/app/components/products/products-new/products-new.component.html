@@ -55,16 +55,14 @@
                 <select
                   name="category"
                   #category="ngModel"
-                  [(ngModel)]="currentProduct.category"
+                  [(ngModel)]="currentProduct.categoryId"
                   class="form-select"
                   [ngClass]="isProductInvalid.category ? 'is-invalid' : ''"
-                  [ngClass]="
-                    currentProduct.category != 'Otro' ? 'is-valid' : ''
-                  "
+                  [ngClass]="currentProduct.categoryId != -1 ? 'is-valid' : ''"
                 >
-                  <option disabled value="Otro">Seleccione una opción</option>
+                  <option disabled value="-1">Seleccione una opción</option>
                   <option
-                    value="{{ category.name }}"
+                    value="{{ category.id }}"
                     *ngFor="let category of categories"
                   >
                     {{ category.name }}
@@ -84,7 +82,7 @@
             <div
               class="form-text"
               *ngIf="
-                isProductInvalid.category && currentProduct.category == 'Otro'
+                isProductInvalid.category && currentProduct.categoryId == -1
               "
             >
               <p>Debe seleccionar una opción.</p>

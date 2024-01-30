@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
-import { suppliersService } from '../../../services/suppliers.service';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
+import { SuppliersService } from '../../../services/suppliers.service';
 import { ModalService } from '../../../services/modal.service';
 import {
   ModalConfirmInterface,
@@ -17,11 +17,12 @@ import { Observable } from 'rxjs';
 })
 export class suppliersListComponent implements OnInit {
   constructor(
-    private suppliersService: suppliersService,
+    private suppliersService: SuppliersService,
     private confirmService: ModalService
   ) {}
-  suppliersArray!: supplierInterface[];
-  supplierList$!: Observable<supplierInterface[]>;
+
+  suppliersArray!: SupplierResponseDTO[];
+  supplierList$!: Observable<SupplierResponseDTO[]>;
   suppliersFields: ListTemplateInterface = {
     section: 'suppliers',
     label: 'proveedores',
@@ -41,7 +42,6 @@ export class suppliersListComponent implements OnInit {
       },
     ],
   };
-  isListLoaded: boolean = false;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalMessageFlag: boolean = false;
@@ -49,16 +49,12 @@ export class suppliersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.supplierList$ = this.suppliersService.getList();
-    this.suppliersService.getList().subscribe((response) => {
-      this.suppliersArray = response;
-      this.isListLoaded = true;
-    });
   }
 
   deletesupplier(id: number): void {
-    let deleted: supplierInterface;
+    let deleted: SupplierResponseDTO;
     this.suppliersService.getElementById(id).subscribe((response) => {
-      deleted = response;
+      deleted = response.data;
       this.modalConfirmObject = {
         header: `Eliminando proveedor ${deleted.code}`,
         message: `Está seguro de eliminar el proveedor ${deleted.brand}?`,
@@ -70,25 +66,24 @@ export class suppliersListComponent implements OnInit {
         (confirmation) => {
           this.modalConfirmFlag = false;
           if (confirmation) {
-            deleted.isAvailable = false;
+            deleted.available = false;
             this.suppliersService.cancelElementById(id).subscribe(
-              (response) => {
+              (apiResponse) => {
+                let response = apiResponse.data;
                 this.modalMessageObject = {
                   message: `Proveedor ${response.brand} eliminado con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                this.suppliersService.getList().subscribe((response) => {
-                  this.suppliersArray = response;
-                });
+                this.suppliersService.getList().subscribe();
               },
               (error) => {
                 this.modalMessageObject = {
-                  message: `El proveedor ya no existe en la base de datos.`,
+                  message: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                console.log(error);
+                console.error(error);
               }
             );
           } else {

@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentialsRequestDTO {
     private String username;
-    private String password;
+    private String passwordHash;
 
     public UserCredentialsRequestDTO() {
     }
 
-    public UserCredentialsRequestDTO(String username, String password) {
+    public UserCredentialsRequestDTO(String username, String passwordHash) {
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
     }
 
     public String getUsername() {
@@ -23,11 +23,11 @@ public class UserCredentialsRequestDTO {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

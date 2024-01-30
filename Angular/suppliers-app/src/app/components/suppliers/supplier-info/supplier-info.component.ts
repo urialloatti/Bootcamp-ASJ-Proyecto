@@ -1,9 +1,9 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { supplierInterface } from '../../../interfaces/supplierInterface';
-import { suppliersService } from '../../../services/suppliers.service';
+import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
+import { SuppliersService } from '../../../services/suppliers.service';
 import {
   ModalConfirmInterface,
   ModalRedirectInterface,
@@ -18,12 +18,14 @@ import { ModalService } from '../../../services/modal.service';
 export class supplierInfoComponent {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private confirmService: ModalService,
-    private supplierService: suppliersService,
+    private supplierService: SuppliersService,
     private titleService: Title
   ) {}
 
-  currentsupplier!: supplierInterface;
+  isSupplierLoaded: boolean = false;
+  currentsupplier!: SupplierResponseDTO;
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
   modalRedirectFlag: boolean = false;
@@ -32,13 +34,26 @@ export class supplierInfoComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id) {
-        this.supplierService
-          .getElementById(parseInt(id))
-          .subscribe((response) => {
+      if (id !== null && !isNaN(Number(id))) {
+        this.supplierService.getElementById(parseInt(id)).subscribe(
+          (apiResponse) => {
+            let response = apiResponse.data;
             this.currentsupplier = response;
             this.titleService.setTitle(response.brand);
-          });
+            this.isSupplierLoaded = true;
+          },
+          (error) => {
+            this.modalRedirectObject = {
+              header: 'Error',
+              message: error.error.message,
+              path: '/suppliers',
+            };
+            this.modalRedirectFlag = true;
+            console.error(error);
+          }
+        );
+      } else {
+        this.router.navigateByUrl('404');
       }
     });
   }
@@ -54,18 +69,19 @@ export class supplierInfoComponent {
     this.confirmService.confirm$.subscribe((confirmation) => {
       this.modalConfirmFlag = false;
       if (confirmation) {
-        this.currentsupplier.isAvailable = false;
+        this.currentsupplier.available = false;
         this.supplierService.cancelElementById(id).subscribe(
-          (response) => {
+          (apiResponse) => {
+            let response = apiResponse.data;
             this.modalRedirectObject = {
-              message: `Proveedor ${response.brand} eliminado con éxito.`,
+              header: `Proveedor ${response.brand} eliminado con éxito.`,
               path: '/suppliers',
             };
             this.modalRedirectFlag = true;
           },
           (error) => {
             this.modalRedirectObject = {
-              message: `Proveedor ${this.currentsupplier.brand} ya no se encuentra en la base de datos.`,
+              header: error.error.message,
               path: '/suppliers',
             };
             this.modalRedirectFlag = true;

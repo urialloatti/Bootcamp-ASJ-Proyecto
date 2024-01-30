@@ -3,10 +3,9 @@ package com.asj.suppliersApp.services.imp;
 import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
 import com.asj.suppliersApp.dto.request.SupplierRequestDTO;
 import com.asj.suppliersApp.dto.response.SupplierResponseDTO;
-import com.asj.suppliersApp.entities.FiscalCondition;
-import com.asj.suppliersApp.entities.Province;
-import com.asj.suppliersApp.entities.Sector;
-import com.asj.suppliersApp.entities.Supplier;
+import com.asj.suppliersApp.entities.*;
+import com.asj.suppliersApp.exceptions.BadRequestException;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.SupplierMapper;
 import com.asj.suppliersApp.repositories.*;
 import org.springframework.stereotype.Service;
@@ -24,23 +23,19 @@ public class SuppliersServiceImp implements SuppliersService {
     private final SupplierRepository supplierRep;
     private final SectorRepository sectorRep;
     private final FiscalConditionRepository fiscalCondRep;
-    private final PhoneReposiroty phoneRep;
-    private final AddressRepository addressRep;
-    private final ContactRepository contactRep;
     private final ProvinceRepository provinceRep;
+    private final ProductRepository productRep;
 
-    public SuppliersServiceImp(SupplierRepository supplierRep, SectorRepository sectorRep, FiscalConditionRepository fiscalCondRep, PhoneReposiroty phoneRep, AddressRepository addressRep, ContactRepository contactRep, ProvinceRepository provinceRep) {
+    public SuppliersServiceImp(SupplierRepository supplierRep, SectorRepository sectorRep, FiscalConditionRepository fiscalCondRep, ProvinceRepository provinceRep, ProductRepository productRep) {
         this.supplierRep = supplierRep;
         this.sectorRep = sectorRep;
         this.fiscalCondRep = fiscalCondRep;
-        this.phoneRep = phoneRep;
-        this.addressRep = addressRep;
-        this.contactRep = contactRep;
         this.provinceRep = provinceRep;
+        this.productRep = productRep;
     }
 
     @Override
-    public List<SupplierResponseDTO> findAvailables() {
+    public List<SupplierResponseDTO> findAllAvailables() {
         List<Supplier> supplierList = this.supplierRep.findByAvailableTrue();
         List<SupplierResponseDTO> response = new ArrayList<SupplierResponseDTO>();
         for (Supplier supplier : supplierList) {
@@ -50,21 +45,31 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
-    public Optional<SupplierResponseDTO> findById(Integer id) {
-        Optional<Supplier> supplier = this.supplierRep.findById(id);
-        if (supplier.isEmpty()) {
-            return Optional.empty();
+    public List<SupplierResponseDTO> findAllDeleted() {
+        List<Supplier> supplierList = this.supplierRep.findByAvailableFalse();
+        List<SupplierResponseDTO> response = new ArrayList<SupplierResponseDTO>();
+        for (Supplier supplier : supplierList) {
+            response.add(SupplierMapper.getSupplierResponseDTO(supplier));
         }
-        return Optional.of(SupplierMapper.getSupplierResponseDTO(supplier.get()));
+        return response;
     }
 
     @Override
-    public Optional<SupplierResponseDTO> create(SupplierRequestDTO requestDTO) {
-        Optional<Supplier> optSupplier = this.getNewSupplier(requestDTO);
-        if (optSupplier.isEmpty()) {
-            return Optional.empty();
+    public SupplierResponseDTO findById(Integer id) throws ResourceNotFoundException {
+        return SupplierMapper.getSupplierResponseDTO(this.getSupplierIfExists(id));
+    }
+
+    @Override
+    public SupplierRequestDTO findByIdUpdate(Integer id) throws ResourceNotFoundException {
+        return SupplierMapper.getRequestDTO(this.getSupplierIfExists(id));
+    }
+
+    @Override
+    public SupplierResponseDTO create(SupplierRequestDTO request) throws ResourceNotFoundException, BadRequestException {
+        if (this.checkCuitExists(request.getCuit())) {
+            throw new BadRequestException("Ya existe un proveedor con el cuit " + request.getCuit() + ".");
         }
-        Supplier supplier = optSupplier.get();
+        Supplier supplier = this.getNewSupplier(request);
         supplier.setAvailable(true);
         supplier.setCreatedAt(new Date());
         supplier.setUpdatedAt(new Date());
@@ -72,46 +77,87 @@ public class SuppliersServiceImp implements SuppliersService {
         supplier.setCode(this.getSupplierCode(supplier));
         supplier = supplierRep.save(supplier);
 
-        return Optional.of(SupplierMapper.getSupplierResponseDTO(supplier));
+        return SupplierMapper.getSupplierResponseDTO(supplier);
     }
 
     @Override
-    public Optional<SupplierResponseDTO> cancelById(Integer id, CancelItemRequestDTO setAvailable) {
-        Optional<Supplier> OpToDelete = this.supplierRep.findById(id);
-        if (OpToDelete.isEmpty()) {
-            return Optional.empty();
-        }
-        Supplier toDelete = OpToDelete.get();
+    public SupplierResponseDTO update(SupplierRequestDTO request, Integer id) throws ResourceNotFoundException {
+        Supplier supplier = this.getSupplierIfExists(id);
+        Supplier updatedSupplier = this.updateSupplier(supplier, request);
+        return SupplierMapper.getSupplierResponseDTO(this.supplierRep.save(updatedSupplier));
+    }
+
+    @Override
+    public SupplierResponseDTO cancelById(Integer id, CancelItemRequestDTO setAvailable) throws ResourceNotFoundException {
+        Supplier toDelete = this.getSupplierIfExists(id);
         toDelete.setAvailable(setAvailable.isAvailable());
         toDelete.setUpdatedAt(new Date());
         this.supplierRep.save(toDelete);
-        return Optional.of(SupplierMapper.getSupplierResponseDTO(toDelete));
+        if (!setAvailable.isAvailable()) {
+            this.cancelSupplierProducts(id);
+        }
+        return SupplierMapper.getSupplierResponseDTO(toDelete);
     }
 
-    private Optional<Supplier> getNewSupplier(SupplierRequestDTO requestDTO) {
-        Supplier supplier = SupplierMapper.getSupplierFromRequest(requestDTO);
-        Optional<Sector> sector = this.sectorRep.findById(requestDTO.getSectorId());
-        Optional<FiscalCondition> fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId());
-        Optional<Province> province = this.provinceRep.findById(requestDTO.getFullAddress().getProvinceId());
-        if (sector.isEmpty() || province.isEmpty() || fiscalCondition.isEmpty()) {
-            return Optional.empty();
-        }
-        supplier.setSector(sector.get());
-        supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province.get()));
-        supplier.setFiscalCondition(fiscalCondition.get());
-        supplier.setPhone(this.phoneRep.save(supplier.getPhone()));
-        supplier.getContact().setPhone(this.phoneRep.save(supplier.getContact().getPhone()));
-        supplier.setAddress(this.addressRep.save(supplier.getAddress()));
-        supplier.setContact(this.contactRep.save(supplier.getContact()));
-        supplier.setCode("");
+    @Override
+    public boolean checkCuitExists(String cuit) {
+        return this.supplierRep.existsByCuit(cuit);
+    }
 
-        return Optional.of(supplier);
+    @Override
+    public long countAvailables() {
+        return this.supplierRep.countByAvailableTrue();
+    }
+
+    private Supplier getSupplierIfExists(Integer id) throws ResourceNotFoundException {
+        return this.supplierRep.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + id + " no encontrado."));
+    }
+
+    private Supplier updateSupplier(Supplier supplier, SupplierRequestDTO requestDTO) throws ResourceNotFoundException {
+        supplier = SupplierMapper.updateSupplierFromRequest(supplier, requestDTO);
+        Sector sector = this.sectorRep.findById(requestDTO.getSectorId())
+                .orElseThrow(() -> new ResourceNotFoundException("El rubro seleccionado no se encuentra disponible."));
+        FiscalCondition fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId())
+                .orElseThrow(() -> new ResourceNotFoundException("La condición fiscal seleccionada no se encuentra disponible."));
+        Province province = this.provinceRep.findById(requestDTO.getFullAddress().getProvinceId())
+                .orElseThrow(() -> new ResourceNotFoundException("La proovincia seleccionada no se encuentra disponible."));
+        supplier.setSector(sector);
+        supplier.setAddress(SupplierMapper.updateAddress(supplier.getAddress(), requestDTO.getFullAddress(), province));
+        supplier.setFiscalCondition(fiscalCondition);
+        supplier.setCode(this.getSupplierCode(supplier));
+        supplier.setUpdatedAt(new Date());
+        return supplier;
+    }
+
+    private Supplier getNewSupplier(SupplierRequestDTO requestDTO) throws ResourceNotFoundException {
+        Supplier supplier = SupplierMapper.getSupplierFromRequest(requestDTO);
+        Sector sector = this.sectorRep.findById(requestDTO.getSectorId())
+                .orElseThrow(() -> new ResourceNotFoundException("El rubro seleccionado no se encuentra disponible."));
+        FiscalCondition fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId())
+                .orElseThrow(() -> new ResourceNotFoundException("La condición fiscal seleccionada no se encuentra disponible."));
+        Province province = this.provinceRep.findById(requestDTO.getFullAddress().getProvinceId())
+                .orElseThrow(() -> new ResourceNotFoundException("La proovincia seleccionada no se encuentra disponible."));
+        supplier.setSector(sector);
+        supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province));
+        supplier.setAddress(supplier.getAddress());
+        supplier.setFiscalCondition(fiscalCondition);
+        supplier.setPhone(supplier.getPhone());
+        supplier.getContact().setPhone(supplier.getContact().getPhone());
+        supplier.setContact(supplier.getContact());
+        supplier.setCode("");
+        return supplier;
 
     }
 
     private String getSupplierCode(Supplier supplier) {
-        return supplier.getSector().getSector().substring(0,4) + supplier.getId();
+        return supplier.getSector().getSector().substring(0, 3) + supplier.getId();
     }
 
-
+    private void cancelSupplierProducts(Integer id) {
+        List<Product> suplierProducts = this.productRep.findByAvailableTrueAndSupplierId(id);
+        for (Product product : suplierProducts) {
+            product.setAvailable(false);
+            this.productRep.save(product);
+        }
+    }
 }

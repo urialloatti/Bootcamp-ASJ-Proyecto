@@ -1,17 +1,24 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { Subject, Subscription, debounceTime } from 'rxjs';
+import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { Title } from '@angular/platform-browser';
 
-import { locationDB, phoneCountryCodes } from '../../../data/locationDatabase';
+import { phoneCountryCodes } from '../../../data/locationDatabase';
 
-import { ModalMessageInterface } from '../../../interfaces/modalInterface';
-import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
-import { supplierInterface } from '../../../interfaces/supplierInterface';
-
+import { FiscalConditionService } from '../../../services/fiscal-condition.service';
+import { LocationService } from '../../../services/location.service';
 import { ModalService } from '../../../services/modal.service';
 import { SmallCrudsService } from '../../../services/small-cruds.service';
-import { suppliersService } from '../../../services/suppliers.service';
+import { SuppliersService } from '../../../services/suppliers.service';
+
+import { LocationResponseDTO } from '../../../interfaces/locationInterface';
+import {
+  ModalMessageInterface,
+  ModalRedirectInterface,
+} from '../../../interfaces/modalInterface';
+import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
 
 @Component({
   selector: 'suppliers-new',
@@ -20,28 +27,31 @@ import { suppliersService } from '../../../services/suppliers.service';
 })
 export class suppliersNewComponent implements OnInit {
   constructor(
+    private fiscalService: FiscalConditionService,
+    private locationService: LocationService,
     private modalService: ModalService,
-    private route: ActivatedRoute,
     private smallCrudsService: SmallCrudsService,
-    private supplierService: suppliersService,
+    private supplierService: SuppliersService,
+
+    private route: ActivatedRoute,
     private titleService: Title
   ) {}
 
-  currentsupplier: supplierInterface = {
+  currentsupplier: SupplierRequestDTO = {
     brand: '',
-    sector: 'Otro',
+    sectorId: -1,
     web: '',
+    logo: '',
     phone: { country: 54, number: '' },
     fullAddress: {
       address: '',
       addressNumber: undefined,
-      country: 'Argentina',
-      province: '',
-      city: 'Córdoba',
+      provinceId: -1,
+      city: '',
       zipCode: '',
     },
     cuit: '',
-    fiscalCondition: 'Otro',
+    fiscalConditionId: -1,
     contact: {
       mail: '',
       name: '',
@@ -50,6 +60,15 @@ export class suppliersNewComponent implements OnInit {
       surname: '',
     },
   };
+  currentSupplierId!: number;
+  selectedCountry: number = -1;
+
+  countryCodes = phoneCountryCodes;
+  fiscalConditions: SmallCrudInterface[] = [];
+  locationOptions: LocationResponseDTO[] = [];
+  sectors: SmallCrudInterface[] = [];
+  isCreatingSector: boolean = false;
+
   issupplierInvalid: any = {
     brand: false,
     sector: false,
@@ -67,39 +86,61 @@ export class suppliersNewComponent implements OnInit {
     contactMail: false,
     contactRol: false,
   };
-  countryCodes = phoneCountryCodes;
-  sectors: SmallCrudInterface[] = [];
-  cuitList: string[] = [];
-  locationOptions = locationDB;
   cuitExistFlag: boolean = false;
-  flagNewsupplierCreated: boolean = false;
+
   modalMessageFlag: boolean = false;
   modalMessageObject!: ModalMessageInterface;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
+
   isUpdating: boolean = false;
-  isCreatingSector: boolean = false;
+
+  private debouncer: Subject<void> = new Subject<void>();
+  private debouncerSubscription?: Subscription;
 
   ngOnInit(): void {
-    this.supplierService.updateCounter();
+    this.locationService
+      .getList()
+      .subscribe((list) => (this.locationOptions = list));
+
+    this.fiscalService
+      .getList()
+      .subscribe((list) => (this.fiscalConditions = list));
+
     this.smallCrudsService
       .getList('sector')
       .subscribe((secList) => (this.sectors = secList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id != undefined) {
-        this.supplierService
-          .getElementById(parseInt(id))
-          .subscribe((response) => {
+      if (id !== null && !isNaN(Number(id))) {
+        this.currentSupplierId = Number(id);
+        this.supplierService.getElementForUpdate(parseInt(id)).subscribe(
+          (apiResponse) => {
+            let response = apiResponse.data;
+            this.locationService
+              .getCountryId(response.fullAddress.provinceId)
+              .subscribe((countryId) => (this.selectedCountry = countryId));
             this.currentsupplier = response;
             this.titleService.setTitle(`Editar ${response.brand}`);
-          });
-        this.isUpdating = true;
-      } else {
-        this.supplierService.getList().subscribe((response) => {
-          for (let supplier of response) {
-            this.cuitList.push(supplier.cuit);
+          },
+          (error) => {
+            this.modalRedirectObject = {
+              header: 'Error',
+              message: error.error.message,
+              path: '/suppliers',
+            };
+            this.modalRedirectFlag = true;
+            console.error(error);
           }
-        });
+        );
+        this.isUpdating = true;
       }
+
+      this.debouncerSubscription = this.debouncer
+        .pipe(debounceTime(1000))
+        .subscribe(() => {
+          this.checkCuitExists();
+        });
     });
   }
 
@@ -116,20 +157,55 @@ export class suppliersNewComponent implements OnInit {
         isFormValid = false;
       }
     });
-    if (isFormValid) {
+    if (isFormValid && !this.cuitExistFlag) {
+      this.completeUrl;
       if (this.isUpdating) {
-        this.supplierService.updateElement(this.currentsupplier).subscribe();
+        this.supplierService
+          .updateElement(this.currentSupplierId, this.currentsupplier)
+          .subscribe(
+            (response) => {
+              this.modalRedirectObject = {
+                header: `Proveedor ${response.data.brand} actualizado con éxito.`,
+                path: '/suppliers',
+              };
+              this.modalRedirectFlag = true;
+              this.debouncerSubscription!.unsubscribe();
+            },
+            (error) => {
+              this.modalMessageObject = {
+                message: `${error.error.message}`,
+                confirm: 'Continuar editando',
+              };
+              this.modalMessageFlag = true;
+              isFormValid = false;
+            }
+          );
       } else {
-        this.supplierService.addElement(this.currentsupplier).subscribe();
+        this.supplierService.addElement(this.currentsupplier).subscribe(
+          (response) => {
+            this.modalRedirectObject = {
+              header: `Proveedor ${response.data.brand} cargado con éxito.`,
+              path: '/suppliers',
+            };
+            this.modalRedirectFlag = true;
+            this.debouncerSubscription!.unsubscribe();
+          },
+          (error) => {
+            this.modalMessageObject = {
+              message: `${error.error.message}`,
+              confirm: 'Continuar editando',
+            };
+            this.modalMessageFlag = true;
+            isFormValid = false;
+          }
+        );
       }
-      console.log(this.currentsupplier);
-      this.flagNewsupplierCreated = true;
     }
   }
 
-  getProvinces(country: string): string[] {
+  getProvinces(countryId: number): SmallCrudInterface[] {
     return (
-      this.locationOptions.find((location) => location.country == country)
+      this.locationOptions.find((location) => location.countryId == countryId)
         ?.provinces || []
     );
   }
@@ -152,7 +228,7 @@ export class suppliersNewComponent implements OnInit {
     return false;
   }
 
-  validateMail(mail: string): boolean {
+  private validateMail(mail: string): boolean {
     // Returns true if valid
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
   }
@@ -166,16 +242,20 @@ export class suppliersNewComponent implements OnInit {
 
   validateCuit(cuit: string): boolean {
     // returns true if valid.
-    for (let compareCuit of this.cuitList) {
-      if (cuit == compareCuit) {
-        this.cuitExistFlag = true;
-        return false;
-      }
-    }
     return !/[^0-9]/.test(cuit);
   }
 
-  validatePhoneNumber(number: string | undefined): boolean {
+  private checkCuitExists(): void {
+    this.supplierService
+      .checkCuitExists(this.currentsupplier.cuit)
+      .subscribe((exists) => (this.cuitExistFlag = exists));
+  }
+
+  onKeyPressCuit(): void {
+    this.debouncer.next();
+  }
+
+  private validatePhoneNumber(number: string | undefined): boolean {
     return (
       number !== undefined &&
       /^[1-9][0-9]*$/.test(number) &&
@@ -183,11 +263,26 @@ export class suppliersNewComponent implements OnInit {
       number.length < 14
     );
   }
-  validateSubmite() {
+
+  private completeUrl(): void {
+    let url: string = this.currentsupplier.web;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      !url.startsWith('www.')
+        ? (url = 'https://www.' + url)
+        : (url = 'https://' + url);
+    }
+    this.currentsupplier.web = url;
+  }
+
+  private validateSubmite() {
+    if (!this.isUpdating) {
+      this.checkCuitExists();
+    }
+
     this.issupplierInvalid.brand =
       this.currentsupplier.brand.length < 4 ||
       this.currentsupplier.brand.length > 60;
-    this.issupplierInvalid.sector = this.currentsupplier.sector == 'Otro';
+    this.issupplierInvalid.sector = this.currentsupplier.sectorId == -1;
     this.issupplierInvalid.phone = !this.validatePhoneNumber(
       this.currentsupplier.phone.number
     );
@@ -210,8 +305,7 @@ export class suppliersNewComponent implements OnInit {
       !this.validateCuit(this.currentsupplier.cuit) ||
       this.currentsupplier.cuit.length < 10 ||
       this.currentsupplier.cuit.length > 13;
-    this.issupplierInvalid.iva =
-      this.currentsupplier.fiscalCondition === 'Otro';
+    this.issupplierInvalid.iva = this.currentsupplier.fiscalConditionId === -1;
     this.issupplierInvalid.contactName =
       this.currentsupplier.contact.name.length < 4 ||
       this.currentsupplier.contact.name.length > 30;

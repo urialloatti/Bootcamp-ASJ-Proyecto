@@ -48,14 +48,14 @@
                 <select
                   name="sector"
                   #sectorElement="ngModel"
-                  [(ngModel)]="currentsupplier.sector"
+                  [(ngModel)]="currentsupplier.sectorId"
                   class="form-select"
                   [ngClass]="issupplierInvalid.sector ? 'is-invalid' : ''"
-                  [ngClass]="currentsupplier.sector != 'Otro' ? 'is-valid' : ''"
+                  [ngClass]="currentsupplier.sectorId != -1 ? 'is-valid' : ''"
                 >
-                  <option disabled value="Otro">Seleccione una opción</option>
+                  <option disabled value="-1">Seleccione una opción</option>
                   <option
-                    value="{{ sector.name }}"
+                    value="{{ sector.id }}"
                     *ngFor="let sector of sectors"
                   >
                     {{ sector.name }}
@@ -74,12 +74,20 @@
             </div>
             <div
               class="form-text"
-              *ngIf="
-                issupplierInvalid.sector && currentsupplier.sector == 'Otro'
-              "
+              *ngIf="issupplierInvalid.sector && currentsupplier.sectorId == -1"
             >
               <p>Debe seleccionar una opción.</p>
             </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Link del logo</label>
+            <input
+              type="text"
+              name="picture"
+              #picture="ngModel"
+              [(ngModel)]="currentsupplier.logo"
+              class="form-control"
+            />
           </div>
           <div class="mb-3 row">
             <div class="col-12 col-lg-6 mb-1">
@@ -234,14 +242,16 @@
               <select
                 name="country"
                 #country="ngModel"
-                [(ngModel)]="currentsupplier.fullAddress.country"
+                [(ngModel)]="selectedCountry"
                 class="form-select"
+                (change)="currentsupplier.fullAddress.provinceId = -1"
               >
+                <option value="-1" disabled>Seleccione un pais</option>
                 <option
-                  value="{{ country.country }}"
+                  value="{{ country.countryId }}"
                   *ngFor="let country of locationOptions"
                 >
-                  {{ country.country }}
+                  {{ country.countryName }}
                 </option>
               </select>
             </div>
@@ -252,18 +262,15 @@
               <select
                 name="province"
                 #province="ngModel"
-                [(ngModel)]="currentsupplier.fullAddress.province"
+                [(ngModel)]="currentsupplier.fullAddress.provinceId"
                 class="form-select"
               >
+                <option value="-1" disabled>Seleccione una provincia</option>
                 <option
-                  value="{{ province }}"
-                  *ngFor="
-                    let province of getProvinces(
-                      currentsupplier.fullAddress.country
-                    )
-                  "
+                  value="{{ province.id }}"
+                  *ngFor="let province of getProvinces(selectedCountry)"
                 >
-                  {{ province }}
+                  {{ province.name }}
                 </option>
               </select>
             </div>
@@ -298,7 +305,9 @@
           <div
             class="row mb-1 d-flex"
             [ngClass]="
-              issupplierInvalid.cuit ? 'align-items-start' : 'align-items-end'
+              issupplierInvalid.cuit || cuitExistFlag
+                ? 'align-items-start'
+                : 'align-items-end'
             "
           >
             <div class="col-12 col-sm-5">
@@ -314,10 +323,13 @@
                 minlength="11"
                 maxlength="13"
                 [ngClass]="validateCuitInput(cuit) ? 'is-valid' : ''"
-                [ngClass]="issupplierInvalid.cuit ? 'is-invalid' : ''"
+                [ngClass]="
+                  issupplierInvalid.cuit || cuitExistFlag ? 'is-invalid' : ''
+                "
                 placeholder="00-00000000-0"
                 class="form-control"
                 [disabled]="isUpdating"
+                (keyup)="onKeyPressCuit()"
               />
               <div
                 class="form-text"
@@ -337,21 +349,17 @@
                 class="form-select"
                 name="fiscalCondition"
                 aria-label="Condición fiscal"
-                [(ngModel)]="currentsupplier.fiscalCondition"
+                [(ngModel)]="currentsupplier.fiscalConditionId"
                 [ngClass]="
                   issupplierInvalid.fiscalCondition ? 'is-invalid' : ''
                 "
               >
                 <option value="Otro" disabled>Seleccione una opción</option>
-                <option value="IVA Responsable Inscripto">
-                  IVA Responsable Inscripto
-                </option>
-                <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
-                <option value="Responsable Monotributo">
-                  Responsable Monotributo
-                </option>
-                <option value="Proveedor del Exterior">
-                  Proveedor del Exterior
+                <option
+                  value="{{ fiscalCond.id }}"
+                  *ngFor="let fiscalCond of fiscalConditions"
+                >
+                  {{ fiscalCond.name }}
                 </option>
               </select>
               <div class="form-text" *ngIf="issupplierInvalid.iva">
@@ -529,11 +537,8 @@
 </section>
 <section>
   <shared-modal-redirect
-    *ngIf="flagNewsupplierCreated"
-    [modalData]="{
-      message: 'Proveedor cargado con éxito.',
-      path: '/suppliers'
-    }"
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
   ></shared-modal-redirect>
   <shared-modal-message
     *ngIf="modalMessageFlag"

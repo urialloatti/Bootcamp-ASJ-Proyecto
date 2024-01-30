@@ -22,7 +22,7 @@ export class TableTransformPipe implements PipeTransform {
     private phone: PhoneNumberPipe
   ) {}
 
-  transform(value: unknown, extra?: PipeExtra): any {
+  transform(value: unknown, extra?: PipeExtra): string {
     if (extra) {
       switch (extra) {
         case 'contactMails':
@@ -34,17 +34,20 @@ export class TableTransformPipe implements PipeTransform {
         case 'CUIT':
           return this.cuitPipe.transform(value as string);
         case 'Currency':
-          return this.currencyPipe.transform(value as string, 'USD');
+          return this.currencyPipe.transform(value as string, 'USD')!;
         case 'Date':
-          return this.datePipe.transform(value as Date, 'YYYY/MM/dd');
+          return this.datePipe.transform(value as Date, 'YYYY/MM/dd')!;
         case 'FullDate':
-          return this.datePipe.transform(value as Date, 'YYYY/MM/dd - hh:mm a');
+          return this.datePipe.transform(
+            value as Date,
+            'YYYY/MM/dd - hh:mm a'
+          )!;
         case 'phone':
           return this.phone.transform(value as PhoneNumber);
         case 'PurchaseOrder':
           return value ? '(Pendiente)' : '(Cancelado)';
       }
     }
-    return value;
+    return String(value);
   }
 }

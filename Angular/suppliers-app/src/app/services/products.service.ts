@@ -2,118 +2,133 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-import { ProductInterface } from '../interfaces/productInterface';
-import { DatePipe } from '@angular/common';
+import {
+  ProductRequestDTO,
+  ProductResponseDTO,
+} from '../interfaces/productInterface';
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private counter!: number;
-  private URL_API = 'http://localhost:3000/products';
+  private URL_API = 'http://localhost:8080/app/products';
 
-  constructor(private http: HttpClient, private datePipe: DatePipe) {}
+  constructor(private http: HttpClient) {}
 
   // GET methods
 
-  public getFullList(): Observable<ProductInterface[]> {
-    return this.http.get<ProductInterface[]>(this.URL_API);
+  public getList(): Observable<ProductResponseDTO[]> {
+    return this.http
+      .get<ProductResponseDTO[]>(this.URL_API)
+      .pipe(
+        map((list: ProductResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
   }
 
-  public getList(): Observable<ProductInterface[]> {
-    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
-      map((list: ProductInterface[]) => {
-        const filtered_list = list.filter((product) => product.isAvailable);
-        this.counter = list.length;
-        return filtered_list.sort((a, b) =>
-          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        );
-      })
+  public getDeletedList(): Observable<ProductResponseDTO[]> {
+    return this.http
+      .get<ProductResponseDTO[]>(this.URL_API + '/deleted')
+      .pipe(
+        map((list: ProductResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
+  }
+
+  public getElementsBySupplierId(id: number): Observable<ProductResponseDTO[]> {
+    return this.http
+      .get<ProductResponseDTO[]>(`${this.URL_API}/supplier/${id}`)
+      .pipe(
+        map((list: ProductResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
+  }
+
+  public getElementsByCategoryId(id: number): Observable<ProductResponseDTO[]> {
+    return this.http
+      .get<ProductResponseDTO[]>(`${this.URL_API}/category/${id}`)
+      .pipe(
+        map((list: ProductResponseDTO[]) =>
+          list.sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          )
+        )
+      );
+  }
+
+  public getElementById(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.get<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/${id}`
     );
   }
 
-  public getElementById(id: number): Observable<ProductInterface> {
-    return this.http.get<ProductInterface>(this.URL_API + '/' + id);
-  }
-
-  public getElementsBysupplierId(id: number): Observable<ProductInterface[]> {
-    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
-      map((res: ProductInterface[]) => {
-        const filtered = res.filter(
-          (item) => item.supplierId == id && item.isAvailable
-        );
-        return filtered;
-      })
+  public getElementForUpdate(
+    id: number
+  ): Observable<ApiResponse<ProductRequestDTO>> {
+    return this.http.get<ApiResponse<ProductRequestDTO>>(
+      `${this.URL_API}/u/${id}`
     );
   }
-
-  public getElementsByCategory(
-    category: string
-  ): Observable<ProductInterface[]> {
-    return this.http.get<ProductInterface[]>(this.URL_API).pipe(
-      map((list: ProductInterface[]) => {
-        const filtered = list.filter((product) => product.category == category);
-        return filtered;
-      })
-    );
+  public getCount(): Observable<number> {
+    return this.http.get<number>(this.URL_API + '/count');
   }
 
   // DELETE methods
 
-  public deleteElementById(id: number): Observable<ProductInterface> {
-    return this.http.delete<ProductInterface>(this.URL_API + '/' + id);
+  public cancelElementByIdB(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.patch<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/deleted/${id}`,
+      {
+        available: false,
+      }
+    );
   }
 
-  cancelElementById(id: number): Observable<ProductInterface> {
-    return this.http.get<ProductInterface>(this.URL_API + '/' + id).pipe(
-      map((dto) => {
-        dto.isAvailable = false;
-        this.http
-          .put<ProductInterface>(this.URL_API + '/' + id, dto)
-          .subscribe();
-        return dto;
-      })
+  public restoreElementByIdB(
+    id: number
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.patch<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/deleted/${id}`,
+      {
+        available: true,
+      }
     );
   }
 
   // POST methods
 
-  public addElement(product: ProductInterface): Observable<ProductInterface> {
-    product.id = this.counter;
-    product.createdAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    product.updatedAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    return this.http.post<ProductInterface>(this.URL_API, product).pipe(
-      map((updatedProduct) => {
-        updatedProduct.code = crypto.randomUUID();
-        return updatedProduct;
-      })
+  public addElement(
+    product: ProductRequestDTO
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.post<ApiResponse<ProductResponseDTO>>(
+      this.URL_API,
+      product
     );
   }
 
   // UPDATE methods
 
   public updateElement(
-    product: ProductInterface
-  ): Observable<ProductInterface> {
-    product.updatedAt = this.datePipe.transform(
-      new Date(),
-      'yyyy-MM-dd HH:mm:ss'
-    )!;
-    return this.http.put<ProductInterface>(
-      this.URL_API + '/' + product.id,
+    id: number,
+    product: ProductRequestDTO
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.put<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/${id}`,
       product
-    );
-  }
-
-  public updateCounter() {
-    this.getFullList().subscribe(
-      (response) => (this.counter = response.length + 1)
     );
   }
 }

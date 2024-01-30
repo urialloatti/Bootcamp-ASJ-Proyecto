@@ -9,16 +9,18 @@ public class UserRequestDTO {
     private String email;
     private String name;
     private String surname;
+    private Integer rolId;
 
     public UserRequestDTO() {
     }
 
-    public UserRequestDTO(String username, String passwordHash, String email, String name, String surname) {
+    public UserRequestDTO(String username, String passwordHash, String email, String name, String surname, Integer rolId) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.email = email;
         this.name = name;
         this.surname = surname;
+        this.rolId = rolId;
     }
 
     public String getUsername() {
@@ -59,5 +61,13 @@ public class UserRequestDTO {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public Integer getRolId() {
+        return rolId;
+    }
+
+    public void setRolId(Integer rolId) {
+        this.rolId = rolId;
     }
 }

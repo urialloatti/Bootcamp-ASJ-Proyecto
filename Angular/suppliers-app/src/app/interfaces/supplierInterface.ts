@@ -1,21 +1,19 @@
-export interface supplierInterface {
-  id?: number;
-  code?: string;
+export interface SupplierResponseDTO {
+  id: number;
+  code: string;
   brand: string;
   sector: string;
   web: string;
   phone: PhoneNumber;
-  fullAddress: FullAddress;
+  fullAddress: AddressResponseDTO;
   cuit: string;
-  fiscalCondition: IVAOptions;
-  contact: Contact;
-  logo?: string;
-  isAvailable?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  fiscalCondition: string;
+  contact: ContactResponseDTO;
+  picture: string;
+  available: boolean;
 }
 
-export interface supplierCreateDTOInterface {
+export interface SupplierRequestDTO {
   brand: string;
   sectorId: number;
   web: string;
@@ -27,29 +25,30 @@ export interface supplierCreateDTOInterface {
   logo?: string;
 }
 
-interface FullAddress {
+interface AddressResponseDTO {
   address: string;
-  addressNumber: number | undefined;
+  addressNumber: number;
   city: string;
   country: string;
   province: string;
   zipCode: string;
 }
 
+export interface ContactResponseDTO {
+  name: string;
+  surname: string;
+  phone: PhoneNumber;
+  mail: string;
+  rol: string;
+}
+
 interface AddressCreateDTO {
   address: string;
   addressNumber: number | undefined;
   city: string;
-  provinceId: string;
+  provinceId: number;
   zipCode: string;
 }
-
-export type IVAOptions =
-  | 'IVA Responsable Inscripto'
-  | 'IVA Sujeto Exento'
-  | 'Responsable Monotributo'
-  | 'Proveedor del Exterior'
-  | 'Otro';
 
 export interface Contact {
   name: string;

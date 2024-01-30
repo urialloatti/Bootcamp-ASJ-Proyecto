@@ -36,7 +36,6 @@ export class SmallListComponent implements OnInit {
   ngOnInit(): void {
     this.loadList('Categoría');
     this.loadList('Rubro');
-    this.smallCrudsService.updateCounters();
   }
 
   loadList(page: Page) {
@@ -65,7 +64,7 @@ export class SmallListComponent implements OnInit {
     let deleted: SmallCrudInterface;
     let crudType: smallCrudsType = page == 'Categoría' ? 'category' : 'sector';
     this.smallCrudsService.getElementById(id, crudType).subscribe((element) => {
-      deleted = element;
+      deleted = element.data;
       this.modalConfirmObject = {
         header: `Eliminando ${page.toLowerCase()}.`,
         message: `Está seguro de eliminar ${deleted.name}?`,
@@ -77,9 +76,9 @@ export class SmallListComponent implements OnInit {
         (confirmation) => {
           this.modalConfirmFlag = false;
           if (confirmation) {
-            this.smallCrudsService
-              .cancelElementById(id, crudType)
-              .subscribe((response) => {
+            this.smallCrudsService.cancelElementById(id, crudType).subscribe(
+              (apiResponse) => {
+                let response = apiResponse.data;
                 let deletedWord =
                   page == 'Categoría' ? 'eliminada' : 'eliminado';
                 this.modalMessageObject = {
@@ -88,7 +87,9 @@ export class SmallListComponent implements OnInit {
                 };
                 this.modalMessageFlag = true;
                 this.loadList(page);
-              });
+              },
+              (error) => console.log(error)
+            );
           } else subscription.unsubscribe();
         }
       );
@@ -98,7 +99,7 @@ export class SmallListComponent implements OnInit {
   createNew(page: Page) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.isCreatingNew = true;
-    let subsciption = this.modalService.confirm$.subscribe((response) => {
+    let subsciption = this.modalService.confirm$.subscribe(() => {
       this.loadList(page);
       this.isCreatingNew = false;
       subsciption.unsubscribe();

@@ -1,7 +1,5 @@
 package com.asj.suppliersApp.dto.response;
 
-import com.asj.suppliersApp.dto.bidirectional.ContactDTO;
-import com.asj.suppliersApp.dto.bidirectional.PhoneDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,17 +9,18 @@ public class SupplierResponseDTO {
     private String brand;
     private String sector;
     private String web;
-    private PhoneDTO phone;
+    private PhoneResponseDTO phone;
     private AddressResponseDTO fullAddress;
     private String cuit;
     private String fiscalCondition;
-    private ContactDTO contact;
-    private String logo;
+    private ContactResponseDTO contact;
+    private String picture;
+    private boolean available;
 
     public SupplierResponseDTO() {
     }
 
-    public SupplierResponseDTO(Integer id, String code, String brand, String sector, String web, PhoneDTO phone, AddressResponseDTO fullAddress, String cuit, String fiscalCondition, ContactDTO contact, String logo) {
+    public SupplierResponseDTO(Integer id, String code, String brand, String sector, String web, PhoneResponseDTO phone, AddressResponseDTO fullAddress, String cuit, String fiscalCondition, ContactResponseDTO contact, String picture, boolean available) {
         this.id = id;
         this.code = code;
         this.brand = brand;
@@ -32,7 +31,8 @@ public class SupplierResponseDTO {
         this.cuit = cuit;
         this.fiscalCondition = fiscalCondition;
         this.contact = contact;
-        this.logo = logo;
+        this.picture = picture;
+        this.available = available;
     }
 
     public Integer getId() {
@@ -75,11 +75,11 @@ public class SupplierResponseDTO {
         this.web = web;
     }
 
-    public PhoneDTO getPhone() {
+    public PhoneResponseDTO getPhone() {
         return phone;
     }
 
-    public void setPhone(PhoneDTO phone) {
+    public void setPhone(PhoneResponseDTO phone) {
         this.phone = phone;
     }
 
@@ -107,19 +107,27 @@ public class SupplierResponseDTO {
         this.fiscalCondition = fiscalCondition;
     }
 
-    public ContactDTO getContact() {
+    public ContactResponseDTO getContact() {
         return contact;
     }
 
-    public void setContact(ContactDTO contact) {
+    public void setContact(ContactResponseDTO contact) {
         this.contact = contact;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
