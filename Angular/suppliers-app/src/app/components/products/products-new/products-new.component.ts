@@ -1,15 +1,13 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
 import {
   ModalMessageInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import {
-  ProductInterface,
-  ProductRequestDTO,
-} from '../../../interfaces/productInterface';
+import { ProductRequestDTO } from '../../../interfaces/productInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
 import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 
@@ -26,6 +24,7 @@ import { SuppliersService } from '../../../services/suppliers.service';
 export class ProductsNewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title,
 
     private modalService: ModalService,
@@ -99,7 +98,7 @@ export class ProductsNewComponent implements OnInit {
     Object.keys(this.isProductInvalid).forEach((key) => {
       if (isFormValid && this.isProductInvalid[key]) {
         this.modalMessageObject = {
-          message: `Hay errores en el formulario.`,
+          header: `Hay errores en el formulario.`,
           confirm: 'Continuar editando',
         };
         this.modalMessageFlag = true;
@@ -110,41 +109,29 @@ export class ProductsNewComponent implements OnInit {
       if (this.isUpdating) {
         this.productService
           .updateElement(this.currentProductId, this.currentProduct)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: () => {
               this.modalRedirectObject = {
-                header: 'Producto cargado con éxito.',
+                header: 'Producto actualizado con éxito.',
                 path: '/products',
               };
               this.modalRedirectFlag = true;
             },
-            (error) => {
-              console.error(error.error.message);
-              this.modalRedirectObject = {
-                header: 'Hubo un error.',
-                path: '/products',
-              };
-              this.modalRedirectFlag = true;
-            }
-          );
+            error: (error) => {
+              this.handleError(error);
+            },
+          });
       } else {
-        this.productService.addElement(this.currentProduct).subscribe(
-          (response) => {
+        this.productService.addElement(this.currentProduct).subscribe({
+          next: () => {
             this.modalRedirectObject = {
               header: 'Producto cargado con éxito.',
               path: '/products',
             };
             this.modalRedirectFlag = true;
           },
-          (error) => {
-            console.error(error.error.message);
-            this.modalRedirectObject = {
-              header: 'Hubo un error.',
-              path: '/products',
-            };
-            this.modalRedirectFlag = true;
-          }
-        );
+          error: (error) => this.handleError(error),
+        });
       }
     }
   }
@@ -174,5 +161,23 @@ export class ProductsNewComponent implements OnInit {
 
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalRedirectObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        path: '/supliers',
+      };
+      this.modalRedirectFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
   }
 }

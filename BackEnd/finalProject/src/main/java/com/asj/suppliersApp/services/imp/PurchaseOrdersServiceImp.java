@@ -35,9 +35,14 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
 
     @Override
     public List<PurchaseOrderResponseDTO> getAll() {
-        List<PurchaseOrder> orders = this.orderRep.findByAvailableTrue();
+        List<PurchaseOrder> orders = this.orderRep.findAll();
         List<PurchaseOrderResponseDTO> response = new ArrayList<PurchaseOrderResponseDTO>();
+        Date today = new Date();
         for(PurchaseOrder order: orders) {
+            if (order.getDateArrives().before(today)) {
+                order.setState("Entregado");
+                order = this.orderRep.save(order);
+            }
             response.add(PurchaseOrderMapper.getResponseFromOrder(order));
         }
         return response;

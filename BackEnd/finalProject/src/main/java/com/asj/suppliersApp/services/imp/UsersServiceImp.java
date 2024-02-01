@@ -6,6 +6,7 @@ import com.asj.suppliersApp.dto.response.UserResponseDTO;
 import com.asj.suppliersApp.dto.response.UserValidationResponseDTO;
 import com.asj.suppliersApp.entities.User;
 import com.asj.suppliersApp.entities.UserRol;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.UserMapper;
 import com.asj.suppliersApp.repositories.UserRepository;
 import com.asj.suppliersApp.repositories.UserRolRepository;
@@ -26,39 +27,46 @@ public class UsersServiceImp implements UsersService {
     }
 
     @Override
-    public Optional<UserResponseDTO> createUser(UserRequestDTO request) {
+    public UserResponseDTO createUser(UserRequestDTO request) throws ResourceNotFoundException {
         User user = UserMapper.getUserFromRequest(request);
-        Optional<UserRol> rol;
-        if (request.getRolId() == null) rol = this.rolRep.findById(2);
-         else rol = this.rolRep.findById(request.getRolId());
-        if (rol.isPresent()) user.setRol(rol.get());
+        if (request.getRolId() == null) user.setRol(this.getUserRolIfExits(2));
+        else user.setRol(this.getUserRolIfExits(request.getRolId()));
         user.setAvailable(true);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
         user = userRep.save(user);
-        return Optional.of(UserMapper.getUserResponse(user));
+        return UserMapper.getUserResponse(user);
     }
 
     @Override
     public UserValidationResponseDTO validateUser(UserCredentialsRequestDTO request) {
         Optional<User> optUser = this.userRep.findByUsernameAndPasswordHash(request.getUsername(), request.getPasswordHash());
-        if (optUser.isEmpty()){
+        if (optUser.isEmpty()) {
             return new UserValidationResponseDTO(false);
         }
         return new UserValidationResponseDTO(true);
     }
 
     @Override
-    public Optional<UserResponseDTO> loginUser(UserCredentialsRequestDTO request) {
-        Optional<User> optUser = this.userRep.findByUsernameAndPasswordHash(request.getUsername(), request.getPasswordHash());
-        if (optUser.isEmpty()){
-            return Optional.empty();
-        }
-        return Optional.of(UserMapper.getUserResponse(optUser.get()));
+    public UserResponseDTO loginUser(UserCredentialsRequestDTO request) throws ResourceNotFoundException {
+        return UserMapper.getUserResponse(this.getUserIfExiste(request));
     }
 
     @Override
     public Boolean checkUsernameExists(UserCredentialsRequestDTO request) {
-        return this.userRep.existsByUsername(request.getUsername());
+        return this.userRep.existsByUsernameIgnoreCase(request.getUsername());
+    }
+
+    private User getUserIfExiste(UserCredentialsRequestDTO request) throws ResourceNotFoundException {
+        User user = this.userRep.findByUsernameAndPasswordHash(request.getUsername(), request.getPasswordHash())
+                .orElseThrow(() -> new ResourceNotFoundException("Las credenciales no son válidas."));
+        return user;
+
+    }
+
+    private UserRol getUserRolIfExits(Integer id) throws ResourceNotFoundException {
+        UserRol rol = this.rolRep.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rol con el Id " + id + " no encontrado."));
+        return rol;
     }
 }

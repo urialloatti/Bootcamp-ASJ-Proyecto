@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 import {
   ProductRequestDTO,
   ProductResponseDTO,
 } from '../interfaces/productInterface';
-import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,6 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
 
   // GET methods
-
   public getList(): Observable<ProductResponseDTO[]> {
     return this.http
       .get<ProductResponseDTO[]>(this.URL_API)
@@ -30,7 +29,7 @@ export class ProductsService {
       );
   }
 
-  public getDeletedList(): Observable<ProductResponseDTO[]> {
+  public getListDeleted(): Observable<ProductResponseDTO[]> {
     return this.http
       .get<ProductResponseDTO[]>(this.URL_API + '/deleted')
       .pipe(
@@ -81,12 +80,33 @@ export class ProductsService {
       `${this.URL_API}/u/${id}`
     );
   }
+
   public getCount(): Observable<number> {
     return this.http.get<number>(this.URL_API + '/count');
   }
 
-  // DELETE methods
+  // POST methods
+  public addElement(
+    product: ProductRequestDTO
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.post<ApiResponse<ProductResponseDTO>>(
+      this.URL_API,
+      product
+    );
+  }
 
+  // PUT methods
+  public updateElement(
+    id: number,
+    product: ProductRequestDTO
+  ): Observable<ApiResponse<ProductResponseDTO>> {
+    return this.http.put<ApiResponse<ProductResponseDTO>>(
+      `${this.URL_API}/${id}`,
+      product
+    );
+  }
+
+  // PATCH methods
   public cancelElementByIdB(
     id: number
   ): Observable<ApiResponse<ProductResponseDTO>> {
@@ -106,29 +126,6 @@ export class ProductsService {
       {
         available: true,
       }
-    );
-  }
-
-  // POST methods
-
-  public addElement(
-    product: ProductRequestDTO
-  ): Observable<ApiResponse<ProductResponseDTO>> {
-    return this.http.post<ApiResponse<ProductResponseDTO>>(
-      this.URL_API,
-      product
-    );
-  }
-
-  // UPDATE methods
-
-  public updateElement(
-    id: number,
-    product: ProductRequestDTO
-  ): Observable<ApiResponse<ProductResponseDTO>> {
-    return this.http.put<ApiResponse<ProductResponseDTO>>(
-      `${this.URL_API}/${id}`,
-      product
     );
   }
 }

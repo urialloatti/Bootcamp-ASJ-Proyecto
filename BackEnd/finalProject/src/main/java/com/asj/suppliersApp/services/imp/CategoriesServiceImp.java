@@ -5,6 +5,7 @@ import com.asj.suppliersApp.dto.request.SmallCrudRequestDTO;
 import com.asj.suppliersApp.dto.response.SmallCrudResponseDTO;
 import com.asj.suppliersApp.entities.Category;
 import com.asj.suppliersApp.entities.Sector;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.SmallCrudMapper;
 import com.asj.suppliersApp.repositories.CategoryRepository;
 import com.asj.suppliersApp.services.CategoriesService;
@@ -42,9 +43,21 @@ public class CategoriesServiceImp implements CategoriesService {
     }
 
     @Override
-    public Optional<SmallCrudResponseDTO> createSector(SmallCrudRequestDTO request) {
+    public Boolean existsByName(SmallCrudRequestDTO request) {
+        return this.categoryRep.existsByCategoryIgnoreCase(request.getName());
+    }
+
+    @Override
+    public Optional<SmallCrudResponseDTO> createCategory(SmallCrudRequestDTO request) {
         Category category = this.categoryRep.save(this.getSectorFromRequest(request));
         return Optional.of(SmallCrudMapper.getSmallCrudDTO(category));
+    }
+
+    @Override
+    public SmallCrudResponseDTO updateCategory(Integer id, SmallCrudRequestDTO requestDTO) throws ResourceNotFoundException {
+        Category category = this.getCategoryIfExists(id);
+        category.setCategory(requestDTO.getName());
+        return SmallCrudMapper.getSmallCrudDTO(this.categoryRep.save(category));
     }
 
     @Override
@@ -65,5 +78,10 @@ public class CategoriesServiceImp implements CategoriesService {
         category.setAvailable(true);
         category.setCreatedAt(new Date());
         return category;
+    }
+
+    private Category getCategoryIfExists(Integer id) throws ResourceNotFoundException {
+        return this.categoryRep.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Categoría con Id " + id + " no encontrada."));
     }
 }

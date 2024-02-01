@@ -1,5 +1,7 @@
-import { TableTransformPipe } from './table-transform.pipe';
 import { Pipe, PipeTransform } from '@angular/core';
+
+import { TableTransformPipe } from './table-transform.pipe';
+
 import { keyValue } from '../interfaces/listTemplateInterface';
 
 @Pipe({

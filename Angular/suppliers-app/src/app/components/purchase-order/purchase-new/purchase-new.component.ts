@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ProductsService } from '../../../services/products.service';
@@ -53,7 +54,8 @@ export class PurchaseNewComponent implements OnInit {
   suppliersList: SupplierResponseDTO[] = [];
   supplierProducts: ProductResponseDTO[] = [];
 
-  issupplierSelected: boolean = false;
+  isSupplierSelected: boolean = false;
+  currentSupplierLogo: string = '';
   isProductAdded: boolean = false;
   isCartEmpty: boolean = false;
 
@@ -82,12 +84,14 @@ export class PurchaseNewComponent implements OnInit {
         this.currentOrderId = Number(id);
         this.getUpdateOrder();
         this.isUpdating = true;
-        this.issupplierSelected = true;
+        this.isSupplierSelected = true;
       }
     });
   }
 
   public getsupplierProducts(id: number): void {
+    let supplier = this.suppliersList.find((supp) => supp.id == id);
+    this.currentSupplierLogo = supplier?.picture || '';
     this.productService.getElementsBySupplierId(id).subscribe((prodList) => {
       this.supplierProducts = prodList;
     });
@@ -105,39 +109,35 @@ export class PurchaseNewComponent implements OnInit {
     this.validateForm();
     if (this.isDateInvalid || this.isCartEmpty || this.isDescriptionInvalid) {
       this.modalMessageObject = {
-        message: `Hay errores en el formulario.`,
+        header: `Hay errores en el formulario.`,
         confirm: 'Continuar editando',
       };
       this.modalMessageFlag = true;
     } else {
       if (!this.isUpdating) {
-        this.purchaseService.addElement(this.currentPurchaseOrder).subscribe(
-          (response) => {
+        this.purchaseService.addElement(this.currentPurchaseOrder).subscribe({
+          next: (response) => {
             this.modalRedirectObject = {
-              header: `Órden de compra cargada con Id ${response.data.id}`,
+              header: `Órden de compra actualizada con Id ${response.data.id}`,
               path: '/purchase-orders',
             };
             this.modalRedirectFlag = true;
           },
-          (error) => {
-            console.error(error.error.message);
-          }
-        );
+          error: (error) => this.handleError(error),
+        });
       } else {
         this.purchaseService
           .updateElement(this.currentOrderId, this.currentPurchaseOrder)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: (response) => {
               this.modalRedirectObject = {
                 header: `Órden de compra cargada con Id ${response.data.id}`,
                 path: '/purchase-orders',
               };
               this.modalRedirectFlag = true;
             },
-            (error) => {
-              console.error(error.error.message);
-            }
-          );
+            error: (error) => this.handleError(error),
+          });
       }
     }
   }
@@ -145,10 +145,9 @@ export class PurchaseNewComponent implements OnInit {
   addProduct() {
     this.isProductQuantityInvalid = false;
     if (this.selectedQuantity > 0 && this.selectedProductId != -1) {
-      this.issupplierSelected = true;
-      // let product: ProductResponseDTO;
-      this.productService.getElementById(this.selectedProductId).subscribe(
-        (apiResponse) => {
+      this.isSupplierSelected = true;
+      this.productService.getElementById(this.selectedProductId).subscribe({
+        next: (apiResponse) => {
           let response = apiResponse.data;
           let productAlreadyAdded: boolean = false;
           for (let i = 0; i < this.currentPurchaseOrder.products.length; i++) {
@@ -181,10 +180,10 @@ export class PurchaseNewComponent implements OnInit {
           this.isProductAdded = true;
           setTimeout(() => (this.isProductAdded = false), 2000);
         },
-        (error) => {
+        error: (error) => {
           console.log(error.error.message);
-        }
-      );
+        },
+      });
     } else if (this.selectedQuantity < 1) {
       this.isProductQuantityInvalid = true;
     } else {
@@ -196,7 +195,7 @@ export class PurchaseNewComponent implements OnInit {
     this.currentPurchaseOrder.products = [];
     this.orderProductsList = [];
     this.currentOrderTotal = 0;
-    this.issupplierSelected = false;
+    this.isSupplierSelected = false;
   }
 
   removeItemFromCart(id: number) {
@@ -209,7 +208,7 @@ export class PurchaseNewComponent implements OnInit {
     }
     this.calculateTotal();
     if (this.currentPurchaseOrder.products.length == 0) {
-      this.issupplierSelected = false;
+      this.isSupplierSelected = false;
     }
   }
 
@@ -254,8 +253,8 @@ export class PurchaseNewComponent implements OnInit {
   }
 
   private getUpdateOrder() {
-    this.purchaseService.getElementForUpdate(this.currentOrderId).subscribe(
-      (purchaseDTO) => {
+    this.purchaseService.getElementForUpdate(this.currentOrderId).subscribe({
+      next: (purchaseDTO) => {
         this.currentPurchaseOrder = purchaseDTO.data;
         (this.currentPurchaseOrder.createdAt = this.datePipe.transform(
           purchaseDTO.data.createdAt,
@@ -274,15 +273,15 @@ export class PurchaseNewComponent implements OnInit {
             this.orderProductsList = response.data.products;
           });
       },
-      (error) => {
+      error: (error) => {
         this.modalRedirectObject = {
           header: 'Órden de compra no encontrado',
           path: '/purchase-orders',
         };
         this.modalRedirectFlag = true;
         console.error(error);
-      }
-    );
+      },
+    });
   }
 
   validateForm() {
@@ -295,7 +294,30 @@ export class PurchaseNewComponent implements OnInit {
       this.currentPurchaseOrder.shippingRequirements.length > 500;
   }
 
+  imageNotFound(event: Event): void {
+    (event.target as HTMLImageElement).src =
+      '../../../../assets/image-not-found.jpg';
+  }
+
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalRedirectObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        path: '/purchase-orders',
+      };
+      this.modalRedirectFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
   }
 }

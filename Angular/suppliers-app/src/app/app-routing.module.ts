@@ -1,23 +1,23 @@
+import { authGuard } from './guards/auth.guard';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, CanActivateChildFn } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+import { LoginComponent } from './components/users/login/login.component';
 import { MainComponent } from './components/main/main.component';
+import { NewUserComponent } from './components/users/new-user/new-user.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductInfoComponent } from './components/products/product-info/product-info.component';
 import { ProductsListComponent } from './components/products/products-list/products-list.component';
 import { ProductsNewComponent } from './components/products/products-new/products-new.component';
+import { ProductsRecycleBinComponent } from './components/products/products-recycle-bin/products-recycle-bin.component';
 import { PurchaseInfoComponent } from './components/purchase-order/purchase-info/purchase-info.component';
 import { PurchaseListComponent } from './components/purchase-order/purchase-list/purchase-list.component';
 import { PurchaseNewComponent } from './components/purchase-order/purchase-new/purchase-new.component';
+import { SmallListComponent } from './components/small-cruds/small-list/small-list.component';
 import { supplierInfoComponent } from './components/suppliers/supplier-info/supplier-info.component';
 import { suppliersListComponent } from './components/suppliers/suppliers-list/suppliers-list.component';
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
-import { LoginComponent } from './components/users/login/login.component';
-import { NewUserComponent } from './components/users/new-user/new-user.component';
-import { authGuard } from './guards/auth.guard';
-import { SmallListComponent } from './components/small-cruds/small-list/small-list.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
-import { ProductsRecycleBinComponent } from './components/products/products-recycle-bin/products-recycle-bin.component';
 
 const routes: Routes = [
   {
@@ -106,7 +106,7 @@ const routes: Routes = [
   },
   {
     path: 'test',
-    component: SuppliersRecycleBinComponent,
+    component: NewUserComponent,
   },
   {
     path: 'login',

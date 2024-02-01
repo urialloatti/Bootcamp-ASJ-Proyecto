@@ -19,9 +19,11 @@ export type PipeExtra =
   | 'contactMails'
   | 'contactName'
   | 'contactPhone'
+  | 'country'
   | 'CUIT'
   | 'Currency'
-  | 'FullDate'
   | 'Date'
-  | 'PurchaseOrder'
-  | 'phone';
+  | 'FullDate'
+  | 'phone'
+  | 'province'
+  | 'PurchaseOrder';

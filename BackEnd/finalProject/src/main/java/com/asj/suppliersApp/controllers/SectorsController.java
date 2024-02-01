@@ -5,6 +5,7 @@ import com.asj.suppliersApp.dto.request.SmallCrudRequestDTO;
 import com.asj.suppliersApp.dto.response.ApiResponse;
 import com.asj.suppliersApp.dto.response.SmallCrudResponseDTO;
 import com.asj.suppliersApp.entities.Sector;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.services.SectorsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,16 @@ public class SectorsController {
         return ResponseEntity.ok().body(new ApiResponse<>(response.get()));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<SmallCrudResponseDTO>> updateSector(@PathVariable Integer id, @RequestBody SmallCrudRequestDTO request) {
+        try {
+            SmallCrudResponseDTO response = this.sectorsService.updateSector(id, request);
+            return ResponseEntity.status(201).body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        }
+    }
+
     @PatchMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<SmallCrudResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancelRequest) {
         Optional<SmallCrudResponseDTO> response = this.sectorsService.CancelById(id, cancelRequest);
@@ -54,4 +65,8 @@ public class SectorsController {
         return ResponseEntity.ok().body(new ApiResponse<>(response.get()));
     }
 
+    @PatchMapping("/exitst-by-name")
+    public ResponseEntity<Boolean> existsByName(@RequestBody SmallCrudRequestDTO requestDTO) {
+        return ResponseEntity.status(200).body(this.sectorsService.existsByName(requestDTO));
+    }
 }

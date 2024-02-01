@@ -1,17 +1,3 @@
-export interface ProductInterface {
-  id?: number;
-  code?: string;
-  supplierId: number;
-  supplier?: string;
-  category: category;
-  name: string;
-  description: string;
-  price: number;
-  picture?: string;
-  isAvailable?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-}
 export interface ProductResponseDTO {
   id: number;
   code: string;
@@ -32,11 +18,3 @@ export interface ProductRequestDTO {
   price: number | undefined;
   picture: String;
 }
-
-type category =
-  | 'Celulares'
-  | 'Laptops'
-  | 'Pequeños'
-  | 'Periféricos'
-  | 'Audio'
-  | 'Otro';

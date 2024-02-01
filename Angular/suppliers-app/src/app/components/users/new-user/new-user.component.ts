@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { UserRequestDTO } from '../../../interfaces/userInterface';
+
 import { UsersService } from '../../../services/users.service';
+
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import { UserRequestDTO } from '../../../interfaces/userInterface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-user',
@@ -46,8 +49,11 @@ export class NewUserComponent {
       this.showErrorsModal();
     }
     if (this.isFormValid) {
-      this.userService.addElement(this.currentUser).subscribe();
-      console.log(this.currentUser);
+      this.userService.addElement(this.currentUser).subscribe({
+        error: (error) => {
+          this.handleError(error);
+        },
+      });
       this.flagNewUserCreated = true;
     }
   }
@@ -83,7 +89,7 @@ export class NewUserComponent {
 
   showErrorsModal() {
     this.modalMessageObject = {
-      message: `Hay errores en el formulario.`,
+      header: `Hay errores en el formulario.`,
       confirm: 'Continuar editando',
     };
     this.modalMessageFlag = true;
@@ -92,5 +98,24 @@ export class NewUserComponent {
 
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalMessageObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        confirm: 'Intentar más tarde',
+      };
+      this.modalMessageFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
+    this.isFormValid = false;
   }
 }

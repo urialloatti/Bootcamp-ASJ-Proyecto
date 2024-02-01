@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import {
-  ProductInterface,
-  ProductResponseDTO,
-} from '../../../interfaces/productInterface';
+import { ProductResponseDTO } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { ModalService } from '../../../services/modal.service';
 import {
@@ -66,7 +63,7 @@ export class ProductsListComponent implements OnInit {
           this.productsService.cancelElementByIdB(id).subscribe(
             (response) => {
               this.modalMessageObject = {
-                message: `Producto ${response.data.name} eliminado con éxito.`,
+                header: `Producto ${response.data.name} eliminado con éxito.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
@@ -74,7 +71,7 @@ export class ProductsListComponent implements OnInit {
             },
             (error) => {
               this.modalMessageObject = {
-                message: `El producto ya no existe en la base de datos.`,
+                header: `El producto ya no existe en la base de datos.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;

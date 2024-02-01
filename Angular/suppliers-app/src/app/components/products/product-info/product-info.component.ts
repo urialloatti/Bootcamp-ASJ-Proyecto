@@ -7,10 +7,7 @@ import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import {
-  ProductInterface,
-  ProductResponseDTO,
-} from '../../../interfaces/productInterface';
+import { ProductResponseDTO } from '../../../interfaces/productInterface';
 import { ModalService } from '../../../services/modal.service';
 
 @Component({

@@ -40,6 +40,13 @@ export class suppliersListComponent implements OnInit {
           { key: 'web', isNumeric: false },
         ],
       },
+      {
+        field: 'Ubicación',
+        keys: [
+          { key: 'fullAddress', extras: 'country', isNumeric: false },
+          { key: 'fullAddress', extras: 'province', isNumeric: false },
+        ],
+      },
     ],
   };
   modalConfirmFlag: boolean = false;
@@ -71,7 +78,7 @@ export class suppliersListComponent implements OnInit {
               (apiResponse) => {
                 let response = apiResponse.data;
                 this.modalMessageObject = {
-                  message: `Proveedor ${response.brand} eliminado con éxito.`,
+                  header: `Proveedor ${response.brand} eliminado con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
@@ -79,7 +86,7 @@ export class suppliersListComponent implements OnInit {
               },
               (error) => {
                 this.modalMessageObject = {
-                  message: error.error.message,
+                  header: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;

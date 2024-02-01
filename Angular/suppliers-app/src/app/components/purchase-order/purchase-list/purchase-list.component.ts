@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import {
-  PurchaseOrderInterface,
-  PurchaseOrderResponseDTO,
-} from '../../../interfaces/purchaseOrderInterface';
+import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { ModalService } from '../../../services/modal.service';
 import { ModalConfirmInterface } from '../../../interfaces/modalInterface';

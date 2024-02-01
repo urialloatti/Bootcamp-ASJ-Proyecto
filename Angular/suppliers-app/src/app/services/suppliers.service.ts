@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 import {
   SupplierRequestDTO,
   SupplierResponseDTO,
 } from '../interfaces/supplierInterface';
-import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,6 @@ export class SuppliersService {
   URL_API: string = 'http://localhost:8080/app/suppliers';
 
   // GET methods
-
   public getList(): Observable<SupplierResponseDTO[]> {
     return this.http
       .get<SupplierResponseDTO[]>(this.URL_API)
@@ -62,8 +61,27 @@ export class SuppliersService {
     return this.http.get<number>(this.URL_API + '/count');
   }
 
-  // Delete methods
+  // POST methods
+  public addElement(
+    supplier: SupplierRequestDTO
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.post<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API,
+      supplier
+    );
+  }
 
+  // PUT methods
+  public updateElement(
+    id: number,
+    supplier: SupplierRequestDTO
+  ): Observable<ApiResponse<SupplierResponseDTO>> {
+    return this.http.put<ApiResponse<SupplierResponseDTO>>(
+      this.URL_API + '/' + id,
+      supplier
+    );
+  }
+  // PATCH methods
   public cancelElementById(
     id: number
   ): Observable<ApiResponse<SupplierResponseDTO>> {
@@ -81,31 +99,6 @@ export class SuppliersService {
       { available: true }
     );
   }
-
-  // POST methods
-
-  public addElement(
-    supplier: SupplierRequestDTO
-  ): Observable<ApiResponse<SupplierResponseDTO>> {
-    return this.http.post<ApiResponse<SupplierResponseDTO>>(
-      this.URL_API,
-      supplier
-    );
-  }
-
-  // PUT methods
-
-  public updateElement(
-    id: number,
-    supplier: SupplierRequestDTO
-  ): Observable<ApiResponse<SupplierResponseDTO>> {
-    return this.http.put<ApiResponse<SupplierResponseDTO>>(
-      this.URL_API + '/' + id,
-      supplier
-    );
-  }
-
-  // Other methods
 
   public checkCuitExists(cuit: string): Observable<boolean> {
     return this.http.patch<boolean>(`${this.URL_API}/check-cuit`, {

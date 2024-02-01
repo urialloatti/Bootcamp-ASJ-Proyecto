@@ -18,6 +18,11 @@ export class ModalNewComponent implements OnInit {
   @Input()
   currentCreate: smallCrudsType = 'sector';
 
+  @Input()
+  isUpdating: boolean = false;
+  @Input()
+  elementId!: number;
+
   modalTitle!: string;
   modalInputLabel!: string;
   alreadyExistsMessage!: string;
@@ -30,15 +35,24 @@ export class ModalNewComponent implements OnInit {
   ngOnInit(): void {
     switch (this.currentCreate) {
       case 'sector':
-        this.modalTitle = 'Nuevo rubro';
+        this.isUpdating
+          ? (this.modalTitle = 'Actualizar rubro')
+          : (this.modalTitle = 'Nuevo rubro');
         this.modalInputLabel = 'Rubro';
         this.alreadyExistsMessage = 'El rubro ya existe.';
         break;
       case 'category':
-        this.modalTitle = 'Nueva categoría';
+        this.isUpdating
+          ? (this.modalTitle = 'Actualizar categoría')
+          : (this.modalTitle = 'Nueva categoría');
         this.modalInputLabel = 'Categoría';
         this.alreadyExistsMessage = 'La categoría ya existe.';
         break;
+    }
+    if (this.isUpdating) {
+      this.smallCrudsService
+        .getElementById(this.elementId, this.currentCreate)
+        .subscribe((response) => (this.elementName = response.data.name));
     }
   }
 
@@ -54,27 +68,38 @@ export class ModalNewComponent implements OnInit {
       this.elementExist = false;
       let capitalizedName =
         this.elementName.charAt(0).toUpperCase() + this.elementName.slice(1);
-      this.smallCrudsService.getList(this.currentCreate).subscribe((list) => {
-        for (let element of list) {
-          if (
-            element.name.toLocaleLowerCase() ==
-            this.elementName.toLocaleLowerCase()
-          ) {
-            this.elementExist = true;
+      this.smallCrudsService
+        .existsByName(capitalizedName, this.currentCreate)
+        .subscribe((exists) => {
+          this.elementExist = exists;
+          if (!exists) {
+            if (this.isUpdating) {
+              this.smallCrudsService
+                .updateElement(
+                  this.elementId,
+                  capitalizedName,
+                  this.currentCreate
+                )
+                .subscribe(() => {
+                  this.elementAddedMessage =
+                    this.currentCreate == 'sector'
+                      ? 'Rubro actualizado con éxito'
+                      : 'Categoría actualizada con éxito';
+                  setTimeout(() => this.sendResponse(true), 1000);
+                });
+            } else {
+              this.smallCrudsService
+                .addElement(capitalizedName, this.currentCreate)
+                .subscribe((r) => {
+                  this.elementAddedMessage =
+                    this.currentCreate == 'sector'
+                      ? 'Rubro creado con éxito'
+                      : 'Categoría creada con éxito';
+                  setTimeout(() => this.sendResponse(true), 1000);
+                });
+            }
           }
-        }
-        if (!this.elementExist) {
-          this.smallCrudsService
-            .addElement(capitalizedName, this.currentCreate)
-            .subscribe((r) => {
-              this.elementAddedMessage =
-                this.currentCreate == 'sector'
-                  ? 'Rubro creado con éxito'
-                  : 'Categoría creada con éxito';
-              setTimeout(() => this.sendResponse(true), 1000);
-            });
-        }
-      });
+        });
     }
   }
 

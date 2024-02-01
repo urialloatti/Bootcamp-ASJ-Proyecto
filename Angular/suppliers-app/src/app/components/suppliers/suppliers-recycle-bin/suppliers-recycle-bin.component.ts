@@ -62,7 +62,7 @@ export class SuppliersRecycleBinComponent implements OnInit {
               (apiResponse) => {
                 let response = apiResponse.data;
                 this.modalMessageObject = {
-                  message: `Proveedor ${response.brand} recuperado con éxito.`,
+                  header: `Proveedor ${response.brand} recuperado con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
@@ -70,7 +70,7 @@ export class SuppliersRecycleBinComponent implements OnInit {
               },
               (error) => {
                 this.modalMessageObject = {
-                  message: error.error.message,
+                  header: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;

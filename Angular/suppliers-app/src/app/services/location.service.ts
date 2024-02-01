@@ -1,7 +1,8 @@
-import { LocationResponseDTO } from './../interfaces/locationInterface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { LocationResponseDTO } from './../interfaces/locationInterface';
 import { Observable, catchError, map, of } from 'rxjs';
+
 import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
@@ -12,6 +13,7 @@ export class LocationService {
 
   private URL_API = 'http://localhost:8080/app/locations';
 
+  // GET methods
   public getList(): Observable<LocationResponseDTO[]> {
     return this.http.get<LocationResponseDTO[]>(this.URL_API);
   }

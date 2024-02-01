@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { ContactResponseDTO } from '../interfaces/supplierInterface';
 
 @Pipe({

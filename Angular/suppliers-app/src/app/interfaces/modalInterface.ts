@@ -12,6 +12,7 @@ export interface ModalConfirmInterface {
 }
 
 export interface ModalMessageInterface {
-  message: string;
+  header: string;
+  message?: string;
   confirm: string;
 }

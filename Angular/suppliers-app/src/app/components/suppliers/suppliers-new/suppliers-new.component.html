@@ -318,8 +318,9 @@
                 type="text"
                 name="cuit"
                 #cuit="ngModel"
-                [(ngModel)]="currentsupplier.cuit"
+                [(ngModel)]="inputCuit"
                 required
+                [value]="inputCuit | cuitPipe"
                 minlength="11"
                 maxlength="13"
                 [ngClass]="validateCuitInput(cuit) ? 'is-valid' : ''"

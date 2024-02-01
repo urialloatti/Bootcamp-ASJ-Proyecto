@@ -2,10 +2,16 @@ package com.asj.suppliersApp.controllers;
 
 import com.asj.suppliersApp.dto.request.UserCredentialsRequestDTO;
 import com.asj.suppliersApp.dto.request.UserRequestDTO;
+import com.asj.suppliersApp.dto.response.ApiResponse;
 import com.asj.suppliersApp.dto.response.UserResponseDTO;
 import com.asj.suppliersApp.dto.response.UserValidationResponseDTO;
+import com.asj.suppliersApp.exceptions.BadRequestBodyChecker;
+import com.asj.suppliersApp.exceptions.BadRequestException;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.services.UsersService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,12 +27,13 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(@RequestBody UserCredentialsRequestDTO credentials) {
-        Optional<UserResponseDTO> response = this.usersService.loginUser(credentials);
-        if (response.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ApiResponse<UserResponseDTO>> login(@RequestBody UserCredentialsRequestDTO credentials) {
+        try {
+            UserResponseDTO response = this.usersService.loginUser(credentials);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
-        return ResponseEntity.ok().body(response.get());
     }
 
     @PostMapping("/check-credentials")
@@ -40,11 +47,18 @@ public class UsersController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDTO> signup(@RequestBody UserRequestDTO request) {
-        Optional<UserResponseDTO> response = this.usersService.createUser(request);
-        if (response.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<ApiResponse<UserResponseDTO>> signup(@Valid @RequestBody UserRequestDTO request, BindingResult bindingResult) {
+        try {
+            BadRequestBodyChecker.checkBody(bindingResult);
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
-        return ResponseEntity.ok().body(response.get());
+        try {
+        UserResponseDTO response = this.usersService.createUser(request);
+        return ResponseEntity.ok().body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        }
     }
 }

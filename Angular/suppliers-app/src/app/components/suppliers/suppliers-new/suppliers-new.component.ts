@@ -1,5 +1,6 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
@@ -19,6 +20,7 @@ import {
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
+import { CuitPipePipe } from '../../../pipes/cuit-pipe.pipe';
 
 @Component({
   selector: 'suppliers-new',
@@ -32,8 +34,10 @@ export class suppliersNewComponent implements OnInit {
     private modalService: ModalService,
     private smallCrudsService: SmallCrudsService,
     private supplierService: SuppliersService,
+    private cuitPipe: CuitPipePipe,
 
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title
   ) {}
 
@@ -61,6 +65,7 @@ export class suppliersNewComponent implements OnInit {
     },
   };
   currentSupplierId!: number;
+  inputCuit: string = '';
   selectedCountry: number = -1;
 
   countryCodes = phoneCountryCodes;
@@ -112,28 +117,31 @@ export class suppliersNewComponent implements OnInit {
       .subscribe((secList) => (this.sectors = secList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null && !isNaN(Number(id))) {
-        this.currentSupplierId = Number(id);
-        this.supplierService.getElementForUpdate(parseInt(id)).subscribe(
-          (apiResponse) => {
-            let response = apiResponse.data;
-            this.locationService
-              .getCountryId(response.fullAddress.provinceId)
-              .subscribe((countryId) => (this.selectedCountry = countryId));
-            this.currentsupplier = response;
-            this.titleService.setTitle(`Editar ${response.brand}`);
-          },
-          (error) => {
-            this.modalRedirectObject = {
-              header: 'Error',
-              message: error.error.message,
-              path: '/suppliers',
-            };
-            this.modalRedirectFlag = true;
-            console.error(error);
-          }
-        );
-        this.isUpdating = true;
+      if (id !== null) {
+        if (!isNaN(Number(id))) {
+          this.currentSupplierId = Number(id);
+          this.supplierService.getElementForUpdate(parseInt(id)).subscribe({
+            next: (apiResponse) => {
+              let response = apiResponse.data;
+              this.locationService
+                .getCountryId(response.fullAddress.provinceId)
+                .subscribe((countryId) => (this.selectedCountry = countryId));
+              this.currentsupplier = response;
+              this.inputCuit = this.cuitPipe.transform(response.cuit);
+              this.titleService.setTitle(`Editar ${response.brand}`);
+            },
+            error: (error) => {
+              this.modalRedirectObject = {
+                header: 'Error',
+                message: error.error.message,
+                path: '/suppliers',
+              };
+              this.modalRedirectFlag = true;
+              console.error(error);
+            },
+          });
+          this.isUpdating = true;
+        } else this.router.navigateByUrl('/404');
       }
 
       this.debouncerSubscription = this.debouncer
@@ -150,7 +158,7 @@ export class suppliersNewComponent implements OnInit {
     Object.keys(this.issupplierInvalid).forEach((key) => {
       if (isFormValid && this.issupplierInvalid[key]) {
         this.modalMessageObject = {
-          message: `Hay errores en el formulario.`,
+          header: `Hay errores en el formulario.`,
           confirm: 'Continuar editando',
         };
         this.modalMessageFlag = true;
@@ -162,8 +170,8 @@ export class suppliersNewComponent implements OnInit {
       if (this.isUpdating) {
         this.supplierService
           .updateElement(this.currentSupplierId, this.currentsupplier)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: (response) => {
               this.modalRedirectObject = {
                 header: `Proveedor ${response.data.brand} actualizado con éxito.`,
                 path: '/suppliers',
@@ -171,18 +179,14 @@ export class suppliersNewComponent implements OnInit {
               this.modalRedirectFlag = true;
               this.debouncerSubscription!.unsubscribe();
             },
-            (error) => {
-              this.modalMessageObject = {
-                message: `${error.error.message}`,
-                confirm: 'Continuar editando',
-              };
-              this.modalMessageFlag = true;
+            error: (error) => {
+              this.handleError(error);
               isFormValid = false;
-            }
-          );
+            },
+          });
       } else {
-        this.supplierService.addElement(this.currentsupplier).subscribe(
-          (response) => {
+        this.supplierService.addElement(this.currentsupplier).subscribe({
+          next: (response) => {
             this.modalRedirectObject = {
               header: `Proveedor ${response.data.brand} cargado con éxito.`,
               path: '/suppliers',
@@ -190,15 +194,11 @@ export class suppliersNewComponent implements OnInit {
             this.modalRedirectFlag = true;
             this.debouncerSubscription!.unsubscribe();
           },
-          (error) => {
-            this.modalMessageObject = {
-              message: `${error.error.message}`,
-              confirm: 'Continuar editando',
-            };
-            this.modalMessageFlag = true;
+          error: (error) => {
+            this.handleError(error);
             isFormValid = false;
-          }
-        );
+          },
+        });
       }
     }
   }
@@ -251,7 +251,8 @@ export class suppliersNewComponent implements OnInit {
       .subscribe((exists) => (this.cuitExistFlag = exists));
   }
 
-  onKeyPressCuit(): void {
+  public onKeyPressCuit(): void {
+    this.currentsupplier.cuit = this.inputCuit.replace(/\D/g, '');
     this.debouncer.next();
   }
 
@@ -326,5 +327,23 @@ export class suppliersNewComponent implements OnInit {
 
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalRedirectObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        path: '/supliers',
+      };
+      this.modalRedirectFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
   }
 }

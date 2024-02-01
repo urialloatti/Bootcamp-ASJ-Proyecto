@@ -134,7 +134,6 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="{{ item.id }}"
-                    *ngIf="!isDeleted"
                   >
                     <i class="bi bi-box-arrow-in-up-right"></i>
                   </button>
@@ -143,8 +142,10 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
-                    [disabled]="!item.available"
-                    *ngIf="!isDeleted"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
@@ -153,20 +154,12 @@
                   <button
                     class="btn btn-secondary pb-2"
                     (click)="deleteElement(item.id)"
-                    [disabled]="!item.available"
-                    *ngIf="!isDeleted"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
                   >
                     <i class="bi bi-trash3"></i>
-                  </button>
-                </span>
-                <span class="mx-1 bg-transparent">
-                  <button
-                    class="btn btn-secondary pb-2"
-                    (click)="deleteElement(item.id)"
-                    [disabled]="item.available"
-                    *ngIf="isDeleted"
-                  >
-                    <i class="bi bi-recycle"></i>
                   </button>
                 </span>
               </div>

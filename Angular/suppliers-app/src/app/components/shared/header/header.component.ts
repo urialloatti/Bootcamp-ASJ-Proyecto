@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UsersService } from '../../../services/users.service';
 import { UserResponseDTO } from '../../../interfaces/userInterface';
+import { ModalRedirectInterface } from '../../../interfaces/modalInterface';
 
 @Component({
   selector: 'shared-header',
@@ -59,12 +60,25 @@ export class HeaderComponent implements OnInit {
 
   userData!: UserResponseDTO;
   isUserLoaded: boolean = false;
+  modalRedirectFlag: boolean = false;
+  modalRedirectObject!: ModalRedirectInterface;
 
   ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe((response) => {
-      this.userData = response;
-      this.isUserLoaded = true;
-    });
+    this.userService.getCurrentUser().subscribe(
+      (response) => {
+        this.userData = response.data;
+        this.isUserLoaded = true;
+      },
+      (error) => {
+        this.modalRedirectObject = {
+          header: 'Error',
+          message: error.error.message,
+          path: '/login',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      }
+    );
   }
 
   checkActive(path: string): boolean {

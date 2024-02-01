@@ -38,7 +38,7 @@ export class ProductsRecycleBinComponent {
   productsList$!: Observable<ProductResponseDTO[]>;
 
   ngOnInit(): void {
-    this.productsList$ = this.productsService.getDeletedList();
+    this.productsList$ = this.productsService.getListDeleted();
   }
 
   deleteProduct(id: number): void {
@@ -58,7 +58,7 @@ export class ProductsRecycleBinComponent {
           this.productsService.restoreElementByIdB(id).subscribe(
             (response) => {
               this.modalMessageObject = {
-                message: `Producto ${response.data.name} recuperado con éxito.`,
+                header: `Producto ${response.data.name} recuperado con éxito.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
@@ -66,7 +66,7 @@ export class ProductsRecycleBinComponent {
             },
             (error) => {
               this.modalMessageObject = {
-                message: `El producto ya no existe en la base de datos.`,
+                header: `El producto ya no existe en la base de datos.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;

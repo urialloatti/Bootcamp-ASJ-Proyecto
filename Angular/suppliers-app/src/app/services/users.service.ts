@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
+import { Router, UrlTree } from '@angular/router';
 
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 import {
   UserCredentialsDTO,
   UserValidationResponseDTO,
   UserResponseDTO,
   UserRequestDTO,
 } from '../interfaces/userInterface';
-import { Router, UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class UsersService {
   private userCredentialsSubject: Subject<boolean> = new Subject<boolean>();
   public checkCredentials$: Observable<boolean> =
     this.userCredentialsSubject.asObservable();
+
   private userExistsSubject: Subject<boolean> = new Subject<boolean>();
   public checkUserExists$ = this.userExistsSubject.asObservable();
 
@@ -73,13 +75,18 @@ export class UsersService {
   }
 
   // CRUD
-  public addElement(user: UserRequestDTO): Observable<UserRequestDTO> {
-    return this.http.post<UserRequestDTO>(this.URL_API_TEST + '/signup', user);
+  public addElement(
+    user: UserRequestDTO
+  ): Observable<ApiResponse<UserResponseDTO>> {
+    return this.http.post<ApiResponse<UserResponseDTO>>(
+      this.URL_API_TEST + '/signup',
+      user
+    );
   }
 
-  public getCurrentUser(): Observable<UserResponseDTO> {
+  public getCurrentUser(): Observable<ApiResponse<UserResponseDTO>> {
     let userCredentialsDTO = this.getCredentials();
-    return this.http.post<UserResponseDTO>(
+    return this.http.post<ApiResponse<UserResponseDTO>>(
       `${this.URL_API_TEST}/login`,
       userCredentialsDTO
     );

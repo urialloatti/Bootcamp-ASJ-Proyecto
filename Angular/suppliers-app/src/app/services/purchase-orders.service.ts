@@ -1,10 +1,12 @@
-import { PurchaseOrderRequestDTO } from './../interfaces/purchaseOrderInterface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { PurchaseOrderResponseDTO } from '../interfaces/purchaseOrderInterface';
 import { ApiResponse } from '../interfaces/apiResponseInterface';
+import {
+  PurchaseOrderResponseDTO,
+  PurchaseOrderRequestDTO,
+} from '../interfaces/purchaseOrderInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,6 @@ export class PurchaseOrdersService {
   private URL_API: string = 'http://localhost:8080/app/purchase-orders';
 
   // GET methods
-
   public getList(): Observable<PurchaseOrderResponseDTO[]> {
     return this.http.get<PurchaseOrderResponseDTO[]>(this.URL_API);
   }
@@ -40,15 +41,7 @@ export class PurchaseOrdersService {
     return this.http.get<number>(this.URL_API + '/count');
   }
 
-  public cancelElementById(
-    id: number
-  ): Observable<ApiResponse<PurchaseOrderResponseDTO>> {
-    return this.http.patch<ApiResponse<PurchaseOrderResponseDTO>>(
-      `${this.URL_API}/delete/${id}`,
-      { available: false }
-    );
-  }
-
+  // POST methods
   public addElement(
     order: PurchaseOrderRequestDTO
   ): Observable<ApiResponse<PurchaseOrderResponseDTO>> {
@@ -58,6 +51,7 @@ export class PurchaseOrdersService {
     );
   }
 
+  // PUT methods
   public updateElement(
     id: number,
     order: PurchaseOrderRequestDTO
@@ -65,6 +59,16 @@ export class PurchaseOrdersService {
     return this.http.put<ApiResponse<PurchaseOrderResponseDTO>>(
       `${this.URL_API}/${id}`,
       order
+    );
+  }
+
+  // PATCH methods
+  public cancelElementById(
+    id: number
+  ): Observable<ApiResponse<PurchaseOrderResponseDTO>> {
+    return this.http.patch<ApiResponse<PurchaseOrderResponseDTO>>(
+      `${this.URL_API}/delete/${id}`,
+      { available: false }
     );
   }
 }

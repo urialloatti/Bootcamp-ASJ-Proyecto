@@ -164,17 +164,32 @@ export class ItemsListComponent implements OnInit {
       return;
     }
     let extra = this.listTemplate.listFields[orderBy].keys[0].extras;
+    if (extra == 'country') {
+      this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
+        this.tablePipe
+          .transform(
+            obj1[this.listTemplate.listFields[orderBy].keys[1].key],
+            'province'
+          )
+          .localeCompare(
+            this.tablePipe.transform(
+              obj2[this.listTemplate.listFields[orderBy].keys[1].key],
+              'province'
+            )
+          )
+      );
+    }
     if (extra !== undefined && extra !== 'Currency') {
-      if (order == 'ascendent') {
+      if (order == 'descendent') {
         this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
           this.tablePipe
             .transform(
-              obj1[this.listTemplate.listFields[orderBy].keys[0].key],
+              obj2[this.listTemplate.listFields[orderBy].keys[0].key],
               extra
             )
             .localeCompare(
               this.tablePipe.transform(
-                obj2[this.listTemplate.listFields[orderBy].keys[0].key],
+                obj1[this.listTemplate.listFields[orderBy].keys[0].key],
                 extra
               )
             )
@@ -185,12 +200,12 @@ export class ItemsListComponent implements OnInit {
       this.fullItemsLiist = this.fullItemsLiist.sort((obj1, obj2) =>
         this.tablePipe
           .transform(
-            obj2[this.listTemplate.listFields[orderBy].keys[0].key],
+            obj1[this.listTemplate.listFields[orderBy].keys[0].key],
             extra
           )
           .localeCompare(
             this.tablePipe.transform(
-              obj1[this.listTemplate.listFields[orderBy].keys[0].key],
+              obj2[this.listTemplate.listFields[orderBy].keys[0].key],
               extra
             )
           )
