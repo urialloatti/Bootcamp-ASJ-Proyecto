@@ -18,6 +18,7 @@ import { supplierInfoComponent } from './components/suppliers/supplier-info/supp
 import { suppliersListComponent } from './components/suppliers/suppliers-list/suppliers-list.component';
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
+import { isAdminGuard } from './guards/is-admin.guard';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
       },
       {
         path: 'recycle-bin',
+        canActivate: [isAdminGuard],
         component: SuppliersRecycleBinComponent,
         title: 'Restaurar proveedores',
       },
@@ -56,6 +58,7 @@ const routes: Routes = [
       { path: 'new', component: ProductsNewComponent, title: 'Nuevo producto' },
       {
         path: 'recycle-bin',
+        canActivate: [isAdminGuard],
         component: ProductsRecycleBinComponent,
         title: 'Restaurar productos',
       },
@@ -95,7 +98,7 @@ const routes: Routes = [
     path: 'sectors&categories',
     component: SmallListComponent,
     title: 'Rubros y categorías',
-    canActivate: [authGuard],
+    canActivate: [authGuard, isAdminGuard],
   },
   {
     path: '',

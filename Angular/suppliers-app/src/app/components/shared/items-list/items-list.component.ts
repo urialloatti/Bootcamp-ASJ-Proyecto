@@ -1,6 +1,9 @@
 import { ModalService } from '../../../services/modal.service';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
+import {
+  ListTemplateInterface,
+  keyValue,
+} from '../../../interfaces/listTemplateInterface';
 import { Observable } from 'rxjs';
 import { TableTransformPipe } from '../../../pipes/table-transform.pipe';
 import { FilterListPipe } from '../../../pipes/filter-list.pipe';
@@ -98,8 +101,8 @@ export class ItemsListComponent implements OnInit {
     }
     this.itemsShowed = [];
     if (this.currentPage >= this.pageList.length) {
-      this.currentPage = this.pageList.length - 1;
-    }
+      this.selectPage(this.pageList.length - 1);
+    } else this.selectPage(this.currentPage);
     this.itemsShowed = this.pageList[this.currentPage].page;
     this.hasPagination = this.pageList.length > 1;
     this.isLoaded = true;
@@ -250,7 +253,7 @@ export class ItemsListComponent implements OnInit {
     }
   }
 
-  public deleteElement(id: number): void {
+  public toggleAvailable(id: number): void {
     this.deletedId.emit(id);
     this.modalService.confirm$.subscribe(() => {
       setTimeout(() => {
@@ -260,10 +263,15 @@ export class ItemsListComponent implements OnInit {
   }
 
   public filterList(): void {
+    let keys: keyValue[] = [];
+    keys.push(...this.listTemplate.listFields[this.filterIndex].keys);
+    if (this.listTemplate.listFields[this.filterIndex].toolTip != undefined) {
+      keys.push(...this.listTemplate.listFields[this.filterIndex].toolTip!);
+    }
     this.fullItemsLiist = this.filterPipe.transform(
       this.fullItemsLiist,
       this.filterArg,
-      this.listTemplate.listFields[this.filterIndex].keys
+      keys
     );
     this.makePagination();
     this.itemsArray$.subscribe(

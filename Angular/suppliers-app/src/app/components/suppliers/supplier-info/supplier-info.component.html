@@ -7,11 +7,21 @@
         *ngIf="isSupplierLoaded"
       >
         <div class="row">
-          <div class="col">
-            <a class="text-decoration-none" routerLink="/suppliers"
-              >← Ir al listado</a
-            >
-          </div>
+          <nav
+            class="col"
+            style="--bs-breadcrumb-divider: '>'"
+            aria-label="breadcrumb"
+          >
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+              <li class="breadcrumb-item">
+                <a routerLink="/suppliers">Lista</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ currentsupplier.brand }}
+              </li>
+            </ol>
+          </nav>
         </div>
         <div class="row mb-4">
           <div class="col-12 text-center">

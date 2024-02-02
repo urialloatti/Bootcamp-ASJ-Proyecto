@@ -97,7 +97,15 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
 
     @Override
     public long countAvailables() {
-        return this.orderRep.countByAvailableTrue();
+        List<PurchaseOrder> orders = this.orderRep.findAll();
+        Date today = new Date();
+        for(PurchaseOrder order: orders) {
+            if (order.getDateArrives().before(today)) {
+                order.setState("Entregado");
+                order = this.orderRep.save(order);
+            }
+        }
+        return this.orderRep.countByAvailableTrueAndState("Pendiente");
     }
 
     private PurchaseOrder getOrderIfExists(Integer id) throws ResourceNotFoundException {

@@ -29,16 +29,16 @@ export class suppliersListComponent implements OnInit {
     listFields: [
       { field: 'Razón social', keys: [{ key: 'brand', isNumeric: false }] },
       {
-        field: 'Nombre',
-        keys: [{ key: 'contact', extras: 'contactName', isNumeric: false }],
-      },
-      {
         field: 'Datos de contacto',
-        keys: [
+        keys: [{ key: 'contact', extras: 'contactName', isNumeric: false }],
+        toolTip: [
           { key: 'contact', extras: 'contactPhone', isNumeric: false },
           { key: 'contact', extras: 'contactMails', isNumeric: false },
-          { key: 'web', isNumeric: false },
         ],
+      },
+      {
+        field: 'Página web',
+        keys: [{ key: 'web', isNumeric: false }],
       },
       {
         field: 'Ubicación',
@@ -69,35 +69,33 @@ export class suppliersListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe(
-        (confirmation) => {
-          this.modalConfirmFlag = false;
-          if (confirmation) {
-            deleted.available = false;
-            this.suppliersService.cancelElementById(id).subscribe(
-              (apiResponse) => {
-                let response = apiResponse.data;
-                this.modalMessageObject = {
-                  header: `Proveedor ${response.brand} eliminado con éxito.`,
-                  confirm: 'Aceptar',
-                };
-                this.modalMessageFlag = true;
-                this.suppliersService.getList().subscribe();
-              },
-              (error) => {
-                this.modalMessageObject = {
-                  header: error.error.message,
-                  confirm: 'Aceptar',
-                };
-                this.modalMessageFlag = true;
-                console.error(error);
-              }
-            );
-          } else {
-            subscription.unsubscribe();
-          }
+      let subscription = this.confirmService.confirm$.subscribe((confirmed) => {
+        this.modalConfirmFlag = false;
+        if (confirmed) {
+          this.suppliersService.cancelElementById(id).subscribe({
+            next: (apiResponse) => {
+              let response = apiResponse.data;
+              this.modalMessageObject = {
+                header: `Proveedor ${response.brand} eliminado con éxito.`,
+                confirm: 'Aceptar',
+              };
+              this.modalMessageFlag = true;
+              this.suppliersService.getList().subscribe();
+            },
+            error: (error) => {
+              this.modalMessageObject = {
+                header: error.error.message,
+                confirm: 'Aceptar',
+              };
+              this.modalMessageFlag = true;
+              console.error(error);
+            },
+            complete: () => subscription.unsubscribe(),
+          });
+        } else {
+          subscription.unsubscribe();
         }
-      );
+      });
     });
   }
 

@@ -25,7 +25,11 @@ export class ProductsListComponent implements OnInit {
     section: 'products',
     label: 'productos',
     listFields: [
-      { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },
+      {
+        field: 'Nombre',
+        keys: [{ key: 'name', isNumeric: false }],
+        toolTip: [{ key: 'description', isNumeric: false }],
+      },
       { field: 'Categoría', keys: [{ key: 'category', isNumeric: false }] },
       { field: 'SKU', keys: [{ key: 'code', isNumeric: false }] },
       { field: 'Proveedor', keys: [{ key: 'supplier', isNumeric: false }] },
@@ -57,11 +61,11 @@ export class ProductsListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((response) => {
+      let subscription = this.confirmService.confirm$.subscribe((confirmed) => {
         this.modalConfirmFlag = false;
-        if (response) {
-          this.productsService.cancelElementByIdB(id).subscribe(
-            (response) => {
+        if (confirmed) {
+          this.productsService.cancelElementByIdB(id).subscribe({
+            next: (response) => {
               this.modalMessageObject = {
                 header: `Producto ${response.data.name} eliminado con éxito.`,
                 confirm: 'Aceptar',
@@ -69,15 +73,16 @@ export class ProductsListComponent implements OnInit {
               this.modalMessageFlag = true;
               this.productsService.getList().subscribe();
             },
-            (error) => {
+            error: (error) => {
               this.modalMessageObject = {
                 header: `El producto ya no existe en la base de datos.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
               console.log(error);
-            }
-          );
+            },
+            complete: () => subscription.unsubscribe(),
+          });
         } else {
           subscription.unsubscribe();
         }

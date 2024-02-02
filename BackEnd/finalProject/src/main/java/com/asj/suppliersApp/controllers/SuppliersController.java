@@ -12,7 +12,6 @@ import com.asj.suppliersApp.services.SuppliersService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,7 +66,7 @@ public class SuppliersController {
     @PatchMapping("/deleted/{id}")
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO setAvailable) {
         try {
-            SupplierResponseDTO response = suppliersService.cancelById(id, setAvailable);
+            SupplierResponseDTO response = suppliersService.setAvailableById(id, setAvailable);
             return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());

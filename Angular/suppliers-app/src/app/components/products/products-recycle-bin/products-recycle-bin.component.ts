@@ -41,7 +41,7 @@ export class ProductsRecycleBinComponent {
     this.productsList$ = this.productsService.getListDeleted();
   }
 
-  deleteProduct(id: number): void {
+  restoreProduct(id: number): void {
     let deleted: ProductResponseDTO;
     this.productsService.getElementById(id).subscribe((response) => {
       deleted = response.data;
@@ -52,11 +52,11 @@ export class ProductsRecycleBinComponent {
         confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((response) => {
+      let subscription = this.confirmService.confirm$.subscribe((confirmed) => {
         this.modalConfirmFlag = false;
-        if (response) {
-          this.productsService.restoreElementByIdB(id).subscribe(
-            (response) => {
+        if (confirmed) {
+          this.productsService.restoreElementByIdB(id).subscribe({
+            next: (response) => {
               this.modalMessageObject = {
                 header: `Producto ${response.data.name} recuperado con éxito.`,
                 confirm: 'Aceptar',
@@ -64,15 +64,16 @@ export class ProductsRecycleBinComponent {
               this.modalMessageFlag = true;
               this.productsService.getList().subscribe();
             },
-            (error) => {
+            error: (error) => {
               this.modalMessageObject = {
                 header: `El producto ya no existe en la base de datos.`,
                 confirm: 'Aceptar',
               };
               this.modalMessageFlag = true;
               console.log(error);
-            }
-          );
+            },
+            complete: () => subscription.unsubscribe(),
+          });
         } else {
           subscription.unsubscribe();
         }

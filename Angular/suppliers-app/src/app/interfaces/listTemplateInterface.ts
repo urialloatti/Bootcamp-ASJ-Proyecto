@@ -7,6 +7,7 @@ export interface ListTemplateInterface {
 interface ListField {
   field: string;
   keys: keyValue[];
+  toolTip?: keyValue[];
 }
 
 export interface keyValue {

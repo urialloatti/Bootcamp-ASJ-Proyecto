@@ -43,6 +43,7 @@ import { ShowCountryPipe } from './pipes/show-country.pipe';
 import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { ShowProvincePipe } from './pipes/show-province.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,7 @@ import { TableTransformPipe } from './pipes/table-transform.pipe';
     ShowProvincePipe,
     TableTransformPipe,
   ],
-  imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule],
+  imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule, NgbModule],
   providers: [
     CuitPipePipe,
     CurrencyPipe,

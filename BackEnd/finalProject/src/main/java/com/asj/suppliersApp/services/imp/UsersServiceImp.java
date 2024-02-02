@@ -6,6 +6,7 @@ import com.asj.suppliersApp.dto.response.UserResponseDTO;
 import com.asj.suppliersApp.dto.response.UserValidationResponseDTO;
 import com.asj.suppliersApp.entities.User;
 import com.asj.suppliersApp.entities.UserRol;
+import com.asj.suppliersApp.exceptions.BadRequestException;
 import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.UserMapper;
 import com.asj.suppliersApp.repositories.UserRepository;
@@ -27,15 +28,8 @@ public class UsersServiceImp implements UsersService {
     }
 
     @Override
-    public UserResponseDTO createUser(UserRequestDTO request) throws ResourceNotFoundException {
-        User user = UserMapper.getUserFromRequest(request);
-        if (request.getRolId() == null) user.setRol(this.getUserRolIfExits(2));
-        else user.setRol(this.getUserRolIfExits(request.getRolId()));
-        user.setAvailable(true);
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
-        user = userRep.save(user);
-        return UserMapper.getUserResponse(user);
+    public UserResponseDTO loginUser(UserCredentialsRequestDTO request) throws ResourceNotFoundException {
+        return UserMapper.getUserResponse(this.getUserIfExiste(request));
     }
 
     @Override
@@ -48,8 +42,18 @@ public class UsersServiceImp implements UsersService {
     }
 
     @Override
-    public UserResponseDTO loginUser(UserCredentialsRequestDTO request) throws ResourceNotFoundException {
-        return UserMapper.getUserResponse(this.getUserIfExiste(request));
+    public UserResponseDTO createUser(UserRequestDTO request) throws ResourceNotFoundException, BadRequestException {
+        if (this.userRep.existsByUsernameIgnoreCase(request.getUsername())) {
+            throw new BadRequestException("El nombre de usuario '" + request.getUsername() + "' no se encuentra disponible.");
+        }
+        User user = UserMapper.getUserFromRequest(request);
+        if (request.getRolId() == null) user.setRol(this.getUserRolIfExits(2));
+        else user.setRol(this.getUserRolIfExits(request.getRolId()));
+        user.setAvailable(true);
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(new Date());
+        user = userRep.save(user);
+        return UserMapper.getUserResponse(user);
     }
 
     @Override
@@ -58,15 +62,12 @@ public class UsersServiceImp implements UsersService {
     }
 
     private User getUserIfExiste(UserCredentialsRequestDTO request) throws ResourceNotFoundException {
-        User user = this.userRep.findByUsernameAndPasswordHash(request.getUsername(), request.getPasswordHash())
-                .orElseThrow(() -> new ResourceNotFoundException("Las credenciales no son válidas."));
+        User user = this.userRep.findByUsernameAndPasswordHash(request.getUsername(), request.getPasswordHash()).orElseThrow(() -> new ResourceNotFoundException("Las credenciales no son válidas."));
         return user;
-
     }
 
     private UserRol getUserRolIfExits(Integer id) throws ResourceNotFoundException {
-        UserRol rol = this.rolRep.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Rol con el Id " + id + " no encontrado."));
+        UserRol rol = this.rolRep.findById(id).orElseThrow(() -> new ResourceNotFoundException("Rol con el Id " + id + " no encontrado."));
         return rol;
     }
 }

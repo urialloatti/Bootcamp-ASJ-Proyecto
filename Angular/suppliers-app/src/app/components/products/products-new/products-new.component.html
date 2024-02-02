@@ -3,17 +3,30 @@
   <div class="col col-sm-9 col-md-8 p-5 body">
     <article class="bg-light-subtle rounded p-4 pt-2">
       <div class="row">
-        <div class="col">
-          <a class="text-decoration-none" routerLink="/products"
-            >← Ir al listado</a
-          >
-        </div>
+        <nav
+          class="col"
+          style="--bs-breadcrumb-divider: '>'"
+          aria-label="breadcrumb"
+        >
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item">
+              <a routerLink="/products">Lista</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <span *ngIf="!isUpdating">Nuevo</span
+              ><span *ngIf="isUpdating">Actualizar</span> producto
+            </li>
+          </ol>
+        </nav>
       </div>
       <form #myForm="ngForm" (ngSubmit)="saveProduct()">
         <fieldset class="px-4">
           <div class="text-center my-4">
-            <h1 class="h3 title" *ngIf="!isUpdating">Cargar nuevo Producto</h1>
-            <h1 class="h3 title" *ngIf="isUpdating">Actualizar Producto</h1>
+            <h1 class="h3 title">
+              <span *ngIf="!isUpdating">Cargar nuevo</span
+              ><span *ngIf="isUpdating">Actualizar</span> producto
+            </h1>
           </div>
           <hr />
           <div class="mb-3">

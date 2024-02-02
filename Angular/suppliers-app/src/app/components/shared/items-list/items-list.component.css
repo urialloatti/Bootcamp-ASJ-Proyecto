@@ -11,6 +11,17 @@ img {
   background-color: var(--bg-light);
 }
 
+.cursor {
+  cursor: pointer;
+}
+
+.tooltip-class {
+  background-color: #000;
+  padding: 4px 8px;
+  max-height: 10em;
+  overflow-y: hidden;
+}
+
 @media (max-width: 768px) {
   .items-table {
     overflow-x: auto;

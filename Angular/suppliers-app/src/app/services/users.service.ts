@@ -47,6 +47,22 @@ export class UsersService {
       );
   }
 
+  public get hasAdminPermits$(): Observable<boolean | UrlTree> {
+    let userCredentialsDTO = this.getCredentials();
+    return this.http
+      .post<ApiResponse<UserResponseDTO>>(
+        `${this.URL_API_TEST}/login`,
+        userCredentialsDTO
+      )
+      .pipe(
+        map((apiResponse) => {
+          if (apiResponse.data.rol == 'admin') return true;
+          return this.router.parseUrl('/');
+        }),
+        catchError(() => of(false))
+      );
+  }
+
   public checkLoggedIn(): void {
     let userCredentialsDTO = this.getCredentials();
     this.checkCredentials(userCredentialsDTO);
@@ -97,22 +113,4 @@ export class UsersService {
       localStorage.getItem('credentials') || '{}'
     ) as UserCredentialsDTO;
   }
-
-  // private handleError(error: HttpErrorResponse) {
-  //   if (error.status === 0) {
-  //     // A client-side or network error occurred. Handle it accordingly.
-  //     console.error('An error occurred:', error.error);
-  //   } else {
-  //     // The backend returned an unsuccessful response code.
-  //     // The response body may contain clues as to what went wrong.
-  //     console.error(
-  //       `Backend returned code ${error.status}, body was: `,
-  //       error.error
-  //     );
-  //   }
-  //   // Return an observable with a user-facing error message.
-  //   return throwError(
-  //     () => new Error('Something bad happened; please try again later.')
-  //   );
-  // }
 }

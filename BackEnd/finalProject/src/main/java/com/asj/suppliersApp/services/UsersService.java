@@ -10,9 +10,12 @@ import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import java.util.Optional;
 
 public interface UsersService {
-    UserResponseDTO createUser(UserRequestDTO request) throws ResourceNotFoundException;
+    UserResponseDTO loginUser(UserCredentialsRequestDTO request) throws ResourceNotFoundException;
+
     UserValidationResponseDTO validateUser(UserCredentialsRequestDTO request);
-    UserResponseDTO loginUser (UserCredentialsRequestDTO request) throws ResourceNotFoundException;
+
+    UserResponseDTO createUser(UserRequestDTO request) throws ResourceNotFoundException, BadRequestException;
+
     Boolean checkUsernameExists(UserCredentialsRequestDTO request);
 
 }

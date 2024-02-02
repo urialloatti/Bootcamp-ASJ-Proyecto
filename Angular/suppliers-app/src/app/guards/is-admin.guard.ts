@@ -3,8 +3,7 @@ import { inject } from '@angular/core';
 
 import { UsersService } from '../services/users.service';
 
-export const authGuard: CanActivateFn = () => {
+export const isAdminGuard: CanActivateFn = () => {
   const userService = inject(UsersService);
-
-  return userService.isLoggedInGuard$;
+  return userService.hasAdminPermits$;
 };

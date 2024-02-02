@@ -39,6 +39,10 @@
   width: 40%;
 }
 
+.table-tooltip {
+  width: max-content;
+}
+
 #modal-dialog {
   z-index: 1055;
 }

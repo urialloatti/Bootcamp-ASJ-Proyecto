@@ -48,13 +48,13 @@ export class NewUserComponent {
     if (this.arePasswordsNotEqual || this.userAlreadyExists) {
       this.showErrorsModal();
     }
-    if (this.isFormValid) {
+    if (this.isFormValid && !this.userAlreadyExists) {
       this.userService.addElement(this.currentUser).subscribe({
+        next: () => (this.flagNewUserCreated = true),
         error: (error) => {
           this.handleError(error);
         },
       });
-      this.flagNewUserCreated = true;
     }
   }
 
@@ -70,6 +70,7 @@ export class NewUserComponent {
   }
 
   validateForm(): void {
+    this.validateUsername();
     this.isUserInvalid.name =
       this.currentUser.name.length < 3 || this.currentUser.name.length > 25;
     this.isUserInvalid.surname =
@@ -84,7 +85,6 @@ export class NewUserComponent {
       this.currentUser.passwordHash.length > 15;
     this.arePasswordsNotEqual =
       this.currentUser.passwordHash != this.repitedPass;
-    this.validateUsername();
   }
 
   showErrorsModal() {
@@ -94,10 +94,6 @@ export class NewUserComponent {
     };
     this.modalMessageFlag = true;
     this.isFormValid = false;
-  }
-
-  hideModal(): void {
-    this.modalMessageFlag = false;
   }
 
   private handleError(error: HttpErrorResponse): void {
@@ -117,5 +113,9 @@ export class NewUserComponent {
       this.modalMessageFlag = true;
     }
     this.isFormValid = false;
+  }
+
+  hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }
