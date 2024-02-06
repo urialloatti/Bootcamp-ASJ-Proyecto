@@ -204,7 +204,7 @@ INSERT INTO
   )
 VALUES
   ('tec1', 'Musimundo', 1, 'musimundo.com', 2, 1, '31761319809', 1, 1, 'https://seeklogo.com/images/M/Musimundo-logo-5581634F5D-seeklogo.com.png', '2023-11-12', LOCALTIMESTAMP(3), 1),
-  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '30381720705', 8, 2, 'https://www.shutterstock.com/image-vector/heart-vector-symbol-valentines-day-260nw-569390800.jpg', '2023-11-16', LOCALTIMESTAMP(3), 1),
+  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '31401589601', 8, 2, 'https://www.shutterstock.com/image-vector/heart-vector-symbol-valentines-day-260nw-569390800.jpg', '2023-11-16', LOCALTIMESTAMP(3), 1),
   ('rep3', 'Lazz', 2, 'lazz.com/products', 6, 3, '38906168969', 8, 3, 'https://www.shutterstock.com/shutterstock/photos/1676106757/display_1500/stock-vector-letter-b-logo-design-with-modern-concept-icon-letter-b-vector-illustration-1676106757.jpg', '2023-11-17', LOCALTIMESTAMP(3), 1),
   ('tec4', 'Fravega', 1, 'fravega.com', 8, 4, '37688026725', 1, 4, 'https://sf.ezoiccdn.com/ezoimgfmt/www.vectorlogo.es/wp-content/uploads/2019/09/logo-vector-fravega.jpg?ezimgfmt=rs:630x320/rscb1/ngcb1/notWebP', '2023-11-19', LOCALTIMESTAMP(3), 1),
   ('ofi5', 'Talane', 3, 'talane.com', 10, 5, '32680934717', 6, 5, 'https://www.shutterstock.com/image-vector/abstract-crown-people-colorful-logo-260nw-1828733366.jpg', '2023-11-19', LOCALTIMESTAMP(3), 1),

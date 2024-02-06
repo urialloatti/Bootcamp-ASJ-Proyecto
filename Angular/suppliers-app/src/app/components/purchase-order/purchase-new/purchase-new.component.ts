@@ -118,7 +118,7 @@ export class PurchaseNewComponent implements OnInit {
         this.purchaseService.addElement(this.currentPurchaseOrder).subscribe({
           next: (response) => {
             this.modalRedirectObject = {
-              header: `Órden de compra actualizada con Id ${response.data.id}`,
+              header: `Órden de compra cargada con Id ${response.data.id}.`,
               path: '/purchase-orders',
             };
             this.modalRedirectFlag = true;
@@ -131,7 +131,7 @@ export class PurchaseNewComponent implements OnInit {
           .subscribe({
             next: (response) => {
               this.modalRedirectObject = {
-                header: `Órden de compra cargada con Id ${response.data.id}`,
+                header: `Órden de compra con Id ${response.data.id} actualizada.`,
                 path: '/purchase-orders',
               };
               this.modalRedirectFlag = true;

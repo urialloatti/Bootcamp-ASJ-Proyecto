@@ -14,7 +14,7 @@
   </div>
 </div>
 <div *ngIf="isLoaded" class="container-fluid">
-  <section>
+  <section style="overflow: hidden">
     <article class="row mb-2">
       <div class="col text-start">
         <button class="btn btn-secondary" routerLink="new" *ngIf="!isDeleted">
@@ -160,6 +160,7 @@
                     tooltipClass="table-tooltip"
                     [autoClose]="'outside'"
                     [ngbTooltip]="tooltip"
+                    container="body"
                     ><i class="bi bi-info-circle cursor"></i> </a
                 ></sup>
               </div>
@@ -186,7 +187,13 @@
                     <i class="bi bi-pencil-square"></i>
                   </button>
                 </span>
-                <span class="mx-1 bg-transparent" *ngIf="item.available">
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="
+                    item.available ||
+                    (item.state != undefined && item.state == 'Entregado')
+                  "
+                >
                   <button
                     class="btn btn-secondary pb-2"
                     (click)="toggleAvailable(item.id)"
@@ -198,7 +205,10 @@
                     <i class="bi bi-trash3"></i>
                   </button>
                 </span>
-                <span class="mx-1 bg-transparent" *ngIf="!item.available">
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="!item.available && item.state == undefined"
+                >
                   <button
                     class="btn btn-secondary pb-2"
                     (click)="toggleAvailable(item.id)"

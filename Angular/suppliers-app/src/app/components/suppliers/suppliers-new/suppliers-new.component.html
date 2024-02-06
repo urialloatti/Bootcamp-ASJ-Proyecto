@@ -8,7 +8,7 @@
           style="--bs-breadcrumb-divider: '>'"
           aria-label="breadcrumb"
         >
-          <ol class="breadcrumb">
+          <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
             <li class="breadcrumb-item">
               <a routerLink="/suppliers">Lista</a>
@@ -22,7 +22,7 @@
       </div>
       <form #myForm="ngForm" (ngSubmit)="savesupplier()">
         <fieldset class="px-4">
-          <div class="text-center my-4">
+          <div class="text-center mb-4 mt-2">
             <h1 class="h3 title" *ngIf="!isUpdating">Cargar nuevo Proveedor</h1>
             <h1 class="h3 title" *ngIf="isUpdating">Editar Proveedor</h1>
           </div>

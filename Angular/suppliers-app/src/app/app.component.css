@@ -3,6 +3,7 @@ header {
   top: 0px;
   background-color: var(--bg-dark);
   color: var(--color-light);
+  z-index: 1081;
 }
 
 main {

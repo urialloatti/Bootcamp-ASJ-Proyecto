@@ -8,7 +8,7 @@
           style="--bs-breadcrumb-divider: '>'"
           aria-label="breadcrumb"
         >
-          <ol class="breadcrumb">
+          <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
             <li class="breadcrumb-item">
               <a routerLink="/products">Lista</a>
@@ -22,7 +22,7 @@
       </div>
       <form #myForm="ngForm" (ngSubmit)="saveProduct()">
         <fieldset class="px-4">
-          <div class="text-center my-4">
+          <div class="text-center mb-4 mt-2">
             <h1 class="h3 title">
               <span *ngIf="!isUpdating">Cargar nuevo</span
               ><span *ngIf="isUpdating">Actualizar</span> producto
@@ -125,20 +125,40 @@
             <label class="form-label"
               >Descripción <span class="fw-light">*</span></label
             >
-            <textarea
-              name="description"
-              #description="ngModel"
-              [(ngModel)]="currentProduct.description"
-              required
-              [ngClass]="description.errors ? '' : 'is-valid'"
-              [ngClass]="isProductInvalid.description ? 'is-invalid' : ''"
-              class="form-control"
-            ></textarea>
+            <div class="position-relative">
+              <textarea
+                name="description"
+                #description="ngModel"
+                [(ngModel)]="currentProduct.description"
+                required
+                [ngClass]="description.errors ? '' : 'is-valid'"
+                [ngClass]="isProductInvalid.description ? 'is-invalid' : ''"
+                class="form-control"
+              ></textarea>
+              <span
+                class="position-absolute bottom-0 end-0 me-4 mb-2"
+                [ngClass]="
+                  currentProduct.description.length < 500
+                    ? 'form-text'
+                    : 'text-danger'
+                "
+                >{{ 500 - currentProduct.description.length }}</span
+              >
+            </div>
             <div
               class="form-text"
               *ngIf="isProductInvalid.description && description.errors"
             >
-              <p>Debe tener entre 1 y 500 caracteres.</p>
+              <p>Debe tener al menos 1 caracter.</p>
+            </div>
+            <div
+              class="form-text"
+              *ngIf="
+                isProductInvalid.description &&
+                currentProduct.description.length > 500
+              "
+            >
+              <p>No puede tener más de 500 caracteres.</p>
             </div>
           </div>
           <div class="mb-3">

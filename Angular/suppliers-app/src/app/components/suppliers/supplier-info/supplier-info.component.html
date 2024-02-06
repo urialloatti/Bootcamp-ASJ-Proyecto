@@ -12,7 +12,7 @@
             style="--bs-breadcrumb-divider: '>'"
             aria-label="breadcrumb"
           >
-            <ol class="breadcrumb">
+            <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
               <li class="breadcrumb-item">
                 <a routerLink="/suppliers">Lista</a>
@@ -24,8 +24,13 @@
           </nav>
         </div>
         <div class="row mb-4">
-          <div class="col-12 text-center">
-            <h1 class="title">{{ currentsupplier.brand }}</h1>
+          <div
+            class="col-12 text-center d-flex justify-content-center align-items-center"
+          >
+            <h1 class="title me-2">{{ currentsupplier.brand }}</h1>
+            <span class="form-text" *ngIf="!currentsupplier.available"
+              >(Eliminado)</span
+            >
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -161,7 +166,7 @@
             </p>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="currentsupplier.available">
           <div class="col text-center">
             <button
               class="btn btn-secondary"

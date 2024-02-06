@@ -19,6 +19,7 @@ import { suppliersListComponent } from './components/suppliers/suppliers-list/su
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
 import { isAdminGuard } from './guards/is-admin.guard';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {
@@ -109,7 +110,7 @@ const routes: Routes = [
   },
   {
     path: 'test',
-    component: NewUserComponent,
+    component: TestComponent,
   },
   {
     path: 'login',

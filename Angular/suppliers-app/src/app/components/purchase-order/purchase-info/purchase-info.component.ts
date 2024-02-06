@@ -77,12 +77,12 @@ export class PurchaseInfoComponent {
   }
 
   loadPurchase(id: string): void {
-    this.purchaseService.getElementById(parseInt(id)).subscribe(
-      (response) => {
+    this.purchaseService.getElementById(parseInt(id)).subscribe({
+      next: (response) => {
         this.pageLoadedFlag = true;
         this.currentPurchase = response.data;
       },
-      (error) => {
+      error: (error) => {
         this.modalRedirectObject = {
           header: 'Error',
           message: error.error.message,
@@ -90,7 +90,7 @@ export class PurchaseInfoComponent {
         };
         this.modalRedirectFlag = true;
         console.error(error);
-      }
-    );
+      },
+    });
   }
 }

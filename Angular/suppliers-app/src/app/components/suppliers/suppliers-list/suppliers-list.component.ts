@@ -47,6 +47,10 @@ export class suppliersListComponent implements OnInit {
           { key: 'fullAddress', extras: 'province', isNumeric: false },
         ],
       },
+      {
+        field: 'Código',
+        keys: [{ key: 'code', isNumeric: false }],
+      },
     ],
   };
   modalConfirmFlag: boolean = false;

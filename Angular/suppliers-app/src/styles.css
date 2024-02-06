@@ -40,6 +40,10 @@
 }
 
 .table-tooltip {
+  max-width: 500px;
+  width: fit-content;
+}
+.table-tooltip .tooltip-inner {
   width: max-content;
 }
 

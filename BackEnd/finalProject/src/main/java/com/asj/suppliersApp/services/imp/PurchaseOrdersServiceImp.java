@@ -41,6 +41,7 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
         for(PurchaseOrder order: orders) {
             if (order.getDateArrives().before(today)) {
                 order.setState("Entregado");
+                order.setAvailable(false);
                 order = this.orderRep.save(order);
             }
             response.add(PurchaseOrderMapper.getResponseFromOrder(order));
@@ -51,6 +52,12 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
     @Override
     public PurchaseOrderResponseDTO getById(Integer id) throws ResourceNotFoundException {
         PurchaseOrder order = this.getOrderIfExists(id);
+        Date today = new Date();
+        if (order.getDateArrives().before(today)) {
+            order.setState("Entregado");
+            order.setAvailable(false);
+            order = this.orderRep.save(order);
+        }
         return PurchaseOrderMapper.getResponseFromOrder(order);
     }
 
@@ -109,7 +116,7 @@ public class PurchaseOrdersServiceImp implements PurchaseOrdersService {
     }
 
     private PurchaseOrder getOrderIfExists(Integer id) throws ResourceNotFoundException {
-        return this.orderRep.findById(id).orElseThrow(()-> new RuntimeException("Órden de compra con el Id " + id + " no encontrada."));
+        return this.orderRep.findById(id).orElseThrow(()-> new ResourceNotFoundException("Órden de compra con el Id " + id + " no encontrada."));
     }
     private PurchaseOrder getOrderFromRequest(PurchaseOrderRequestDTO request) throws ResourceNotFoundException {
         PurchaseOrder order = new PurchaseOrder();

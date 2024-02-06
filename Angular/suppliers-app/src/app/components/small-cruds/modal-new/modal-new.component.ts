@@ -68,6 +68,7 @@ export class ModalNewComponent implements OnInit {
       this.elementExist = false;
       let capitalizedName =
         this.elementName.charAt(0).toUpperCase() + this.elementName.slice(1);
+      capitalizedName = capitalizedName.trim();
       this.smallCrudsService
         .existsByName(capitalizedName, this.currentCreate)
         .subscribe((exists) => {

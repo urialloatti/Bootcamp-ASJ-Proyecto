@@ -16,7 +16,8 @@
                   <a routerLink="/purchase-orders">Lista</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  Orden de compra N° {{ currentPurchase.id }}
+                  Orden de compra N°
+                  {{ currentPurchase.id | number : "6.0-0" }}
                 </li>
               </ol>
             </nav>
@@ -34,7 +35,7 @@
                 Emitida: {{ currentPurchase.createdAt | date : "dd/MM/yyyy" }}
               </h2>
               <h2 class="h3 text-body-tertiary">
-                Llegada estimada:
+                Fecha de entrega:
                 {{ currentPurchase.dateArriving | date : "dd/MM/yyyy" }}
               </h2>
             </div>
@@ -88,7 +89,9 @@
           </div>
           <div class="row pe-5">
             <div class="col text-end">
-              <p>ID: {{ currentPurchase.id }}</p>
+              <p class="text-body-tertiary fs-3">
+                Número de órden: {{ currentPurchase.id | number : "6.0-0" }}
+              </p>
             </div>
           </div>
           <div class="row my-3" *ngIf="currentPurchase.available">
@@ -115,14 +118,14 @@
       <div class="col"></div>
     </div>
   </div>
-  <section>
-    <shared-modal-confirm
-      *ngIf="modalConfirmFlag"
-      [modalData]="modalConfirmObject"
-    ></shared-modal-confirm>
-    <shared-modal-redirect
-      *ngIf="modalRedirectFlag"
-      [modalData]="modalRedirectObject"
-    ></shared-modal-redirect>
-  </section>
 </div>
+<section>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
+</section>

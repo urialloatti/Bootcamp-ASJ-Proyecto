@@ -22,7 +22,7 @@ export class ProductsRecycleBinComponent {
 
   productsFields: ListTemplateInterface = {
     section: 'products',
-    label: 'productos',
+    label: 'productos eliminados',
     listFields: [
       { field: 'Proveedor', keys: [{ key: 'supplier', isNumeric: false }] },
       { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },

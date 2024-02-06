@@ -44,6 +44,7 @@ import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { ShowProvincePipe } from './pipes/show-province.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ShowMailPipe,
     ShowProvincePipe,
     TableTransformPipe,
+    TestComponent,
   ],
   imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule, NgbModule],
   providers: [
