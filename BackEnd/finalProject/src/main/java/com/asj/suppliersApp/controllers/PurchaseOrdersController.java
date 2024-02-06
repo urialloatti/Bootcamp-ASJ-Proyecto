@@ -45,7 +45,7 @@ public class PurchaseOrdersController {
     }
 
     @GetMapping("/u/{id}")
-    public ResponseEntity<ApiResponse<PurchaseOrderRequestDTO>> getForUpdate(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<PurchaseOrderRequestDTO>> getOrderForUpdate(@PathVariable Integer id) {
         try {
             PurchaseOrderRequestDTO request = this.ordersService.getPurchaseForUpdate(id);
             return ResponseEntity.ok().body(new ApiResponse<>(request));
@@ -54,6 +54,7 @@ public class PurchaseOrdersController {
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
     }
+
     @GetMapping("/count")
     public ResponseEntity<Long> getCount() {
         return ResponseEntity.status(200).body(this.ordersService.countAvailables());
@@ -63,45 +64,40 @@ public class PurchaseOrdersController {
     public ResponseEntity<ApiResponse<PurchaseOrderResponseDTO>> postNew(@Valid @RequestBody PurchaseOrderRequestDTO request, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
-        } catch (BadRequestException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-        }
-        try {
             PurchaseOrderResponseDTO response = this.ordersService.createPurchase(request);
             return ResponseEntity.status(201).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<PurchaseOrderResponseDTO>> updateOrder(@PathVariable Integer id,@Valid @RequestBody PurchaseOrderRequestDTO request, BindingResult bindingResult) {
-        try {
-            BadRequestBodyChecker.checkBody(bindingResult);
         } catch (BadRequestException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<PurchaseOrderResponseDTO>> updateOrder(@PathVariable Integer id, @Valid @RequestBody PurchaseOrderRequestDTO request, BindingResult bindingResult) {
         try {
-        PurchaseOrderResponseDTO response = this.ordersService.updateById(id, request);
+            BadRequestBodyChecker.checkBody(bindingResult);
+            PurchaseOrderResponseDTO response = this.ordersService.updateById(id, request);
             return ResponseEntity.status(201).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
     }
 
     @PatchMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<PurchaseOrderResponseDTO>> deleteById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO setAvailable) {
         try {
-            PurchaseOrderResponseDTO response =this.ordersService.cancelById(id, setAvailable);
+            PurchaseOrderResponseDTO response = this.ordersService.cancelById(id, setAvailable);
             return ResponseEntity.status(200).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
     }
-
 }

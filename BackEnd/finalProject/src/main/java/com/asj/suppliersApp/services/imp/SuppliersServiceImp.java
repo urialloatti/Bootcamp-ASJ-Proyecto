@@ -110,8 +110,7 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     private Supplier getSupplierIfExists(Integer id) throws ResourceNotFoundException {
-        return this.supplierRep.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + id + " no encontrado."));
+        return this.supplierRep.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + id + " no encontrado."));
     }
 
     private Supplier updateSupplier(Supplier toUpdate, SupplierRequestDTO requestDTO) throws ResourceNotFoundException {
@@ -134,13 +133,12 @@ public class SuppliersServiceImp implements SuppliersService {
         Supplier supplier = SupplierMapper.getSupplierFromRequest(requestDTO);
         Sector sector = this.sectorRep.findById(requestDTO.getSectorId())
                 .orElseThrow(() -> new ResourceNotFoundException("El rubro seleccionado no se encuentra disponible."));
-        FiscalCondition fiscalCondition = this.fiscalCondRep
-                .findById(requestDTO.getFiscalConditionId()).orElseThrow(() -> new ResourceNotFoundException("La condición fiscal seleccionada no se encuentra disponible."));
+        FiscalCondition fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId())
+                .orElseThrow(() -> new ResourceNotFoundException("La condición fiscal seleccionada no se encuentra disponible."));
         Province province = this.provinceRep.findById(requestDTO.getFullAddress().getProvinceId())
                 .orElseThrow(() -> new ResourceNotFoundException("La proovincia seleccionada no se encuentra disponible."));
         supplier.setSector(sector);
         supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province));
-        supplier.setAddress(supplier.getAddress());
         supplier.setFiscalCondition(fiscalCondition);
         supplier.setPhone(supplier.getPhone());
         supplier.getContact().setPhone(supplier.getContact().getPhone());

@@ -9,14 +9,11 @@ import com.asj.suppliersApp.exceptions.BadRequestException;
 import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.services.ProductsService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -50,7 +47,7 @@ public class ProductsController {
     }
 
     @GetMapping("/u/{id}")
-    public ResponseEntity<ApiResponse<ProductRequestDTO>> getProductForUpdateById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<ProductRequestDTO>> getProductForUpdate(@PathVariable Integer id) {
         try {
             ProductRequestDTO request = this.productsService.findByIdUpdate(id);
             return ResponseEntity.ok().body(new ApiResponse<>(request));
@@ -59,6 +56,7 @@ public class ProductsController {
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
     }
+
     @GetMapping("/count")
     public ResponseEntity<Long> getCount() {
         return ResponseEntity.status(200).body(this.productsService.countAvailables());
@@ -68,16 +66,14 @@ public class ProductsController {
     public ResponseEntity<ApiResponse<ProductResponseDTO>> postNewProduct(@Valid @RequestBody ProductRequestDTO product, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
-        } catch (BadRequestException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-        }
-        try {
             ProductResponseDTO response = this.productsService.create(product);
             return ResponseEntity.status(201).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
     }
 
@@ -85,16 +81,14 @@ public class ProductsController {
     public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductRequestDTO product, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
-        } catch (BadRequestException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-        }
-        try {
             ProductResponseDTO response = this.productsService.update(product, id);
             return ResponseEntity.status(201).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
     }
 
@@ -107,7 +101,7 @@ public class ProductsController {
     public ResponseEntity<ApiResponse<ProductResponseDTO>> cancelProductById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancel) {
         try {
             ProductResponseDTO response = this.productsService.cancelById(id, cancel);
-            return ResponseEntity.status(201).body(new ApiResponse<>(response));
+            return ResponseEntity.status(200).body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));

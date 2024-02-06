@@ -50,18 +50,14 @@ public class UsersController {
     public ResponseEntity<ApiResponse<UserResponseDTO>> signup(@Valid @RequestBody UserRequestDTO request, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
+            UserResponseDTO response = this.usersService.createUser(request);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         } catch (BadRequestException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
-        try {
-        UserResponseDTO response = this.usersService.createUser(request);
-        return ResponseEntity.ok().body(new ApiResponse<>(response));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
-        } catch (BadRequestException e) {
-        System.out.println(e.toString());
-        return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-    }
     }
 }
