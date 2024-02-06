@@ -20,6 +20,7 @@ import { suppliersNewComponent } from './components/suppliers/suppliers-new/supp
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
 import { isAdminGuard } from './guards/is-admin.guard';
 import { TestComponent } from './test/test.component';
+import { leaveFormGuard } from './guards/leave-form.guard';
 
 const routes: Routes = [
   {
@@ -56,7 +57,12 @@ const routes: Routes = [
         component: ProductsListComponent,
         title: 'Lista de productos',
       },
-      { path: 'new', component: ProductsNewComponent, title: 'Nuevo producto' },
+      {
+        path: 'new',
+        component: ProductsNewComponent,
+        title: 'Nuevo producto',
+        canDeactivate: [leaveFormGuard],
+      },
       {
         path: 'recycle-bin',
         canActivate: [isAdminGuard],

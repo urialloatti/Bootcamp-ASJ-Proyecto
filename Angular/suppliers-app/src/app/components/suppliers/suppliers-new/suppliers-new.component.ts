@@ -212,7 +212,7 @@ export class suppliersNewComponent implements OnInit {
 
   createNewSector() {
     this.isCreatingSector = true;
-    let subsciption = this.modalService.confirm$.subscribe((response) => {
+    let subsciption = this.modalService.confirmModal$.subscribe((response) => {
       this.smallCrudsService
         .getList('sector')
         .subscribe((secList) => (this.sectors = secList));

@@ -66,7 +66,7 @@ export class ProductInfoComponent implements OnInit {
       confirm: 'Eliminar',
     };
     this.modalConfirmFlag = true;
-    this.confirmService.confirm$.subscribe((confirmation) => {
+    this.confirmService.confirmModal$.subscribe((confirmation) => {
       this.modalConfirmFlag = false;
       if (confirmation) {
         this.productService.cancelElementByIdB(id).subscribe(

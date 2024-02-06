@@ -138,7 +138,7 @@ export class ProductsNewComponent implements OnInit {
 
   createNewCategory() {
     this.isCreatingCategory = true;
-    let subsciption = this.modalService.confirm$.subscribe(() => {
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.smallCrudsService
         .getList('category')
         .subscribe((catList) => (this.categories = catList));

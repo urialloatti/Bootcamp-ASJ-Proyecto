@@ -53,34 +53,36 @@ export class SuppliersRecycleBinComponent implements OnInit {
         confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((confirmed) => {
-        this.modalConfirmFlag = false;
-        if (confirmed) {
-          deleted.available = false;
-          this.suppliersService.restoreElementById(id).subscribe({
-            next: (apiResponse) => {
-              let response = apiResponse.data;
-              this.modalMessageObject = {
-                header: `Proveedor ${response.brand} recuperado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.suppliersService.getList().subscribe();
-            },
-            error: (error) => {
-              this.modalMessageObject = {
-                header: error.error.message,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.error(error);
-            },
-            complete: () => subscription.unsubscribe(),
-          });
-        } else {
-          subscription.unsubscribe();
+      let subscription = this.confirmService.confirmModal$.subscribe(
+        (confirmed) => {
+          this.modalConfirmFlag = false;
+          if (confirmed) {
+            deleted.available = false;
+            this.suppliersService.restoreElementById(id).subscribe({
+              next: (apiResponse) => {
+                let response = apiResponse.data;
+                this.modalMessageObject = {
+                  header: `Proveedor ${response.brand} recuperado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.suppliersService.getList().subscribe();
+              },
+              error: (error) => {
+                this.modalMessageObject = {
+                  header: error.error.message,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.error(error);
+              },
+              complete: () => subscription.unsubscribe(),
+            });
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 

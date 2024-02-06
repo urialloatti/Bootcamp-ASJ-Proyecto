@@ -51,7 +51,7 @@ export class PurchaseInfoComponent {
         confirm: 'Cancelar órden de compra',
       };
       this.modalConfirmFlag = true;
-      this.confirmService.confirm$.subscribe((response) => {
+      this.confirmService.confirmModal$.subscribe((response) => {
         this.modalConfirmFlag = false;
         if (response) {
           this.purchaseService.cancelElementById(id).subscribe(

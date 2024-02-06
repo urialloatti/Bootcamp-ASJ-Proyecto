@@ -74,7 +74,7 @@ export class SmallListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.modalService.confirm$.subscribe(
+      let subscription = this.modalService.confirmModal$.subscribe(
         (confirmation) => {
           this.modalConfirmFlag = false;
           if (confirmation) {
@@ -101,7 +101,7 @@ export class SmallListComponent implements OnInit {
   createNew(page: Page) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.isCreatingNew = true;
-    let subsciption = this.modalService.confirm$.subscribe(() => {
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.loadList(page);
       this.isCreatingNew = false;
       subsciption.unsubscribe();
@@ -112,7 +112,7 @@ export class SmallListComponent implements OnInit {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.updatingId = id;
     this.isUpdating = true;
-    let subsciption = this.modalService.confirm$.subscribe(() => {
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.loadList(page);
       this.isUpdating = false;
       subsciption.unsubscribe();

@@ -255,7 +255,7 @@ export class ItemsListComponent implements OnInit {
 
   public toggleAvailable(id: number): void {
     this.deletedId.emit(id);
-    this.modalService.confirm$.subscribe(() => {
+    this.modalService.confirmModal$.subscribe(() => {
       setTimeout(() => {
         this.loadPages();
       }, 200);

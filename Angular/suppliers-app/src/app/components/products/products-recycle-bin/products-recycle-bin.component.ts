@@ -52,32 +52,34 @@ export class ProductsRecycleBinComponent {
         confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((confirmed) => {
-        this.modalConfirmFlag = false;
-        if (confirmed) {
-          this.productsService.restoreElementByIdB(id).subscribe({
-            next: (response) => {
-              this.modalMessageObject = {
-                header: `Producto ${response.data.name} recuperado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.productsService.getList().subscribe();
-            },
-            error: (error) => {
-              this.modalMessageObject = {
-                header: `El producto ya no existe en la base de datos.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.log(error);
-            },
-            complete: () => subscription.unsubscribe(),
-          });
-        } else {
-          subscription.unsubscribe();
+      let subscription = this.confirmService.confirmModal$.subscribe(
+        (confirmed) => {
+          this.modalConfirmFlag = false;
+          if (confirmed) {
+            this.productsService.restoreElementByIdB(id).subscribe({
+              next: (response) => {
+                this.modalMessageObject = {
+                  header: `Producto ${response.data.name} recuperado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.productsService.getList().subscribe();
+              },
+              error: (error) => {
+                this.modalMessageObject = {
+                  header: `El producto ya no existe en la base de datos.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.log(error);
+              },
+              complete: () => subscription.unsubscribe(),
+            });
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 
