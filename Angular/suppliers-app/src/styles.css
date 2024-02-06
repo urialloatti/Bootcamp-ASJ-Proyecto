@@ -1,0 +1,73 @@
+:root {
+  --bg-dark: #404850;
+  --bg-accent: #208090;
+  --bg-light: #f6faff;
+  --bg-light-accent: #e8fbff;
+
+  --color-light: #d2e2ef;
+  --color-lighter: #d3e9fa;
+  --color-dark: #101a24;
+  --color-middle: #6d828a;
+  --color-accent: #28a0b0;
+  --color-accent-light: #38b8c8;
+  --color-accent-lighter: #3dd1e4;
+}
+
+.body {
+  background-color: var(--bg-light-accent);
+}
+
+.title {
+  color: var(--color-middle) !important;
+}
+
+.btn-color {
+  background-color: var(--bg-accent);
+}
+
+.btn-color:hover {
+  background-color: var(--color-accent-light);
+  transition: 0.3s;
+}
+
+#modal-box {
+  height: fit-content;
+  position: fixed;
+  top: 10%;
+  left: 30%;
+  display: inline;
+  width: 40%;
+}
+
+.table-tooltip {
+  max-width: 500px;
+  width: fit-content;
+}
+.table-tooltip .tooltip-inner {
+  width: max-content;
+}
+
+#modal-dialog {
+  z-index: 1055;
+}
+
+@media (max-width: 1200px) {
+  #modal-box {
+    left: 25%;
+    width: 50%;
+  }
+}
+
+@media (max-width: 992px) {
+  #modal-box {
+    left: 15%;
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  #modal-box {
+    left: 10%;
+    width: 80%;
+  }
+}

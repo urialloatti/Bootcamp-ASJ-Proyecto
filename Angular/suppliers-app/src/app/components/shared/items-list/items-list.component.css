@@ -1,0 +1,22 @@
+.last-column {
+  width: 10rem;
+}
+
+img {
+  width: 5em;
+  height: 4em;
+  object-fit: cover;
+  padding: 0.25em;
+  border: 1px #ccc solid;
+  background-color: var(--bg-light);
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .items-table {
+    overflow-x: auto;
+  }
+}

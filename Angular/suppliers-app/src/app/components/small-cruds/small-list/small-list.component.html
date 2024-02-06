@@ -1,0 +1,96 @@
+<div class="container body py-4 px-3 rounded">
+  <div class="row mb-2">
+    <div class="col text-center">
+      <h1 class="title">Administrar categorías y rubros</h1>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <section class="row gx-5">
+      <article
+        class="col text-center items-table rounded"
+        *ngFor="let section of listCreationObject"
+      >
+        <div class="row">
+          <div class="col-1">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="createNew(section.section)"
+            >
+              <i class="bi bi-plus-circle"></i>
+            </button>
+          </div>
+          <div class="col">
+            <h2 class="title">{{ section.section }}s</h2>
+          </div>
+        </div>
+        <div *ngIf="section.isLoaded && section.itemsList.length > 0">
+          <table class="table table-striped table-hover">
+            <thead class="table-light">
+              <tr>
+                <th scope="col" class="text-start ps-4">
+                  {{ section.section }}
+                </th>
+                <th scope="col" class="mx-1 text-center last-column">
+                  <i class="bi bi-gear-fill"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="tr h-100 text-start"
+                *ngFor="let item of section.itemsList"
+              >
+                <td class="ps-4">{{ item.name }}</td>
+                <td class="py-2 text-center last-column">
+                  <span class="bg-transparent">
+                    <button
+                      class="btn btn-secondary pb-2 me-2"
+                      (click)="updateElement(section.section, item.id!)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </span>
+                  <span class="bg-transparent">
+                    <button
+                      class="btn btn-secondary pb-2"
+                      (click)="deleteItem(section.section, item.id!)"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <shared-no-items-alert
+          *ngIf="section.itemsList.length == 0"
+          alerLabel="{{ section.section.toLowerCase() }}s"
+        ></shared-no-items-alert>
+      </article>
+    </section>
+    <section>
+      <shared-modal-confirm
+        *ngIf="modalConfirmFlag"
+        [modalData]="modalConfirmObject"
+      ></shared-modal-confirm>
+      <shared-modal-message
+        *ngIf="modalMessageFlag"
+        [modalData]="modalMessageObject"
+        (modalViewed)="hideModal()"
+      >
+      </shared-modal-message>
+      <app-modal-new
+        *ngIf="isCreatingNew"
+        [currentCreate]="currentCreate"
+      ></app-modal-new>
+      <app-modal-new
+        *ngIf="isUpdating"
+        [currentCreate]="currentCreate"
+        [isUpdating]="true"
+        [elementId]="updatingId"
+      ></app-modal-new>
+    </section>
+  </div>
+</div>

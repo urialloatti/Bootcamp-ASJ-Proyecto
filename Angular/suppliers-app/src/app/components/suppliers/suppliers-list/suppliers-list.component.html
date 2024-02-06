@@ -1,0 +1,20 @@
+<div class="container body py-4 px-3 rounded">
+  <shared-items-list
+    [listTemplate]="suppliersFields"
+    [itemsArray$]="supplierList$"
+    [hasPicture]="true"
+    (deletedId)="deletesupplier($event)"
+  ></shared-items-list>
+  <section>
+    <shared-modal-confirm
+      *ngIf="modalConfirmFlag"
+      [modalData]="modalConfirmObject"
+    ></shared-modal-confirm>
+    <shared-modal-message
+      *ngIf="modalMessageFlag"
+      [modalData]="modalMessageObject"
+      (modalViewed)="hideModal()"
+    >
+    </shared-modal-message>
+  </section>
+</div>

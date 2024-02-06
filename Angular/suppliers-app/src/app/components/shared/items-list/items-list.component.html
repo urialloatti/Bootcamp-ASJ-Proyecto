@@ -1,0 +1,232 @@
+<div class="row mb-0">
+  <nav class="col" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ listTemplate.label | titlecase }}
+      </li>
+    </ol>
+  </nav>
+</div>
+<div class="row mb-2">
+  <div class="col text-center">
+    <h1 class="title">Lista de {{ listTemplate.label }}</h1>
+  </div>
+</div>
+<div *ngIf="isLoaded" class="container-fluid">
+  <section style="overflow: hidden">
+    <article class="row mb-2">
+      <div class="col text-start">
+        <button class="btn btn-secondary" routerLink="new" *ngIf="!isDeleted">
+          Cargar {{ listTemplate.label }}
+        </button>
+      </div>
+      <div class="col text-start">
+        <div class="row">
+          <div class="col input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="filterArg"
+              *ngIf="filterIndex != -1"
+            />
+            <select name="filter" class="form-select" [(ngModel)]="filterIndex">
+              <option value="-1">Sin filtro</option>
+              <option
+                value="{{ i }}"
+                *ngFor="let key of listTemplate.listFields; index as i"
+              >
+                {{ key.field }}
+              </option>
+            </select>
+            <button
+              class="btn btn-secondary"
+              (click)="filterList()"
+              *ngIf="filterIndex != -1"
+            >
+              Filtrar
+            </button>
+            <button
+              class="btn btn-secondary"
+              (click)="loadPages()"
+              *ngIf="filterIndex == -1"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col text-end" *ngIf="hasPagination">
+        <div class="btn-group btn-group-sm me-2" role="group">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            [disabled]="currentPage == 0"
+            (click)="changePage(-1)"
+          >
+            <i class="bi bi-chevron-compact-left"></i>
+          </button>
+          <span *ngFor="let page of pageList">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              [ngClass]="page.index == currentPage ? 'active' : ''"
+              (click)="selectPage(page.index)"
+              *ngIf="fromPage <= page.index && page.index <= toPage"
+            >
+              {{ page.index + 1 }}
+            </button>
+          </span>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            [disabled]="currentPage == pageList.length - 1"
+            (click)="changePage(1)"
+          >
+            <i class="bi bi-chevron-compact-right"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+    <article class="items-table rounded" *ngIf="itemsShowed.length > 0">
+      <table class="table table-striped table-hover">
+        <thead class="table-light">
+          <tr>
+            <th
+              scope="col"
+              *ngIf="hasPicture"
+              class="text-start picture-col ps-4"
+            >
+              <i class="bi bi-image-fill"></i>
+            </th>
+            <th
+              scope="col"
+              class="text-start"
+              *ngFor="let headers of listTemplate.listFields; index as i"
+              (click)="toggleOrder(i)"
+            >
+              {{ headers.field }}
+              <i
+                *ngIf="isOrdered[i] == 'descendent'"
+                class="bi bi-caret-up-fill"
+              ></i>
+              <i
+                *ngIf="isOrdered[i] == 'ascendent'"
+                class="bi bi-caret-down-fill"
+              ></i>
+            </th>
+            <th scope="col" class="text-center last-column">
+              <i class="bi bi-gear-fill"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of itemsShowed" class="tr h-100">
+            <td *ngIf="hasPicture" class="picture-col">
+              <img
+                class="rounded"
+                src="{{ item.picture || '' }}"
+                (error)="imageNotFound($event)"
+              />
+            </td>
+            <td
+              *ngFor="let field of listTemplate.listFields"
+              class="align-middle"
+            >
+              <div>
+                <span *ngFor="let keyV of field.keys; index as i"
+                  >{{ item[keyV.key] | tableTransform : keyV.extras }}
+                  <span *ngIf="i < field.keys.length - 1"> | </span> </span
+                ><span> </span>
+                <ng-template #tooltip>
+                  <div>
+                    <span *ngFor="let keyVToltip of field.toolTip; index as i"
+                      >{{
+                        item[keyVToltip.key]
+                          | tableTransform : keyVToltip.extras
+                      }}
+                      <span
+                        *ngIf="field.toolTip && i < field.toolTip.length - 1"
+                      >
+                        |
+                      </span></span
+                    >
+                  </div>
+                </ng-template>
+                <sup *ngIf="field.toolTip">
+                  <a
+                    placement="end"
+                    triggers="click"
+                    tooltipClass="table-tooltip"
+                    [autoClose]="'outside'"
+                    [ngbTooltip]="tooltip"
+                    container="body"
+                    ><i class="bi bi-info-circle cursor"></i> </a
+                ></sup>
+              </div>
+            </td>
+            <td class="py-2 last-column align-middle">
+              <div class="h-100 d-flex align-items-center">
+                <span class="mx-1 bg-transparent">
+                  <button
+                    class="btn btn-secondary pb-2"
+                    routerLink="/{{ listTemplate.section }}/{{ item.id }}"
+                  >
+                    <i class="bi bi-box-arrow-in-up-right"></i>
+                  </button>
+                </span>
+                <span class="mx-1 bg-transparent">
+                  <button
+                    class="btn btn-secondary pb-2"
+                    routerLink="u/{{ item.id }}"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                </span>
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="
+                    item.available ||
+                    (item.state != undefined && item.state == 'Entregado')
+                  "
+                >
+                  <button
+                    class="btn btn-secondary pb-2"
+                    (click)="toggleAvailable(item.id)"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
+                  >
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </span>
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="!item.available && item.state == undefined"
+                >
+                  <button
+                    class="btn btn-secondary pb-2"
+                    (click)="toggleAvailable(item.id)"
+                    [disabled]="item.available"
+                  >
+                    <i class="bi bi-recycle"></i>
+                  </button>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+  <section *ngIf="itemsShowed.length == 0">
+    <shared-no-items-alert
+      alerLabel="{{ listTemplate.label }}"
+    ></shared-no-items-alert>
+  </section>
+</div>

@@ -1,0 +1,17 @@
+.modal-header-bg {
+  background-color: var(--bg-accent);
+  color: var(--color-light);
+}
+
+.modal-content-bg {
+  background-color: var(--bg-light);
+  color: var(--color-light);
+}
+
+.modal-title {
+  width: 100%;
+}
+
+#btn-close {
+  cursor: pointer;
+}

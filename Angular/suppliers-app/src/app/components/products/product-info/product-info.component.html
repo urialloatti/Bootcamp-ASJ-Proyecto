@@ -1,0 +1,109 @@
+<section class="container py-4 rounded h-100 body">
+  <div class="row">
+    <div class="col d-none d-sm-block"></div>
+    <div class="col col-sm-10 col-md-9">
+      <article class="bg-body-tertiary rounded p-2 px-5" *ngIf="isLoaded">
+        <div class="row mb-3">
+          <nav
+            class="col"
+            style="--bs-breadcrumb-divider: '>'"
+            aria-label="breadcrumb"
+          >
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+              <li class="breadcrumb-item">
+                <a routerLink="/products">Lista</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ currentProduct.name }}
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="row d-block d-md-none mb-2">
+          <div class="col text-center">
+            <h1 class="h2 title">{{ currentProduct.name }}</h1>
+          </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-6 col-md-4 pe-3">
+            <img
+              src="{{ currentProduct.picture }}"
+              alt="{{ currentProduct.name }}"
+              (error)="imageNotFound($event)"
+              class="rounded"
+            />
+          </div>
+          <div class="col ps-3">
+            <div class="row mb-4 d-none d-md-block">
+              <div class="col-12 text-center">
+                <h1 class="h2 title">{{ currentProduct.name }}</h1>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <h2 class="h4 text-body-tertiary">
+                  <span class="h5">Proveedor: </span
+                  >{{ currentProduct.supplier }}
+                </h2>
+              </div>
+              <div class="col">
+                <h2 class="h4 text-body-tertiary">
+                  <span class="h5">Categoría: </span>
+                  {{ currentProduct.category }}
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="bg-white p-3 rounded border border-secondary-subtle">
+              <p>{{ currentProduct.description }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p class="text-body-tertiary">Código: {{ currentProduct.code }}</p>
+          </div>
+          <div class="col text-end">
+            <p class="h2 text-body-secondary">
+              {{ currentProduct.price | currency : "USD" }}
+            </p>
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              [routerLink]="'/products/u/' + currentProduct.id"
+            >
+              Modificar
+            </button>
+          </div>
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              [disabled]="!currentProduct.available"
+              (click)="deleteProduct(currentProduct.id!)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col d-none d-sm-block"></div>
+  </div>
+</section>
+<section>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
+</section>

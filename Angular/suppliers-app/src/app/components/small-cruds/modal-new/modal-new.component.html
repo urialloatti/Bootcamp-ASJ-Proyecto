@@ -1,0 +1,76 @@
+<section
+  class="modal"
+  tabindex="-1"
+  id="modal-box"
+  [ngClass]="triedToEscape ? 'fade show' : 'fade show modal-static'"
+>
+  <div class="modal-dialog" id="modal-dialog">
+    <div class="modal-content modal-content-bg">
+      <div class="modal-header justify-content-between modal-header-bg py-2">
+        <div class="text-center modal-title">
+          <h2 class="modal-title fs-5">{{ modalTitle }}</h2>
+        </div>
+        <span class="fs-4" id="btn-close" (click)="sendResponse(false)"
+          ><i class="bi bi-x"></i
+        ></span>
+      </div>
+      <article *ngIf="elementAddedMessage.length == 0">
+        <form #myForm="ngForm" (ngSubmit)="addElement()">
+          <div class="modal-body py-1">
+            <div class="my-3 px-5">
+              <label class="form-label text-dark-emphasis">{{
+                modalInputLabel
+              }}</label>
+              <input
+                type="text"
+                name="element"
+                #element="ngModel"
+                [(ngModel)]="elementName"
+                required
+                minlength="3"
+                maxlength="25"
+                [ngClass]="isElementInvalid ? 'is-invalid' : ''"
+                [ngClass]="element.errors ? '' : 'is-valid'"
+                class="form-control"
+              />
+              <div class="form-text" *ngIf="isElementInvalid && element.errors">
+                <p>Debe tener al menos 3 caracteres.</p>
+              </div>
+              <div class="form-text" *ngIf="elementExist">
+                <p class="text-danger">{{ alreadyExistsMessage }}</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal-footer d-flex justify-content-end border-top-0 pt-0"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="sendResponse(false)"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-color" type="submit">
+              Añadir {{ modalInputLabel | lowercase }}
+            </button>
+          </div>
+        </form>
+      </article>
+      <article *ngIf="elementAddedMessage.length != 0">
+        <div class="modal-body py-1">
+          <div class="row my-2">
+            <div class="col text-center text-dark-emphasis">
+              <h3>{{ elementAddedMessage }}</h3>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<div
+  class="modal-backdrop fade show"
+  id="modal-backdrop"
+  (click)="backClick()"
+></div>

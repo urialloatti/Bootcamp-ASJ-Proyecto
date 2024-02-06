@@ -1,0 +1,28 @@
+#web-icon {
+  color: var(--color-accent);
+}
+
+#dropdown {
+  background-color: var(--bg-dark);
+}
+
+.menu-option {
+  color: var(--color-middle);
+}
+
+.menu-option:hover {
+  color: var(--color-light);
+  transition: 0.2s;
+}
+
+.menu-option-active {
+  color: var(--color-light);
+}
+
+.dropdown-menu-items {
+  color: var(--color-light);
+}
+
+.nav-link.show {
+  color: var(--color-light);
+}

@@ -1,0 +1,201 @@
+<section class="container py-4 rounded h-100 body">
+  <div class="row">
+    <div class="col d-none d-sm-block"></div>
+    <div class="col col-sm-10 col-md-9">
+      <article
+        class="bg-body-tertiary rounded p-4 px-5"
+        *ngIf="isSupplierLoaded"
+      >
+        <div class="row">
+          <nav
+            class="col"
+            style="--bs-breadcrumb-divider: '>'"
+            aria-label="breadcrumb"
+          >
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+              <li class="breadcrumb-item">
+                <a routerLink="/suppliers">Lista</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ currentsupplier.brand }}
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="row mb-4">
+          <div
+            class="col-12 text-center d-flex justify-content-center align-items-center"
+          >
+            <h1 class="title me-2">{{ currentsupplier.brand }}</h1>
+            <span class="form-text" *ngIf="!currentsupplier.available"
+              >(Eliminado)</span
+            >
+          </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col mb-3">
+            <div class="row d-flex flex-column text-center">
+              <div class="col mb-2">
+                <img
+                  class="img-thumbnail"
+                  src="{{ currentsupplier.picture }}"
+                  alt="{{ currentsupplier.brand }}"
+                />
+              </div>
+              <div class="col">
+                <h2 class="h3 text-body-tertiary">
+                  Rubro: {{ currentsupplier.sector }}
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-5">
+            <h5 class="text-body-tertiary">Información fiscal:</h5>
+            <div
+              class="bg-white p-2 rounded border border-secondary-subtle text-start"
+            >
+              <div class="row">
+                <div class="col">
+                  <p>{{ currentsupplier.fiscalCondition }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>CUIT: {{ currentsupplier.cuit | cuitPipe }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3 d-flex align-items-center">
+          <div class="col-12 col-md-6 mb-3">
+            <h5 class="text-body-tertiary">Dirección:</h5>
+            <div
+              class="bg-white ps-4 pt-3 rounded border border-secondary-subtle text-start"
+            >
+              <div class="row">
+                <div class="col">
+                  <p>
+                    {{ currentsupplier.fullAddress.address }}
+                    {{ currentsupplier.fullAddress.addressNumber }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>
+                    {{ currentsupplier.fullAddress.country }} -
+                    {{ currentsupplier.fullAddress.province }} -
+                    {{ currentsupplier.fullAddress.city }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>CP: {{ currentsupplier.fullAddress.zipCode }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <h5 class="text-body-tertiary">Información:</h5>
+            <div
+              class="bg-white ps-4 pt-3 rounded border border-secondary-subtle text-start"
+            >
+              <div class="row">
+                <div class="col">
+                  <p>
+                    <i class="bi bi-telephone-fill"></i>
+                    +{{ currentsupplier.phone.country }} -
+                    {{ currentsupplier.phone.number }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>
+                    <i class="bi bi-bookmark-fill"></i>
+                    {{ currentsupplier.web }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <h4 class="text-body-tertiary">Datos de contacto:</h4>
+            <div
+              class="bg-white mx-sm-3 mx-md-5 px-4 pt-3 rounded border border-secondary-subtle text-start"
+            >
+              <div class="row d-flex align-items-center">
+                <div class="col">
+                  <p class="fs-4">
+                    {{ currentsupplier.contact.name }}
+                    {{ currentsupplier.contact.surname }}
+                  </p>
+                </div>
+                <div class="col">
+                  <p>Rol: {{ currentsupplier.contact.rol }}</p>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col">
+                  <p>
+                    <i class="bi bi-envelope-fill"></i>
+                    {{ currentsupplier.contact.mail }}
+                  </p>
+                </div>
+                <div class="col">
+                  <p>
+                    <i class="bi bi-telephone-fill"></i>
+                    +{{ currentsupplier.contact.phone.country }} -
+                    {{ currentsupplier.contact.phone.number }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col text-end">
+            <p class="text-body-tertiary fs-3">
+              Código: {{ currentsupplier.code }}
+            </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="currentsupplier.available">
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              [routerLink]="'/suppliers/u/' + currentsupplier.id"
+            >
+              Actualizar
+            </button>
+          </div>
+          <div class="col text-center">
+            <button
+              class="btn btn-secondary"
+              (click)="deletesupplier(currentsupplier.id!)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col d-none d-sm-block"></div>
+  </div>
+</section>
+<section>
+  <shared-modal-confirm
+    *ngIf="modalConfirmFlag"
+    [modalData]="modalConfirmObject"
+  ></shared-modal-confirm>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
+</section>
