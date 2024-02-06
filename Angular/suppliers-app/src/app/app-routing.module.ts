@@ -36,6 +36,7 @@ const routes: Routes = [
         path: 'new',
         component: suppliersNewComponent,
         title: 'Nuevo proveedor',
+        canDeactivate: [leaveFormGuard],
       },
       {
         path: 'recycle-bin',
@@ -43,7 +44,11 @@ const routes: Routes = [
         component: SuppliersRecycleBinComponent,
         title: 'Restaurar proveedores',
       },
-      { path: 'u/:id', component: suppliersNewComponent },
+      {
+        path: 'u/:id',
+        component: suppliersNewComponent,
+        canDeactivate: [leaveFormGuard],
+      },
       { path: ':id', component: supplierInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
@@ -69,7 +74,11 @@ const routes: Routes = [
         component: ProductsRecycleBinComponent,
         title: 'Restaurar productos',
       },
-      { path: 'u/:id', component: ProductsNewComponent },
+      {
+        path: 'u/:id',
+        component: ProductsNewComponent,
+        canDeactivate: [leaveFormGuard],
+      },
       { path: ':id', component: ProductInfoComponent },
       { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
@@ -87,11 +96,13 @@ const routes: Routes = [
         path: 'new',
         component: PurchaseNewComponent,
         title: 'Nueva órden de compra',
+        canDeactivate: [leaveFormGuard],
       },
       {
         path: 'u/:id',
         component: PurchaseNewComponent,
         title: 'Editar órden de compra',
+        canDeactivate: [leaveFormGuard],
       },
       {
         path: ':id',

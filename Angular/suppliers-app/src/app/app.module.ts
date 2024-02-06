@@ -13,10 +13,11 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { ItemsListComponent } from './components/shared/items-list/items-list.component';
 import { LoginComponent } from './components/users/login/login.component';
 import { MainComponent } from './components/main/main.component';
-import { ModalConfirmComponent } from './components/shared/modal-confirm/modal-confirm.component';
-import { ModalMessageComponent } from './components/shared/modal-message/modal-message.component';
+import { ModalConfirmComponent } from './components/modals/modal-confirm/modal-confirm.component';
+import { ModalLeaveGuardComponent } from './components/modals/modal-leave-guard/modal-leave-guard.component';
+import { ModalMessageComponent } from './components/modals/modal-message/modal-message.component';
 import { ModalNewComponent } from './components/small-cruds/modal-new/modal-new.component';
-import { ModalRedirectComponent } from './components/shared/modal-redirect/modal-redirect.component';
+import { ModalRedirectComponent } from './components/modals/modal-redirect/modal-redirect.component';
 import { NewUserComponent } from './components/users/new-user/new-user.component';
 import { NoItemsAlertComponent } from './components/shared/no-items-alert/no-items-alert.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -32,6 +33,7 @@ import { supplierInfoComponent } from './components/suppliers/supplier-info/supp
 import { suppliersListComponent } from './components/suppliers/suppliers-list/suppliers-list.component';
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
+import { TestComponent } from './test/test.component';
 
 import { CuitPipePipe } from './pipes/cuit-pipe.pipe';
 import { FilterListPipe } from './pipes/filter-list.pipe';
@@ -44,7 +46,6 @@ import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { ShowProvincePipe } from './pipes/show-province.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { TestComponent } from './test/test.component';
     LoginComponent,
     MainComponent,
     ModalConfirmComponent,
+    ModalLeaveGuardComponent,
     ModalMessageComponent,
     ModalNewComponent,
     ModalRedirectComponent,
@@ -87,7 +89,13 @@ import { TestComponent } from './test/test.component';
     TableTransformPipe,
     TestComponent,
   ],
-  imports: [AppRoutingModule, BrowserModule, FormsModule, HttpClientModule, NgbModule],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    NgbModule,
+  ],
   providers: [
     CuitPipePipe,
     CurrencyPipe,

@@ -61,8 +61,12 @@ export class ProductsNewComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
+  triedToLeave: boolean = false;
 
   ngOnInit(): void {
+    this.modalService.confirmLeave$.subscribe(
+      (response) => (this.triedToLeave = response)
+    );
     this.supplierService.getList().subscribe((supList) => {
       this.suppliersList = supList;
     });

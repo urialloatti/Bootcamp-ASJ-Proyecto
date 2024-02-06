@@ -97,6 +97,7 @@ export class suppliersNewComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
+  triedToLeave: boolean = false;
 
   isUpdating: boolean = false;
 
@@ -104,6 +105,10 @@ export class suppliersNewComponent implements OnInit {
   private debouncerSubscription?: Subscription;
 
   ngOnInit(): void {
+    this.modalService.confirmLeave$.subscribe(
+      (response) => (this.triedToLeave = response)
+    );
+
     this.locationService
       .getList()
       .subscribe((list) => (this.locationOptions = list));

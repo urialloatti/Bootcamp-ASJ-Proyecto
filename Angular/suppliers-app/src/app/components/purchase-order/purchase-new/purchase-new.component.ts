@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
+import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
+import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 import { SuppliersService } from '../../../services/suppliers.service';
 
 import {
@@ -28,6 +29,7 @@ export class PurchaseNewComponent implements OnInit {
     private purchaseService: PurchaseOrdersService,
     private productService: ProductsService,
     private supplierService: SuppliersService,
+    private modalService: ModalService,
     private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe
@@ -69,10 +71,15 @@ export class PurchaseNewComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
+  triedToLeave: boolean = false;
 
   isUpdating: boolean = false;
 
   ngOnInit(): void {
+    this.modalService.confirmLeave$.subscribe(
+      (response) => (this.triedToLeave = response)
+    );
+
     this.supplierService
       .getList()
       .subscribe((supList) => (this.suppliersList = supList));
