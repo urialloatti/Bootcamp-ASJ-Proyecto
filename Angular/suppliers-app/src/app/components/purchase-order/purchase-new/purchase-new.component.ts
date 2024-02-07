@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -18,13 +18,14 @@ import {
   ModalMessageInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-purchase-new',
   templateUrl: './purchase-new.component.html',
   styleUrl: './purchase-new.component.css',
 })
-export class PurchaseNewComponent implements OnInit {
+export class PurchaseNewComponent implements OnInit, AfterViewInit {
   constructor(
     private purchaseService: PurchaseOrdersService,
     private productService: ProductsService,
@@ -34,6 +35,11 @@ export class PurchaseNewComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe
   ) {}
+
+  @ViewChild('purchaseForm', { static: true }) orderForm!: NgForm;
+  @ViewChild('productForm') productForm!: NgForm;
+  orderFormChangesCounter: number = 0;
+  productFormChangesCounter: number = 0;
 
   currentOrderId!: number;
   currentPurchaseOrder: PurchaseOrderRequestDTO = {
@@ -76,6 +82,7 @@ export class PurchaseNewComponent implements OnInit {
   isUpdating: boolean = false;
 
   ngOnInit(): void {
+    this.modalService.setFormChanged(false);
     this.modalService.confirmLeave$.subscribe(
       (response) => (this.triedToLeave = response)
     );
@@ -87,13 +94,40 @@ export class PurchaseNewComponent implements OnInit {
 
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null && !isNaN(Number(id))) {
-        this.currentOrderId = Number(id);
-        this.getUpdateOrder();
-        this.isUpdating = true;
-        this.isSupplierSelected = true;
+      if (id !== null) {
+        if (!isNaN(Number(id))) {
+          this.currentOrderId = Number(id);
+          this.getUpdateOrder();
+          this.isUpdating = true;
+          this.isSupplierSelected = true;
+        } else this.router.navigateByUrl('/404');
+      } else {
+        setTimeout(() => {
+          this.orderForm.valueChanges?.subscribe((e) => {
+            this.orderFormChangesCounter++;
+            if (this.orderFormChangesCounter > 1) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.orderFormChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            5;
+        });
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.isUpdating) {
+      this.productForm.valueChanges?.subscribe(() => {
+        this.productFormChangesCounter++;
+        if (this.productFormChangesCounter > 2) {
+          this.modalService.setFormChanged(true);
+        }
+      });
+    }
   }
 
   public getsupplierProducts(id: number): void {
@@ -129,6 +163,7 @@ export class PurchaseNewComponent implements OnInit {
               path: '/purchase-orders',
             };
             this.modalRedirectFlag = true;
+            this.modalService.setFormChanged(false);
           },
           error: (error) => this.handleError(error),
         });
@@ -142,6 +177,7 @@ export class PurchaseNewComponent implements OnInit {
                 path: '/purchase-orders',
               };
               this.modalRedirectFlag = true;
+              this.modalService.setFormChanged(false);
             },
             error: (error) => this.handleError(error),
           });
@@ -278,6 +314,7 @@ export class PurchaseNewComponent implements OnInit {
           .getElementById(this.currentOrderId)
           .subscribe((response) => {
             this.orderProductsList = response.data.products;
+            this.calculateTotal();
           });
       },
       error: (error) => {
@@ -287,6 +324,21 @@ export class PurchaseNewComponent implements OnInit {
         };
         this.modalRedirectFlag = true;
         console.error(error);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.orderForm.valueChanges?.subscribe((e) => {
+            this.orderFormChangesCounter++;
+            if (this.orderFormChangesCounter > 1) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.orderFormChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            500;
+        });
       },
     });
   }

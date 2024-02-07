@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
@@ -15,6 +15,7 @@ import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
 import { SmallCrudsService } from '../../../services/small-cruds.service';
 import { SuppliersService } from '../../../services/suppliers.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'products-new',
@@ -32,6 +33,9 @@ export class ProductsNewComponent implements OnInit {
     private smallCrudsService: SmallCrudsService,
     private supplierService: SuppliersService
   ) {}
+
+  @ViewChild('myForm', { static: true }) myForm!: NgForm;
+  formChangesCounter: number = 0;
 
   currentProductId!: number;
   currentProduct: ProductRequestDTO = {
@@ -64,9 +68,11 @@ export class ProductsNewComponent implements OnInit {
   triedToLeave: boolean = false;
 
   ngOnInit(): void {
+    this.modalService.setFormChanged(false);
     this.modalService.confirmLeave$.subscribe(
       (response) => (this.triedToLeave = response)
     );
+
     this.supplierService.getList().subscribe((supList) => {
       this.suppliersList = supList;
     });
@@ -75,24 +81,59 @@ export class ProductsNewComponent implements OnInit {
       .subscribe((catList) => (this.categories = catList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null && !isNaN(Number(id))) {
-        this.currentProductId = Number(id);
-        this.productService.getElementForUpdate(parseInt(id!)).subscribe(
-          (response) => {
-            this.currentProduct = response.data;
-            this.titleService.setTitle(`Editar ${response.data.name}`);
-            this.isUpdating = true;
-          },
-          (error) => {
-            this.modalRedirectObject = {
-              header: 'Producto no encontrado',
-              path: '/products',
-            };
-            this.modalRedirectFlag = true;
-            console.error(error);
-          }
-        );
+      if (id !== null) {
+        if (!isNaN(Number(id))) {
+          this.isUpdating = true;
+          this.loadProduct(id);
+        } else this.router.navigateByUrl('/404');
+      } else {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe(() => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            5;
+        });
       }
+    });
+  }
+
+  private loadProduct(id: string) {
+    this.currentProductId = Number(id);
+    this.productService.getElementForUpdate(parseInt(id!)).subscribe({
+      next: (response) => {
+        this.currentProduct = response.data;
+        this.titleService.setTitle(`Editar ${response.data.name}`);
+      },
+      error: (error) => {
+        this.modalRedirectObject = {
+          header: 'Producto no encontrado',
+          path: '/products',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe(() => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            500;
+        });
+      },
     });
   }
 
@@ -120,6 +161,7 @@ export class ProductsNewComponent implements OnInit {
                 path: '/products',
               };
               this.modalRedirectFlag = true;
+              this.modalService.setFormChanged(false);
             },
             error: (error) => {
               this.handleError(error);
@@ -133,6 +175,7 @@ export class ProductsNewComponent implements OnInit {
               path: '/products',
             };
             this.modalRedirectFlag = true;
+            this.modalService.setFormChanged(false);
           },
           error: (error) => this.handleError(error),
         });

@@ -29,15 +29,15 @@ export class NewUserComponent {
     passwordHash: false,
     username: false,
   };
-  arePasswordsNotEqual: boolean = false;
-  userAlreadyExists: boolean = false;
-  isFormValid: boolean = true;
+  public arePasswordsNotEqual: boolean = false;
+  public userAlreadyExists: boolean = false;
+  public isFormValid: boolean = true;
 
-  flagNewUserCreated: boolean = false;
-  modalMessageFlag: boolean = false;
-  modalMessageObject!: ModalMessageInterface;
+  public flagNewUserCreated: boolean = false;
+  public modalMessageFlag: boolean = false;
+  public modalMessageObject!: ModalMessageInterface;
 
-  createUser() {
+  public createUser() {
     this.isFormValid = true;
     this.validateForm();
     Object.keys(this.isUserInvalid).forEach((key) => {
@@ -58,18 +58,22 @@ export class NewUserComponent {
     }
   }
 
-  validateMail(mail: string): boolean {
+  public hideModal(): void {
+    this.modalMessageFlag = false;
+  }
+
+  private validateMail(mail: string): boolean {
     // Returns true if valid
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
   }
 
-  validateUsername() {
+  private validateUsername() {
     this.userService
       .checkUsername(this.currentUser.username)
       .subscribe((response) => (this.userAlreadyExists = response));
   }
 
-  validateForm(): void {
+  private validateForm(): void {
     this.validateUsername();
     this.isUserInvalid.name =
       this.currentUser.name.length < 3 || this.currentUser.name.length > 25;
@@ -85,15 +89,6 @@ export class NewUserComponent {
       this.currentUser.passwordHash.length > 15;
     this.arePasswordsNotEqual =
       this.currentUser.passwordHash != this.repitedPass;
-  }
-
-  showErrorsModal() {
-    this.modalMessageObject = {
-      header: `Hay errores en el formulario.`,
-      confirm: 'Continuar editando',
-    };
-    this.modalMessageFlag = true;
-    this.isFormValid = false;
   }
 
   private handleError(error: HttpErrorResponse): void {
@@ -115,7 +110,12 @@ export class NewUserComponent {
     this.isFormValid = false;
   }
 
-  hideModal(): void {
-    this.modalMessageFlag = false;
+  private showErrorsModal() {
+    this.modalMessageObject = {
+      header: `Hay errores en el formulario.`,
+      confirm: 'Continuar editando',
+    };
+    this.modalMessageFlag = true;
+    this.isFormValid = false;
   }
 }

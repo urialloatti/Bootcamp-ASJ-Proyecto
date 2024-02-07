@@ -13,11 +13,21 @@ export class ModalService {
   public confirmLeave$: Observable<boolean> =
     this.confirmLeaveSubject.asObservable();
 
-  public openModal(response: boolean) {
+  private formChanged: boolean = false;
+
+  public openModal(response: boolean): void {
     this.confirmSubject.next(response);
   }
 
-  public sendConfirmLeaveNext(response: boolean) {
+  public sendConfirmLeaveNext(response: boolean): void {
     this.confirmLeaveSubject.next(response);
+  }
+
+  public hasFormChanged(): boolean {
+    return this.formChanged;
+  }
+
+  public setFormChanged(hasChanged: boolean): void {
+    this.formChanged = hasChanged;
   }
 }

@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NgModel } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { Title } from '@angular/platform-browser';
@@ -40,6 +40,9 @@ export class suppliersNewComponent implements OnInit {
     private router: Router,
     private titleService: Title
   ) {}
+
+  @ViewChild('myForm', { static: true }) myForm!: NgForm;
+  formChangesCounter: number = 0;
 
   currentsupplier: SupplierRequestDTO = {
     brand: '',
@@ -105,6 +108,7 @@ export class suppliersNewComponent implements OnInit {
   private debouncerSubscription?: Subscription;
 
   ngOnInit(): void {
+    this.modalService.setFormChanged(false);
     this.modalService.confirmLeave$.subscribe(
       (response) => (this.triedToLeave = response)
     );
@@ -124,29 +128,23 @@ export class suppliersNewComponent implements OnInit {
       let id = response.get('id');
       if (id !== null) {
         if (!isNaN(Number(id))) {
-          this.currentSupplierId = Number(id);
-          this.supplierService.getElementForUpdate(parseInt(id)).subscribe({
-            next: (apiResponse) => {
-              let response = apiResponse.data;
-              this.locationService
-                .getCountryId(response.fullAddress.provinceId)
-                .subscribe((countryId) => (this.selectedCountry = countryId));
-              this.currentsupplier = response;
-              this.inputCuit = this.cuitPipe.transform(response.cuit);
-              this.titleService.setTitle(`Editar ${response.brand}`);
-            },
-            error: (error) => {
-              this.modalRedirectObject = {
-                header: 'Error',
-                message: error.error.message,
-                path: '/suppliers',
-              };
-              this.modalRedirectFlag = true;
-              console.error(error);
-            },
-          });
           this.isUpdating = true;
+          this.loadSupplier(id);
         } else this.router.navigateByUrl('/404');
+      } else {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe((e) => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            5;
+        });
       }
 
       this.debouncerSubscription = this.debouncer
@@ -154,6 +152,45 @@ export class suppliersNewComponent implements OnInit {
         .subscribe(() => {
           this.checkCuitExists();
         });
+    });
+  }
+
+  private loadSupplier(id: string) {
+    this.currentSupplierId = Number(id);
+    this.supplierService.getElementForUpdate(parseInt(id)).subscribe({
+      next: (apiResponse) => {
+        let response = apiResponse.data;
+        this.locationService
+          .getCountryId(response.fullAddress.provinceId)
+          .subscribe((countryId) => (this.selectedCountry = countryId));
+        this.currentsupplier = response;
+        this.inputCuit = this.cuitPipe.transform(response.cuit);
+        this.titleService.setTitle(`Editar ${response.brand}`);
+      },
+      error: (error) => {
+        this.modalRedirectObject = {
+          header: 'Error',
+          message: error.error.message,
+          path: '/suppliers',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe((e) => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 1) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            500;
+        });
+      },
     });
   }
 
@@ -171,7 +208,7 @@ export class suppliersNewComponent implements OnInit {
       }
     });
     if (isFormValid && !this.cuitExistFlag) {
-      this.completeUrl;
+      this.completeUrl();
       if (this.isUpdating) {
         this.supplierService
           .updateElement(this.currentSupplierId, this.currentsupplier)
@@ -183,6 +220,7 @@ export class suppliersNewComponent implements OnInit {
               };
               this.modalRedirectFlag = true;
               this.debouncerSubscription!.unsubscribe();
+              this.modalService.setFormChanged(false);
             },
             error: (error) => {
               this.handleError(error);
@@ -198,6 +236,7 @@ export class suppliersNewComponent implements OnInit {
             };
             this.modalRedirectFlag = true;
             this.debouncerSubscription!.unsubscribe();
+            this.modalService.setFormChanged(false);
           },
           error: (error) => {
             this.handleError(error);
@@ -245,7 +284,7 @@ export class suppliersNewComponent implements OnInit {
     return false;
   }
 
-  validateCuit(cuit: string): boolean {
+  private validateCuit(cuit: string): boolean {
     // returns true if valid.
     return !/[^0-9]/.test(cuit);
   }
@@ -306,7 +345,7 @@ export class suppliersNewComponent implements OnInit {
       this.currentsupplier.fullAddress.city.length > 60;
     this.issupplierInvalid.fullAddressZIP =
       this.currentsupplier.fullAddress.zipCode.length < 3 ||
-      this.currentsupplier.fullAddress.zipCode.length > 6;
+      this.currentsupplier.fullAddress.zipCode.length > 9;
     this.issupplierInvalid.cuit =
       !this.validateCuit(this.currentsupplier.cuit) ||
       this.currentsupplier.cuit.length < 10 ||
