@@ -9,3 +9,9 @@
     <shared-footer></shared-footer>
   </footer>
 </div>
+<div>
+  <modal-error
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></modal-error>
+</div>

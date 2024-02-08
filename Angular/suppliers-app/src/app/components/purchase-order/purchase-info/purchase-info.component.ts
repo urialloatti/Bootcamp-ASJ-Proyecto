@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
-import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import { ModalService } from '../../../services/modal.service';
+import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
+
+import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import {
   ModalConfirmInterface,
   ModalRedirectInterface,
@@ -40,7 +41,7 @@ export class PurchaseInfoComponent {
     });
   }
 
-  deletePurchase(id: number): void {
+  public deletePurchase(id: number): void {
     let deleted: PurchaseOrderResponseDTO;
     this.purchaseService.getElementById(id).subscribe((dto) => {
       deleted = dto.data;
@@ -63,20 +64,12 @@ export class PurchaseInfoComponent {
                 (this.modalRedirectFlag = true);
             },
             error: (error) => {
-              if (error.status == 0 || error.status == 500) {
-                this.modalRedirectObject = {
-                  header: 'Algo ha salido mal',
-                  path: '/404',
-                };
-                this.modalRedirectFlag = true;
-              } else {
-                (this.modalRedirectObject = {
-                  header: 'Órden de compra ya se encuentra cancelada.',
-                  path: '/purchase-orders',
-                }),
-                  (this.modalRedirectFlag = true);
-              }
-              console.log(error);
+              this.modalRedirectObject = {
+                header: error.error.message,
+                path: '/purchase-orders',
+              };
+              this.modalRedirectFlag = true;
+              console.error(error);
             },
           });
         }
@@ -91,20 +84,12 @@ export class PurchaseInfoComponent {
         this.currentPurchase = response.data;
       },
       error: (error) => {
-        if (error.status == 0 || error.status == 500) {
-          this.modalRedirectObject = {
-            header: 'Algo ha salido mal',
-            path: '/404',
-          };
-          this.modalRedirectFlag = true;
-        } else {
-          this.modalRedirectObject = {
-            header: 'Error',
-            message: error.error.message,
-            path: '/purchase-orders',
-          };
-          this.modalRedirectFlag = true;
-        }
+        this.modalRedirectObject = {
+          header: 'Error',
+          message: error.error.message,
+          path: '/purchase-orders',
+        };
+        this.modalRedirectFlag = true;
         console.error(error);
       },
     });

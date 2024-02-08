@@ -374,20 +374,11 @@ export class suppliersNewComponent implements OnInit {
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status == 0) {
-      this.modalRedirectObject = {
-        header: 'Error',
-        message: 'Hubo un error con el servidor.',
-        path: '/supliers',
-      };
-      this.modalRedirectFlag = true;
-    } else {
-      this.modalMessageObject = {
-        header: 'Hubo errores con el formulario.',
-        message: error.error.message,
-        confirm: 'Continuar editando',
-      };
-      this.modalMessageFlag = true;
-    }
+    this.modalMessageObject = {
+      header: 'Hubo errores con el formulario.',
+      message: error.error.message,
+      confirm: 'Continuar editando',
+    };
+    this.modalMessageFlag = true;
   }
 }

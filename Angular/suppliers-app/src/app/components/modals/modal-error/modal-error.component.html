@@ -1,0 +1,27 @@
+<div class="modal" tabindex="-1" id="modal-box">
+  <div class="modal-dialog" id="modal-dialog">
+    <div class="modal-content modal-content-bg">
+      <div
+        class="modal-header justify-content-center text-center modal-header-bg"
+      >
+        <h1 class="modal-title fs-5">{{ modalData.header }}</h1>
+      </div>
+      <div
+        class="modal-body text-center py-1"
+        *ngIf="modalData.message != undefined"
+      >
+        <p class="fs-5 text-dark">{{ modalData.message }}</p>
+      </div>
+      <div class="modal-footer d-flex justify-content-center pt-4">
+        <button type="button" class="btn btn-secondary" (click)="redirect()">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal-backdrop fade show"
+  id="modal-backdrop"
+  (click)="redirect()"
+></div>

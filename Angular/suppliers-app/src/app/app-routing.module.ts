@@ -1,4 +1,3 @@
-import { authGuard } from './guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -18,8 +17,9 @@ import { supplierInfoComponent } from './components/suppliers/supplier-info/supp
 import { suppliersListComponent } from './components/suppliers/suppliers-list/suppliers-list.component';
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
+
+import { authGuard } from './guards/auth.guard';
 import { isAdminGuard } from './guards/is-admin.guard';
-import { TestComponent } from './test/test.component';
 import { leaveFormGuard } from './guards/leave-form.guard';
 
 const routes: Routes = [
@@ -124,10 +124,6 @@ const routes: Routes = [
     title: 'Gestión de compras',
     pathMatch: 'full',
     canActivate: [authGuard],
-  },
-  {
-    path: 'test',
-    component: TestComponent,
   },
   {
     path: 'login',

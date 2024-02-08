@@ -5,7 +5,10 @@ import { Observable } from 'rxjs';
 import { ModalService } from '../../../services/modal.service';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import { ModalConfirmInterface } from '../../../interfaces/modalInterface';
+import {
+  ModalConfirmInterface,
+  ModalMessageInterface,
+} from '../../../interfaces/modalInterface';
 import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
 
@@ -48,6 +51,8 @@ export class PurchaseListComponent implements OnInit {
   };
   modalConfirmFlag: boolean = false;
   modalConfirmObject!: ModalConfirmInterface;
+  modalMessageFlag: boolean = false;
+  modalMessageObject!: ModalMessageInterface;
 
   ngOnInit(): void {
     this.ordersList$ = this.orderService.getList();
@@ -71,12 +76,26 @@ export class PurchaseListComponent implements OnInit {
         (response) => {
           this.modalConfirmFlag = false;
           if (response) {
-            this.orderService.cancelElementById(id).subscribe();
+            this.orderService.cancelElementById(id).subscribe({
+              error: (error) => {
+                this.modalMessageObject = {
+                  header: 'Error',
+                  message: error.error.message,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.error(error);
+              },
+            });
           } else {
             subscription.unsubscribe();
           }
         }
       );
     });
+  }
+
+  public hideModal(): void {
+    this.modalMessageFlag = false;
   }
 }

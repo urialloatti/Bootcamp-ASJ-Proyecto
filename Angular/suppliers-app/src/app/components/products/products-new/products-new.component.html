@@ -58,6 +58,24 @@
             >
               <p>Debe seleccionar una opción.</p>
             </div>
+            <div
+              class="row mt-2 d-flex align-items-center"
+              *ngIf="suppliersList.length == 0"
+            >
+              <div class="col">
+                <p class="form-text">
+                  Debe cargar al menos un proveerdor en la base de datos.
+                </p>
+              </div>
+              <div class="col text-end">
+                <button
+                  class="btn btn-outline-secondary form-text"
+                  routerLink="/suppliers/new"
+                >
+                  Cargar proveedor
+                </button>
+              </div>
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label"
