@@ -7,6 +7,7 @@ export interface ListTemplateInterface {
 interface ListField {
   field: string;
   keys: keyValue[];
+  toolTip?: keyValue[];
 }
 
 export interface keyValue {
@@ -19,9 +20,11 @@ export type PipeExtra =
   | 'contactMails'
   | 'contactName'
   | 'contactPhone'
+  | 'country'
   | 'CUIT'
   | 'Currency'
-  | 'FullDate'
   | 'Date'
-  | 'PurchaseOrder'
-  | 'phone';
+  | 'FullDate'
+  | 'phone'
+  | 'province'
+  | 'PurchaseOrder';

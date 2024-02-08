@@ -14,23 +14,40 @@
             </div>
           </div>
           <div class="mb-1">
-            <label for="suppliers-list" class="form-label">Proveedor</label>
-            <select
-              name="supplier"
-              #supplier="ngModel"
-              [(ngModel)]="currentPurchaseOrder.supplierId"
-              class="form-select"
-              [disabled]="issupplierSelected"
-              (change)="getsupplierProducts(currentPurchaseOrder.supplierId)"
-            >
-              <option value="-1" disabled>Seleccione un proveedor</option>
-              <option
-                *ngFor="let supplier of suppliersList"
-                value="{{ supplier.id }}"
+            <div class="row d-flex align-items-center">
+              <div
+                class="col-2 d-none d-sm-block"
+                *ngIf="currentPurchaseOrder.supplierId != -1"
               >
-                {{ supplier.brand }}
-              </option>
-            </select>
+                <img
+                  class="rounded"
+                  src="{{ currentSupplierLogo }}"
+                  alt="Supplier logo."
+                  (error)="imageNotFound($event)"
+                />
+              </div>
+              <div class="col pb-2">
+                <label for="suppliers-list" class="form-label">Proveedor</label>
+                <select
+                  name="supplier"
+                  #supplier="ngModel"
+                  [(ngModel)]="currentPurchaseOrder.supplierId"
+                  class="form-select"
+                  [disabled]="isSupplierSelected"
+                  (change)="
+                    getsupplierProducts(currentPurchaseOrder.supplierId)
+                  "
+                >
+                  <option value="-1" disabled>Seleccione un proveedor</option>
+                  <option
+                    *ngFor="let supplier of suppliersList"
+                    value="{{ supplier.id }}"
+                  >
+                    {{ supplier.brand }}
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="mb-2">
             <label for="product-list" class="form-label">Producto</label>
@@ -284,5 +301,6 @@
       (modalViewed)="hideModal()"
     >
     </shared-modal-message>
+    <modal-leave-guard *ngIf="triedToLeave"></modal-leave-guard>
   </section>
 </div>

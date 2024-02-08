@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
-import {
-  ProductInterface,
-  ProductResponseDTO,
-} from '../../../interfaces/productInterface';
+import { ProductResponseDTO } from '../../../interfaces/productInterface';
 import { ProductsService } from '../../../services/products.service';
 import { ModalService } from '../../../services/modal.service';
 import {
@@ -28,7 +25,11 @@ export class ProductsListComponent implements OnInit {
     section: 'products',
     label: 'productos',
     listFields: [
-      { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },
+      {
+        field: 'Nombre',
+        keys: [{ key: 'name', isNumeric: false }],
+        toolTip: [{ key: 'description', isNumeric: false }],
+      },
       { field: 'Categoría', keys: [{ key: 'category', isNumeric: false }] },
       { field: 'SKU', keys: [{ key: 'code', isNumeric: false }] },
       { field: 'Proveedor', keys: [{ key: 'supplier', isNumeric: false }] },
@@ -60,31 +61,34 @@ export class ProductsListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((response) => {
-        this.modalConfirmFlag = false;
-        if (response) {
-          this.productsService.cancelElementByIdB(id).subscribe(
-            (response) => {
-              this.modalMessageObject = {
-                message: `Producto ${response.data.name} eliminado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.productsService.getList().subscribe();
-            },
-            (error) => {
-              this.modalMessageObject = {
-                message: `El producto ya no existe en la base de datos.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.log(error);
-            }
-          );
-        } else {
-          subscription.unsubscribe();
+      let subscription = this.confirmService.confirmModal$.subscribe(
+        (confirmed) => {
+          this.modalConfirmFlag = false;
+          if (confirmed) {
+            this.productsService.cancelElementByIdB(id).subscribe({
+              next: (response) => {
+                this.modalMessageObject = {
+                  header: `Producto ${response.data.name} eliminado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.productsService.getList().subscribe();
+              },
+              error: (error) => {
+                this.modalMessageObject = {
+                  header: `El producto ya no existe en la base de datos.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.log(error);
+              },
+              complete: () => subscription.unsubscribe(),
+            });
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 

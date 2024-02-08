@@ -1,7 +1,11 @@
 <div class="row m-4 py-4 body rounded">
   <div class="col"></div>
   <div class="col-8 rounded text-center py-5" id="no-items">
-    <p class="h3">No hay {{ alerLabel }} para mostrar</p>
+    <p class="h3">
+      No hay {{ alerLabel }} para mostrar<span *ngIf="hasFilter">
+        con el filtro seleccionado</span
+      >.
+    </p>
   </div>
   <div class="col"></div>
 </div>

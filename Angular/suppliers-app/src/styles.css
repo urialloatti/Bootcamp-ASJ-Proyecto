@@ -1,5 +1,5 @@
 :root {
-  --bg-dark: #404850;
+  --bg-dark: #455059;
   --bg-accent: #208090;
   --bg-light: #f6faff;
   --bg-light-accent: #e8fbff;
@@ -37,6 +37,14 @@
   left: 30%;
   display: inline;
   width: 40%;
+}
+
+.table-tooltip {
+  max-width: 500px;
+  width: fit-content;
+}
+.table-tooltip .tooltip-inner {
+  width: max-content;
 }
 
 #modal-dialog {

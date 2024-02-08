@@ -23,7 +23,7 @@ public class PurchaseOrderMapper {
         double total = 0;
         for (PurchaseProduct product: order.getProducts()) {
             response.getProducts().add(getProductResponse(product));
-            total += product.getPrice();
+            total += product.getPrice() * product.getQuantity();
         }
         response.setTotal(total);
         response.setAvailable(order.getAvailable());

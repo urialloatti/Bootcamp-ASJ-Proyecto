@@ -42,7 +42,7 @@ export class SuppliersRecycleBinComponent implements OnInit {
     this.supplierList$ = this.suppliersService.getListDeleted();
   }
 
-  deletesupplier(id: number): void {
+  restoreSupplier(id: number): void {
     let deleted: SupplierResponseDTO;
     this.suppliersService.getElementById(id).subscribe((response) => {
       deleted = response.data;
@@ -53,30 +53,31 @@ export class SuppliersRecycleBinComponent implements OnInit {
         confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe(
-        (confirmation) => {
+      let subscription = this.confirmService.confirmModal$.subscribe(
+        (confirmed) => {
           this.modalConfirmFlag = false;
-          if (confirmation) {
+          if (confirmed) {
             deleted.available = false;
-            this.suppliersService.restoreElementById(id).subscribe(
-              (apiResponse) => {
+            this.suppliersService.restoreElementById(id).subscribe({
+              next: (apiResponse) => {
                 let response = apiResponse.data;
                 this.modalMessageObject = {
-                  message: `Proveedor ${response.brand} recuperado con éxito.`,
+                  header: `Proveedor ${response.brand} recuperado con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
                 this.suppliersService.getList().subscribe();
               },
-              (error) => {
+              error: (error) => {
                 this.modalMessageObject = {
-                  message: error.error.message,
+                  header: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
                 console.error(error);
-              }
-            );
+              },
+              complete: () => subscription.unsubscribe(),
+            });
           } else {
             subscription.unsubscribe();
           }

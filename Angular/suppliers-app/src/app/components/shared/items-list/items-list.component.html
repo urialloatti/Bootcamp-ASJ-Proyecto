@@ -1,10 +1,20 @@
+<div class="row mb-0">
+  <nav class="col" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ listTemplate.label | titlecase }}
+      </li>
+    </ol>
+  </nav>
+</div>
 <div class="row mb-2">
   <div class="col text-center">
     <h1 class="title">Lista de {{ listTemplate.label }}</h1>
   </div>
 </div>
 <div *ngIf="isLoaded" class="container-fluid">
-  <section>
+  <section style="overflow: hidden">
     <article class="row mb-2">
       <div class="col text-start">
         <button class="btn btn-secondary" routerLink="new" *ngIf="!isDeleted">
@@ -123,18 +133,44 @@
               *ngFor="let field of listTemplate.listFields"
               class="align-middle"
             >
-              <span *ngFor="let keyV of field.keys; index as i"
-                >{{ item[keyV.key] | tableTransform : keyV.extras }}
-                <span *ngIf="i < field.keys.length - 1"> | </span>
-              </span>
+              <div>
+                <span *ngFor="let keyV of field.keys; index as i"
+                  >{{ item[keyV.key] | tableTransform : keyV.extras }}
+                  <span *ngIf="i < field.keys.length - 1"> | </span> </span
+                ><span> </span>
+                <ng-template #tooltip>
+                  <div>
+                    <span *ngFor="let keyVToltip of field.toolTip; index as i"
+                      >{{
+                        item[keyVToltip.key]
+                          | tableTransform : keyVToltip.extras
+                      }}
+                      <span
+                        *ngIf="field.toolTip && i < field.toolTip.length - 1"
+                      >
+                        |
+                      </span></span
+                    >
+                  </div>
+                </ng-template>
+                <sup *ngIf="field.toolTip">
+                  <a
+                    placement="end"
+                    triggers="click"
+                    tooltipClass="table-tooltip"
+                    [autoClose]="'outside'"
+                    [ngbTooltip]="tooltip"
+                    container="body"
+                    ><i class="bi bi-info-circle cursor"></i> </a
+                ></sup>
+              </div>
             </td>
             <td class="py-2 last-column align-middle">
               <div class="h-100 d-flex align-items-center">
                 <span class="mx-1 bg-transparent">
                   <button
                     class="btn btn-secondary pb-2"
-                    routerLink="{{ item.id }}"
-                    *ngIf="!isDeleted"
+                    routerLink="/{{ listTemplate.section }}/{{ item.id }}"
                   >
                     <i class="bi bi-box-arrow-in-up-right"></i>
                   </button>
@@ -143,28 +179,40 @@
                   <button
                     class="btn btn-secondary pb-2"
                     routerLink="u/{{ item.id }}"
-                    [disabled]="!item.available"
-                    *ngIf="!isDeleted"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
                 </span>
-                <span class="mx-1 bg-transparent">
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="
+                    item.available ||
+                    (item.state != undefined && item.state == 'Entregado')
+                  "
+                >
                   <button
                     class="btn btn-secondary pb-2"
-                    (click)="deleteElement(item.id)"
-                    [disabled]="!item.available"
-                    *ngIf="!isDeleted"
+                    (click)="toggleAvailable(item.id)"
+                    [disabled]="
+                      !item.available ||
+                      (item.state != undefined && item.state == 'Entregado')
+                    "
                   >
                     <i class="bi bi-trash3"></i>
                   </button>
                 </span>
-                <span class="mx-1 bg-transparent">
+                <span
+                  class="mx-1 bg-transparent"
+                  *ngIf="!item.available && item.state == undefined"
+                >
                   <button
                     class="btn btn-secondary pb-2"
-                    (click)="deleteElement(item.id)"
+                    (click)="toggleAvailable(item.id)"
                     [disabled]="item.available"
-                    *ngIf="isDeleted"
                   >
                     <i class="bi bi-recycle"></i>
                   </button>
@@ -178,7 +226,8 @@
   </section>
   <section *ngIf="itemsShowed.length == 0">
     <shared-no-items-alert
-      alerLabel="{{ listTemplate.label }}"
+      [alerLabel]="listTemplate.label"
+      [hasFilter]="hasFilter"
     ></shared-no-items-alert>
   </section>
 </div>

@@ -45,6 +45,14 @@
                 <td class="py-2 text-center last-column">
                   <span class="bg-transparent">
                     <button
+                      class="btn btn-secondary pb-2 me-2"
+                      (click)="updateElement(section.section, item.id!)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </span>
+                  <span class="bg-transparent">
+                    <button
                       class="btn btn-secondary pb-2"
                       (click)="deleteItem(section.section, item.id!)"
                     >
@@ -76,6 +84,12 @@
       <app-modal-new
         *ngIf="isCreatingNew"
         [currentCreate]="currentCreate"
+      ></app-modal-new>
+      <app-modal-new
+        *ngIf="isUpdating"
+        [currentCreate]="currentCreate"
+        [isUpdating]="true"
+        [elementId]="updatingId"
       ></app-modal-new>
     </section>
   </div>

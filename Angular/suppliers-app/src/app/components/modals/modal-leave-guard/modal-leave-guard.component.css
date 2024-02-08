@@ -1,0 +1,28 @@
+.modal-header-bg {
+  background-color: var(--bg-accent);
+  color: var(--color-light);
+}
+
+.modal-content-bg {
+  background-color: var(--bg-light);
+  color: var(--color-light);
+}
+
+.modal-title {
+  width: 100%;
+}
+
+#btn-close {
+  cursor: pointer;
+}
+
+.btn-color {
+  background-color: var(--color-accent-light);
+  color: var(--color-dark);
+}
+
+.btn-color:hover {
+  background-color: var(--color-accent-lighter);
+  color: var(--color-dark);
+  transition: 0.1s;
+}

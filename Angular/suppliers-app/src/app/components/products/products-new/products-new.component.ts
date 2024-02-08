@@ -1,15 +1,13 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
 import {
   ModalMessageInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import {
-  ProductInterface,
-  ProductRequestDTO,
-} from '../../../interfaces/productInterface';
+import { ProductRequestDTO } from '../../../interfaces/productInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
 import { SupplierResponseDTO } from '../../../interfaces/supplierInterface';
 
@@ -17,6 +15,7 @@ import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
 import { SmallCrudsService } from '../../../services/small-cruds.service';
 import { SuppliersService } from '../../../services/suppliers.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'products-new',
@@ -26,6 +25,7 @@ import { SuppliersService } from '../../../services/suppliers.service';
 export class ProductsNewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title,
 
     private modalService: ModalService,
@@ -33,6 +33,9 @@ export class ProductsNewComponent implements OnInit {
     private smallCrudsService: SmallCrudsService,
     private supplierService: SuppliersService
   ) {}
+
+  @ViewChild('myForm', { static: true }) myForm!: NgForm;
+  formChangesCounter: number = 0;
 
   currentProductId!: number;
   currentProduct: ProductRequestDTO = {
@@ -62,8 +65,14 @@ export class ProductsNewComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
+  triedToLeave: boolean = false;
 
   ngOnInit(): void {
+    this.modalService.setFormChanged(false);
+    this.modalService.confirmLeave$.subscribe(
+      (response) => (this.triedToLeave = response)
+    );
+
     this.supplierService.getList().subscribe((supList) => {
       this.suppliersList = supList;
     });
@@ -72,24 +81,59 @@ export class ProductsNewComponent implements OnInit {
       .subscribe((catList) => (this.categories = catList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null && !isNaN(Number(id))) {
-        this.currentProductId = Number(id);
-        this.productService.getElementForUpdate(parseInt(id!)).subscribe(
-          (response) => {
-            this.currentProduct = response.data;
-            this.titleService.setTitle(`Editar ${response.data.name}`);
-            this.isUpdating = true;
-          },
-          (error) => {
-            this.modalRedirectObject = {
-              header: 'Producto no encontrado',
-              path: '/products',
-            };
-            this.modalRedirectFlag = true;
-            console.error(error);
-          }
-        );
+      if (id !== null) {
+        if (!isNaN(Number(id))) {
+          this.isUpdating = true;
+          this.loadProduct(id);
+        } else this.router.navigateByUrl('/404');
+      } else {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe(() => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            5;
+        });
       }
+    });
+  }
+
+  private loadProduct(id: string) {
+    this.currentProductId = Number(id);
+    this.productService.getElementForUpdate(parseInt(id!)).subscribe({
+      next: (response) => {
+        this.currentProduct = response.data;
+        this.titleService.setTitle(`Editar ${response.data.name}`);
+      },
+      error: (error) => {
+        this.modalRedirectObject = {
+          header: 'Producto no encontrado',
+          path: '/products',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe(() => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            500;
+        });
+      },
     });
   }
 
@@ -99,7 +143,7 @@ export class ProductsNewComponent implements OnInit {
     Object.keys(this.isProductInvalid).forEach((key) => {
       if (isFormValid && this.isProductInvalid[key]) {
         this.modalMessageObject = {
-          message: `Hay errores en el formulario.`,
+          header: `Hay errores en el formulario.`,
           confirm: 'Continuar editando',
         };
         this.modalMessageFlag = true;
@@ -110,48 +154,38 @@ export class ProductsNewComponent implements OnInit {
       if (this.isUpdating) {
         this.productService
           .updateElement(this.currentProductId, this.currentProduct)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: () => {
               this.modalRedirectObject = {
-                header: 'Producto cargado con éxito.',
+                header: 'Producto actualizado con éxito.',
                 path: '/products',
               };
               this.modalRedirectFlag = true;
+              this.modalService.setFormChanged(false);
             },
-            (error) => {
-              console.error(error.error.message);
-              this.modalRedirectObject = {
-                header: 'Hubo un error.',
-                path: '/products',
-              };
-              this.modalRedirectFlag = true;
-            }
-          );
+            error: (error) => {
+              this.handleError(error);
+            },
+          });
       } else {
-        this.productService.addElement(this.currentProduct).subscribe(
-          (response) => {
+        this.productService.addElement(this.currentProduct).subscribe({
+          next: () => {
             this.modalRedirectObject = {
               header: 'Producto cargado con éxito.',
               path: '/products',
             };
             this.modalRedirectFlag = true;
+            this.modalService.setFormChanged(false);
           },
-          (error) => {
-            console.error(error.error.message);
-            this.modalRedirectObject = {
-              header: 'Hubo un error.',
-              path: '/products',
-            };
-            this.modalRedirectFlag = true;
-          }
-        );
+          error: (error) => this.handleError(error),
+        });
       }
     }
   }
 
   createNewCategory() {
     this.isCreatingCategory = true;
-    let subsciption = this.modalService.confirm$.subscribe(() => {
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.smallCrudsService
         .getList('category')
         .subscribe((catList) => (this.categories = catList));
@@ -174,5 +208,23 @@ export class ProductsNewComponent implements OnInit {
 
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalRedirectObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        path: '/supliers',
+      };
+      this.modalRedirectFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
   }
 }

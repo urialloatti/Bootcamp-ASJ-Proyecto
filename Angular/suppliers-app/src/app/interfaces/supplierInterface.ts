@@ -25,7 +25,7 @@ export interface SupplierRequestDTO {
   logo?: string;
 }
 
-interface AddressResponseDTO {
+export interface AddressResponseDTO {
   address: string;
   addressNumber: number;
   city: string;

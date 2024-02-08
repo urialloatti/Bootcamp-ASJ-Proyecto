@@ -5,10 +5,29 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ModalService {
-  public confirmSubject: Subject<boolean> = new Subject<boolean>();
-  public confirm$: Observable<boolean> = this.confirmSubject.asObservable();
+  private confirmSubject: Subject<boolean> = new Subject<boolean>();
+  public confirmModal$: Observable<boolean> =
+    this.confirmSubject.asObservable();
 
-  public openModal(response: boolean) {
+  private confirmLeaveSubject: Subject<boolean> = new Subject<boolean>();
+  public confirmLeave$: Observable<boolean> =
+    this.confirmLeaveSubject.asObservable();
+
+  private formChanged: boolean = false;
+
+  public openModal(response: boolean): void {
     this.confirmSubject.next(response);
+  }
+
+  public sendConfirmLeaveNext(response: boolean): void {
+    this.confirmLeaveSubject.next(response);
+  }
+
+  public hasFormChanged(): boolean {
+    return this.formChanged;
+  }
+
+  public setFormChanged(hasChanged: boolean): void {
+    this.formChanged = hasChanged;
   }
 }

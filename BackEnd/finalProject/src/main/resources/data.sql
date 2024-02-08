@@ -204,7 +204,7 @@ INSERT INTO
   )
 VALUES
   ('tec1', 'Musimundo', 1, 'musimundo.com', 2, 1, '31761319809', 1, 1, 'https://seeklogo.com/images/M/Musimundo-logo-5581634F5D-seeklogo.com.png', '2023-11-12', LOCALTIMESTAMP(3), 1),
-  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '30381720705', 8, 2, 'https://www.shutterstock.com/image-vector/heart-vector-symbol-valentines-day-260nw-569390800.jpg', '2023-11-16', LOCALTIMESTAMP(3), 1),
+  ('tec2', 'Rooxo', 1, 'rooxo.com', 4, 2, '31401589601', 8, 2, 'https://www.shutterstock.com/image-vector/heart-vector-symbol-valentines-day-260nw-569390800.jpg', '2023-11-16', LOCALTIMESTAMP(3), 1),
   ('rep3', 'Lazz', 2, 'lazz.com/products', 6, 3, '38906168969', 8, 3, 'https://www.shutterstock.com/shutterstock/photos/1676106757/display_1500/stock-vector-letter-b-logo-design-with-modern-concept-icon-letter-b-vector-illustration-1676106757.jpg', '2023-11-17', LOCALTIMESTAMP(3), 1),
   ('tec4', 'Fravega', 1, 'fravega.com', 8, 4, '37688026725', 1, 4, 'https://sf.ezoiccdn.com/ezoimgfmt/www.vectorlogo.es/wp-content/uploads/2019/09/logo-vector-fravega.jpg?ezimgfmt=rs:630x320/rscb1/ngcb1/notWebP', '2023-11-19', LOCALTIMESTAMP(3), 1),
   ('ofi5', 'Talane', 3, 'talane.com', 10, 5, '32680934717', 6, 5, 'https://www.shutterstock.com/image-vector/abstract-crown-people-colorful-logo-260nw-1828733366.jpg', '2023-11-19', LOCALTIMESTAMP(3), 1),
@@ -264,21 +264,20 @@ VALUES
   ('ualloatti', 'useradmin', 'ualloatti@asjservicios.com', 'Uriel', 'Alloatti', 1, '2023-11-12', '2023-11-12', 1),
   ('aacosta', '12345', 'aacosta@asjservicios.com', 'Agostina', 'Acosta', 2, '2023-11-12', '2023-11-12', 1);
 
-
 -- TABLE PURCHASE-ORDERS
 INSERT INTO
   purchase_orders (date_arrives, requirements, supplier_id, state, user_id, created_at, updated_at, is_available)
 VALUES
-  ('2023-11-24', 'Tocar timbre al arribar.', 1, 'Pendiente', 1, '2023-11-19', '2023-11-19', 1),
-  ('2023-12-07', 'Llamar al llegar.', 2, 'Pendiente', 1, '2023-12-01', '2023-12-01', 1),
-  ('2023-12-20', 'Pasar por la mañana.', 8, 'Pendiente', 1, '2023-12-16', '2023-12-16', 1),
-  ('2023-12-30', '-', 9, 'Pendiente', 1, '2023-12-25', '2023-12-25', 1),
-  ('2024-01-07', 'Reja Negra.', 7, 'Pendiente', 1, '2024-01-03', '2024-01-03', 1),
-  ('2024-01-17', 'Timbre de arriba.', 9, 'Pendiente', 1, '2024-01-10', '2024-01-10', 1),
-  ('2024-01-15', 'Llamar al llegar.', 1, 'Pendiente', 1, '2024-01-11', '2024-01-11', 1),
-  ('2024-01-16', 'Pasar por la mañana.', 5, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1),
-  ('2024-01-17', '-', 4, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1),
-  ('2024-01-17', '-', 3, 'Pendiente', 1, '2024-01-12', '2024-01-12', 1);
+  ('2024-02-04', 'Tocar timbre al arribar.', 1, 'Pendiente', 1, '2024-01-29 08:23:00.000', '2024-01-29 08:23:00.000', 1),
+  ('2024-02-04', 'Llamar al llegar.', 2, 'Pendiente', 1, '2024-01-31 12:15:18.000', '2024-01-31 12:15:18.000', 1),
+  ('2024-02-07', 'Pasar por la mañana.', 8, 'Pendiente', 1, '2024-02-03 14:53:00.000', '2024-02-03 14:53:00.000', 1),
+  ('2024-02-08', '-', 9, 'Pendiente', 1, '2024-02-04 15:21:00.000', '2024-02-04 15:21:00.000', 1),
+  ('2024-02-14', 'Reja Negra.', 7, 'Pendiente', 1, '2024-02-07 09:01:18.000', '2024-02-07 09:01:18.000', 1),
+  ('2024-02-14', 'Timbre de arriba.', 9, 'Pendiente', 1, '2024-02-09 10:01:43.000', '2024-02-09 10:01:43.000', 1),
+  ('2024-02-16', 'Llamar al llegar.', 1, 'Pendiente', 1, '2024-02-11 11:32:02.000', '2024-02-11 11:32:02.000', 1),
+  ('2024-02-17', 'Pasar por la mañana.', 5, 'Pendiente', 1, '2024-02-12 14:01:08.000', '2024-02-12 14:01:08.000', 1),
+  ('2024-02-19', '-', 4, 'Pendiente', 1, '2024-02-13 16:51:24.000', '2024-02-13 16:51:24.000', 1),
+  ('2024-02-23', '-', 3, 'Pendiente', 1, '2024-02-14 08:59:52.000', '2024-02-14 08:59:52.000', 1);
 
 -- TABLE PRODUCT-CART
 INSERT INTO

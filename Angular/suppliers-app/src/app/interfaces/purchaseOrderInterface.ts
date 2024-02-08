@@ -1,25 +1,3 @@
-export interface PurchaseOrderInterface {
-  id?: number;
-  dateArriving: Date | string;
-  shippingRequirements: string;
-  supplierId: number;
-  supplierName?: string;
-  products: ProductGroup[];
-  state?: OrderState;
-  total?: number;
-  isAvailable?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-  createdBy?: string;
-}
-
-export interface ProductGroup {
-  productId: number;
-  productName?: string;
-  price: number;
-  productQuantity: number;
-}
-
 export interface PurchaseOrderResponseDTO {
   id: number;
   dateArriving: string;

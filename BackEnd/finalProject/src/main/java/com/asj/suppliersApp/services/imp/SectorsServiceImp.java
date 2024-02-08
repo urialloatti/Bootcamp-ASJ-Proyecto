@@ -4,6 +4,8 @@ import com.asj.suppliersApp.dto.request.CancelItemRequestDTO;
 import com.asj.suppliersApp.dto.request.SmallCrudRequestDTO;
 import com.asj.suppliersApp.dto.response.SmallCrudResponseDTO;
 import com.asj.suppliersApp.entities.Sector;
+import com.asj.suppliersApp.exceptions.BadRequestException;
+import com.asj.suppliersApp.exceptions.ResourceNotFoundException;
 import com.asj.suppliersApp.mappers.SmallCrudMapper;
 import com.asj.suppliersApp.repositories.SectorRepository;
 import com.asj.suppliersApp.services.SectorsService;
@@ -16,47 +18,63 @@ import java.util.Optional;
 
 @Service
 public class SectorsServiceImp implements SectorsService {
-    private final SectorRepository sectorRepository;
+    private final SectorRepository sectorRep;
 
-    public SectorsServiceImp(SectorRepository sectorRepository) {
-        this.sectorRepository = sectorRepository;
+    public SectorsServiceImp(SectorRepository sectorRep) {
+        this.sectorRep = sectorRep;
     }
 
     @Override
     public List<SmallCrudResponseDTO> findAll() {
-        List<Sector> sectors = this.sectorRepository.findByAvailableTrue();
+        List<Sector> sectors = this.sectorRep.findByAvailableTrue();
         List<SmallCrudResponseDTO> response = new ArrayList<SmallCrudResponseDTO>();
-        for (Sector sector: sectors) {
+        for (Sector sector : sectors) {
             response.add(SmallCrudMapper.getSmallCrudDTO(sector));
         }
         return response;
     }
 
     @Override
-    public Optional<SmallCrudResponseDTO> findById(Integer id) {
-        Optional<Sector> optSector = this.sectorRepository.findById(id);
-        if (optSector.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(SmallCrudMapper.getSmallCrudDTO(optSector.get()));
+    public SmallCrudResponseDTO findById(Integer id) throws ResourceNotFoundException {
+        Sector sector = this.getSectorIfExists(id);
+        return SmallCrudMapper.getSmallCrudDTO(sector);
     }
 
     @Override
-    public Optional<SmallCrudResponseDTO> createSector(SmallCrudRequestDTO request) {
-        Sector sector = this.sectorRepository.save(this.getSectorFromRequest(request));
-        return Optional.of(SmallCrudMapper.getSmallCrudDTO(sector));
+    public Boolean existsByName(SmallCrudRequestDTO request) {
+        return this.sectorRep.existsBySectorIgnoreCase(request.getName());
     }
 
     @Override
-    public Optional<SmallCrudResponseDTO> CancelById(Integer id, CancelItemRequestDTO cancel) {
-        Optional<Sector> optSector = this.sectorRepository.findById(id);
-        if (optSector.isEmpty()) {
-            return Optional.empty();
+    public SmallCrudResponseDTO createSector(SmallCrudRequestDTO request) throws BadRequestException {
+        if (this.existsByName(request)) {
+            throw new BadRequestException("Ya existe un rubro con el nombre " + request.getName() + ".");
         }
-        Sector sector = optSector.get();
+        Sector sector = this.sectorRep.save(this.getSectorFromRequest(request));
+        return SmallCrudMapper.getSmallCrudDTO(sector);
+    }
+
+    @Override
+    public SmallCrudResponseDTO updateSector(Integer id, SmallCrudRequestDTO requestDTO) throws ResourceNotFoundException, BadRequestException {
+        Sector sector = this.getSectorIfExists(id);
+        sector.setSector(requestDTO.getName());
+        if (this.existsByName(requestDTO)) {
+            throw new BadRequestException("Ya existe un rubro con el nombre " + requestDTO.getName() + ".");
+        }
+        return SmallCrudMapper.getSmallCrudDTO(this.sectorRep.save(sector));
+    }
+
+    @Override
+    public SmallCrudResponseDTO cancelById(Integer id, CancelItemRequestDTO cancel) throws ResourceNotFoundException {
+        Sector sector = this.getSectorIfExists(id);
         sector.setAvailable(cancel.isAvailable());
-        this.sectorRepository.save(sector);
-        return Optional.of(SmallCrudMapper.getSmallCrudDTO(sector));
+        this.sectorRep.save(sector);
+        return SmallCrudMapper.getSmallCrudDTO(sector);
+    }
+
+    private Sector getSectorIfExists(Integer id) throws ResourceNotFoundException {
+        return this.sectorRep.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rubro con Id " + id + " no encontrado."));
     }
 
     private Sector getSectorFromRequest(SmallCrudRequestDTO request) {

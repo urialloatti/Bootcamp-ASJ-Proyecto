@@ -7,10 +7,7 @@ import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
-import {
-  ProductInterface,
-  ProductResponseDTO,
-} from '../../../interfaces/productInterface';
+import { ProductResponseDTO } from '../../../interfaces/productInterface';
 import { ModalService } from '../../../services/modal.service';
 
 @Component({
@@ -69,7 +66,7 @@ export class ProductInfoComponent implements OnInit {
       confirm: 'Eliminar',
     };
     this.modalConfirmFlag = true;
-    this.confirmService.confirm$.subscribe((confirmation) => {
+    this.confirmService.confirmModal$.subscribe((confirmation) => {
       this.modalConfirmFlag = false;
       if (confirmation) {
         this.productService.cancelElementByIdB(id).subscribe(

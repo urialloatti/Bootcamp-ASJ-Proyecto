@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { UserRequestDTO } from '../../../interfaces/userInterface';
+
 import { UsersService } from '../../../services/users.service';
+
 import { ModalMessageInterface } from '../../../interfaces/modalInterface';
+import { UserRequestDTO } from '../../../interfaces/userInterface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-user',
@@ -26,15 +29,15 @@ export class NewUserComponent {
     passwordHash: false,
     username: false,
   };
-  arePasswordsNotEqual: boolean = false;
-  userAlreadyExists: boolean = false;
-  isFormValid: boolean = true;
+  public arePasswordsNotEqual: boolean = false;
+  public userAlreadyExists: boolean = false;
+  public isFormValid: boolean = true;
 
-  flagNewUserCreated: boolean = false;
-  modalMessageFlag: boolean = false;
-  modalMessageObject!: ModalMessageInterface;
+  public flagNewUserCreated: boolean = false;
+  public modalMessageFlag: boolean = false;
+  public modalMessageObject!: ModalMessageInterface;
 
-  createUser() {
+  public createUser() {
     this.isFormValid = true;
     this.validateForm();
     Object.keys(this.isUserInvalid).forEach((key) => {
@@ -45,25 +48,33 @@ export class NewUserComponent {
     if (this.arePasswordsNotEqual || this.userAlreadyExists) {
       this.showErrorsModal();
     }
-    if (this.isFormValid) {
-      this.userService.addElement(this.currentUser).subscribe();
-      console.log(this.currentUser);
-      this.flagNewUserCreated = true;
+    if (this.isFormValid && !this.userAlreadyExists) {
+      this.userService.addElement(this.currentUser).subscribe({
+        next: () => (this.flagNewUserCreated = true),
+        error: (error) => {
+          this.handleError(error);
+        },
+      });
     }
   }
 
-  validateMail(mail: string): boolean {
+  public hideModal(): void {
+    this.modalMessageFlag = false;
+  }
+
+  private validateMail(mail: string): boolean {
     // Returns true if valid
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
   }
 
-  validateUsername() {
+  private validateUsername() {
     this.userService
       .checkUsername(this.currentUser.username)
       .subscribe((response) => (this.userAlreadyExists = response));
   }
 
-  validateForm(): void {
+  private validateForm(): void {
+    this.validateUsername();
     this.isUserInvalid.name =
       this.currentUser.name.length < 3 || this.currentUser.name.length > 25;
     this.isUserInvalid.surname =
@@ -78,19 +89,33 @@ export class NewUserComponent {
       this.currentUser.passwordHash.length > 15;
     this.arePasswordsNotEqual =
       this.currentUser.passwordHash != this.repitedPass;
-    this.validateUsername();
   }
 
-  showErrorsModal() {
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalMessageObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        confirm: 'Intentar más tarde',
+      };
+      this.modalMessageFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
+    this.isFormValid = false;
+  }
+
+  private showErrorsModal() {
     this.modalMessageObject = {
-      message: `Hay errores en el formulario.`,
+      header: `Hay errores en el formulario.`,
       confirm: 'Continuar editando',
     };
     this.modalMessageFlag = true;
     this.isFormValid = false;
-  }
-
-  hideModal(): void {
-    this.modalMessageFlag = false;
   }
 }

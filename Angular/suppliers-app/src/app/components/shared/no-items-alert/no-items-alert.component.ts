@@ -8,4 +8,7 @@ import { Component, Input } from '@angular/core';
 export class NoItemsAlertComponent {
   @Input()
   public alerLabel!: string;
+
+  @Input()
+  public hasFilter: boolean = false;
 }

@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
+import { Router, UrlTree } from '@angular/router';
 
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 import {
   UserCredentialsDTO,
   UserValidationResponseDTO,
   UserResponseDTO,
   UserRequestDTO,
 } from '../interfaces/userInterface';
-import { Router, UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class UsersService {
   private userCredentialsSubject: Subject<boolean> = new Subject<boolean>();
   public checkCredentials$: Observable<boolean> =
     this.userCredentialsSubject.asObservable();
+
   private userExistsSubject: Subject<boolean> = new Subject<boolean>();
   public checkUserExists$ = this.userExistsSubject.asObservable();
 
@@ -39,9 +41,26 @@ export class UsersService {
           console.error(error);
           if (error.status === 0) {
             alert('El servidor se encuentra caído');
+            return of(this.router.parseUrl('/404'));
           }
           return of(this.router.parseUrl('/login'));
         })
+      );
+  }
+
+  public get hasAdminPermits$(): Observable<boolean | UrlTree> {
+    let userCredentialsDTO = this.getCredentials();
+    return this.http
+      .post<ApiResponse<UserResponseDTO>>(
+        `${this.URL_API_TEST}/login`,
+        userCredentialsDTO
+      )
+      .pipe(
+        map((apiResponse) => {
+          if (apiResponse.data.rol == 'admin') return true;
+          return this.router.parseUrl('/');
+        }),
+        catchError(() => of(false))
       );
   }
 
@@ -73,13 +92,18 @@ export class UsersService {
   }
 
   // CRUD
-  public addElement(user: UserRequestDTO): Observable<UserRequestDTO> {
-    return this.http.post<UserRequestDTO>(this.URL_API_TEST + '/signup', user);
+  public addElement(
+    user: UserRequestDTO
+  ): Observable<ApiResponse<UserResponseDTO>> {
+    return this.http.post<ApiResponse<UserResponseDTO>>(
+      this.URL_API_TEST + '/signup',
+      user
+    );
   }
 
-  public getCurrentUser(): Observable<UserResponseDTO> {
+  public getCurrentUser(): Observable<ApiResponse<UserResponseDTO>> {
     let userCredentialsDTO = this.getCredentials();
-    return this.http.post<UserResponseDTO>(
+    return this.http.post<ApiResponse<UserResponseDTO>>(
       `${this.URL_API_TEST}/login`,
       userCredentialsDTO
     );
@@ -90,22 +114,4 @@ export class UsersService {
       localStorage.getItem('credentials') || '{}'
     ) as UserCredentialsDTO;
   }
-
-  // private handleError(error: HttpErrorResponse) {
-  //   if (error.status === 0) {
-  //     // A client-side or network error occurred. Handle it accordingly.
-  //     console.error('An error occurred:', error.error);
-  //   } else {
-  //     // The backend returned an unsuccessful response code.
-  //     // The response body may contain clues as to what went wrong.
-  //     console.error(
-  //       `Backend returned code ${error.status}, body was: `,
-  //       error.error
-  //     );
-  //   }
-  //   // Return an observable with a user-facing error message.
-  //   return throwError(
-  //     () => new Error('Something bad happened; please try again later.')
-  //   );
-  // }
 }

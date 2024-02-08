@@ -88,15 +88,15 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     @Override
-    public SupplierResponseDTO cancelById(Integer id, CancelItemRequestDTO setAvailable) throws ResourceNotFoundException {
-        Supplier toDelete = this.getSupplierIfExists(id);
-        toDelete.setAvailable(setAvailable.isAvailable());
-        toDelete.setUpdatedAt(new Date());
-        this.supplierRep.save(toDelete);
+    public SupplierResponseDTO setAvailableById(Integer id, CancelItemRequestDTO setAvailable) throws ResourceNotFoundException {
+        Supplier supplier = this.getSupplierIfExists(id);
+        supplier.setAvailable(setAvailable.isAvailable());
+        supplier.setUpdatedAt(new Date());
+        this.supplierRep.save(supplier);
         if (!setAvailable.isAvailable()) {
             this.cancelSupplierProducts(id);
         }
-        return SupplierMapper.getSupplierResponseDTO(toDelete);
+        return SupplierMapper.getSupplierResponseDTO(supplier);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class SuppliersServiceImp implements SuppliersService {
         return this.supplierRep.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + id + " no encontrado."));
     }
 
-    private Supplier updateSupplier(Supplier supplier, SupplierRequestDTO requestDTO) throws ResourceNotFoundException {
-        supplier = SupplierMapper.updateSupplierFromRequest(supplier, requestDTO);
+    private Supplier updateSupplier(Supplier toUpdate, SupplierRequestDTO requestDTO) throws ResourceNotFoundException {
+        Supplier supplier = SupplierMapper.updateSupplierFromRequest(toUpdate, requestDTO);
         Sector sector = this.sectorRep.findById(requestDTO.getSectorId())
                 .orElseThrow(() -> new ResourceNotFoundException("El rubro seleccionado no se encuentra disponible."));
         FiscalCondition fiscalCondition = this.fiscalCondRep.findById(requestDTO.getFiscalConditionId())
@@ -139,7 +139,6 @@ public class SuppliersServiceImp implements SuppliersService {
                 .orElseThrow(() -> new ResourceNotFoundException("La proovincia seleccionada no se encuentra disponible."));
         supplier.setSector(sector);
         supplier.setAddress(SupplierMapper.getAddress(requestDTO.getFullAddress(), province));
-        supplier.setAddress(supplier.getAddress());
         supplier.setFiscalCondition(fiscalCondition);
         supplier.setPhone(supplier.getPhone());
         supplier.getContact().setPhone(supplier.getContact().getPhone());
@@ -154,8 +153,8 @@ public class SuppliersServiceImp implements SuppliersService {
     }
 
     private void cancelSupplierProducts(Integer id) {
-        List<Product> suplierProducts = this.productRep.findByAvailableTrueAndSupplierId(id);
-        for (Product product : suplierProducts) {
+        List<Product> supplierProducts = this.productRep.findByAvailableTrueAndSupplierId(id);
+        for (Product product : supplierProducts) {
             product.setAvailable(false);
             this.productRep.save(product);
         }

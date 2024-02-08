@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div class="row ps-2 align-middle">
+<section class="container-fluid">
+  <nav class="row ps-2 align-middle">
     <div class="col-7 col-lg-6 d-flex justify-content-start py-3">
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -120,5 +120,11 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </nav>
+</section>
+<section>
+  <shared-modal-redirect
+    *ngIf="modalRedirectFlag"
+    [modalData]="modalRedirectObject"
+  ></shared-modal-redirect>
+</section>

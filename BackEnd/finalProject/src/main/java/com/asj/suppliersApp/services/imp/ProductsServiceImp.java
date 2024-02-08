@@ -32,32 +32,32 @@ public class ProductsServiceImp implements ProductsService {
     public List<ProductResponseDTO> findAllAvailables() {
         List<Product> products = productRep.findByAvailableTrue();
         List<ProductResponseDTO> response = new ArrayList<>();
-        for (Product product: products ) {
+        for (Product product : products) {
             response.add(ProductMapper.getProductResponse(product));
         }
-        return  response;
+        return response;
     }
 
     @Override
     public List<ProductResponseDTO> findAllDeleted() {
         List<Product> products = productRep.findByAvailableFalse();
         List<ProductResponseDTO> response = new ArrayList<>();
-        for (Product product: products ) {
+        for (Product product : products) {
             if (product.getsupplier().getAvailable()) {
-            response.add(ProductMapper.getProductResponse(product));
+                response.add(ProductMapper.getProductResponse(product));
             }
         }
-        return  response;
+        return response;
     }
 
     @Override
     public List<ProductResponseDTO> findAllBySupplierId(Integer id) {
         List<Product> products = productRep.findByAvailableTrueAndSupplierId(id);
         List<ProductResponseDTO> response = new ArrayList<>();
-        for (Product product: products ) {
+        for (Product product : products) {
             response.add(ProductMapper.getProductResponse(product));
         }
-        return  response;
+        return response;
     }
 
     @Override
@@ -74,38 +74,35 @@ public class ProductsServiceImp implements ProductsService {
     @Override
     public ProductResponseDTO create(ProductRequestDTO request) throws ResourceNotFoundException {
         Supplier supplier = this.supplierRep.findById(request.getSupplierId())
-                .orElseThrow(()-> new ResourceNotFoundException("Proveedor con el Id " + request.getSupplierId() + " no encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + request.getSupplierId() + " no encontrado."));
         Category category = this.categoryRep.findById(request.getCategoryId())
-                .orElseThrow(()-> new ResourceNotFoundException("Categoría con el Id " + request.getCategoryId() + " no encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría con el Id " + request.getCategoryId() + " no encontrada."));
         Product product = ProductMapper.getProductFromRequest(request, supplier, category);
         product.setCode(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 9));
         product.setAvailable(true);
         product.setCreatedAt(new Date());
         product.setUpdatedAt(new Date());
-        product = this.productRep.save(product);
-        return ProductMapper.getProductResponse(product);
+        return ProductMapper.getProductResponse(this.productRep.save(product));
     }
 
     @Override
     public ProductResponseDTO update(ProductRequestDTO request, Integer id) throws ResourceNotFoundException {
         Product product = this.getProductIfExists(id);
         Supplier supplier = this.supplierRep.findById(request.getSupplierId())
-                .orElseThrow(()-> new ResourceNotFoundException("Proveedor con el Id " + request.getSupplierId() + " no encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Proveedor con el Id " + request.getSupplierId() + " no encontrado."));
         Category category = this.categoryRep.findById(request.getCategoryId())
-                .orElseThrow(()-> new ResourceNotFoundException("Categoría con el Id " + request.getCategoryId() + " no encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría con el Id " + request.getCategoryId() + " no encontrada."));
         product = ProductMapper.getProductFromRequest(product, request, supplier, category);
         product.setUpdatedAt(new Date());
-        product = this.productRep.save(product);
-        return ProductMapper.getProductResponse(product);
+        return ProductMapper.getProductResponse(this.productRep.save(product));
     }
 
     @Override
-    public ProductResponseDTO cancelById(Integer id, CancelItemRequestDTO setAvailable)  throws ResourceNotFoundException  {
+    public ProductResponseDTO cancelById(Integer id, CancelItemRequestDTO setAvailable) throws ResourceNotFoundException {
         Product product = this.getProductIfExists(id);
         product.setUpdatedAt(new Date());
         product.setAvailable(setAvailable.isAvailable());
-        product = this.productRep.save(product);
-        return ProductMapper.getProductResponse(product);
+        return ProductMapper.getProductResponse(this.productRep.save(product));
     }
 
     @Override
@@ -113,7 +110,8 @@ public class ProductsServiceImp implements ProductsService {
         return this.productRep.countByAvailableTrue();
     }
 
-    private Product getProductIfExists(Integer id)  throws ResourceNotFoundException {
-        return this.productRep.findById(id).orElseThrow(()-> new ResourceNotFoundException("Producto con el Id " + id + " no encontrado."));
+    private Product getProductIfExists(Integer id) throws ResourceNotFoundException {
+        return this.productRep.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto con el Id " + id + " no encontrado."));
     }
 }

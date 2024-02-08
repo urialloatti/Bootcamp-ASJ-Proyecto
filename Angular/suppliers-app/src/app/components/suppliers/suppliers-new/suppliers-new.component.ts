@@ -1,6 +1,7 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgForm, NgModel } from '@angular/forms';
 import { Subject, Subscription, debounceTime } from 'rxjs';
 import { SupplierRequestDTO } from './../../../interfaces/supplierInterface';
 import { Title } from '@angular/platform-browser';
@@ -19,6 +20,7 @@ import {
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { SmallCrudInterface } from '../../../interfaces/smallCrudsInterfaces';
+import { CuitPipePipe } from '../../../pipes/cuit-pipe.pipe';
 
 @Component({
   selector: 'suppliers-new',
@@ -32,10 +34,15 @@ export class suppliersNewComponent implements OnInit {
     private modalService: ModalService,
     private smallCrudsService: SmallCrudsService,
     private supplierService: SuppliersService,
+    private cuitPipe: CuitPipePipe,
 
     private route: ActivatedRoute,
+    private router: Router,
     private titleService: Title
   ) {}
+
+  @ViewChild('myForm', { static: true }) myForm!: NgForm;
+  formChangesCounter: number = 0;
 
   currentsupplier: SupplierRequestDTO = {
     brand: '',
@@ -61,6 +68,7 @@ export class suppliersNewComponent implements OnInit {
     },
   };
   currentSupplierId!: number;
+  inputCuit: string = '';
   selectedCountry: number = -1;
 
   countryCodes = phoneCountryCodes;
@@ -92,6 +100,7 @@ export class suppliersNewComponent implements OnInit {
   modalMessageObject!: ModalMessageInterface;
   modalRedirectFlag: boolean = false;
   modalRedirectObject!: ModalRedirectInterface;
+  triedToLeave: boolean = false;
 
   isUpdating: boolean = false;
 
@@ -99,6 +108,11 @@ export class suppliersNewComponent implements OnInit {
   private debouncerSubscription?: Subscription;
 
   ngOnInit(): void {
+    this.modalService.setFormChanged(false);
+    this.modalService.confirmLeave$.subscribe(
+      (response) => (this.triedToLeave = response)
+    );
+
     this.locationService
       .getList()
       .subscribe((list) => (this.locationOptions = list));
@@ -112,28 +126,25 @@ export class suppliersNewComponent implements OnInit {
       .subscribe((secList) => (this.sectors = secList));
     this.route.paramMap.subscribe((response) => {
       let id = response.get('id');
-      if (id !== null && !isNaN(Number(id))) {
-        this.currentSupplierId = Number(id);
-        this.supplierService.getElementForUpdate(parseInt(id)).subscribe(
-          (apiResponse) => {
-            let response = apiResponse.data;
-            this.locationService
-              .getCountryId(response.fullAddress.provinceId)
-              .subscribe((countryId) => (this.selectedCountry = countryId));
-            this.currentsupplier = response;
-            this.titleService.setTitle(`Editar ${response.brand}`);
-          },
-          (error) => {
-            this.modalRedirectObject = {
-              header: 'Error',
-              message: error.error.message,
-              path: '/suppliers',
-            };
-            this.modalRedirectFlag = true;
-            console.error(error);
-          }
-        );
-        this.isUpdating = true;
+      if (id !== null) {
+        if (!isNaN(Number(id))) {
+          this.isUpdating = true;
+          this.loadSupplier(id);
+        } else this.router.navigateByUrl('/404');
+      } else {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe((e) => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 0) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            5;
+        });
       }
 
       this.debouncerSubscription = this.debouncer
@@ -144,13 +155,52 @@ export class suppliersNewComponent implements OnInit {
     });
   }
 
+  private loadSupplier(id: string) {
+    this.currentSupplierId = Number(id);
+    this.supplierService.getElementForUpdate(parseInt(id)).subscribe({
+      next: (apiResponse) => {
+        let response = apiResponse.data;
+        this.locationService
+          .getCountryId(response.fullAddress.provinceId)
+          .subscribe((countryId) => (this.selectedCountry = countryId));
+        this.currentsupplier = response;
+        this.inputCuit = this.cuitPipe.transform(response.cuit);
+        this.titleService.setTitle(`Editar ${response.brand}`);
+      },
+      error: (error) => {
+        this.modalRedirectObject = {
+          header: 'Error',
+          message: error.error.message,
+          path: '/suppliers',
+        };
+        this.modalRedirectFlag = true;
+        console.error(error);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.myForm.valueChanges?.subscribe((e) => {
+            this.formChangesCounter++;
+            if (this.formChangesCounter > 1) {
+              this.modalService.setFormChanged(true);
+            }
+            console.log(
+              this.formChangesCounter,
+              this.modalService.hasFormChanged()
+            );
+          }),
+            500;
+        });
+      },
+    });
+  }
+
   savesupplier(): void {
     let isFormValid = true;
     this.validateSubmite();
     Object.keys(this.issupplierInvalid).forEach((key) => {
       if (isFormValid && this.issupplierInvalid[key]) {
         this.modalMessageObject = {
-          message: `Hay errores en el formulario.`,
+          header: `Hay errores en el formulario.`,
           confirm: 'Continuar editando',
         };
         this.modalMessageFlag = true;
@@ -158,47 +208,41 @@ export class suppliersNewComponent implements OnInit {
       }
     });
     if (isFormValid && !this.cuitExistFlag) {
-      this.completeUrl;
+      this.completeUrl();
       if (this.isUpdating) {
         this.supplierService
           .updateElement(this.currentSupplierId, this.currentsupplier)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: (response) => {
               this.modalRedirectObject = {
                 header: `Proveedor ${response.data.brand} actualizado con éxito.`,
                 path: '/suppliers',
               };
               this.modalRedirectFlag = true;
               this.debouncerSubscription!.unsubscribe();
+              this.modalService.setFormChanged(false);
             },
-            (error) => {
-              this.modalMessageObject = {
-                message: `${error.error.message}`,
-                confirm: 'Continuar editando',
-              };
-              this.modalMessageFlag = true;
+            error: (error) => {
+              this.handleError(error);
               isFormValid = false;
-            }
-          );
+            },
+          });
       } else {
-        this.supplierService.addElement(this.currentsupplier).subscribe(
-          (response) => {
+        this.supplierService.addElement(this.currentsupplier).subscribe({
+          next: (response) => {
             this.modalRedirectObject = {
               header: `Proveedor ${response.data.brand} cargado con éxito.`,
               path: '/suppliers',
             };
             this.modalRedirectFlag = true;
             this.debouncerSubscription!.unsubscribe();
+            this.modalService.setFormChanged(false);
           },
-          (error) => {
-            this.modalMessageObject = {
-              message: `${error.error.message}`,
-              confirm: 'Continuar editando',
-            };
-            this.modalMessageFlag = true;
+          error: (error) => {
+            this.handleError(error);
             isFormValid = false;
-          }
-        );
+          },
+        });
       }
     }
   }
@@ -212,7 +256,7 @@ export class suppliersNewComponent implements OnInit {
 
   createNewSector() {
     this.isCreatingSector = true;
-    let subsciption = this.modalService.confirm$.subscribe((response) => {
+    let subsciption = this.modalService.confirmModal$.subscribe((response) => {
       this.smallCrudsService
         .getList('sector')
         .subscribe((secList) => (this.sectors = secList));
@@ -240,7 +284,7 @@ export class suppliersNewComponent implements OnInit {
     return false;
   }
 
-  validateCuit(cuit: string): boolean {
+  private validateCuit(cuit: string): boolean {
     // returns true if valid.
     return !/[^0-9]/.test(cuit);
   }
@@ -251,7 +295,8 @@ export class suppliersNewComponent implements OnInit {
       .subscribe((exists) => (this.cuitExistFlag = exists));
   }
 
-  onKeyPressCuit(): void {
+  public onKeyPressCuit(): void {
+    this.currentsupplier.cuit = this.inputCuit.replace(/\D/g, '');
     this.debouncer.next();
   }
 
@@ -300,7 +345,7 @@ export class suppliersNewComponent implements OnInit {
       this.currentsupplier.fullAddress.city.length > 60;
     this.issupplierInvalid.fullAddressZIP =
       this.currentsupplier.fullAddress.zipCode.length < 3 ||
-      this.currentsupplier.fullAddress.zipCode.length > 6;
+      this.currentsupplier.fullAddress.zipCode.length > 9;
     this.issupplierInvalid.cuit =
       !this.validateCuit(this.currentsupplier.cuit) ||
       this.currentsupplier.cuit.length < 10 ||
@@ -326,5 +371,23 @@ export class suppliersNewComponent implements OnInit {
 
   hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    if (error.status == 0) {
+      this.modalRedirectObject = {
+        header: 'Error',
+        message: 'Hubo un error con el servidor.',
+        path: '/supliers',
+      };
+      this.modalRedirectFlag = true;
+    } else {
+      this.modalMessageObject = {
+        header: 'Hubo errores con el formulario.',
+        message: error.error.message,
+        confirm: 'Continuar editando',
+      };
+      this.modalMessageFlag = true;
+    }
   }
 }

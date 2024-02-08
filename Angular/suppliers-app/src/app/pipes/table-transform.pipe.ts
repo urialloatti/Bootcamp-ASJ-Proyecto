@@ -1,25 +1,35 @@
-import { CurrencyPipe, DatePipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { PipeExtra } from '../interfaces/listTemplateInterface';
+
 import { CuitPipePipe } from './cuit-pipe.pipe';
 import { PhoneNumberPipe } from './phone-number.pipe';
-import { Contact, PhoneNumber } from '../interfaces/supplierInterface';
-import { ShowContactPipe } from './show-contact.pipe';
-import { ShowMailPipe } from './show-mail.pipe';
+import { PipeExtra } from '../interfaces/listTemplateInterface';
 import { ShowContactPhonePipe } from './show-contact-phone.pipe';
+import { ShowContactPipe } from './show-contact.pipe';
+import { ShowCountryPipe } from './show-country.pipe';
+import { ShowMailPipe } from './show-mail.pipe';
+import { ShowProvincePipe } from './show-province.pipe';
+
+import {
+  AddressResponseDTO,
+  Contact,
+  PhoneNumber,
+} from '../interfaces/supplierInterface';
 
 @Pipe({
   name: 'tableTransform',
 })
 export class TableTransformPipe implements PipeTransform {
   constructor(
-    private datePipe: DatePipe,
-    private currencyPipe: CurrencyPipe,
     private contactPhone: ShowContactPhonePipe,
     private contactPipe: ShowContactPipe,
+    private country: ShowCountryPipe,
     private cuitPipe: CuitPipePipe,
+    private currencyPipe: CurrencyPipe,
+    private datePipe: DatePipe,
     private mail: ShowMailPipe,
-    private phone: PhoneNumberPipe
+    private phone: PhoneNumberPipe,
+    private province: ShowProvincePipe
   ) {}
 
   transform(value: unknown, extra?: PipeExtra): string {
@@ -31,6 +41,8 @@ export class TableTransformPipe implements PipeTransform {
           return this.contactPipe.transform(value as Contact);
         case 'contactPhone':
           return this.contactPhone.transform(value as Contact);
+        case 'country':
+          return this.country.transform(value as AddressResponseDTO);
         case 'CUIT':
           return this.cuitPipe.transform(value as string);
         case 'Currency':
@@ -44,6 +56,8 @@ export class TableTransformPipe implements PipeTransform {
           )!;
         case 'phone':
           return this.phone.transform(value as PhoneNumber);
+        case 'province':
+          return this.province.transform(value as AddressResponseDTO);
         case 'PurchaseOrder':
           return value ? '(Pendiente)' : '(Cancelado)';
       }

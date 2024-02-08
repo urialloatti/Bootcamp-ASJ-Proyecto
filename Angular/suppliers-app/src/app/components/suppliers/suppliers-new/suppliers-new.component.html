@@ -3,15 +3,26 @@
   <div class="col col-sm-9 col-md-8 p-5 body">
     <article class="bg-light-subtle rounded p-4 pt-2">
       <div class="row">
-        <div class="col">
-          <a class="text-decoration-none" routerLink="/suppliers"
-            >← Ir al listado</a
-          >
-        </div>
+        <nav
+          class="col"
+          style="--bs-breadcrumb-divider: '>'"
+          aria-label="breadcrumb"
+        >
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item">
+              <a routerLink="/suppliers">Lista</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <span *ngIf="!isUpdating">Nuevo</span
+              ><span *ngIf="isUpdating">Actualizar</span> proveedor
+            </li>
+          </ol>
+        </nav>
       </div>
       <form #myForm="ngForm" (ngSubmit)="savesupplier()">
         <fieldset class="px-4">
-          <div class="text-center my-4">
+          <div class="text-center mb-4 mt-2">
             <h1 class="h3 title" *ngIf="!isUpdating">Cargar nuevo Proveedor</h1>
             <h1 class="h3 title" *ngIf="isUpdating">Editar Proveedor</h1>
           </div>
@@ -318,8 +329,9 @@
                 type="text"
                 name="cuit"
                 #cuit="ngModel"
-                [(ngModel)]="currentsupplier.cuit"
+                [(ngModel)]="inputCuit"
                 required
+                [value]="inputCuit | cuitPipe"
                 minlength="11"
                 maxlength="13"
                 [ngClass]="validateCuitInput(cuit) ? 'is-valid' : ''"
@@ -550,4 +562,5 @@
     *ngIf="isCreatingSector"
     [currentCreate]="'sector'"
   ></app-modal-new>
+  <modal-leave-guard *ngIf="triedToLeave"></modal-leave-guard>
 </section>

@@ -22,7 +22,7 @@ export class ProductsRecycleBinComponent {
 
   productsFields: ListTemplateInterface = {
     section: 'products',
-    label: 'productos',
+    label: 'productos eliminados',
     listFields: [
       { field: 'Proveedor', keys: [{ key: 'supplier', isNumeric: false }] },
       { field: 'Nombre', keys: [{ key: 'name', isNumeric: false }] },
@@ -38,10 +38,10 @@ export class ProductsRecycleBinComponent {
   productsList$!: Observable<ProductResponseDTO[]>;
 
   ngOnInit(): void {
-    this.productsList$ = this.productsService.getDeletedList();
+    this.productsList$ = this.productsService.getListDeleted();
   }
 
-  deleteProduct(id: number): void {
+  restoreProduct(id: number): void {
     let deleted: ProductResponseDTO;
     this.productsService.getElementById(id).subscribe((response) => {
       deleted = response.data;
@@ -52,31 +52,34 @@ export class ProductsRecycleBinComponent {
         confirm: 'Restaurar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.confirmService.confirm$.subscribe((response) => {
-        this.modalConfirmFlag = false;
-        if (response) {
-          this.productsService.restoreElementByIdB(id).subscribe(
-            (response) => {
-              this.modalMessageObject = {
-                message: `Producto ${response.data.name} recuperado con éxito.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              this.productsService.getList().subscribe();
-            },
-            (error) => {
-              this.modalMessageObject = {
-                message: `El producto ya no existe en la base de datos.`,
-                confirm: 'Aceptar',
-              };
-              this.modalMessageFlag = true;
-              console.log(error);
-            }
-          );
-        } else {
-          subscription.unsubscribe();
+      let subscription = this.confirmService.confirmModal$.subscribe(
+        (confirmed) => {
+          this.modalConfirmFlag = false;
+          if (confirmed) {
+            this.productsService.restoreElementByIdB(id).subscribe({
+              next: (response) => {
+                this.modalMessageObject = {
+                  header: `Producto ${response.data.name} recuperado con éxito.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                this.productsService.getList().subscribe();
+              },
+              error: (error) => {
+                this.modalMessageObject = {
+                  header: `El producto ya no existe en la base de datos.`,
+                  confirm: 'Aceptar',
+                };
+                this.modalMessageFlag = true;
+                console.log(error);
+              },
+              complete: () => subscription.unsubscribe(),
+            });
+          } else {
+            subscription.unsubscribe();
+          }
         }
-      });
+      );
     });
   }
 

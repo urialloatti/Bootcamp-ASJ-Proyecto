@@ -12,7 +12,6 @@ import com.asj.suppliersApp.services.SuppliersService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,15 +28,15 @@ public class SuppliersController {
     }
 
     @GetMapping()
-    public List<SupplierResponseDTO> getAll() {
-        return  suppliersService.findAllAvailables();
+    public ResponseEntity<List<SupplierResponseDTO>> getAll() {
+        return ResponseEntity.status(200).body(suppliersService.findAllAvailables());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> getById(@PathVariable Integer id) {
         try {
-        SupplierResponseDTO response = suppliersService.findById(id);
-        return ResponseEntity.ok().body(new ApiResponse<>(response));
+            SupplierResponseDTO response = suppliersService.findById(id);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
@@ -45,10 +44,10 @@ public class SuppliersController {
     }
 
     @GetMapping("/u/{id}")
-    public ResponseEntity<ApiResponse<SupplierRequestDTO>> getUpdateById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<SupplierRequestDTO>> getSupplierForUpdate(@PathVariable Integer id) {
         try {
-        SupplierRequestDTO response = suppliersService.findByIdUpdate(id);
-        return ResponseEntity.ok().body(new ApiResponse<>(response));
+            SupplierRequestDTO response = suppliersService.findByIdUpdate(id);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
@@ -62,12 +61,13 @@ public class SuppliersController {
 
     @GetMapping("/deleted")
     public List<SupplierResponseDTO> getAllDeleted() {
-        return  suppliersService.findAllDeleted();
+        return suppliersService.findAllDeleted();
     }
+
     @PatchMapping("/deleted/{id}")
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO setAvailable) {
         try {
-            SupplierResponseDTO response = suppliersService.cancelById(id, setAvailable);
+            SupplierResponseDTO response = suppliersService.setAvailableById(id, setAvailable);
             return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
@@ -79,13 +79,8 @@ public class SuppliersController {
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> postSupplier(@Valid @RequestBody SupplierRequestDTO requestDTO, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
-        } catch (BadRequestException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-        }
-        try {
-        SupplierResponseDTO response = suppliersService.create(requestDTO);
-        return ResponseEntity.ok().body(new ApiResponse<>(response));
+            SupplierResponseDTO response = suppliersService.create(requestDTO);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
@@ -99,16 +94,14 @@ public class SuppliersController {
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> updateSupplier(@PathVariable Integer id, @Valid @RequestBody SupplierRequestDTO requestDTO, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);
-        } catch (BadRequestException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
-        }
-        try {
             SupplierResponseDTO response = suppliersService.update(requestDTO, id);
             return ResponseEntity.ok().body(new ApiResponse<>(response));
         } catch (ResourceNotFoundException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
+        } catch (BadRequestException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
     }
 

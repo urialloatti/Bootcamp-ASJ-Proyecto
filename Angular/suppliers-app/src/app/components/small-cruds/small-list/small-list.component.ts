@@ -31,6 +31,8 @@ export class SmallListComponent implements OnInit {
   public modalMessageFlag: boolean = false;
   public modalMessageObject!: ModalMessageInterface;
   public isCreatingNew: boolean = false;
+  public isUpdating: boolean = false;
+  public updatingId: number = -1;
   public currentCreate: smallCrudsType = 'category';
 
   ngOnInit(): void {
@@ -72,7 +74,7 @@ export class SmallListComponent implements OnInit {
         confirm: 'Eliminar',
       };
       this.modalConfirmFlag = true;
-      let subscription = this.modalService.confirm$.subscribe(
+      let subscription = this.modalService.confirmModal$.subscribe(
         (confirmation) => {
           this.modalConfirmFlag = false;
           if (confirmation) {
@@ -82,7 +84,7 @@ export class SmallListComponent implements OnInit {
                 let deletedWord =
                   page == 'Categoría' ? 'eliminada' : 'eliminado';
                 this.modalMessageObject = {
-                  message: `${page} "${response.name}" ${deletedWord} con éxito.`,
+                  header: `${page} "${response.name}" ${deletedWord} con éxito.`,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
@@ -99,9 +101,20 @@ export class SmallListComponent implements OnInit {
   createNew(page: Page) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.isCreatingNew = true;
-    let subsciption = this.modalService.confirm$.subscribe(() => {
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.loadList(page);
       this.isCreatingNew = false;
+      subsciption.unsubscribe();
+    });
+  }
+
+  updateElement(page: Page, id: number) {
+    this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
+    this.updatingId = id;
+    this.isUpdating = true;
+    let subsciption = this.modalService.confirmModal$.subscribe(() => {
+      this.loadList(page);
+      this.isUpdating = false;
       subsciption.unsubscribe();
     });
   }

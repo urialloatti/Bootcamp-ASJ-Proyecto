@@ -4,7 +4,7 @@
     [itemsArray$]="supplierList$"
     [hasPicture]="true"
     [isDeleted]="true"
-    (deletedId)="deletesupplier($event)"
+    (deletedId)="restoreSupplier($event)"
   ></shared-items-list>
   <section>
     <shared-modal-confirm

@@ -74,7 +74,11 @@
                           minlength="4"
                           maxlength="20"
                           [ngClass]="username.errors ? '' : 'is-valid'"
-                          [ngClass]="isUserInvalid.username ? 'is-invalid' : ''"
+                          [ngClass]="
+                            isUserInvalid.username || userAlreadyExists
+                              ? 'is-invalid'
+                              : ''
+                          "
                           class="form-control"
                         />
                         <div
@@ -135,7 +139,7 @@
                     class="form-text"
                     *ngIf="password.errors && isUserInvalid.passwordHash"
                   >
-                    <p>El nombre de usuario o la contraseña son incorrectos.</p>
+                    <p>La contraseñadebe contener al menos 7 caracteres.</p>
                   </div>
                 </div>
                 <div class="mb-3">

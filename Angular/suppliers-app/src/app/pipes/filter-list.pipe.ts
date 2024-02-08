@@ -1,5 +1,7 @@
-import { TableTransformPipe } from './table-transform.pipe';
 import { Pipe, PipeTransform } from '@angular/core';
+
+import { TableTransformPipe } from './table-transform.pipe';
+
 import { keyValue } from '../interfaces/listTemplateInterface';
 
 @Pipe({
@@ -16,13 +18,21 @@ export class FilterListPipe implements PipeTransform {
       let filtered = [];
       for (let value of list) {
         for (let key of keys) {
-          if (
-            this.tablePipe
-              .transform(value[key.key], key.extras)
-              .toLowerCase()
-              .includes(arg.toLowerCase())
-          ) {
-            filtered.push(value);
+          if (!key.isNumeric) {
+            if (
+              this.tablePipe
+                .transform(value[key.key], key.extras)
+                .toLowerCase()
+                .includes(arg.toLowerCase())
+            ) {
+              filtered.push(value);
+              break;
+            }
+          } else {
+            if (value[key.key] == Number(arg)) {
+              filtered.push(value);
+              break;
+            }
           }
         }
       }

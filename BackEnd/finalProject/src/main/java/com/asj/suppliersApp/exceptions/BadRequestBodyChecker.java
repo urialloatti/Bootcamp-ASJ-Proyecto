@@ -8,7 +8,7 @@ public class BadRequestBodyChecker {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessageBuilder = new StringBuilder("Hay errores en el formulario:\n");
             for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append("\t" + error.getField() + ": " + error.getDefaultMessage() + " (" + error.getRejectedValue() + ")\n");
+                errorMessageBuilder.append("\t" + error.getField() + ": " + error.getDefaultMessage() + " (" + error.getRejectedValue() + ") | \n");
             }
             throw new BadRequestException(errorMessageBuilder.toString());
         }

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface SectorRepository extends JpaRepository<Sector, Integer> {
     List<Sector> findByAvailableTrue();
+    boolean existsBySectorIgnoreCase(String sector);
 }

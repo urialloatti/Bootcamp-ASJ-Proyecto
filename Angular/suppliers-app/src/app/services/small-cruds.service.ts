@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
+import { ApiResponse } from '../interfaces/apiResponseInterface';
 import {
   SmallCrudInterface,
   smallCrudsType,
 } from '../interfaces/smallCrudsInterfaces';
-import { ApiResponse } from '../interfaces/apiResponseInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,7 @@ export class SmallCrudsService {
   private URL_SECTOR: string = 'http://localhost:8080/app/sectors';
   private URL_CATEGORY: string = 'http://localhost:8080/app/categories';
 
+  //  GET methods
   public getList(crudType: smallCrudsType): Observable<SmallCrudInterface[]> {
     let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
     return this.http
@@ -30,6 +31,15 @@ export class SmallCrudsService {
       );
   }
 
+  public getElementById(
+    id: number,
+    crudType: smallCrudsType
+  ): Observable<ApiResponse<SmallCrudInterface>> {
+    let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
+    return this.http.get<ApiResponse<SmallCrudInterface>>(URL_API + '/' + id);
+  }
+
+  // POST methods
   public addElement(
     name: string,
     crudType: smallCrudsType
@@ -40,14 +50,19 @@ export class SmallCrudsService {
     });
   }
 
-  public getElementById(
+  // PUT methods
+  public updateElement(
     id: number,
+    name: string,
     crudType: smallCrudsType
   ): Observable<ApiResponse<SmallCrudInterface>> {
     let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
-    return this.http.get<ApiResponse<SmallCrudInterface>>(URL_API + '/' + id);
+    return this.http.put<ApiResponse<SmallCrudInterface>>(URL_API + '/' + id, {
+      name: name,
+    });
   }
 
+  // PATCH methods
   public cancelElementById(
     id: number,
     crudType: smallCrudsType
@@ -57,5 +72,15 @@ export class SmallCrudsService {
       URL_API + '/delete/' + id,
       { available: false }
     );
+  }
+
+  public existsByName(
+    name: string,
+    crudType: smallCrudsType
+  ): Observable<boolean> {
+    let URL_API = crudType == 'category' ? this.URL_CATEGORY : this.URL_SECTOR;
+    return this.http.patch<boolean>(URL_API + '/exitst-by-name', {
+      name: name,
+    });
   }
 }
