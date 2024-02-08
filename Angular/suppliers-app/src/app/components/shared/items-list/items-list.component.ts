@@ -76,7 +76,7 @@ export class ItemsListComponent implements OnInit {
         this.isLoaded = true;
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
         this.isLoaded = true;
       },
     });

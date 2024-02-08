@@ -2,13 +2,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { ModalService } from '../../../services/modal.service';
 import { ProductsService } from '../../../services/products.service';
+
 import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
 import { ProductResponseDTO } from '../../../interfaces/productInterface';
-import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-product-info',
@@ -58,7 +59,7 @@ export class ProductInfoComponent implements OnInit {
     });
   }
 
-  deleteProduct(id: number): void {
+  public deleteProduct(id: number): void {
     this.modalConfirmObject = {
       header: `Eliminando producto ${this.currentProduct.code}`,
       message: `Está seguro de eliminar el producto ${this.currentProduct.name}`,
@@ -91,7 +92,7 @@ export class ProductInfoComponent implements OnInit {
     });
   }
 
-  imageNotFound(event: Event): void {
+  public imageNotFound(event: Event): void {
     (event.target as HTMLImageElement).src =
       '../../../../assets/image-not-found.jpg';
   }

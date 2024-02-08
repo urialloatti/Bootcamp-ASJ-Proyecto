@@ -92,21 +92,13 @@ export class NewUserComponent {
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status == 0) {
-      this.modalMessageObject = {
-        header: 'Error',
-        message: 'Hubo un error con el servidor.',
-        confirm: 'Intentar más tarde',
-      };
-      this.modalMessageFlag = true;
-    } else {
-      this.modalMessageObject = {
-        header: 'Hubo errores con el formulario.',
-        message: error.error.message,
-        confirm: 'Continuar editando',
-      };
-      this.modalMessageFlag = true;
-    }
+    this.modalMessageObject = {
+      header: 'Hubo errores con el formulario.',
+      message: error.error.message,
+      confirm: 'Continuar editando',
+    };
+    this.modalMessageFlag = true;
+
     this.isFormValid = false;
   }
 

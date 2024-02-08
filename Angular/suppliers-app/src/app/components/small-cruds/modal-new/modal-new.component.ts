@@ -17,7 +17,6 @@ export class ModalNewComponent implements OnInit {
 
   @Input()
   currentCreate: smallCrudsType = 'sector';
-
   @Input()
   isUpdating: boolean = false;
   @Input()
@@ -56,13 +55,7 @@ export class ModalNewComponent implements OnInit {
     }
   }
 
-  backClick() {
-    this.triedToEscape = true;
-    setTimeout(() => (this.triedToEscape = false), 250);
-    console.log(crypto.randomUUID());
-  }
-
-  addElement(): void {
+  public addElement(): void {
     this.validateInput();
     if (!this.isElementInvalid) {
       this.elementExist = false;
@@ -91,7 +84,7 @@ export class ModalNewComponent implements OnInit {
             } else {
               this.smallCrudsService
                 .addElement(capitalizedName, this.currentCreate)
-                .subscribe((r) => {
+                .subscribe(() => {
                   this.elementAddedMessage =
                     this.currentCreate == 'sector'
                       ? 'Rubro creado con éxito'
@@ -104,12 +97,18 @@ export class ModalNewComponent implements OnInit {
     }
   }
 
-  validateInput() {
-    this.isElementInvalid =
-      this.elementName.length < 4 || this.elementName.length > 25;
+  public backClick() {
+    this.triedToEscape = true;
+    setTimeout(() => (this.triedToEscape = false), 250);
+    console.log(crypto.randomUUID());
   }
 
-  sendResponse(response: boolean) {
+  public sendResponse(response: boolean) {
     this.modalService.openModal(response);
+  }
+
+  private validateInput() {
+    this.isElementInvalid =
+      this.elementName.length < 4 || this.elementName.length > 25;
   }
 }

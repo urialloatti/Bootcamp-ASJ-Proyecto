@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { ProductsService } from '../../../services/products.service';
+import { Observable } from 'rxjs';
+
 import { ModalService } from '../../../services/modal.service';
+import { ProductsService } from '../../../services/products.service';
+
 import { ListTemplateInterface } from '../../../interfaces/listTemplateInterface';
 import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
-import { Observable } from 'rxjs';
 import { ProductResponseDTO } from '../../../interfaces/productInterface';
 
 @Component({
@@ -63,11 +65,11 @@ export class ProductsRecycleBinComponent {
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                this.productsService.getList().subscribe();
               },
               error: (error) => {
                 this.modalMessageObject = {
-                  header: `El producto ya no existe en la base de datos.`,
+                  header: 'Error!',
+                  message: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
@@ -83,7 +85,7 @@ export class ProductsRecycleBinComponent {
     });
   }
 
-  hideModal(): void {
+  public hideModal(): void {
     this.modalMessageFlag = false;
   }
 }

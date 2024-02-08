@@ -90,13 +90,9 @@ export class ProductsNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe(() => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 0) {
+            if (this.formChangesCounter > 2) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             5;
         });
@@ -113,7 +109,8 @@ export class ProductsNewComponent implements OnInit {
       },
       error: (error) => {
         this.modalRedirectObject = {
-          header: 'Producto no encontrado',
+          header: 'Error',
+          message: error.error.message,
           path: '/products',
         };
         this.modalRedirectFlag = true;
@@ -123,13 +120,9 @@ export class ProductsNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe(() => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 0) {
+            if (this.formChangesCounter > 2) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             500;
         });
@@ -137,7 +130,7 @@ export class ProductsNewComponent implements OnInit {
     });
   }
 
-  saveProduct() {
+  public saveProduct() {
     let isFormValid = true;
     this.validateSubmite();
     Object.keys(this.isProductInvalid).forEach((key) => {
@@ -163,9 +156,7 @@ export class ProductsNewComponent implements OnInit {
               this.modalRedirectFlag = true;
               this.modalService.setFormChanged(false);
             },
-            error: (error) => {
-              this.handleError(error);
-            },
+            error: (error) => this.handleError(error),
           });
       } else {
         this.productService.addElement(this.currentProduct).subscribe({
@@ -183,7 +174,7 @@ export class ProductsNewComponent implements OnInit {
     }
   }
 
-  createNewCategory() {
+  public createNewCategory() {
     this.isCreatingCategory = true;
     let subsciption = this.modalService.confirmModal$.subscribe(() => {
       this.smallCrudsService
@@ -193,7 +184,8 @@ export class ProductsNewComponent implements OnInit {
       subsciption.unsubscribe();
     });
   }
-  validateSubmite() {
+
+  private validateSubmite() {
     this.isProductInvalid.name =
       this.currentProduct.name.length < 4 ||
       this.currentProduct.name.length > 40;
@@ -206,25 +198,17 @@ export class ProductsNewComponent implements OnInit {
     this.isProductInvalid.supplierId = this.currentProduct.supplierId == -1;
   }
 
-  hideModal(): void {
+  public hideModal(): void {
     this.modalMessageFlag = false;
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status == 0) {
-      this.modalRedirectObject = {
-        header: 'Error',
-        message: 'Hubo un error con el servidor.',
-        path: '/supliers',
-      };
-      this.modalRedirectFlag = true;
-    } else {
-      this.modalMessageObject = {
-        header: 'Hubo errores con el formulario.',
-        message: error.error.message,
-        confirm: 'Continuar editando',
-      };
-      this.modalMessageFlag = true;
-    }
+    this.modalMessageObject = {
+      header: 'Hubo errores con el formulario.',
+      message: error.error.message,
+      confirm: 'Continuar editando',
+    };
+    this.modalMessageFlag = true;
+    console.error(error);
   }
 }
