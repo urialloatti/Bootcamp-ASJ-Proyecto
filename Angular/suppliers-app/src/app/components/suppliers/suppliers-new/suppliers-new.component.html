@@ -562,4 +562,5 @@
     *ngIf="isCreatingSector"
     [currentCreate]="'sector'"
   ></app-modal-new>
+  <modal-leave-guard *ngIf="triedToLeave"></modal-leave-guard>
 </section>

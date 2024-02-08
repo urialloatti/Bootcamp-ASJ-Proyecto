@@ -9,7 +9,7 @@ import { ModalService } from '../../../services/modal.service';
   styleUrl: './modal-confirm.component.css',
 })
 export class ModalConfirmComponent {
-  constructor(private confirmService: ModalService) {}
+  constructor(private modalService: ModalService) {}
 
   @Input()
   modalData!: ModalConfirmInterface;
@@ -22,6 +22,6 @@ export class ModalConfirmComponent {
   }
 
   sendResponse(response: boolean): void {
-    this.confirmService.confirmSubject.next(response);
+    this.modalService.openModal(response);
   }
 }

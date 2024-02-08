@@ -28,8 +28,8 @@ public class SuppliersController {
     }
 
     @GetMapping()
-    public List<SupplierResponseDTO> getAll() {
-        return suppliersService.findAllAvailables();
+    public ResponseEntity<List<SupplierResponseDTO>> getAll() {
+        return ResponseEntity.status(200).body(suppliersService.findAllAvailables());
     }
 
     @GetMapping("/{id}")

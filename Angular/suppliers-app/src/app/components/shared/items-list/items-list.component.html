@@ -226,7 +226,8 @@
   </section>
   <section *ngIf="itemsShowed.length == 0">
     <shared-no-items-alert
-      alerLabel="{{ listTemplate.label }}"
+      [alerLabel]="listTemplate.label"
+      [hasFilter]="hasFilter"
     ></shared-no-items-alert>
   </section>
 </div>

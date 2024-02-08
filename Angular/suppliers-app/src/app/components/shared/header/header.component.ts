@@ -81,11 +81,11 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  checkActive(path: string): boolean {
+  public checkActive(path: string): boolean {
     return this.route.url.startsWith(path);
   }
 
-  logOut() {
+  public logOut() {
     if (localStorage.getItem('credentials')) {
       localStorage.removeItem('credentials');
       location.reload();

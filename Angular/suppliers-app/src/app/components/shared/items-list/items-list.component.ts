@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 import { TableTransformPipe } from '../../../pipes/table-transform.pipe';
 import { FilterListPipe } from '../../../pipes/filter-list.pipe';
 
+/**
+ * Componente encargado de renderizar las tablas.
+ * Se encarga de manejar la paginación, filtros y órden de los elementos de las tablas.
+ */
 @Component({
   selector: 'shared-items-list',
   templateUrl: './items-list.component.html',
@@ -19,6 +23,7 @@ export class ItemsListComponent implements OnInit {
     private tablePipe: TableTransformPipe,
     private filterPipe: FilterListPipe
   ) {}
+
   @Input()
   public listTemplate!: ListTemplateInterface;
 
@@ -43,6 +48,7 @@ export class ItemsListComponent implements OnInit {
   public toPage: number = 3;
   public isOrdered: Order[] = [];
   public isLoaded: boolean = false;
+  public hasFilter: boolean = true;
 
   public filterIndex: number = -1;
   public filterArg: string = '';
@@ -55,57 +61,25 @@ export class ItemsListComponent implements OnInit {
     this.loadPages();
   }
 
-  imageNotFound(event: Event): void {
+  public imageNotFound(event: Event): void {
     (event.target as HTMLImageElement).src =
       '../../../../assets/image-not-found.jpg';
   }
 
-  loadPages() {
+  public loadPages() {
+    this.hasFilter = false;
     this.isLoaded = false;
-    this.itemsArray$.subscribe(
-      (response: any[]) => {
+    this.itemsArray$.subscribe({
+      next: (response: any[]) => {
         this.fullItemsLiist = response;
         this.makePagination();
         this.isLoaded = true;
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
         this.isLoaded = true;
-      }
-    );
-  }
-
-  private makePagination(): void {
-    if (this.fullItemsLiist.length == 0) {
-      this.itemsShowed = [];
-      return;
-    }
-    this.pageList = [];
-    let page = [];
-    let counter = 0;
-    let pageCounter = 0;
-    this.hasPagination = false;
-    for (const obj of this.fullItemsLiist) {
-      if (counter < 10) {
-        page.push(obj);
-      } else if (counter == 10) {
-        this.pageList.push({ index: pageCounter, page: page });
-        page = [];
-        counter = 0;
-        pageCounter++;
-      }
-      counter++;
-    }
-    if (page.length > 0) {
-      this.pageList.push({ index: pageCounter, page: page });
-    }
-    this.itemsShowed = [];
-    if (this.currentPage >= this.pageList.length) {
-      this.selectPage(this.pageList.length - 1);
-    } else this.selectPage(this.currentPage);
-    this.itemsShowed = this.pageList[this.currentPage].page;
-    this.hasPagination = this.pageList.length > 1;
-    this.isLoaded = true;
+      },
+    });
   }
 
   public selectPage(index: number) {
@@ -156,6 +130,38 @@ export class ItemsListComponent implements OnInit {
     for (let i = 0; i < this.isOrdered.length; i++) {
       if (i != fieldIndex) this.isOrdered[i] = 'unordered';
     }
+  }
+
+  public toggleAvailable(id: number): void {
+    this.deletedId.emit(id);
+    this.modalService.confirmModal$.subscribe(() => {
+      setTimeout(() => {
+        this.loadPages();
+      }, 200);
+    });
+  }
+
+  public filterList(): void {
+    this.hasFilter = true;
+    let keys: keyValue[] = [];
+    keys.push(...this.listTemplate.listFields[this.filterIndex].keys);
+    if (this.listTemplate.listFields[this.filterIndex].toolTip != undefined) {
+      keys.push(...this.listTemplate.listFields[this.filterIndex].toolTip!);
+    }
+    this.fullItemsLiist = this.filterPipe.transform(
+      this.fullItemsLiist,
+      this.filterArg,
+      keys
+    );
+    this.makePagination();
+    this.itemsArray$.subscribe({
+      next: (response: any[]) => {
+        this.fullItemsLiist = response;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   private orderList(orderBy: number = 0, order: Order = 'ascendent'): void {
@@ -253,35 +259,37 @@ export class ItemsListComponent implements OnInit {
     }
   }
 
-  public toggleAvailable(id: number): void {
-    this.deletedId.emit(id);
-    this.modalService.confirmModal$.subscribe(() => {
-      setTimeout(() => {
-        this.loadPages();
-      }, 200);
-    });
-  }
-
-  public filterList(): void {
-    let keys: keyValue[] = [];
-    keys.push(...this.listTemplate.listFields[this.filterIndex].keys);
-    if (this.listTemplate.listFields[this.filterIndex].toolTip != undefined) {
-      keys.push(...this.listTemplate.listFields[this.filterIndex].toolTip!);
+  private makePagination(): void {
+    if (this.fullItemsLiist.length == 0) {
+      this.itemsShowed = [];
+      return;
     }
-    this.fullItemsLiist = this.filterPipe.transform(
-      this.fullItemsLiist,
-      this.filterArg,
-      keys
-    );
-    this.makePagination();
-    this.itemsArray$.subscribe(
-      (response: any[]) => {
-        this.fullItemsLiist = response;
-      },
-      (error) => {
-        console.log(error);
+    this.pageList = [];
+    let page = [];
+    let counter = 0;
+    let pageCounter = 0;
+    this.hasPagination = false;
+    for (const obj of this.fullItemsLiist) {
+      if (counter < 10) {
+        page.push(obj);
+      } else if (counter == 10) {
+        this.pageList.push({ index: pageCounter, page: page });
+        page = [];
+        counter = 0;
+        pageCounter++;
       }
-    );
+      counter++;
+    }
+    if (page.length > 0) {
+      this.pageList.push({ index: pageCounter, page: page });
+    }
+    this.itemsShowed = [];
+    if (this.currentPage >= this.pageList.length) {
+      this.selectPage(this.pageList.length - 1);
+    } else this.selectPage(this.currentPage);
+    this.itemsShowed = this.pageList[this.currentPage].page;
+    this.hasPagination = this.pageList.length > 1;
+    this.isLoaded = true;
   }
 }
 

@@ -110,6 +110,6 @@ export class ModalNewComponent implements OnInit {
   }
 
   sendResponse(response: boolean) {
-    this.modalService.confirmSubject.next(response);
+    this.modalService.openModal(response);
   }
 }
