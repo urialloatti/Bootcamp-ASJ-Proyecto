@@ -1,7 +1,7 @@
 <div class="container body py-4 px-3 rounded">
   <shared-items-list
     [listTemplate]="purchaseFields"
-    [itemsArray$]="purchaseList$"
+    [itemsArray$]="ordersList$"
     [hasPicture]="false"
     (deletedId)="deletePurchase($event)"
   ></shared-items-list>

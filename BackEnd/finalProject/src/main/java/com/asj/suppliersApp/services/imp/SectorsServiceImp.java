@@ -57,6 +57,7 @@ public class SectorsServiceImp implements SectorsService {
     @Override
     public SmallCrudResponseDTO updateSector(Integer id, SmallCrudRequestDTO requestDTO) throws ResourceNotFoundException, BadRequestException {
         Sector sector = this.getSectorIfExists(id);
+        sector.setSector(requestDTO.getName());
         if (this.existsByName(requestDTO)) {
             throw new BadRequestException("Ya existe un rubro con el nombre " + requestDTO.getName() + ".");
         }

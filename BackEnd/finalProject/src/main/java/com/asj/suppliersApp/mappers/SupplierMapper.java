@@ -116,7 +116,7 @@ public class SupplierMapper {
         response.setCode(supplier.getCode());
         response.setBrand(supplier.getBrand());
         response.setSector(supplier.getSector().getSector());
-        response.setWeb(supplier.getWeb());
+        response.setWeb(supplier.getWeb().replace("https://www.", ""));
         response.setPhone(getPhoneDTO(supplier.getPhone()));
         response.setFullAddress(getAddressResponseDTO(supplier.getAddress()));
         response.setCuit(supplier.getCuit());

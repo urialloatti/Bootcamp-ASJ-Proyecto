@@ -41,6 +41,7 @@ export class UsersService {
           console.error(error);
           if (error.status === 0) {
             alert('El servidor se encuentra caído');
+            return of(this.router.parseUrl('/404'));
           }
           return of(this.router.parseUrl('/login'));
         })
