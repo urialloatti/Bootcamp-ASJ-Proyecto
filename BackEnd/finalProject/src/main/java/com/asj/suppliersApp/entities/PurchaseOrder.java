@@ -14,7 +14,7 @@ public class PurchaseOrder {
     private Integer id;
     @Column(name = "date_arrives", nullable = false)
     private Date dateArrives;
-    @Column(name = "requirements", nullable = false)
+    @Column(name = "requirements", nullable = false, columnDefinition = "TEXT")
     private String requirements;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id", nullable = false)
