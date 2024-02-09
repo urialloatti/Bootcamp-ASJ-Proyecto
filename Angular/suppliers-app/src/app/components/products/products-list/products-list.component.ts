@@ -50,7 +50,7 @@ export class ProductsListComponent implements OnInit {
     this.productsList$ = this.productsService.getList();
   }
 
-  deleteProduct(id: number): void {
+  public deleteProduct(id: number): void {
     let deleted: ProductResponseDTO;
     this.productsService.getElementById(id).subscribe((response) => {
       deleted = response.data;
@@ -76,11 +76,12 @@ export class ProductsListComponent implements OnInit {
               },
               error: (error) => {
                 this.modalMessageObject = {
-                  header: `El producto ya no existe en la base de datos.`,
+                  header: `Error!`,
+                  message: error.error.message,
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                console.log(error);
+                console.error(error);
               },
               complete: () => subscription.unsubscribe(),
             });
@@ -92,7 +93,7 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
-  hideModal(): void {
+  public hideModal(): void {
     this.modalMessageFlag = false;
   }
 }

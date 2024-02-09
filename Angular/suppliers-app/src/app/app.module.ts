@@ -33,7 +33,6 @@ import { supplierInfoComponent } from './components/suppliers/supplier-info/supp
 import { suppliersListComponent } from './components/suppliers/suppliers-list/suppliers-list.component';
 import { suppliersNewComponent } from './components/suppliers/suppliers-new/suppliers-new.component';
 import { SuppliersRecycleBinComponent } from './components/suppliers/suppliers-recycle-bin/suppliers-recycle-bin.component';
-import { TestComponent } from './test/test.component';
 
 import { CuitPipePipe } from './pipes/cuit-pipe.pipe';
 import { FilterListPipe } from './pipes/filter-list.pipe';
@@ -46,6 +45,7 @@ import { ShowMailPipe } from './pipes/show-mail.pipe';
 import { ShowProvincePipe } from './pipes/show-province.pipe';
 import { TableTransformPipe } from './pipes/table-transform.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalErrorComponent } from './components/modals/modal-error/modal-error.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +57,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     MainComponent,
     ModalConfirmComponent,
+    ModalErrorComponent,
     ModalLeaveGuardComponent,
     ModalMessageComponent,
     ModalNewComponent,
@@ -87,7 +88,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ShowMailPipe,
     ShowProvincePipe,
     TableTransformPipe,
-    TestComponent,
   ],
   imports: [
     AppRoutingModule,

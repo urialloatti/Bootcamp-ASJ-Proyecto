@@ -85,7 +85,7 @@ export class supplierInfoComponent {
               path: '/suppliers',
             };
             this.modalRedirectFlag = true;
-            console.log(error);
+            console.error(error);
           }
         );
       }

@@ -225,7 +225,7 @@ export class PurchaseNewComponent implements OnInit, AfterViewInit {
           setTimeout(() => (this.isProductAdded = false), 2000);
         },
         error: (error) => {
-          console.log(error.error.message);
+          console.error(error.error.message);
         },
       });
     } else if (this.selectedQuantity < 1) {
@@ -363,14 +363,7 @@ export class PurchaseNewComponent implements OnInit, AfterViewInit {
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status == 0 || error.status == 500) {
-      this.modalRedirectObject = {
-        header: 'Error',
-        message: 'Hubo un error con el servidor.',
-        path: '/404',
-      };
-      this.modalRedirectFlag = true;
-    } else if (error.status == 400) {
+    if (error.status == 400) {
       this.modalMessageObject = {
         header: 'Hubo errores con el formulario.',
         message: error.error.message,

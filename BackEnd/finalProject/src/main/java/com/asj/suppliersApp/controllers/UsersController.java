@@ -41,11 +41,6 @@ public class UsersController {
         return ResponseEntity.ok().body(this.usersService.validateUser(credentials));
     }
 
-    @PatchMapping("/check-username")
-    public ResponseEntity<Boolean> checkUsername(@RequestBody UserCredentialsRequestDTO credentials) {
-        return ResponseEntity.ok().body((this.usersService.checkUsernameExists(credentials)));
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<UserResponseDTO>> signup(@Valid @RequestBody UserRequestDTO request, BindingResult bindingResult) {
         try {
@@ -59,5 +54,10 @@ public class UsersController {
             System.out.println(e.toString());
             return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
         }
+    }
+
+    @PatchMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsername(@RequestBody UserCredentialsRequestDTO credentials) {
+        return ResponseEntity.ok().body((this.usersService.checkUsernameExists(credentials)));
     }
 }

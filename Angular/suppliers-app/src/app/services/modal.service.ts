@@ -13,6 +13,10 @@ export class ModalService {
   public confirmLeave$: Observable<boolean> =
     this.confirmLeaveSubject.asObservable();
 
+  private errorMessagesSubject: Subject<boolean> = new Subject<boolean>();
+  public errorMessageFlag$: Observable<boolean> =
+    this.errorMessagesSubject.asObservable();
+
   private formChanged: boolean = false;
 
   public openModal(response: boolean): void {
@@ -29,5 +33,9 @@ export class ModalService {
 
   public setFormChanged(hasChanged: boolean): void {
     this.formChanged = hasChanged;
+  }
+
+  public sendHttpErrorFlag(flag: boolean): void {
+    this.errorMessagesSubject.next(flag);
   }
 }

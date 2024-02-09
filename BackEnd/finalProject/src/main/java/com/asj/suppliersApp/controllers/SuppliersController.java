@@ -64,17 +64,6 @@ public class SuppliersController {
         return suppliersService.findAllDeleted();
     }
 
-    @PatchMapping("/deleted/{id}")
-    public ResponseEntity<ApiResponse<SupplierResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO setAvailable) {
-        try {
-            SupplierResponseDTO response = suppliersService.setAvailableById(id, setAvailable);
-            return ResponseEntity.ok().body(new ApiResponse<>(response));
-        } catch (ResourceNotFoundException e) {
-            System.out.println(e.toString());
-            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
-        }
-    }
-
     @PostMapping()
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> postSupplier(@Valid @RequestBody SupplierRequestDTO requestDTO, BindingResult bindingResult) {
         try {
@@ -102,6 +91,17 @@ public class SuppliersController {
         } catch (BadRequestException e) {
             System.out.println(e.toString());
             return ResponseEntity.status(400).body(new ApiResponse<>(e.getMessage()));
+        }
+    }
+
+    @PatchMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<SupplierResponseDTO>> cancelById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO setAvailable) {
+        try {
+            SupplierResponseDTO response = suppliersService.setAvailableById(id, setAvailable);
+            return ResponseEntity.ok().body(new ApiResponse<>(response));
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(404).body(new ApiResponse<>(e.getMessage()));
         }
     }
 

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
+import { SmallCrudsService } from '../../../services/small-cruds.service';
+import { ModalService } from '../../../services/modal.service';
+
 import {
   Page,
   SmallCrudInterface,
@@ -8,8 +12,6 @@ import {
   ModalConfirmInterface,
   ModalMessageInterface,
 } from '../../../interfaces/modalInterface';
-import { SmallCrudsService } from '../../../services/small-cruds.service';
-import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-small-list',
@@ -26,6 +28,7 @@ export class SmallListComponent implements OnInit {
     { isLoaded: false, section: 'Rubro', itemsList: [] },
     { isLoaded: false, section: 'Categoría', itemsList: [] },
   ];
+
   public modalConfirmFlag: boolean = false;
   public modalConfirmObject!: ModalConfirmInterface;
   public modalMessageFlag: boolean = false;
@@ -40,29 +43,7 @@ export class SmallListComponent implements OnInit {
     this.loadList('Rubro');
   }
 
-  loadList(page: Page) {
-    if (page == 'Categoría') {
-      this.smallCrudsService.getList('category').subscribe((list) => {
-        for (let section of this.listCreationObject) {
-          if (section.section == 'Categoría') {
-            section.itemsList = list;
-            section.isLoaded = true;
-          }
-        }
-      });
-    } else {
-      this.smallCrudsService.getList('sector').subscribe((list) => {
-        for (let section of this.listCreationObject) {
-          if (section.section == 'Rubro') {
-            section.itemsList = list;
-            section.isLoaded = true;
-          }
-        }
-      });
-    }
-  }
-
-  deleteItem(page: Page, id: number) {
+  public deleteItem(page: Page, id: number) {
     let deleted: SmallCrudInterface;
     let crudType: smallCrudsType = page == 'Categoría' ? 'category' : 'sector';
     this.smallCrudsService.getElementById(id, crudType).subscribe((element) => {
@@ -90,7 +71,7 @@ export class SmallListComponent implements OnInit {
                 this.modalMessageFlag = true;
                 this.loadList(page);
               },
-              (error) => console.log(error)
+              (error) => console.error(error)
             );
           } else subscription.unsubscribe();
         }
@@ -98,7 +79,7 @@ export class SmallListComponent implements OnInit {
     });
   }
 
-  createNew(page: Page) {
+  public createNew(page: Page) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.isCreatingNew = true;
     let subsciption = this.modalService.confirmModal$.subscribe(() => {
@@ -108,7 +89,7 @@ export class SmallListComponent implements OnInit {
     });
   }
 
-  updateElement(page: Page, id: number) {
+  public updateElement(page: Page, id: number) {
     this.currentCreate = page == 'Categoría' ? 'category' : 'sector';
     this.updatingId = id;
     this.isUpdating = true;
@@ -119,8 +100,30 @@ export class SmallListComponent implements OnInit {
     });
   }
 
-  hideModal(): void {
+  public hideModal(): void {
     this.modalMessageFlag = false;
+  }
+
+  private loadList(page: Page) {
+    if (page == 'Categoría') {
+      this.smallCrudsService.getList('category').subscribe((list) => {
+        for (let section of this.listCreationObject) {
+          if (section.section == 'Categoría') {
+            section.itemsList = list;
+            section.isLoaded = true;
+          }
+        }
+      });
+    } else {
+      this.smallCrudsService.getList('sector').subscribe((list) => {
+        for (let section of this.listCreationObject) {
+          if (section.section == 'Rubro') {
+            section.itemsList = list;
+            section.isLoaded = true;
+          }
+        }
+      });
+    }
   }
 }
 

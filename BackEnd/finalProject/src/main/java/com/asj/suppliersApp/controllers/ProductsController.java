@@ -35,6 +35,11 @@ public class ProductsController {
         return ResponseEntity.ok().body(this.productsService.findAllBySupplierId(id));
     }
 
+    @GetMapping("/deleted")
+    public ResponseEntity<List<ProductResponseDTO>> getAllDeleted() {
+        return ResponseEntity.ok().body(this.productsService.findAllDeleted());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponseDTO>> getProductById(@PathVariable Integer id) {
         try {
@@ -92,12 +97,7 @@ public class ProductsController {
         }
     }
 
-    @GetMapping("/deleted")
-    public ResponseEntity<List<ProductResponseDTO>> getAllDeleted() {
-        return ResponseEntity.ok().body(this.productsService.findAllDeleted());
-    }
-
-    @PatchMapping("/deleted/{id}")
+    @PatchMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<ProductResponseDTO>> cancelProductById(@PathVariable Integer id, @RequestBody CancelItemRequestDTO cancel) {
         try {
             ProductResponseDTO response = this.productsService.cancelById(id, cancel);

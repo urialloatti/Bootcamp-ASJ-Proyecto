@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
-import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import { ModalService } from '../../../services/modal.service';
+import { PurchaseOrdersService } from '../../../services/purchase-orders.service';
+
+import { PurchaseOrderResponseDTO } from '../../../interfaces/purchaseOrderInterface';
 import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-purchase-info',
@@ -19,6 +21,7 @@ export class PurchaseInfoComponent {
     private purchaseService: PurchaseOrdersService,
     private route: ActivatedRoute,
     private router: Router,
+    private datePipe: DatePipe,
     private confirmService: ModalService
   ) {}
 
@@ -40,13 +43,16 @@ export class PurchaseInfoComponent {
     });
   }
 
-  deletePurchase(id: number): void {
+  public deletePurchase(id: number): void {
     let deleted: PurchaseOrderResponseDTO;
     this.purchaseService.getElementById(id).subscribe((dto) => {
       deleted = dto.data;
       this.modalConfirmObject = {
         header: `Cancelar órden de compra ${deleted.id}`,
-        message: `Está seguro de cancelar la órden de compra generada el ${deleted.createdAt}?`,
+        message: `Está seguro de cancelar la órden de compra generada el ${this.datePipe.transform(
+          deleted.createdAt,
+          'yyyy/MM/dd HH:mm'
+        )}?`,
         cancel: 'Volver atrás',
         confirm: 'Cancelar órden de compra',
       };
@@ -63,20 +69,12 @@ export class PurchaseInfoComponent {
                 (this.modalRedirectFlag = true);
             },
             error: (error) => {
-              if (error.status == 0 || error.status == 500) {
-                this.modalRedirectObject = {
-                  header: 'Algo ha salido mal',
-                  path: '/404',
-                };
-                this.modalRedirectFlag = true;
-              } else {
-                (this.modalRedirectObject = {
-                  header: 'Órden de compra ya se encuentra cancelada.',
-                  path: '/purchase-orders',
-                }),
-                  (this.modalRedirectFlag = true);
-              }
-              console.log(error);
+              this.modalRedirectObject = {
+                header: error.error.message,
+                path: '/purchase-orders',
+              };
+              this.modalRedirectFlag = true;
+              console.error(error);
             },
           });
         }
@@ -91,20 +89,12 @@ export class PurchaseInfoComponent {
         this.currentPurchase = response.data;
       },
       error: (error) => {
-        if (error.status == 0 || error.status == 500) {
-          this.modalRedirectObject = {
-            header: 'Algo ha salido mal',
-            path: '/404',
-          };
-          this.modalRedirectFlag = true;
-        } else {
-          this.modalRedirectObject = {
-            header: 'Error',
-            message: error.error.message,
-            path: '/purchase-orders',
-          };
-          this.modalRedirectFlag = true;
-        }
+        this.modalRedirectObject = {
+          header: 'Error',
+          message: error.error.message,
+          path: '/purchase-orders',
+        };
+        this.modalRedirectFlag = true;
         console.error(error);
       },
     });

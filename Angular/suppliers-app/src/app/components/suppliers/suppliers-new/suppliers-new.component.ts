@@ -135,13 +135,9 @@ export class suppliersNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe((e) => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 0) {
+            if (this.formChangesCounter > 2) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             5;
         });
@@ -180,13 +176,9 @@ export class suppliersNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe((e) => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 1) {
+            if (this.formChangesCounter > 3) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             500;
         });
@@ -374,20 +366,11 @@ export class suppliersNewComponent implements OnInit {
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status == 0) {
-      this.modalRedirectObject = {
-        header: 'Error',
-        message: 'Hubo un error con el servidor.',
-        path: '/supliers',
-      };
-      this.modalRedirectFlag = true;
-    } else {
-      this.modalMessageObject = {
-        header: 'Hubo errores con el formulario.',
-        message: error.error.message,
-        confirm: 'Continuar editando',
-      };
-      this.modalMessageFlag = true;
-    }
+    this.modalMessageObject = {
+      header: 'Hubo errores con el formulario.',
+      message: error.error.message,
+      confirm: 'Continuar editando',
+    };
+    this.modalMessageFlag = true;
   }
 }

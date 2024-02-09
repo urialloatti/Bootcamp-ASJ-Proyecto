@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocationResponseDTO } from './../interfaces/locationInterface';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
+
+import { ErrorHandlerService } from './error-handler.service';
 
 import { ApiResponse } from '../interfaces/apiResponseInterface';
 
@@ -9,13 +11,21 @@ import { ApiResponse } from '../interfaces/apiResponseInterface';
   providedIn: 'root',
 })
 export class LocationService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
+  ) {}
 
   private URL_API = 'http://localhost:8080/app/locations';
 
   // GET methods
   public getList(): Observable<LocationResponseDTO[]> {
-    return this.http.get<LocationResponseDTO[]>(this.URL_API);
+    return this.http.get<LocationResponseDTO[]>(this.URL_API).pipe(
+      catchError((error) => {
+        this.errorHandler.handleServerError(error);
+        return throwError(() => error);
+      })
+    );
   }
 
   public getCountryId(provinceId: number): Observable<number> {
@@ -24,7 +34,7 @@ export class LocationService {
       .pipe(
         map((response) => response.data),
         catchError((error) => {
-          console.error(error);
+          this.errorHandler.handleServerError(error);
           return of(-1);
         })
       );

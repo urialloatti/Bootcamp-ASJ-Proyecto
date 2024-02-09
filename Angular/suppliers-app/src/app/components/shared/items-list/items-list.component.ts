@@ -76,7 +76,7 @@ export class ItemsListComponent implements OnInit {
         this.isLoaded = true;
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
         this.isLoaded = true;
       },
     });
@@ -159,7 +159,7 @@ export class ItemsListComponent implements OnInit {
         this.fullItemsLiist = response;
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
       },
     });
   }
@@ -260,15 +260,15 @@ export class ItemsListComponent implements OnInit {
   }
 
   private makePagination(): void {
-    if (this.fullItemsLiist.length == 0) {
-      this.itemsShowed = [];
-      return;
-    }
     this.pageList = [];
     let page = [];
     let counter = 0;
     let pageCounter = 0;
     this.hasPagination = false;
+    if (this.fullItemsLiist.length == 0) {
+      this.itemsShowed = [];
+      return;
+    }
     for (const obj of this.fullItemsLiist) {
       if (counter < 10) {
         page.push(obj);
