@@ -7,6 +7,7 @@ Project to facilitate the managenment of purchase orders, products and suppliers
   `sql
     CREATE DATABASE final_project
   `
+  *The database will be automatically filled with the necessary data to be properly tested. Once the developing stage is over, the fake data will be removed.*
 - Run Spring project.
   - Run the command `mvn install` on a terminal inside the BackEnd/finalProject folder 
   - Update database credentials in application.properties.
