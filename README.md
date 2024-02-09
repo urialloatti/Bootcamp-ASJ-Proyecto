@@ -9,7 +9,8 @@ Project to facilitate the managenment of purchase orders, products and suppliers
   `
 - Run Spring project.
   - Update database credentials in application.properties.
-      spring.datasource.url = jdbc:sqlserver://localhost;encrypt=false;user=*USERNAME*;password=*PASSWORD*;databaseName=final_project
+
+    `spring.datasource.url = jdbc:sqlserver://localhost;encrypt=false;user=*USERNAME*;password=*PASSWORD*;databaseName=final_project`
   - Run Spring project on port 8080
 
 - Run Angular project.
