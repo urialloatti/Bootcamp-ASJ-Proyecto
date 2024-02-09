@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS purchase_products;
 DROP TABLE IF EXISTS purchase_orders;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users_rols;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS suppliers;

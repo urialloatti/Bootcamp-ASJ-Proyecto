@@ -90,7 +90,7 @@ export class ProductsNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe(() => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 2) {
+            if (this.formChangesCounter > 3) {
               this.modalService.setFormChanged(true);
             }
           }),
@@ -120,7 +120,7 @@ export class ProductsNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe(() => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 2) {
+            if (this.formChangesCounter > 3) {
               this.modalService.setFormChanged(true);
             }
           }),

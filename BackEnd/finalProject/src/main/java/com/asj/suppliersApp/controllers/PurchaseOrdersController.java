@@ -60,7 +60,7 @@ public class PurchaseOrdersController {
         return ResponseEntity.status(200).body(this.ordersService.countAvailables());
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<ApiResponse<PurchaseOrderResponseDTO>> postNew(@Valid @RequestBody PurchaseOrderRequestDTO request, BindingResult bindingResult) {
         try {
             BadRequestBodyChecker.checkBody(bindingResult);

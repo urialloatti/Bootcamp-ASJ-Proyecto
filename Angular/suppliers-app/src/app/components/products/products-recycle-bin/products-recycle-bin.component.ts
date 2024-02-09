@@ -73,7 +73,7 @@ export class ProductsRecycleBinComponent {
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                console.log(error);
+                console.error(error);
               },
               complete: () => subscription.unsubscribe(),
             });

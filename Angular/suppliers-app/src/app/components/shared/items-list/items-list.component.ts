@@ -159,7 +159,7 @@ export class ItemsListComponent implements OnInit {
         this.fullItemsLiist = response;
       },
       error: (error) => {
-        console.log(error);
+        console.error(error);
       },
     });
   }

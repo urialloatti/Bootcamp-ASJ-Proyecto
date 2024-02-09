@@ -9,6 +9,7 @@ import {
   ModalConfirmInterface,
   ModalRedirectInterface,
 } from '../../../interfaces/modalInterface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-purchase-info',
@@ -20,6 +21,7 @@ export class PurchaseInfoComponent {
     private purchaseService: PurchaseOrdersService,
     private route: ActivatedRoute,
     private router: Router,
+    private datePipe: DatePipe,
     private confirmService: ModalService
   ) {}
 
@@ -47,7 +49,10 @@ export class PurchaseInfoComponent {
       deleted = dto.data;
       this.modalConfirmObject = {
         header: `Cancelar órden de compra ${deleted.id}`,
-        message: `Está seguro de cancelar la órden de compra generada el ${deleted.createdAt}?`,
+        message: `Está seguro de cancelar la órden de compra generada el ${this.datePipe.transform(
+          deleted.createdAt,
+          'yyyy/MM/dd HH:mm'
+        )}?`,
         cancel: 'Volver atrás',
         confirm: 'Cancelar órden de compra',
       };

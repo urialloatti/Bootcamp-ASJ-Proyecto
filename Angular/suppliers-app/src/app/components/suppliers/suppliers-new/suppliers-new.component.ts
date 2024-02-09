@@ -135,13 +135,9 @@ export class suppliersNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe((e) => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 0) {
+            if (this.formChangesCounter > 2) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             5;
         });
@@ -180,13 +176,9 @@ export class suppliersNewComponent implements OnInit {
         setTimeout(() => {
           this.myForm.valueChanges?.subscribe((e) => {
             this.formChangesCounter++;
-            if (this.formChangesCounter > 1) {
+            if (this.formChangesCounter > 3) {
               this.modalService.setFormChanged(true);
             }
-            console.log(
-              this.formChangesCounter,
-              this.modalService.hasFormChanged()
-            );
           }),
             500;
         });

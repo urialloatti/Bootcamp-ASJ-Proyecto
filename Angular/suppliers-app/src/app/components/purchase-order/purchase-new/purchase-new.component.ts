@@ -225,7 +225,7 @@ export class PurchaseNewComponent implements OnInit, AfterViewInit {
           setTimeout(() => (this.isProductAdded = false), 2000);
         },
         error: (error) => {
-          console.log(error.error.message);
+          console.error(error.error.message);
         },
       });
     } else if (this.selectedQuantity < 1) {

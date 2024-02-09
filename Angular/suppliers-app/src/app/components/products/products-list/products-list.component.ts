@@ -81,7 +81,7 @@ export class ProductsListComponent implements OnInit {
                   confirm: 'Aceptar',
                 };
                 this.modalMessageFlag = true;
-                console.log(error);
+                console.error(error);
               },
               complete: () => subscription.unsubscribe(),
             });

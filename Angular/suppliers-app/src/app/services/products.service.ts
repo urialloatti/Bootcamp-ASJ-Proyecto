@@ -152,7 +152,7 @@ export class ProductsService {
     id: number
   ): Observable<ApiResponse<ProductResponseDTO>> {
     return this.http
-      .patch<ApiResponse<ProductResponseDTO>>(`${this.URL_API}/deleted/${id}`, {
+      .patch<ApiResponse<ProductResponseDTO>>(`${this.URL_API}/delete/${id}`, {
         available: false,
       })
       .pipe(
@@ -167,7 +167,7 @@ export class ProductsService {
     id: number
   ): Observable<ApiResponse<ProductResponseDTO>> {
     return this.http
-      .patch<ApiResponse<ProductResponseDTO>>(`${this.URL_API}/deleted/${id}`, {
+      .patch<ApiResponse<ProductResponseDTO>>(`${this.URL_API}/delete/${id}`, {
         available: true,
       })
       .pipe(

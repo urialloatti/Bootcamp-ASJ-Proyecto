@@ -100,7 +100,6 @@ export class ModalNewComponent implements OnInit {
   public backClick() {
     this.triedToEscape = true;
     setTimeout(() => (this.triedToEscape = false), 250);
-    console.log(crypto.randomUUID());
   }
 
   public sendResponse(response: boolean) {

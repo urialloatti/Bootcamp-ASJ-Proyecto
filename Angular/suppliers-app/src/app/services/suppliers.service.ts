@@ -119,10 +119,9 @@ export class SuppliersService {
     id: number
   ): Observable<ApiResponse<SupplierResponseDTO>> {
     return this.http
-      .patch<ApiResponse<SupplierResponseDTO>>(
-        this.URL_API + '/deleted/' + id,
-        { available: false }
-      )
+      .patch<ApiResponse<SupplierResponseDTO>>(this.URL_API + '/delete/' + id, {
+        available: false,
+      })
       .pipe(
         catchError((error) => {
           this.errorHandler.handleServerError(error);
@@ -135,10 +134,9 @@ export class SuppliersService {
     id: number
   ): Observable<ApiResponse<SupplierResponseDTO>> {
     return this.http
-      .patch<ApiResponse<SupplierResponseDTO>>(
-        this.URL_API + '/deleted/' + id,
-        { available: true }
-      )
+      .patch<ApiResponse<SupplierResponseDTO>>(this.URL_API + '/delete/' + id, {
+        available: true,
+      })
       .pipe(
         catchError((error) => {
           this.errorHandler.handleServerError(error);

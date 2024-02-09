@@ -44,7 +44,6 @@ function createProduct() {
         pDescription: productDescription.value,
         pPrice: productPrice.value
     };
-    // console.log(JSON.stringify(currentProduct))
     return currentProduct;
 }
 
